@@ -1,0 +1,3 @@
+[submodule "json-wikipedia"]
+	path = json-wikipedia
+	url = https://github.com/diegoceccarelli/json-wikipedia.git
