@@ -1,0 +1,3 @@
+zcat spot-src-target.tsv.gz | awk -F'  ' '{if ( $2 > 0 && $3> 0) print $2"     "$3}'  | sort -nk2,2 -nk1,1 | uniq > edges
+
+if ($2 == current) incoming=incoming" "$1; else { print current"\t"incoming; current=$2; incoming=" "$1} } END {print current"\t"incoming}' tmp  | less

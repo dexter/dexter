@@ -1,0 +1,2 @@
+coppie di spot -> entità associate
+suddividere documenti tra i mapper in base agli spot

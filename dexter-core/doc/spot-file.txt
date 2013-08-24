@@ -1,0 +1,25 @@
+SPOT FILE 
+
+the spot-src-target file (data/spot/spot-src-target.tsv.gz) contains  
+
+spot <tab> e-src <tab> e-target 
+
+the spot file (data/spot/spos.tsv.gz)  contains
+
+spot <tab> <target entities id separaded by commas and delta-encoded>  <tab> <link frequency> <tab> <document frequency> 
+
+where <link frequency> is the number of documents containing the anchor text 
+while <document frequency> is the number of documents containing the spot text as anchor or pure text. 
+
+Please, note that sometimes link frequency is a bit higher than document frequency (and this is weird, it should not happen)
+this is due to the fact that some spot don't really exists on wikipedia, but are obtained refined other spots 
+for example for Johathan K. Kennedy we also generate johathan kennedy removing the middle K..
+When we do this, we keep the original link frequency, but the document frequency is recomputed. 
+
+also the document frequency is computed using lucene and counting the number of results for the query <spot> 
+so this may be a bit imprecise. 
+
+TODO doc frequency should be moved in another file
+
+ 
+

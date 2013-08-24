@@ -1,0 +1,52 @@
+argentina	12599866	18951905
+argentina	12599885	18951905
+argentina	12599898	18951905
+argentina	12599905	18951905
+argentina	12601984	18951905
+argentina	12602407	18951905
+argentina	12602421	18951905
+argentina	12602477	18951905
+argentina	12602927	18951905
+argentina	12603709	18951905
+argentina	12604684	18951905
+argentina	12607510	18951905
+argentina	12611	18951905
+argentina	12611125	18951905
+argentina	12613249	18951905
+argentina	12613517	18951905
+argentina	12615813	18951905
+argentina	1261966	18951905
+argentina	12627357	18951905
+argentina	12627837	18951905
+goodbye argentina	8423965	8423965
+goodbye argentina	9892986	8423965
+goodbye argentina	16202013	8423965
+goodbye argentina	16294219	8423965
+goodbye argentina	17548003	8423966
+government of argentina	3002866	18951905
+government of argentina	10197461	67339
+government of argentina	11967716	67339
+government of argentina	12163990	67339
+government of argentina	15961583	67339
+government of argentina	16278408	67339
+government of argentina	1739661	67339
+government of argentina	19208982	67339
+government of argentina	23434731	67339
+government of argentina	2552713	67339
+government of argentina	262752	67339
+government of argentina	2793157	67339
+government of argentina	29256074	67339
+government of argentina	29409816	67339
+government of argentina	31086516	67339
+government of argentina	31671523	67339
+government of argentina	3526793	67339
+government of argentina	4371221	67339
+government of argentina	5865789	67339
+government of argentina	5931455	67339
+government of argentina	6274865	67339
+government of argentina	67339	67339
+government of argentina	70703	67339
+government of argentina	8308783	67339
+government of argentina	9744483	67339
+government of argentina	4078394	67621
+goya, argentina	107834	2934886

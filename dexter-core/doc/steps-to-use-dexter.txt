@@ -1,0 +1,26 @@
+
+
+1) generate the json dump from a wikipedia dump (FIXME version) see wiki-index
+
+2) set the position of the json dump in scripts/config.sh  (WIKI_JSON_DUMP)
+
+3) run scripts/create-label2id-file.sh generates the mapping Title <-> Id
+
+4) run scripts/index-dump-with-lucene.sh index the dump with lucene
+
+5) run  scripts/generate-spots.sh generates the list of the spots <spot> <tab> <src-id> <tab> <target-id>
+
+6) scripts/generate-spots-document-frequencies.sh will generate the document frequency for each spot
+<spot> <tab> <spot document frequency>
+
+7) scripts/generate-one-spot-per-line.sh will join together the file produced in #5,#6
+
+8) scripts/generate-succint-spot-index.sh will generate the spot index
+
+9) scripts/generate-incoming-and-outcoming-edges.sh will generate the incoming and outcoming edges for 
+each entity
+
+10) scripts/index-incoming-and-outcoming-edges.sh will index the edges in a binary format 
+
+11) scripts/spot.sh file-name  and  have fun ;)
+

@@ -1,0 +1,50 @@
+acharya	1167	0	0
+achelous	594	0	1
+achene	956	0	1
+achill	1016	0	1
+achill golf	1016	0	1
+achill head	1016	0	1
+achill island	1016	1016	1
+achill railway station	1016	0	0
+achill rovers	1016	0	1
+achill sound	1016	0	1
+achillbeg	1016	0	1
+achilleid	305	0	1
+achilleion	305	0	1
+achilles	1174	305	6
+achilles	1182	305	6
+achilles	1213	305	6
+achilles	305	0	6
+achilles	305	305	6
+achilles	594	305	6
+achilles	783	305	6
+achilles and a tortoise	305	0	1
+achilles heel	305	0	2
+achilles last stand	305	0	0
+achilles' heel	305	0	2
+achilles' tendon	305	0	1
+achilleus	594	0	1
+acid	1014	656	22
+acid	639	656	22
+acid	656	656	22
+acid	900	656	22
+acid chloride	1014	0	1
+acid dissociation constant	639	0	2
+acid dissociation constant	656	0	2
+acid rain	656	0	0
+acid salt	656	0	0
+acid sulfate soil	656	0	0
+acid tests	1017	0	0
+acid value	656	0	0
+acid-base extraction	656	0	0
+acipenseriformes	734	0	0
+acknowledgment	586	0	2
+ackrill	308	0	0
+acland's video atlas of human anatomy	674	0	0
+acornsoft's	785	0	1
+acoustic	1198	0	3
+acoustic emission	1198	0	0
+acoustic impedance	1198	0	0
+acoustic levitation	1198	0	0
+acoustic location	1198	0	0
+acoustic measurements and instrumentation	1198	0	0

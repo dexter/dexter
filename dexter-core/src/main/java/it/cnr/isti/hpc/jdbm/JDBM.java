@@ -1,0 +1,119 @@
+/**
+ *  Copyright 2012 Diego Ceccarelli
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package it.cnr.isti.hpc.jdbm;
+
+import java.io.File;
+import java.util.Map;
+import java.util.Set;
+
+import org.mapdb.DB;
+import org.mapdb.DBMaker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * JDBM.java
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
+ */
+public class JDBM {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(JDBM.class);
+
+	private static final String DEFAULT_DB_NAME = "jdbm.db";
+	// wrapped db instance
+	private DB db;
+
+	private JDBM(String dbFolder) {
+		File folderPath = new File(dbFolder);
+//		if (dbFolder.endsWith(".zip"))
+//			openZipDb(folderPath);
+
+		openDb(folderPath, DEFAULT_DB_NAME)	;
+
+	}
+
+	// private void openZipDb(File dbPath) {
+	// logger.info("open zip db in {} ", dbPath.getAbsolutePath());
+	// db = DBMaker.openZip(dbPath.getAbsolutePath()).make();
+	//
+	// }
+
+	private JDBM(String path, String dbFolder) {
+		File folderPath = new File(path, dbFolder);
+//		if (dbFolder.endsWith(".zip"))
+//			openZipDb(folderPath);
+		openDb(folderPath, DEFAULT_DB_NAME);
+	}
+
+	private void openDb(File dbFolder, String dbName) {
+		if (!dbFolder.exists())
+			dbFolder.mkdir();
+		if (!dbFolder.isDirectory())
+			throw new JDBMException("file " + dbFolder
+					+ " exists but it is not a directory");
+		File dbPath = new File(dbFolder, dbName);
+		logger.info("open db in {} ", dbPath.getAbsolutePath());
+
+		// NOTE: i don't need transactions, disabling should improve speed
+		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
+		
+
+	}
+
+	public static JDBM getDb(String dbName) {
+		return new JDBM(dbName);
+	}
+
+	public static JDBM getDb(String path, String dbName) {
+		return new JDBM(path, dbName);
+	}
+
+	public boolean hasCollection(String collection) {
+		return db.getAll().containsKey(collection);
+	}
+
+	public void rmCollection(String collection) {
+		db.delete(collection);
+		db.commit();
+	}
+
+	public Set<String> getCollections() {
+		return db.getAll().keySet();
+	}
+
+	public Map getCollection(String collection) {
+		//if (hasCollection(collection)) {
+			logger.info("get collection {} ", collection);
+			return db.getHashMap(collection);
+//		} else {
+//			logger.info("create collection {} ", collection);
+//			return db.create(collection);
+//		}
+
+	}
+
+	public void commit() {
+		db.commit();
+	}
+
+	public void close() {
+		db.close();
+	}
+
+}

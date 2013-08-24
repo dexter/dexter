@@ -1,0 +1,35 @@
+LABEL INDEXING (package cli.label)
+
+[ExportArticlesIdCLI]
+dexter first creates a file with all the titles, organized
+in this way : 
+
+title \t [redirect title, if any, otherwise empty] \t id
+
+then it sorts it by title and index the file, replacing
+the id of the redirects with the id of the target.
+
+[AddRedirectIdCLI]
+Iterates over the over the previous file and produces a file
+in this format:
+
+title \t\t id
+
+where title contains the title of target article in case of 
+redirects, otherwise the original title.
+
+[IndexIdToLabelCLI] 
+
+create store the mapping between ids and names, if an id refer to 
+a redirect, the target name of the redirect is returned. 
+
+[IndexLabelToIdCLI]
+
+the converse, the file must be sorted by title
+
+
+INCOMING-ID indexing
+
+
+ 
+
