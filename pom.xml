@@ -14,8 +14,8 @@
 
     <modules>
         <module>dexter-parent</module>
-        <!--module>dexter-helper</module>
- 		<module>wikipedia-helper</module -->
+        <!--module>dexter-helper</module> -->
+ 		<module>json-wikipedia</module>
 		<module>dexter-core</module>
 		<!--module>dexter-relatedness</module>
 		<module>dexter-eval</module-->
