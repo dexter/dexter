@@ -49,7 +49,7 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	private MapDBIdToLabel() {
 		properties = new ProjectProperties(this.getClass());
 		map = db.getCollection(COLLECTION_NAME);
-		commitFrequency = properties.getInt("jdbm.commit");
+		commitFrequency = properties.getInt("mapdb.commit");
 	}
 
 	public static MapDBIdToLabel getInstance() {

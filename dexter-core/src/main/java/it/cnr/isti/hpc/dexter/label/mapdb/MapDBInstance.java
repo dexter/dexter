@@ -28,6 +28,6 @@ public class MapDBInstance {
 	static ProjectProperties properties = new ProjectProperties(
 			MapDBInstance.class);
 	static public final MapDB DB = MapDB.getDb(properties.get("data.dir"),
-			properties.get("jdbm.dir"));
+			properties.get("mapdb.dir"));
 
 }

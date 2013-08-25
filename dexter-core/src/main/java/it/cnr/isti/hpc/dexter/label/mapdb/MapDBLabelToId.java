@@ -50,7 +50,7 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 		properties = new ProjectProperties(this.getClass());
 
 		map = db.getCollection(COLLECTION_NAME);
-		commitFrequency = properties.getInt("jdbm.commit");
+		commitFrequency = properties.getInt("mapdb.commit");
 	}
 
 	public static MapDBLabelToId getInstance() {
