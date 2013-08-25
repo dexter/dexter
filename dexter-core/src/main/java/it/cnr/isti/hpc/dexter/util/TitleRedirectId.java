@@ -19,41 +19,39 @@ import it.cnr.isti.hpc.io.reader.RecordParser;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
 /**
- * TitleDisambiguationId.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 10/lug/2012
+ * TitleDisambiguationId contains the title of an article, its numerical id,
+ * and, if the article is a redirect, the redirect string.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 10/lug/2012
  */
 
 public class TitleRedirectId {
 	String title;
 	String redirect;
 	String id;
-	
-	
-	
-	public TitleRedirectId(){
-		
+
+	public TitleRedirectId() {
+
 	}
-	
-	public TitleRedirectId(Article article){
-		if (article.isRedirect()){
+
+	public TitleRedirectId(Article article) {
+		if (article.isRedirect()) {
 			title = article.getRedirectNoAnchor();
 			redirect = article.getTitleInWikistyle();
-		} else{
+		} else {
 			redirect = "";
 			title = article.getTitleInWikistyle();
 		}
 		id = String.valueOf(article.getWikiId());
-		if (article.isDisambiguation()){
-			id = "-"+id;
+		if (article.isDisambiguation()) {
+			id = "-" + id;
 		}
 	}
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public String getRedirect() {
 		return redirect;
 	}
@@ -62,11 +60,9 @@ public class TitleRedirectId {
 		return title;
 	}
 
-	public boolean isRedirect(){
+	public boolean isRedirect() {
 		return !redirect.isEmpty();
 	}
-
-	
 
 	public void setId(String id) {
 		this.id = id;
@@ -80,9 +76,19 @@ public class TitleRedirectId {
 		this.title = title;
 	}
 
-	public static  class Parser implements RecordParser<TitleRedirectId>{
+	/**
+	 * The Parser class encode a TitleRedirectId object as a tab separated value
+	 * line, containing in the first position the title (or the target of the
+	 * redirect if the article is a redirect), in the second position the
+	 * redirect title (or the empty string if the article is not a redirect) and
+	 * finally the numerical id of the article.
+	 * 
+	 * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+	 * 
+	 *         Created on Aug 25, 2013
+	 */
+	public static class Parser implements RecordParser<TitleRedirectId> {
 
-		
 		public TitleRedirectId decode(String record) {
 			String[] elems = record.split("\t");
 			TitleRedirectId t = new TitleRedirectId();
@@ -92,14 +98,10 @@ public class TitleRedirectId {
 			return t;
 		}
 
-		/* (non-Javadoc)
-		 * @see it.cnr.isti.hpc.io.reader.RecordParser#encode(java.lang.Object)
-		 */
 		public String encode(TitleRedirectId tri) {
-			return tri.title+"\t"+tri.redirect+"\t"+tri.id;
+			return tri.title + "\t" + tri.redirect + "\t" + tri.id;
 		}
-		
+
 	}
-	
 
 }

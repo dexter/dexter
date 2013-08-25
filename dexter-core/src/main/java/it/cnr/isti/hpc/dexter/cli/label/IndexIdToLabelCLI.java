@@ -28,8 +28,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GenerateArticleHashCLI takes the json dump of wikipedia and create a function
- * that maps each article to an int, and the reverse.
+ * Takes a file containing a list of TitleRedirectId and indexes the 
+ * mapping <code> id -> title </code>.
+ * 
+ * @see LabelHelper, TitleRedirectId
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */

@@ -26,15 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Given a json file containing the articles generates a file containing 2
- * columns:
- * <ul>
- * <li>the title of the redirected rticle in mediawiki (or the title if there is
- * no redirect)</li>
- * <li>the json describing the article</li>
- * </ul>
- * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
+ * Add redirects takes a file containing a list 
+ * of serialized TitleRedirectId sorted by title, 
+ * and create a file containing only the mapping 
+ * between the redirect text and id of the target
+ * article.
  */
 public class AddRedirectIdCLI extends AbstractCommandLineInterface {
 	/**
@@ -60,12 +56,8 @@ public class AddRedirectIdCLI extends AbstractCommandLineInterface {
 		TitleRedirectId article = null;
 		while (iterator.hasNext()) {
 			pl.up();
-			try {
-				article = iterator.next();
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-				continue;
-			}
+			article = iterator.next();
+
 			if (!article.isRedirect()) {
 				// real article
 				currentTitle = article.getTitle();

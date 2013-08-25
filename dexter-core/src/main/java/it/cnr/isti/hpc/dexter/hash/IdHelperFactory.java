@@ -15,10 +15,15 @@
  */
 package it.cnr.isti.hpc.dexter.hash;
 
-import it.cnr.isti.hpc.dexter.hash.jdbm.JDBMIdToLabel;
-import it.cnr.isti.hpc.dexter.hash.jdbm.JDBMLabelToId;
+import it.cnr.isti.hpc.dexter.label.mapdb.MapDBIdToLabel;
+import it.cnr.isti.hpc.dexter.label.mapdb.MapDBLabelToId;
 
 /**
+ * Generates an IdHelper that takes care to convert 
+ * the entity labels (i.e., the titles of the Wikipedia pages containing
+ * the description of the entity) in integer identifiers used for 
+ * internal processing. 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Oct 3, 2012
@@ -43,8 +48,8 @@ public class IdHelperFactory {
 
 	public static IdHelper getHashHelper(Type type) {
 		if (type == Type.JDBM) {
-			IdToLabel h2l = JDBMIdToLabel.getInstance();
-			LabelToId l2h = JDBMLabelToId.getInstance();
+			IdToLabel h2l = MapDBIdToLabel.getInstance();
+			LabelToId l2h = MapDBLabelToId.getInstance();
 			IdHelper helper = new IdHelper(h2l, l2h);
 			return helper;
 		}
@@ -59,7 +64,7 @@ public class IdHelperFactory {
 	
 	public static LabelToIdWriter getLabelToIdWriter(Type type) {
 		if (type == Type.JDBM) {
-			return JDBMLabelToId.getInstance();
+			return MapDBLabelToId.getInstance();
 		}
 //		if (type == Type.HADOOP){
 //			return new LabelToIdHadoopWriter();
@@ -69,7 +74,7 @@ public class IdHelperFactory {
 	
 	public static IdToLabelWriter getIdToLabelWriter(Type type) {
 		if (type == Type.JDBM) {
-			return JDBMIdToLabel.getInstance();
+			return MapDBIdToLabel.getInstance();
 		}
 //		if (type == Type.HADOOP){
 //			return new IdToLabelHadoopWriter();

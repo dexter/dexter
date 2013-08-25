@@ -21,7 +21,6 @@ import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
 
@@ -29,8 +28,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GenerateArticleHashCLI takes the json dump of wikipedia and create a function
- * that maps each article to an int, and the reverse.
+ * GenerateArticleHashCLI takes the json dump of wikipedia and creates a file
+ * which contains the mapping between each article title (the label) to an int
+ * (used to represent the entity in the framework).
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */
@@ -53,6 +53,7 @@ public class ExportArticlesIdCLI extends AbstractCommandLineInterface {
 	
 		ProgressLogger pl = new ProgressLogger("Processed {} articles", 100000);
 
+		
 		RecordReader<Article> reader = new RecordReader<Article>(input,
 				new JsonRecordParser<Article>(Article.class)).filter(TypeFilter.STD_FILTER);
 

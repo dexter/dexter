@@ -28,8 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GenerateArticleHashCLI takes the json dump of wikipedia and create a function
- * that maps each article to an int, and the reverse.
+ * Takes a file containing a list of TitleRedirectId and indexes the mapping
+ * <code> title -> id </code>.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */
@@ -41,30 +41,29 @@ public class IndexLabelToIdCLI extends AbstractCommandLineInterface {
 			.getLogger(IndexLabelToIdCLI.class);
 
 	private static final String USAGE = "java -cp $jar "
-			+ IndexLabelToIdCLI.class
-			+ " -input titles.tsv ";
-	private static String[] params = new String[] { INPUT };	
-	
+			+ IndexLabelToIdCLI.class + " -input titles.tsv ";
+	private static String[] params = new String[] { INPUT };
+
 	static LabelToIdWriter writer = IdHelperFactory.getStdLabelToIdWriter();
-	
+
 	public static void main(String[] args) {
-		ProgressLogger pl = new ProgressLogger("{} records inserted",100000);
+		ProgressLogger pl = new ProgressLogger("{} records inserted", 100000);
 		IndexLabelToIdCLI cli = new IndexLabelToIdCLI(args);
-		RecordReader<TitleRedirectId> reader = new RecordReader<TitleRedirectId>(cli.getInput(),new TitleRedirectId.Parser());		
+		RecordReader<TitleRedirectId> reader = new RecordReader<TitleRedirectId>(
+				cli.getInput(), new TitleRedirectId.Parser());
 		String currentTitle = "";
 		Integer currentId = -1;
 		Iterator<TitleRedirectId> iterator = reader.iterator();
 		TitleRedirectId article = null;
-		while (iterator.hasNext()){
-			pl.up();	
-			try{
-			 article = iterator.next();
-			}
-			catch(Exception e){
+		while (iterator.hasNext()) {
+			pl.up();
+			try {
+				article = iterator.next();
+			} catch (Exception e) {
 				logger.error(e.getMessage());
 				continue;
 			}
-	
+
 			if (!article.isRedirect()) {
 				// real article
 				currentTitle = article.getTitle();
@@ -75,8 +74,8 @@ public class IndexLabelToIdCLI extends AbstractCommandLineInterface {
 		writer.close();
 	}
 
-	public static void store(String k ,Integer v) {
-		logger.debug("adding {} {} ", k , v);
+	public static void store(String k, Integer v) {
+		logger.debug("adding {} {} ", k, v);
 		writer.add(k, v);
 	}
 
