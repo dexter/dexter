@@ -13,11 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.hash.jdbm;
+package it.cnr.isti.hpc.dexter.label.mapdb;
 
 import it.cnr.isti.hpc.dexter.hash.IdToLabel;
 import it.cnr.isti.hpc.dexter.hash.IdToLabelWriter;
-import it.cnr.isti.hpc.jdbm.JDBM;
+import it.cnr.isti.hpc.mapdb.MapDB;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.util.Map;
@@ -30,31 +30,31 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class JDBMIdToLabel implements IdToLabel, IdToLabelWriter {
+public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(JDBMLabelToId.class);
+			.getLogger(MapDBLabelToId.class);
 
 	ProjectProperties properties;
 	private static final String COLLECTION_NAME = "id2a";
-	private static JDBMIdToLabel instance;
-	JDBM db = JDBMInstance.DB;
+	private static MapDBIdToLabel instance;
+	MapDB db = MapDBInstance.DB;
 	Map<Integer, String> map;
 	int numEntry = 0;
 	int commitFrequency = -1;
 
-	private JDBMIdToLabel() {
+	private MapDBIdToLabel() {
 		properties = new ProjectProperties(this.getClass());
 		map = db.getCollection(COLLECTION_NAME);
 		commitFrequency = properties.getInt("jdbm.commit");
 	}
 
-	public static JDBMIdToLabel getInstance() {
+	public static MapDBIdToLabel getInstance() {
 		if (instance == null)
-			instance = new JDBMIdToLabel();
+			instance = new MapDBIdToLabel();
 		return instance;
 	}
 

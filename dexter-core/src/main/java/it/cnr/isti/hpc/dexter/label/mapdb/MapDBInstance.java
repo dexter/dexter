@@ -13,9 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.hash.jdbm;
+package it.cnr.isti.hpc.dexter.label.mapdb;
 
-import it.cnr.isti.hpc.jdbm.JDBM;
+import it.cnr.isti.hpc.mapdb.MapDB;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
@@ -23,11 +23,11 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class JDBMInstance {
+public class MapDBInstance {
 
 	static ProjectProperties properties = new ProjectProperties(
-			JDBMInstance.class);
-	static public final JDBM DB = JDBM.getDb(properties.get("data.dir"),
+			MapDBInstance.class);
+	static public final MapDB DB = MapDB.getDb(properties.get("data.dir"),
 			properties.get("jdbm.dir"));
 
 }

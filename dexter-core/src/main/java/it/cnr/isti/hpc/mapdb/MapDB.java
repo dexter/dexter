@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.jdbm;
+package it.cnr.isti.hpc.mapdb;
 
 import java.io.File;
 import java.util.Map;
@@ -25,26 +25,30 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * JDBM.java
+ * MapDB abstracts the mapdb framework, allowing to create big maps 
+ * that are stored on the disk and to access them with high 
+ * performance.
+ * 
+ * @see <a href="http://www.mapdb.org"> MapDB</a> 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class JDBM {
+public class MapDB {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(JDBM.class);
+	private static final Logger logger = LoggerFactory.getLogger(MapDB.class);
 
-	private static final String DEFAULT_DB_NAME = "jdbm.db";
+	private static final String DEFAULT_DB_NAME = "mapdb.db";
 	// wrapped db instance
 	private DB db;
 
-	private JDBM(String dbFolder) {
+	private MapDB(String dbFolder) {
 		File folderPath = new File(dbFolder);
-//		if (dbFolder.endsWith(".zip"))
-//			openZipDb(folderPath);
+		// if (dbFolder.endsWith(".zip"))
+		// openZipDb(folderPath);
 
-		openDb(folderPath, DEFAULT_DB_NAME)	;
+		openDb(folderPath, DEFAULT_DB_NAME);
 
 	}
 
@@ -54,34 +58,44 @@ public class JDBM {
 	//
 	// }
 
-	private JDBM(String path, String dbFolder) {
+	public MapDB(String path, String dbFolder) {
 		File folderPath = new File(path, dbFolder);
-//		if (dbFolder.endsWith(".zip"))
-//			openZipDb(folderPath);
+		// if (dbFolder.endsWith(".zip"))
+		// openZipDb(folderPath);
 		openDb(folderPath, DEFAULT_DB_NAME);
 	}
+	
+	public MapDB(File dbPath){
+		logger.info("open db in {} ", dbPath.getAbsolutePath());
+
+		// NOTE: i don't need transactions, disabling should improve speed
+		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
+	}
+
 
 	private void openDb(File dbFolder, String dbName) {
 		if (!dbFolder.exists())
 			dbFolder.mkdir();
 		if (!dbFolder.isDirectory())
-			throw new JDBMException("file " + dbFolder
+			throw new MapDBException("file " + dbFolder
 					+ " exists but it is not a directory");
 		File dbPath = new File(dbFolder, dbName);
 		logger.info("open db in {} ", dbPath.getAbsolutePath());
 
 		// NOTE: i don't need transactions, disabling should improve speed
 		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
-		
 
 	}
+	
+	
+	
 
-	public static JDBM getDb(String dbName) {
-		return new JDBM(dbName);
+	public static MapDB getDb(String dbName) {
+		return new MapDB(dbName);
 	}
 
-	public static JDBM getDb(String path, String dbName) {
-		return new JDBM(path, dbName);
+	public static MapDB getDb(String path, String dbName) {
+		return new MapDB(path, dbName);
 	}
 
 	public boolean hasCollection(String collection) {
@@ -98,13 +112,13 @@ public class JDBM {
 	}
 
 	public Map getCollection(String collection) {
-		//if (hasCollection(collection)) {
-			logger.info("get collection {} ", collection);
-			return db.getHashMap(collection);
-//		} else {
-//			logger.info("create collection {} ", collection);
-//			return db.create(collection);
-//		}
+		// if (hasCollection(collection)) {
+		logger.info("get collection {} ", collection);
+		return db.getHashMap(collection);
+		// } else {
+		// logger.info("create collection {} ", collection);
+		// return db.create(collection);
+		// }
 
 	}
 

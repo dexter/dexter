@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.jdbm;
+package it.cnr.isti.hpc.mapdb;
 
 /**
  * JDBMException.java
@@ -21,12 +21,12 @@ package it.cnr.isti.hpc.jdbm;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 05/lug/2012
  */
-public class JDBMException extends RuntimeException {
-	public JDBMException(){
+public class MapDBException extends RuntimeException {
+	public MapDBException(){
 		super();
 	}
 	
-	public JDBMException(String msg){
+	public MapDBException(String msg){
 		super(msg);
 	}
 	
