@@ -43,14 +43,14 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 	private static MapDBLabelToId instance;
 	MapDB db = MapDBInstance.DB;
 	Map<String, Integer> map;
-	int numEntry = 0;
-	int commitFrequency = -1;
+//	int numEntry = 0;
+//	int commitFrequency = -1;
 
 	private MapDBLabelToId() {
 		properties = new ProjectProperties(this.getClass());
 
 		map = db.getCollection(COLLECTION_NAME);
-		commitFrequency = properties.getInt("mapdb.commit");
+	//	commitFrequency = properties.getInt("mapdb.commit");
 	}
 
 	public static MapDBLabelToId getInstance() {
@@ -60,16 +60,16 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 	}
 
 	public void add(String label, int key) {
-		numEntry++;
+	//	numEntry++;
 		if (label.isEmpty() || key == 0) {
 			logger.error("label \"{}\" empty or key \"{}\" is 0 ", label, key);
 			return;
 		}
 		map.put(label, key);
-		if (numEntry % commitFrequency == 0) {
-			logger.info("autocommit");
-			db.commit();
-		}
+//		if (numEntry % commitFrequency == 0) {
+//			logger.info("autocommit");
+//			db.commit();
+//		}
 	}
 
 	public Integer getId(String label) {

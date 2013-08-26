@@ -25,11 +25,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * MapDB abstracts the mapdb framework, allowing to create big maps 
- * that are stored on the disk and to access them with high 
- * performance.
+ * MapDB abstracts the mapdb framework, allowing to create big maps that are
+ * stored on the disk and to access them with high performance.
  * 
- * @see <a href="http://www.mapdb.org"> MapDB</a> 
+ * @see <a href="http://www.mapdb.org"> MapDB</a>
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
@@ -64,14 +63,14 @@ public class MapDB {
 		// openZipDb(folderPath);
 		openDb(folderPath, DEFAULT_DB_NAME);
 	}
-	
-	public MapDB(File dbPath){
+
+	public MapDB(File dbPath) {
 		logger.info("open db in {} ", dbPath.getAbsolutePath());
 
 		// NOTE: i don't need transactions, disabling should improve speed
-		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
+		db = DBMaker.newFileDB(dbPath).transactionDisable()
+				.asyncFlushDelay(100).make();
 	}
-
 
 	private void openDb(File dbFolder, String dbName) {
 		if (!dbFolder.exists())
@@ -86,9 +85,6 @@ public class MapDB {
 		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
 
 	}
-	
-	
-	
 
 	public static MapDB getDb(String dbName) {
 		return new MapDB(dbName);
@@ -114,7 +110,7 @@ public class MapDB {
 	public Map getCollection(String collection) {
 		// if (hasCollection(collection)) {
 		logger.info("get collection {} ", collection);
-		return db.getHashMap(collection);
+		return db.getTreeMap(collection);
 		// } else {
 		// logger.info("create collection {} ", collection);
 		// return db.create(collection);

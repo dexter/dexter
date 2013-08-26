@@ -43,13 +43,13 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	private static MapDBIdToLabel instance;
 	MapDB db = MapDBInstance.DB;
 	Map<Integer, String> map;
-	int numEntry = 0;
-	int commitFrequency = -1;
+	//int numEntry = 0;
+	//int commitFrequency = -1;
 
 	private MapDBIdToLabel() {
 		properties = new ProjectProperties(this.getClass());
 		map = db.getCollection(COLLECTION_NAME);
-		commitFrequency = properties.getInt("mapdb.commit");
+		//commitFrequency = properties.getInt("mapdb.commit");
 	}
 
 	public static MapDBIdToLabel getInstance() {
@@ -59,16 +59,16 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	}
 
 	public void add(int key, String label) {
-		numEntry++;
+		//numEntry++;
 		if (label.isEmpty() || key == 0) {
 			logger.error("label \"{}\" empty or key \"{}\" is 0 ", label, key);
 			return;
 		}
 		map.put(key, label);
-		if (numEntry % commitFrequency == 0) {
-			logger.info("autocommit");
-			db.commit();
-		}
+//		if (numEntry % commitFrequency == 0) {
+//			logger.info("autocommit");
+//			db.commit();
+//		}
 	}
 
 	public String getLabel(Integer key) {
@@ -85,6 +85,7 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	}
 
 	public void close() {
+		db.commit();
 		db.close();
 	}
 }
