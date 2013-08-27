@@ -22,8 +22,6 @@ import it.cnr.isti.hpc.dexter.util.TitleRedirectId;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
 
-import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,16 +51,9 @@ public class IndexLabelToIdCLI extends AbstractCommandLineInterface {
 				cli.getInput(), new TitleRedirectId.Parser());
 		String currentTitle = "";
 		Integer currentId = -1;
-		Iterator<TitleRedirectId> iterator = reader.iterator();
-		TitleRedirectId article = null;
-		while (iterator.hasNext()) {
+		for (TitleRedirectId article: reader){
 			pl.up();
-			try {
-				article = iterator.next();
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-				continue;
-			}
+			
 
 			if (!article.isRedirect()) {
 				// real article

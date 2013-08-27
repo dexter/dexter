@@ -16,14 +16,26 @@
 package it.cnr.isti.hpc.dexter.hash;
 
 /**
+ * 
+ * IdToLabelWriter takes care to write in a persistent format the 
+ * mapping <code> id -> label </code>.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 7, 2012
  */
 public interface LabelToIdWriter {
 	
+	
+	/** 
+	 * Adds the mapping <code> label -> id </code>
+	 */
 	public void add(String label, int id);
 	
+	
+	/**
+	 * Closes the writer
+	 */
 	public void close();
 	
 

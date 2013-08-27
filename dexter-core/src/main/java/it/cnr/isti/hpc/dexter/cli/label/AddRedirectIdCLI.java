@@ -29,8 +29,11 @@ import org.slf4j.LoggerFactory;
  * Add redirects takes a file containing a list 
  * of serialized TitleRedirectId sorted by title, 
  * and create a file containing only the mapping 
- * between the redirect text and id of the target
- * article.
+ * between the redirect text (in the first column, instead 
+ * of the second) 
+ * and id of the target article. In this way the redirect 
+ * text is indexed in order to point to the id of the 
+ * target entity. 
  */
 public class AddRedirectIdCLI extends AbstractCommandLineInterface {
 	/**

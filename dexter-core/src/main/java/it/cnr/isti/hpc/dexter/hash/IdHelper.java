@@ -25,7 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Convert.java
+ * An IdHelper provides the conversion between an entity label (e.g., 
+ * Pablo_Picasso) and an integer representing the entity (e.g., 24176). 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
