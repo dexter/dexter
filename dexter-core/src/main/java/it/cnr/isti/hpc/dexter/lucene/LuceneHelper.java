@@ -81,6 +81,14 @@ import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * LuceneHelper provides utilities for indexing, retrieving, and ranking
+ * Wikipedia articles.
+ * 
+ * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+ * 
+ *         Created on Aug 27, 2013
+ */
 public class LuceneHelper {
 
 	/**
@@ -89,9 +97,15 @@ public class LuceneHelper {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LuceneHelper.class);
 
+	/**
+	 * The Lucene analyzer
+	 */
 	private final StandardAnalyzer ANALYZER = new StandardAnalyzer(
 			Version.LUCENE_41, CharArraySet.EMPTY_SET);
 
+	/**
+	 * Singleton
+	 */
 	private static LuceneHelper dexterHelper;
 
 	private Directory index;
@@ -99,8 +113,10 @@ public class LuceneHelper {
 	private IndexSearcher searcher;
 	private IndexWriterConfig config;
 	private ArticleSummarizer summarizer;
-	
 
+	/**
+	 * number of documents indexed
+	 */
 	private int collectionSize;
 
 	private static ProjectProperties properties = new ProjectProperties(
@@ -123,8 +139,6 @@ public class LuceneHelper {
 		STORE_TERM_VECTORS_NOT_STORED.freeze();
 	}
 
-	private StringBuilder sb = new StringBuilder();
-
 	private static SpotManager cleaner = new SpotManager();
 
 	static Map<Integer, Integer> wikiIdToLuceneId;
@@ -135,10 +149,15 @@ public class LuceneHelper {
 		cleaner.add(new QuotesCleaner());
 	}
 
+	/**
+	 * Opens or creates a lucene index in the given directory
+	 * 
+	 * @param indexPath
+	 *            - the path of the directory with the Lucene's index
+	 */
 	protected LuceneHelper(String indexPath) {
 		logger.info("opening lucene index in folder {}", indexPath);
 		config = new IndexWriterConfig(Version.LUCENE_41, ANALYZER);
-		// FIXME add empty set of stopworkds?
 
 		BooleanQuery.setMaxClauseCount(1000);
 
@@ -150,17 +169,16 @@ public class LuceneHelper {
 			System.exit(1);
 		}
 
-		
-
-		
-
 		summarizer = new ArticleSummarizer();
 		writer = getWriter();
 		collectionSize = writer.numDocs();
 
 	}
-	
-	private IndexReader getReader(){
+
+	/**
+	 * @return an index reader
+	 */
+	private IndexReader getReader() {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader.open(index);
@@ -170,12 +188,17 @@ public class LuceneHelper {
 		}
 		return reader;
 	}
-	
-	private IndexSearcher getSearcher(){
+
+	private IndexSearcher getSearcher() {
 		IndexReader reader = getReader();
 		return new IndexSearcher(reader);
 	}
 
+	/**
+	 * Returns an instance of the Dexter's Lucene index.
+	 * 
+	 * @return an instance of the Dexter's Lucene index
+	 */
 	public static LuceneHelper getDexterLuceneHelper() {
 		if (dexterHelper == null) {
 			dexterHelper = new LuceneHelper(properties.get("lucene.index"));
@@ -183,6 +206,10 @@ public class LuceneHelper {
 		return dexterHelper;
 	}
 
+	/**
+	 * Loads the map containing the conversion from the Wikipedia ids to the
+	 * Lucene Ids.
+	 */
 	private void parseWikiIdToLuceneId() {
 		logger.warn("no index wikiID -> lucene found - I'll generate");
 		IndexReader reader = getReader();
@@ -209,7 +236,11 @@ public class LuceneHelper {
 
 	}
 
-	public void dumpWikiIdToLuceneId() {
+	/**
+	 * Dumps the map containing the conversion from the Wikipedia ids to the
+	 * Lucene Ids.
+	 */
+	private void dumpWikiIdToLuceneId() {
 		String file = properties.get("lucene.wiki.id");
 		try {
 			// Serialize to a file
@@ -223,6 +254,10 @@ public class LuceneHelper {
 		}
 	}
 
+	/**
+	 * Loads the map containing the conversion from the Wikipedia ids to the
+	 * Lucene Ids.
+	 */
 	public void loadWikiIdToLuceneId() {
 		File file = new File(properties.get("lucene.wiki.id"));
 		if (!file.exists()) {
@@ -247,6 +282,9 @@ public class LuceneHelper {
 		logger.info("done ");
 	}
 
+	/**
+	 * Returns the Lucene id of an article, given its wikiIds
+	 */
 	private int getLuceneId(int wikiId) {
 		if (wikiIdToLuceneId == null)
 			loadWikiIdToLuceneId();
@@ -256,6 +294,15 @@ public class LuceneHelper {
 		return wikiIdToLuceneId.get(wikiId);
 	}
 
+	/**
+	 * Returns the TFIDF-similarity between a given string and an article
+	 * 
+	 * @param query
+	 *            - the query containing the query to compare with the article
+	 * @param wikiId
+	 *            - the id of the article to compare with the query
+	 * @return the TFIDF-similarity between the query and wikiId
+	 */
 	public float getSimilarity(Query query, int wikiId) {
 		int docId = getLuceneId(wikiId);
 		Explanation e = null;
@@ -276,8 +323,8 @@ public class LuceneHelper {
 	 * @param y
 	 *            - the docid of the first document
 	 * 
-	 * @returns a double between 0 (not similar) and 1 (same content),
-	 *          representing the similarity between the 2 documents
+	 * @return a double between 0 (not similar) and 1 (same content),
+	 *         representing the similarity between the 2 documents
 	 */
 	public double getCosineSimilarity(int x, int y) {
 		IndexReader reader = getReader();
@@ -339,7 +386,16 @@ public class LuceneHelper {
 	}
 
 	/**
-	 * builds the tfidf vector and its norm2.
+	 * Builds the TFIDF vector and its norm2
+	 * 
+	 * @param tfidf
+	 *            - the vector containing for each term its TFIDF score, it will
+	 *            be populated by this method
+	 * @param freq
+	 *            - the vector containing for each term its frequency
+	 * 
+	 * @return the norm of the TFIDF vector
+	 * 
 	 */
 	private double tfidfVector(Map<String, Double> tfidf,
 			Map<String, Integer> freq) {
@@ -365,6 +421,13 @@ public class LuceneHelper {
 
 	}
 
+	/**
+	 * Converts an article to a Lucene Index
+	 * 
+	 * @param a
+	 *            - a Wikipedia Article to index
+	 * @return the Lucene Document representing the Wikipedia Article
+	 */
 	private Document toLuceneDocument(Article a) {
 		Document d = new Document();
 		d.add(new TextField("title", a.getTitle(), Field.Store.YES));
@@ -402,21 +465,35 @@ public class LuceneHelper {
 		return d;
 	}
 
-	public void addDocument(Article art) {
+	/**
+	 * Indexes a Wikipedia Article
+	 * 
+	 * @param a
+	 *            the article to index
+	 */
+	public void addDocument(Article a) {
 		writer = getWriter();
-		logger.debug("add doc {} ", art.getTitle());
+		logger.debug("add doc {} ", a.getTitle());
 		try {
-			writer.addDocument(toLuceneDocument(art));
+			writer.addDocument(toLuceneDocument(a));
 			// writer.addDocument(doc);
 		} catch (Exception e) {
 			logger.error("exception indexing a document: {} ({})",
-					art.getTitle(), e.toString());
+					a.getTitle(), e.toString());
 			e.printStackTrace();
 			System.exit(1);
 		}
-		logger.info("added doc {}", art.getWid());
+		logger.info("added doc {}", a.getWid());
 	}
 
+	/**
+	 * Adds a Wikipedia Article (added just for testing)
+	 * 
+	 * @param id
+	 *            - the id of the Wikipedia Article
+	 * @param content
+	 *            - the text of the Wikipedia Article
+	 */
 	protected void addDocument(int id, String content) {
 		Article a = new Article();
 		a.setWid(id);
@@ -424,6 +501,9 @@ public class LuceneHelper {
 		addDocument(a);
 	}
 
+	/**
+	 * Clears the index
+	 */
 	public void clearIndex() {
 		logger.info("delete all the documents indexed");
 		try {
@@ -446,7 +526,7 @@ public class LuceneHelper {
 		}
 	}
 
-	public Document getDoc(int wikiId) {
+	private Document getDoc(int wikiId) {
 		IndexReader reader = getReader();
 
 		// System.out.println("get docId "+pos);
@@ -471,6 +551,14 @@ public class LuceneHelper {
 		return doc;
 	}
 
+	/**
+	 * @param query
+	 *            - a query
+	 * @param field
+	 *            - the field where to search the query
+	 * @return number of documents containing the text in query in the given
+	 *         fields
+	 */
 	public int getFreq(String query, String field) {
 		Query q = null;
 		searcher = getSearcher();
@@ -499,6 +587,12 @@ public class LuceneHelper {
 		return collector.getTotalHits();
 	}
 
+	/**
+	 * @param query
+	 *            - a query
+	 * @return number of documents containing the text in query in the given
+	 *         fields
+	 */
 	public int getFreq(String query) {
 		return getFreq(query, "content");
 	}
@@ -520,14 +614,17 @@ public class LuceneHelper {
 		return writer;
 	}
 
+	/**
+	 * @return the number of documents indexed
+	 */
 	public int numDocs() {
 		IndexReader reader = getReader();
 
 		return reader.numDocs();
 
 	}
-	
-	public void closeWriter(){
+
+	public void closeWriter() {
 		try {
 			writer.close();
 		} catch (IOException e) {
@@ -536,6 +633,9 @@ public class LuceneHelper {
 		}
 	}
 
+	/**
+	 * @return the top document ids matching the query
+	 */
 	public List<Integer> query(String query) {
 
 		TopScoreDocCollector collector = TopScoreDocCollector.create(10000,
@@ -569,6 +669,13 @@ public class LuceneHelper {
 		return results;
 	}
 
+	/**
+	 * Retrieves an article from the index
+	 * 
+	 * @param id
+	 *            - the Wikipedia Id of the Article
+	 * @return the document from the index
+	 */
 	public Article getArticle(int id) {
 		Article a = new Article();
 		a.setWikiId(id);
@@ -584,6 +691,20 @@ public class LuceneHelper {
 
 	}
 
+	/**
+	 * 
+	 * Sorts a list of entities by their similarity with the string context.
+	 * 
+	 * @param spot
+	 *            - the spot for which the entities are sorted
+	 * @param eml
+	 *            - the entity list to sort
+	 * @param context
+	 *            - the context text, entities are sorted based on their
+	 *            similarity with the context.
+	 * 
+	 * 
+	 */
 	public void rankBySimilarity(Spot spot, EntityMatchList eml, String context) {
 
 		if (context.trim().isEmpty()) {
@@ -604,30 +725,9 @@ public class LuceneHelper {
 			logger.error("querying the index: {} ", e.toString());
 			logger.error("clauses = {} ",
 					((BooleanQuery) q).getClauses().length);
-			// logger.error("QUERY = {} ", context);
 			return;
 		}
-		// logger.debug("query = {} ", q);
-		//
-		// logger.debug("filter = {}", filterQuery);
-		//
-		// try {
-		// searcher.search(q, new QueryWrapperFilter(filterQuery), collector);
-		// } catch (IOException e) {
-		// logger.error("querying the index: {} ", e.toString());
-		// return results;
-		// }
-		// ScoreDoc[] hits = collector.topDocs().scoreDocs;
-		// for (int i = 0; i < hits.length; ++i) {
-		// int docId = hits[i].doc;
-		// int entityId = Integer.parseInt(getDoc(docId).get("id"));
-		//
-		// double score = hits[i].score;
-		// EntityMatch em = new EntityMatch(entityId, score, spot);
-		// em.setExplanation(new it.cnr.isti.hpc.dexter.util.Explanation(score,
-		// "Compatible Relation"));
-		// results.add(em);
-		// }
+
 		for (EntityMatch e : eml) {
 			Integer luceneId = getLuceneId(e.getId());
 			float score = 0.5f;
@@ -645,87 +745,5 @@ public class LuceneHelper {
 		return;
 
 	}
-	
-
-
-	// public class DocVector {
-	//
-	// Map<String, Double> term2tfidf;
-	// double norm = 0;
-	//
-	// public DocVector(Terms terms) {
-	// double total = 0;
-	// if (searcher == null)
-	// searcher = getSearcher();
-	// if (collectionSize == 0)
-	// collectionSize = searcher.getIndexReader().numDocs();
-	// term2tfidf = new HashMap<String, Double>();
-	// //for (TermFreqVector tfv : tfvs) {
-	// //if (! tfv.getField().equals("content")) continue;
-	// TermsEnum te = null;
-	// te = terms.iterator(te);
-	// while (te.next())
-	//
-	// String[] termTexts = terms.
-	// int[] termFreqs = tfv.getTermFrequencies();
-	// // Assert.assertEquals(termTexts.length, termFreqs.length);
-	// for (int j = 0; j < termTexts.length; j++) {
-	// double tfidf = setEntry(termTexts[j], termFreqs[j]);
-	//
-	// total += tfidf*tfidf;
-	// logger.info("TOTAL {} ", total);
-	//
-	// }
-	//
-	// }
-	// System.out.println("total = " + total);
-	// norm = Math.sqrt(total);
-	// //logger.info("---> NORM {} ", norm);
-	// }
-	//
-	// private double getCosineSimilarity(DocVector d2) {
-	// double dotproduct = 0;
-	// for (Map.Entry<String, Double> entry : d2.term2tfidf.entrySet()) {
-	// String key = entry.getKey();
-	// System.out.println(key + "\t " + entry.getValue());
-	//
-	// if (term2tfidf.containsKey(key)) {
-	// dotproduct += term2tfidf.get(key) * entry.getValue();
-	// //System.out.println("dotproduct = " + dotproduct);
-	// }
-	// }
-	// System.out.println("norm = " + norm);
-	// System.out.println("norm2 = " + d2.norm);
-	//
-	// System.out.println("dot = " + dotproduct);
-	//
-	//
-	// return dotproduct / (norm * d2.norm);
-	// }
-	//
-	// public double setEntry(String term, int freq) {
-	//
-	// int df = 0;
-	// try {
-	// df = searcher.docFreq(new Term("content", term));
-	// } catch (IOException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// double idf = Math.log(collectionSize / (double) df) / Math.log(2);
-	// double tfidf = freq * idf;
-	// // logger.info("term \t {}",term);
-	// // logger.info("tf \t {}",freq);
-	// // logger.info("df \t {}",df);
-	// // logger.info("idf \t {}",idf);
-	// // logger.info("tfidf \t {}",tfidf);
-	// // logger.info("term {}  idf {}",term,tfidf);
-	// term2tfidf.put(term, tfidf);
-	// return tfidf;
-	//
-	// }
-	//
-	// }
 
 }

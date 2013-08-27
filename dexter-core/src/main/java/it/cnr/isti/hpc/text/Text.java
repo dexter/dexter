@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,22 +13,14 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.apache.lucene.analysis.TokenStream;
-//import org.apache.lucene.analysis.standard.StandardTokenizer;
-//import org.apache.lucene.analysis.tokenattributes.TermAttribute;
-//import org.apache.lucene.util.Version;
 
-//import com.cybozu.labs.langdetect.Detector;
-//import com.cybozu.labs.langdetect.DetectorFactory;
-//import com.cybozu.labs.langdetect.LangDetectException;
 
 /**
- * Text.java
+ * 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/nov/2011
  */
