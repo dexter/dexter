@@ -9,10 +9,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
+import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +44,6 @@ public class Text {
 	public boolean useStopwords = true;
 
 	// private static Detector languageDetector;
-	
-	
-	
 
 	private static Set<String> stopEnglish = new HashSet<String>(
 			Arrays.asList(new String[] { "about", "above", "above", "across",
@@ -119,11 +119,15 @@ public class Text {
 			"terzo", "tra", "tre", "triplo", "ultimo", "un", "una", "uno",
 			"va", "vai", "voi", "volte", "vostro" });
 
-	 private static TokenStream tokenStream = new StandardTokenizer(
-	 Version.LUCENE_41, new StringReader(""));
+	private static TokenStream tokenStream = new StandardTokenizer(
+			Version.LUCENE_41, new StringReader(""));
+	
+	private static Analyzer analyzer = new StandardAnalyzer(
+			Version.LUCENE_41, CharArraySet.EMPTY_SET);
 
 	public Text(String text) {
 		this.text = text;
+		
 	}
 
 	public Text disableStopwords() {
@@ -185,45 +189,68 @@ public class Text {
 	// return getLanguage(s).equals("it");
 	// }
 
-	
 	public List<String> getTerms() {
 		List<String> terms = new ArrayList<String>();
-		
-		OffsetAttribute offsetAttribute = tokenStream.addAttribute(OffsetAttribute.class);
-		CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
-
+		TokenStream tokenStream = null;
 		try {
+			tokenStream = analyzer.tokenStream(null, new StringReader(text));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+		
+		
+		try {
+			tokenStream.reset();
 			while (tokenStream.incrementToken()) {
-			    int startOffset = offsetAttribute.startOffset();
-			    int endOffset = offsetAttribute.endOffset();
+			   
 			    String term = charTermAttribute.toString();
 			    terms.add(term);
 			}
 		} catch (IOException e) {
-			logger.error("Error tokening the terms in string ({})", text);
-			return Collections.emptyList();
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return terms;
+//		List<String> terms = new ArrayList<String>();
+//		tokenStream.reset(new StringReader(text));
+//		OffsetAttribute offsetAttribute = tokenStream
+//				.addAttribute(OffsetAttribute.class);
+//		CharTermAttribute charTermAttribute = tokenStream
+//				.addAttribute(CharTermAttribute.class);
+//
 //		try {
-//			((StandardTokenizer) tokenStream).reset(new StringReader(text
-//					.toLowerCase()));
-//			TokenStream ts = (TokenStream) tokenStream;
-//
-//			TermAttribute termAttribute = ts.getAttribute(TermAttribute.class);
-//			// add a triple for each of the tokens
-//
 //			while (tokenStream.incrementToken()) {
-//				String term = termAttribute.term();
-//				if (useStopwords && stopEnglish.contains(term))
-//					continue;
-//				terms.add(term);
 //
+//				String term = charTermAttribute.toString();
+//				terms.add(term);
 //			}
 //		} catch (IOException e) {
 //			logger.error("Error tokening the terms in string ({})", text);
 //			return Collections.emptyList();
 //		}
 //		return terms;
+		// try {
+		// ((StandardTokenizer) tokenStream).reset(new StringReader(text
+		// .toLowerCase()));
+		// TokenStream ts = (TokenStream) tokenStream;
+		//
+		// TermAttribute termAttribute = ts.getAttribute(TermAttribute.class);
+		// // add a triple for each of the tokens
+		//
+		// while (tokenStream.incrementToken()) {
+		// String term = termAttribute.term();
+		// if (useStopwords && stopEnglish.contains(term))
+		// continue;
+		// terms.add(term);
+		//
+		// }
+		// } catch (IOException e) {
+		// logger.error("Error tokening the terms in string ({})", text);
+		// return Collections.emptyList();
+		// }
+		// return terms;
 	}
 
 	public static Set<String> getIntersection(String l, String r) {
@@ -241,9 +268,9 @@ public class Text {
 		return getIntersection(l, r).size();
 	}
 
-	 public Set<String> getTermsSet() {
-	 Set<String> termsSet = new HashSet<String>(getTerms());
-	 return termsSet;
-	 }
+	public Set<String> getTermsSet() {
+		Set<String> termsSet = new HashSet<String>(getTerms());
+		return termsSet;
+	}
 
- }
+}

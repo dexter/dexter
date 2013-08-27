@@ -19,12 +19,17 @@ import static org.junit.Assert.assertEquals;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.search.Query;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.BeforeClass;
+
+
+import com.google.common.io.Files;
 
 /**
  * LuceneHelperTest.java
@@ -35,14 +40,17 @@ public class LuceneHelperTest {
 
 	static ProjectProperties properties = new ProjectProperties(
 			LuceneHelperTest.class);
-	@Ignore
-	@Test	
-	public void test() {
 
-		LuceneHelper helper = new LuceneHelper("/tmp/lucene");
+	static LuceneHelper helper = null;
+	
+	static File luceneDir = Files.createTempDir();
 
-		helper.clearIndex();
+	@BeforeClass
+	public static void init() {
 		
+		helper = new LuceneHelper(luceneDir.getAbsolutePath());
+		helper.clearIndex();
+
 		helper.addDocument(1, " diego ceccarelli test test1 test2 and");
 		helper.addDocument(2, " ceccarelli test test1 test2 and ");
 		helper.addDocument(3, " ceccarelli test test1 test2  test3 and");
@@ -51,6 +59,14 @@ public class LuceneHelperTest {
 		helper.addDocument(5,
 				" diego and ceccarelli test test1 test2 test3 and");
 		helper.commit();
+		helper.closeWriter();
+		helper = new LuceneHelper(luceneDir.getAbsolutePath());
+		
+	}
+
+	@Test	
+	public void testFreq() {
+		
 		assertEquals(1, helper.getFreq("diego ceccarelli"));
 		assertEquals(5, helper.getFreq("ceccarelli test"));
 		assertEquals(5, helper.getFreq("test1 test2"));
@@ -61,6 +77,7 @@ public class LuceneHelperTest {
 //		System.out.println(helper.getCosineSimilarity(4,4));
 		
 	}
+
 	@Ignore
 	@Test
 	public void testSimilarity() {
@@ -71,46 +88,48 @@ public class LuceneHelperTest {
 		int idGuernica = 12646;
 		int idSicily = 27619; // unrelated;
 		int idGuernicaPainting = 1055072;
-//		System.out.println("picasso vs france\t = "
-//				+ helper.getCosineSimilarity(idPicasso, idFrance));
-//		System.out.println("picasso vs guernica\t = "
-//				+ helper.getCosineSimilarity(idPicasso, idGuernica));
-//		System.out.println("picasso vs guernica painting\t = "
-//				+ helper.getCosineSimilarity(idPicasso, idGuernicaPainting));
-//		System.out.println("picasso vs guernica painting\t = "
-//				+ helper.getCosineSimilarity(idGuernicaPainting, idPicasso));
-//
-//		System.out.println("picasso vs sicily\t = "
-//				+ helper.getCosineSimilarity(idPicasso, idSicily));
-//		System.out.println("picasso vs picasso\t = "
-//				+ helper.getCosineSimilarity(idPicasso, idPicasso));
+		// System.out.println("picasso vs france\t = "
+		// + helper.getCosineSimilarity(idPicasso, idFrance));
+		// System.out.println("picasso vs guernica\t = "
+		// + helper.getCosineSimilarity(idPicasso, idGuernica));
+		// System.out.println("picasso vs guernica painting\t = "
+		// + helper.getCosineSimilarity(idPicasso, idGuernicaPainting));
+		// System.out.println("picasso vs guernica painting\t = "
+		// + helper.getCosineSimilarity(idGuernicaPainting, idPicasso));
+		//
+		// System.out.println("picasso vs sicily\t = "
+		// + helper.getCosineSimilarity(idPicasso, idSicily));
+		// System.out.println("picasso vs picasso\t = "
+		// + helper.getCosineSimilarity(idPicasso, idPicasso));
 
 	}
-	
-	@Test
-	public void testQuery() {
-		// IdHelper ih = IdHelperFactory.getStdIdHelper();
-		LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
-		int idPicasso = 24176;
-		List<Entity> ids = new ArrayList<Entity>();
-		ids.add(new Entity(idPicasso));
-		int idGuernicaPainting = 1055072;
 
-		ids.add(new Entity(idGuernicaPainting));
-		
-		Query q = null;
-		// FIXME fix
-//		try {
-//			q = new QueryParser(Version.LUCENE_36, "content",
-//					new StandardAnalyzer(Version.LUCENE_36)).parse("Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
-//		} catch (ParseException e) {
-//			
-//		}
-//		Spot spot = new Spot("picasso");
-//		spot.setEntities(ids);
-		//EntityMatchList f= helper.rankBySimilarity(spot, "Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
-		//System.out.println(f);
-
-	}
+	// @Test
+	// public void testQuery() {
+	// // IdHelper ih = IdHelperFactory.getStdIdHelper();
+	// LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
+	// int idPicasso = 24176;
+	// List<Entity> ids = new ArrayList<Entity>();
+	// ids.add(new Entity(idPicasso));
+	// int idGuernicaPainting = 1055072;
+	//
+	// ids.add(new Entity(idGuernicaPainting));
+	//
+	// Query q = null;
+	// // FIXME fix
+	// // try {
+	// // q = new QueryParser(Version.LUCENE_36, "content",
+	// // new
+	// StandardAnalyzer(Version.LUCENE_36)).parse("Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
+	// // } catch (ParseException e) {
+	// //
+	// // }
+	// // Spot spot = new Spot("picasso");
+	// // spot.setEntities(ids);
+	// //EntityMatchList f= helper.rankBySimilarity(spot,
+	// "Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
+	// //System.out.println(f);
+	//
+	// }
 
 }
