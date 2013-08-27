@@ -22,7 +22,8 @@ import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/** 
+ * Returns the article label given its integer identifier.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */

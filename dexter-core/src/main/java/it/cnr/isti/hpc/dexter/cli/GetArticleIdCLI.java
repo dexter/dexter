@@ -24,7 +24,8 @@ import it.cnr.isti.hpc.wikipedia.article.Article;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
+ * Returns an article integer identifier given the its label.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */

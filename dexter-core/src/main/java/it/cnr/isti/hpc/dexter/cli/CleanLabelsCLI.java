@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * GenerateArticleHashCLI takes the json dump of wikipedia and create a function
- * that maps each article to an int, and the reverse.
+ * that maps each article to its integer identifier, and the reverse.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */
