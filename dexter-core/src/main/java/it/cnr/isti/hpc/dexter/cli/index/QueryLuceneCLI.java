@@ -15,16 +15,19 @@
  */
 package it.cnr.isti.hpc.dexter.cli.index;
 
+import java.util.List;
+
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GenerateArticleHashCLI takes the json dump of wikipedia and create a function
- * that maps each article to an int, and the reverse.
+ * QueryLuceneCLI performs a query over the Wikipedia Lucene index and returns
+ * the number of documents matching the query
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */
@@ -35,21 +38,27 @@ public class QueryLuceneCLI extends AbstractCommandLineInterface {
 	private static final Logger logger = LoggerFactory
 			.getLogger(QueryLuceneCLI.class);
 
-	private static final String USAGE = "java -cp $jar "
-			+ QueryLuceneCLI.class
+	private static final String USAGE = "java -cp $jar " + QueryLuceneCLI.class
 			+ " -query query";
 	private static String[] params = new String[] { "query" };
 
 	public static void main(String[] args) {
 		QueryLuceneCLI cli = new QueryLuceneCLI(args);
-		ProjectProperties properties = new ProjectProperties(IndexWikipediaOnLuceneCLI.class);
-		LuceneHelper helper = new LuceneHelper(properties.get("lucene.index"));
+		
+		LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
 		String query = cli.getParam("query");
-		logger.info("query  \t {}",query);
+		logger.info("query  \t {}", query);
 		int res = helper.getFreq(query);
-		logger.info("results\t {}",res);
-		//cli.closeOutput();
-
+		logger.info("results\t {}", res);
+		
+		logger.info("top entities:\n");
+		List<Integer> results = helper.query(query);
+		for (Integer id : results){
+			Article a = helper.getArticle(id);
+			System.out.println(a.getSnippet());
+			
+		}
+		
 	}
 
 	public QueryLuceneCLI(String[] args) {

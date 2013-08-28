@@ -46,25 +46,26 @@ public class IndexWikipediaOnLuceneCLI extends AbstractCommandLineInterface {
 	private static String[] params = new String[] { INPUT };
 
 	final static int COMMIT_FREQUENCY = 10000;
-	
+
 	public static void main(String[] args) {
 		IndexWikipediaOnLuceneCLI cli = new IndexWikipediaOnLuceneCLI(args);
-		ProjectProperties properties = new ProjectProperties(IndexWikipediaOnLuceneCLI.class);
-		LuceneHelper indexer = new LuceneHelper(properties.get("lucene.index"));
+		
+		LuceneHelper indexer = LuceneHelper.getDexterLuceneHelper();
 		indexer.clearIndex();
-		RecordReader<Article> reader = new RecordReader<Article>(cli.getInput(), new JsonRecordParser<Article>(Article.class));
+		RecordReader<Article> reader = new RecordReader<Article>(
+				cli.getInput(), new JsonRecordParser<Article>(Article.class));
 		reader = reader.filter(TypeFilter.MAIN);
-		
+
 		ProgressLogger progress = new ProgressLogger("indexed {} articles");
-		
+
 		for (Article a : reader) {
 			if (progress.up() % COMMIT_FREQUENCY == 0) {
 				logger.info("commit");
-				indexer.commit(); 
+				indexer.commit();
 			}
 			indexer.addDocument(a);
 		}
-		
+
 		logger.info("commit");
 		indexer.commit();
 	}

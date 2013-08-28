@@ -16,18 +16,17 @@
 package it.cnr.isti.hpc.dexter.lucene;
 
 import static org.junit.Assert.assertEquals;
-import it.cnr.isti.hpc.dexter.entity.Entity;
+import static org.junit.Assert.assertTrue;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.apache.lucene.search.Query;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.BeforeClass;
-
+import org.junit.Test;
 
 import com.google.common.io.Files;
 
@@ -42,13 +41,13 @@ public class LuceneHelperTest {
 			LuceneHelperTest.class);
 
 	static LuceneHelper helper = null;
-	
+
 	static File luceneDir = Files.createTempDir();
 
 	@BeforeClass
-	public static void init() {
-		
-		helper = new LuceneHelper(luceneDir.getAbsolutePath());
+	public static void init() throws IOException {
+		File wikiIdtToLuceneId = File.createTempFile("dexter-", "tmp");
+		helper = new LuceneHelper(wikiIdtToLuceneId, luceneDir);
 		helper.clearIndex();
 
 		helper.addDocument(1, " diego ceccarelli test test1 test2 and");
@@ -58,78 +57,54 @@ public class LuceneHelperTest {
 				" diego and ceccarelli test test1 test2 test3 and");
 		helper.addDocument(5,
 				" diego and ceccarelli test test1 test2 test3 and");
+		helper.addDocument(6, " pippo pippo pippo pippos");
 		helper.commit();
 		helper.closeWriter();
-		helper = new LuceneHelper(luceneDir.getAbsolutePath());
-		
+		helper = new LuceneHelper(wikiIdtToLuceneId, luceneDir);
+
 	}
 
-	@Test	
+	@Test
 	public void testFreq() {
-		
+
 		assertEquals(1, helper.getFreq("diego ceccarelli"));
 		assertEquals(5, helper.getFreq("ceccarelli test"));
 		assertEquals(5, helper.getFreq("test1 test2"));
 		assertEquals(5, helper.getFreq("and"));
 		assertEquals(2, helper.getFreq("diego and ceccarelli"));
-		
-//		System.out.println(helper.getCosineSimilarity(4,5));
-//		System.out.println(helper.getCosineSimilarity(4,4));
-		
+
 	}
 
-	@Ignore
+	@Test
+	public void testGetArticle() {
+		assertEquals("diego ceccarelli test test1 test2 and", helper
+				.getArticle(1).getText().trim());
+		assertEquals("ceccarelli test test1 test2 and", helper.getArticle(2)
+				.getText().trim());
+		assertEquals("pippo pippo pippo pippos", helper.getArticle(6).getText()
+				.trim());
+	}
+
 	@Test
 	public void testSimilarity() {
-		// IdHelper ih = IdHelperFactory.getStdIdHelper();
-		LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
-		int idPicasso = 24176;
-		int idFrance = 5843419;
-		int idGuernica = 12646;
-		int idSicily = 27619; // unrelated;
-		int idGuernicaPainting = 1055072;
-		// System.out.println("picasso vs france\t = "
-		// + helper.getCosineSimilarity(idPicasso, idFrance));
-		// System.out.println("picasso vs guernica\t = "
-		// + helper.getCosineSimilarity(idPicasso, idGuernica));
-		// System.out.println("picasso vs guernica painting\t = "
-		// + helper.getCosineSimilarity(idPicasso, idGuernicaPainting));
-		// System.out.println("picasso vs guernica painting\t = "
-		// + helper.getCosineSimilarity(idGuernicaPainting, idPicasso));
-		//
-		// System.out.println("picasso vs sicily\t = "
-		// + helper.getCosineSimilarity(idPicasso, idSicily));
-		// System.out.println("picasso vs picasso\t = "
-		// + helper.getCosineSimilarity(idPicasso, idPicasso));
 
+		assertEquals(0, helper.getCosineSimilarity(1, 6), 0.01);
+		assertEquals(1, helper.getCosineSimilarity(1, 1), 0.01);
+		assertTrue(helper.getCosineSimilarity(1, 4) > helper
+				.getCosineSimilarity(1, 3));
 	}
 
-	// @Test
-	// public void testQuery() {
-	// // IdHelper ih = IdHelperFactory.getStdIdHelper();
-	// LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
-	// int idPicasso = 24176;
-	// List<Entity> ids = new ArrayList<Entity>();
-	// ids.add(new Entity(idPicasso));
-	// int idGuernicaPainting = 1055072;
-	//
-	// ids.add(new Entity(idGuernicaPainting));
-	//
-	// Query q = null;
-	// // FIXME fix
-	// // try {
-	// // q = new QueryParser(Version.LUCENE_36, "content",
-	// // new
-	// StandardAnalyzer(Version.LUCENE_36)).parse("Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
-	// // } catch (ParseException e) {
-	// //
-	// // }
-	// // Spot spot = new Spot("picasso");
-	// // spot.setEntities(ids);
-	// //EntityMatchList f= helper.rankBySimilarity(spot,
-	// "Pablo Ruiz y Picasso, known as Pablo Picasso was a Spanish painter, sculptor, printmaker, ceramicist, and stage designer");
-	// //System.out.println(f);
-	//
-	// }
+	@Test
+	public void testQuery() {
+		List<Integer> results = helper.query("diego");
+		assertEquals(3, results.size());
+		Set<Integer> expected = new HashSet<Integer>();
+		expected.add(1);
+		expected.add(4);
+		expected.add(5);
+
+		assertEquals(expected, new HashSet<Integer>(results));
+
+	}
 
 }
