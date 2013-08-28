@@ -56,7 +56,7 @@ public class IndexWikipediaOnLuceneCLI extends AbstractCommandLineInterface {
 				cli.getInput(), new JsonRecordParser<Article>(Article.class));
 		reader = reader.filter(TypeFilter.MAIN);
 
-		ProgressLogger progress = new ProgressLogger("indexed {} articles");
+		ProgressLogger progress = new ProgressLogger("indexed {} articles",100000);
 
 		for (Article a : reader) {
 			if (progress.up() % COMMIT_FREQUENCY == 0) {
