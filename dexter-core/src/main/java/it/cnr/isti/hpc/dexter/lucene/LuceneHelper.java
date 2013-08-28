@@ -538,7 +538,7 @@ public class LuceneHelper {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		logger.info("added doc {}", a.getWid());
+		logger.debug("added doc {}", a.getWid());
 	}
 
 	/**
