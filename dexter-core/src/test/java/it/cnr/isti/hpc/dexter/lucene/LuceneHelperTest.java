@@ -61,6 +61,9 @@ public class LuceneHelperTest {
 		helper.commit();
 		helper.closeWriter();
 		helper = new LuceneHelper(wikiIdtToLuceneId, luceneDir);
+		helper.parseWikiIdToLuceneId();
+		helper.dumpWikiIdToLuceneId();
+		
 
 	}
 

@@ -222,9 +222,9 @@ public class LuceneHelper {
 	 */
 	public static LuceneHelper getDexterLuceneHelper() {
 		if (dexterHelper == null) {
-			dexterHelper = new LuceneHelper(new File(
-					properties.get("lucene.wiki.id")), new File(
-					properties.get("lucene.index")));
+			File luceneFolder = new File(properties.get("data.dir"),properties.get("lucene.index"));
+			File serializedWikiFile = new File(properties.get("data.dir"),properties.get("lucene.wiki.id"));
+			dexterHelper = new LuceneHelper(serializedWikiFile, luceneFolder);
 		}
 		return dexterHelper;
 	}
@@ -233,7 +233,7 @@ public class LuceneHelper {
 	 * Loads the map containing the conversion from the Wikipedia ids to the
 	 * Lucene Ids.
 	 */
-	private void parseWikiIdToLuceneId() {
+	protected void parseWikiIdToLuceneId() {
 		logger.warn("no index wikiID -> lucene found - I'll generate");
 		IndexReader reader = getReader();
 		wikiIdToLuceneId = new HashMap<Integer, Integer>(reader.numDocs());
@@ -244,7 +244,7 @@ public class LuceneHelper {
 			pl.up();
 			try {
 				Document doc = reader.document(i);
-				IndexableField f = doc.getField("wiki-id");
+				IndexableField f = doc.getField(LUCENE_ARTICLE_ID);
 				Integer wikiId = new Integer(f.stringValue());
 				logger.info("adding {} -> {}", wikiId, i);
 				wikiIdToLuceneId.put(wikiId, i);
@@ -264,7 +264,7 @@ public class LuceneHelper {
 	 * Dumps the map containing the conversion from the Wikipedia ids to the
 	 * Lucene Ids.
 	 */
-	private void dumpWikiIdToLuceneId() {
+	protected void dumpWikiIdToLuceneId() {
 
 		try {
 			// Serializes to a file
@@ -285,8 +285,7 @@ public class LuceneHelper {
 	@SuppressWarnings("unchecked")
 	public void loadWikiIdToLuceneId() {
 
-		if (!wikiIdtToLuceneIdSerialization.exists()
-				|| wikiIdToLuceneId == null) {
+		if (!wikiIdtToLuceneIdSerialization.exists()) {
 			logger.info("{} not exists, generating");
 			parseWikiIdToLuceneId();
 			logger.info("storing");
@@ -314,8 +313,9 @@ public class LuceneHelper {
 	 * Returns the Lucene id of an article, given its wikiIds
 	 */
 	protected int getLuceneId(int wikiId) {
-		if (wikiIdToLuceneId == null)
+		if (wikiIdToLuceneId.isEmpty()){
 			loadWikiIdToLuceneId();
+		}
 
 		if (!wikiIdToLuceneId.containsKey(wikiId))
 			return -1;
