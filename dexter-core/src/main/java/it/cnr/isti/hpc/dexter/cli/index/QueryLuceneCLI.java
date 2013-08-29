@@ -53,6 +53,9 @@ public class QueryLuceneCLI extends AbstractCommandLineInterface {
 		
 		logger.info("top entities:\n");
 		List<Integer> results = helper.query(query);
+		if (results.size() > 10){
+			results = results.subList(0, 10);
+		}
 		for (Integer id : results){
 			Article a = helper.getArticle(id);
 			System.out.println(a.getSnippet());
