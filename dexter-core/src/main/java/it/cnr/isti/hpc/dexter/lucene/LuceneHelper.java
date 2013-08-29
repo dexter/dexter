@@ -224,7 +224,7 @@ public class LuceneHelper {
 	public static LuceneHelper getDexterLuceneHelper() {
 		if (dexterHelper == null) {
 			File luceneFolder = new File(properties.get("data.dir"),properties.get("lucene.index"));
-			File serializedWikiFile = new File(properties.get("data.dir"),properties.get("lucene.wiki.id"));
+			File serializedWikiFile = new File(luceneFolder,properties.get("lucene.wiki.id"));
 			dexterHelper = new LuceneHelper(serializedWikiFile, luceneFolder);
 		}
 		return dexterHelper;
@@ -287,7 +287,7 @@ public class LuceneHelper {
 	public void loadWikiIdToLuceneId() {
 
 		if (!wikiIdtToLuceneIdSerialization.exists()) {
-			logger.info("{} not exists, generating");
+			logger.info("{} not exists, generating",wikiIdtToLuceneIdSerialization);
 			parseWikiIdToLuceneId();
 			logger.info("storing");
 			dumpWikiIdToLuceneId();
