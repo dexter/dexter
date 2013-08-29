@@ -43,6 +43,7 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,7 +194,7 @@ public class LuceneHelper {
 		summarizer = new ArticleSummarizer();
 		writer = getWriter();
 		collectionSize = writer.numDocs();
-
+		wikiIdToLuceneId = Collections.emptyMap();
 	}
 
 	/**
