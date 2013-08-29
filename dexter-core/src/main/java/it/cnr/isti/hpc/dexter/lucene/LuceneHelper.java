@@ -754,7 +754,7 @@ public class LuceneHelper {
 			paragraphs.add(d.getField(LUCENE_ARTICLE_CONTENT).stringValue());
 			a.setTitle(d.getField(LUCENE_ARTICLE_TITLE).stringValue());
 			a.setWikiTitle(d.getField(LUCENE_ARTICLE_WIKI_TITLE).stringValue());
-			a.setSummary(d.getField(LUCENE_ARTICLE_WIKI_TITLE).stringValue());
+			a.setSummary(d.getField(LUCENE_ARTICLE_SUMMARY).stringValue());
 
 			a.setParagraphs(paragraphs);
 		}
