@@ -18,7 +18,7 @@ package it.cnr.isti.hpc.dexter.spot.filter;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * SpotFilter.java
+ * SpotFilter 
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 01/ago/2012

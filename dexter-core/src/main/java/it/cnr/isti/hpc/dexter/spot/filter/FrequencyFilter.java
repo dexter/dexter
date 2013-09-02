@@ -18,7 +18,8 @@ package it.cnr.isti.hpc.dexter.spot.filter;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * CommonnessFilter.java
+ * FrequencyFilter removes spots that are not associated to any 
+ * entity
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 01/ago/2012

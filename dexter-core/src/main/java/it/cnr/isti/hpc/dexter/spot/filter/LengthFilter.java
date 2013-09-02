@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SymbolFilter.java filters out all spot that do not contain alphabetic characters
+ * LengthFilter filters out spots shorter than a given length (default is 3).
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
@@ -27,23 +27,28 @@ public class LengthFilter implements Filter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(LengthFilter.class);
-	private static int minLength = 3;
-	
-	
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(LengthFilter.class);
+
+	private final static int DEFAULT_MIN_LENGTH = 3;
+	private int minLength;
+
+	public LengthFilter() {
+		this(DEFAULT_MIN_LENGTH);
+	}
+
+	public LengthFilter(int minLength) {
+		this.minLength = minLength;
+	}
+
 	public boolean isFilter(String spot) {
 		return spot.length() < minLength;
 	}
-	
 
-
-	
 	public boolean post() {
 		return true;
 	}
 
-	
 	public boolean pre() {
 		return true;
 	}

@@ -19,25 +19,39 @@ import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
- * CommonnessFilter.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 01/ago/2012
+ * ProbabilityFilter removes all the spots with link probability threshold lower
+ * than a certain threshold. The link probability of a spot s is computed as :
+ * <code>
+ * <br/>
+ * <br/>
+ * 
+ * &nbsp; &nbsp; &nbsp; &nbsp; number of times in which s appears as an anchor test <br>
+ * p(s) = -------------------------------------------------------------- <br/>
+ * &nbsp; &nbsp; &nbsp; &nbsp;  number of times in which s appears as simple (or anchor) text
+ * </code>
+ * 
+ * The threshold for the link probability by default is read in the
+ * project.properties file (property <code> spot.probability.threshold </code>).
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
 public class ProbabilityFilter implements SpotFilter {
-	
-	static ProjectProperties properties = new ProjectProperties(ProbabilityFilter.class);
-	double threshold = 0;
-	public ProbabilityFilter(){
-		if (properties.has("spot.probability.threshold")){
-			threshold = Double.parseDouble(properties.get("spot.probability.threshold"));
+
+	static ProjectProperties properties = new ProjectProperties(
+			ProbabilityFilter.class);
+	private double threshold = 0;
+
+	public ProbabilityFilter() {
+		if (properties.has("spot.probability.threshold")) {
+			threshold = Double.parseDouble(properties
+					.get("spot.probability.threshold"));
 		}
 	}
 
-	
 	public boolean isRemove(Spot spot) {
-		if (spot == null) return true;
-		return (spot.getProbability() <= threshold );
+		if (spot == null)
+			return true;
+		return (spot.getProbability() <= threshold);
 	}
 
 }

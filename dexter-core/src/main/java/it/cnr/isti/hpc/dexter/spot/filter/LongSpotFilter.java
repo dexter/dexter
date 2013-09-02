@@ -19,7 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SymbolFilter.java filters out all spot that do not contain alphabetic characters
+ * LongSpotFilter filters out all the spots that contains more than 
+ * a given number of terms (default is 6); 
+ *
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */

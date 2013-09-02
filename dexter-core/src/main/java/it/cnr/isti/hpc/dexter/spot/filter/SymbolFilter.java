@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SymbolFilter.java filters out all spot that do not contain alphabetic
+ * SymbolFilter filters out all the spotsF that do not contain alphabetic
  * characters
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
@@ -31,25 +31,21 @@ public class SymbolFilter implements Filter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SymbolFilter.class);
 
-	
 	public boolean isFilter(String spot) {
 		boolean containsAlphatetic = spot.matches(".*[a-z].*");
 		if (containsAlphatetic)
 			return false;
-		logger.debug(" Spot {} does not contains alphabetic char, filtering ", spot);
+		logger.debug(" Spot {} does not contains alphabetic char, filtering ",
+				spot);
 		return true;
 
 	}
 
-	
 	public boolean post() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
-	
 	public boolean pre() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

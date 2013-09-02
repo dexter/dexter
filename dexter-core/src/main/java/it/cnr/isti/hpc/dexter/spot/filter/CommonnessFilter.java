@@ -26,45 +26,43 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * CommonnessFilter, filters entities with low probability to 
- * be linked with the spot
+ * CommonnessFilter, filters entities with low probability to be linked with the
+ * spot
  * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 01/ago/2012
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
 public class CommonnessFilter implements SpotFilter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(CommonnessFilter.class);
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(CommonnessFilter.class);
+
 	double threshold = 0.005;
-	
-	public CommonnessFilter(){	
-		ProjectProperties properties = new ProjectProperties(CommonnessFilter.class);
-		if (properties.has("spot.commonness.threshold")){
-			threshold = Double.parseDouble(properties.get("spot.commonness.threshold"));
+
+	public CommonnessFilter() {
+		ProjectProperties properties = new ProjectProperties(
+				CommonnessFilter.class);
+		if (properties.has("spot.commonness.threshold")) {
+			threshold = Double.parseDouble(properties
+					.get("spot.commonness.threshold"));
 		}
 	}
 
-
 	public boolean isRemove(Spot spot) {
 		List<Entity> entities = new ArrayList<Entity>();
-		int link = spot.getLink();
-		for (Entity e : spot.getEntities()){
+		for (Entity e : spot.getEntities()) {
 			double commonness = spot.getEntityCommonness(e);
-			if ( commonness > threshold){
+			if (commonness > threshold) {
 				entities.add(e);
-			}else{
-				logger.debug("delete entity {} commonness = {} ",e.id(), commonness);
+			} else {
+				logger.debug("delete entity {} commonness = {} ", e.id(),
+						commonness);
 			}
 		}
 		spot.setEntities(entities);
 		return entities.isEmpty();
-		
+
 	}
-
-
-	
 
 }

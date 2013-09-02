@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * NumberFilter.java
+ * Image filter remove spots linking to an image.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
@@ -27,23 +27,19 @@ public class ImageFilter implements Filter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(ImageFilter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ImageFilter.class);
 
-	
 	public boolean isFilter(String spot) {
-		
+		// FIXME this is language dependent, replace with the locale.
 		return spot.contains("image:");
 	}
 
-	
 	public boolean post() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
-	
 	public boolean pre() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

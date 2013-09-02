@@ -16,20 +16,23 @@
 package it.cnr.isti.hpc.dexter.spot.filter;
 
 /**
- * Filter.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * Filter allows to remove a given spot if it does not respect a filter
+ * constraint.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public interface Filter {
-	
+
 	/**
-	 * returns true if the given spot is not suitable to be matched in the text
+	 * returns true if the given spot does not respect the filter constraint.
+	 * 
 	 * @param label
-	 * @return boolean if the current spot is not good for being matched in the text
+	 * @return boolean if the current spot does not respect the filter
+	 *         constraint.
 	 */
 	public boolean isFilter(String spot);
 
 	public boolean post();
+
 	public boolean pre();
 }
