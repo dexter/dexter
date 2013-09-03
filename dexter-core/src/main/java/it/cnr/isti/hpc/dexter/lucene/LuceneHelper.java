@@ -212,8 +212,10 @@ public class LuceneHelper {
 	}
 
 	private IndexSearcher getSearcher() {
+		if (searcher != null) return searcher;
 		IndexReader reader = getReader();
-		return new IndexSearcher(reader);
+		searcher = new IndexSearcher(reader);
+		return searcher;
 	}
 
 	/**

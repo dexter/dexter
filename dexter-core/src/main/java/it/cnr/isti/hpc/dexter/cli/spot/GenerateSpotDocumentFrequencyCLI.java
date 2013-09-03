@@ -46,7 +46,7 @@ public class GenerateSpotDocumentFrequencyCLI extends AbstractCommandLineInterfa
 
 	public static void main(String[] args) {
 		GenerateSpotDocumentFrequencyCLI cli = new GenerateSpotDocumentFrequencyCLI(args);
-		ProgressLogger progress = new ProgressLogger("writtin {} different spots",100000);
+		ProgressLogger progress = new ProgressLogger("written {} distinct spots",100000);
 		cli.openInputAndOutput();
 		String line; 		
 		LuceneHelper lucene = LuceneHelper.getDexterLuceneHelper();
