@@ -18,13 +18,13 @@ package it.cnr.isti.hpc.dexter.spot.filter;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * SpotFilter 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 01/ago/2012
+ * SpotFilter allows to remove a given spot if it does not respect a filter
+ * constraint.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
 
 public interface SpotFilter {
 	public boolean isRemove(Spot spot);
-	
+
 }

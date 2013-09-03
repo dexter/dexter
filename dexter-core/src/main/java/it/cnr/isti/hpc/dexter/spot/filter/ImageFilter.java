@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Image filter remove spots linking to an image.
  * 
+ * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class ImageFilter implements Filter {

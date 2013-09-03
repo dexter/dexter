@@ -18,17 +18,14 @@ package it.cnr.isti.hpc.dexter.spot.filter;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * FrequencyFilter removes spots that are not associated to any 
- * entity
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 01/ago/2012
+ * FrequencyFilter removes spots that are not associated to any entity
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
 public class FrequencyFilter implements SpotFilter {
 
-	
 	public boolean isRemove(Spot spot) {
-		
+
 		return (spot.getEntities().size() == 0);
 	}
 

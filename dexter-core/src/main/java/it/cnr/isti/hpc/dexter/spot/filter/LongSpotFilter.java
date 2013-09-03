@@ -19,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * LongSpotFilter filters out all the spots that contains more than 
- * a given number of terms (default is 6); 
- *
+ * LongSpotFilter filters out all the spots that contains more than a given
+ * number of terms (default is 6);
+ * 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
@@ -29,29 +29,26 @@ public class LongSpotFilter implements Filter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(LongSpotFilter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(LongSpotFilter.class);
 	private static int maxNumberOfTerms = 6;
-	
-	
-	
+
 	public boolean isFilter(String spot) {
 		int count = 0;
 		int len = spot.length();
-		for (int i = 0 ; i < len; i++){
-			if (spot.charAt(i) == ' ') count++;
-			if (count >= maxNumberOfTerms) return true;
+		for (int i = 0; i < len; i++) {
+			if (spot.charAt(i) == ' ')
+				count++;
+			if (count >= maxNumberOfTerms)
+				return true;
 		}
 		return false;
 	}
-	
 
-
-	
 	public boolean post() {
 		return true;
 	}
 
-	
 	public boolean pre() {
 		return false;
 	}

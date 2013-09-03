@@ -18,16 +18,17 @@ package it.cnr.isti.hpc.dexter.spot.mapper;
 import java.util.Set;
 
 /**
- * Mapper.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * Mapper given a spot returns several different versions of the spot.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public interface Mapper {
 	/**
-	 * given a spot returns several different version of the spot
-	 * @param spot, the spot to be transformed in several 
-	 * @return
+	 * given a spot returns several different versions of the spot.
+	 * 
+	 * @param spot
+	 *            the spot to be transformed in several versions
+	 * @return a set containing the different versions of the spot.
 	 */
 	public Set<String> mapper(String spot);
 

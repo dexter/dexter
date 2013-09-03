@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SymbolFilter.java filters out all spot that do not contain alphabetic characters
+ * SymbolFilter filters out all spot that do not contain alphabetic characters
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
@@ -58,7 +58,6 @@ public class AsciiFilter implements Filter {
 
 	
 	public boolean post() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

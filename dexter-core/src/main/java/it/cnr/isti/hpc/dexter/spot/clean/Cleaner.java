@@ -16,7 +16,7 @@
 package it.cnr.isti.hpc.dexter.spot.clean;
 
 /**
- * Cleaner.java
+ * Cleaner performs 
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012

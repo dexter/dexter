@@ -28,25 +28,22 @@ public class NumberFilter implements Filter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(NumberFilter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(NumberFilter.class);
 
-	
 	public boolean isFilter(String spot) {
 		spot = spot.replaceAll("[-+,.]", "");
-		if (! StringUtils.isNumeric(spot)) return false;
-		logger.debug(" spot {} is a number, filtering ",spot);
+		if (!StringUtils.isNumeric(spot))
+			return false;
+		logger.debug(" spot {} is a number, filtering ", spot);
 		return true;
 	}
 
-	
 	public boolean post() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
-	
 	public boolean pre() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

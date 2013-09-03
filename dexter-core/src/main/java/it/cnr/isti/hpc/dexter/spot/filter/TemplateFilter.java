@@ -19,8 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * NumberFilter.java
- * 
+ * TemplateFilter removes all spots about templates.
+ *
+ * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class TemplateFilter implements Filter {

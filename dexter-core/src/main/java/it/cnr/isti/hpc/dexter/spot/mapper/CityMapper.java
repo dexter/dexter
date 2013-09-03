@@ -22,33 +22,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TypeMapper.java manages label of the type "city, country"
- * (e.g., ada, wisconsin), returns only the name of the city
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * CityMapper manages labels of the type "city, country" (e.g., ada, wisconsin),
+ * returning only the name of the city
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 
 public class CityMapper implements Mapper {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(CityMapper.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(CityMapper.class);
 
-	
 	public Set<String> mapper(String spot) {
 		Set<String> mappings = new HashSet<String>();
-		if (spot.matches("^[^,]+,[a-z ]+$")	)
+		if (spot.matches("^[^,]+,[a-z ]+$"))
 			removeRegex(mappings, spot, " *,.+$");
 		return mappings;
-		
+
 	}
-	
-	private void removeRegex(Set<String> mappings, String spot, String regex){
+
+	private void removeRegex(Set<String> mappings, String spot, String regex) {
 		String str = spot.replaceAll(regex, "");
-		if (! str.equals(spot)) {
+		if (!str.equals(spot)) {
 			mappings.add(str);
-			logger.debug("{} -> {} ",spot, str);
+			logger.debug("{} -> {} ", spot, str);
 		}
 	}
 }

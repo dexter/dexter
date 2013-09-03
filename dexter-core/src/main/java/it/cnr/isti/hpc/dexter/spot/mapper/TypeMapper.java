@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * TypeMapper.java if the label contains data about the 
+ * TypeMapper if the label contains data about the 
  * type of the label (between parenthesis or after a #) 
  * the data is filtered
  *
