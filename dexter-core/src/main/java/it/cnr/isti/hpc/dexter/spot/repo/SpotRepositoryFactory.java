@@ -22,14 +22,18 @@ import it.cnr.isti.hpc.dexter.spot.ram.RamSpotRepository;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
+ * SpotRepositoryFactory returns a spot repository instance given a string
+ * defining its type.
+ * 
+ * @see SpotRepository
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 26, 2013
  */
 public class SpotRepositoryFactory {
-	
-	ProjectProperties properties; 
-	
+
+	private ProjectProperties properties;
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotRepositoryFactory.class);
 
@@ -37,29 +41,40 @@ public class SpotRepositoryFactory {
 		properties = new ProjectProperties(SpotRepository.class);
 	}
 
+	/**
+	 * Returns an instance of a SpotRepository
+	 * 
+	 * @param type
+	 *            - a string identifying a spot repository
+	 * @returns a SpotRepository
+	 * @throws UnsupportedOperationException
+	 *             if the given name does not match with any spot repository
+	 *             nameF
+	 */
 	public SpotRepository getInstance(String type) {
-//		if (type.equals("mapfile")){
-//			logger.info("Using Mapfile Spot Repository");
-//			return new SpotMapFile();
-			
-		//}
-//		if (type.equals("mapdb")){
-//			logger.info("Using Mapdb Spot Repository");
-//			return SpotMapDB.getInstance();
-//		}
-		if (type.equals("ram")){
+		// if (type.equals("mapfile")){
+		// logger.info("Using Mapfile Spot Repository");
+		// return new SpotMapFile();
+
+		// }
+		// if (type.equals("mapdb")){
+		// logger.info("Using Mapdb Spot Repository");
+		// return SpotMapDB.getInstance();
+		// }
+		if (type.equals("ram")) {
 			logger.info("Using Ram Spot Repository");
 			return new RamSpotRepository();
 		}
-		
-		
+
 		throw new UnsupportedOperationException("No SpotRepository for type "
 				+ type);
 
 	}
-	
-	
 
+	/**
+	 * Returns the standard instance of the SpotRepository, defined in the
+	 * Dexter property file (<code> spot.repository </code>)
+	 */
 	public SpotRepository getStdInstance() {
 		return getInstance(properties.get("spot.repository"));
 	}
