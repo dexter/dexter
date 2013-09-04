@@ -21,54 +21,40 @@ import java.net.URLDecoder;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
- * convert javascript strings in ascii
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * Converts javascript strings in ascii
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 
 public class HtmlCleaner implements Cleaner {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(HtmlCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(HtmlCleaner.class);
 
-	
-	
-	//@Override
+	// @Override
 	public String clean(String spot) {
 		spot = StringEscapeUtils.unescapeHtml(spot);
 		try {
-			 spot = URLDecoder.decode(spot, "UTF-8");
+			spot = URLDecoder.decode(spot, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			logger.debug("error trying to convert the text from javascript to string");
-		} catch (IllegalArgumentException e){
+		} catch (IllegalArgumentException e) {
 			logger.debug("error trying to convert the text from javascript to string");
 		}
 		return spot;
-		
+
 	}
 
-
-
-	
 	public boolean post() {
 		return false;
 	}
 
-
-
-	
 	public boolean pre() {
 		return true;
 	}
-	
-	
-	
-
-
-	
-	
 
 }

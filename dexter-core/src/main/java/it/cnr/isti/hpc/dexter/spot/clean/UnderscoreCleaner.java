@@ -19,45 +19,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * DiacriticsCleaner maps strings with diacritics in ascii 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * UnderscoreCleaner removes all the underscores in a post, replacing them 
+ * with spaces.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class UnderscoreCleaner implements Cleaner {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(UnderscoreCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(UnderscoreCleaner.class);
 
-	
-	
-	
 	public String clean(String spot) {
 		String clean = spot.replaceAll("_", " ");
-		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		if (!clean.equals(spot))
+			logger.debug("{} -> {}", spot, clean);
 		return clean;
 	}
 
-
-
-	
 	public boolean post() {
 		return false;
 	}
 
-
-
-	
 	public boolean pre() {
 		return true;
 	}
-	
-	
-	
-
-
-	
-	
 
 }

@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * DiacriticsCleaner maps strings with diacritics in ascii 
+ * Quotes cleaner removes quotes from a spot.
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012

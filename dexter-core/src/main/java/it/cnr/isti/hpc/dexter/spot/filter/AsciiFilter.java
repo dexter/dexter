@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * SymbolFilter filters out all spot that do not contain alphabetic characters
+ * Ascii filters out all spot that do not contain alphabetic characters
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
@@ -33,35 +33,33 @@ public class AsciiFilter implements Filter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(AsciiFilter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(AsciiFilter.class);
 
 	public static boolean isPureAscii(String v) {
-	    byte bytearray []  = v.getBytes();
-	    CharsetDecoder d = Charset.forName("US-ASCII").newDecoder();
-	    try {
-	      CharBuffer r = d.decode(ByteBuffer.wrap(bytearray));
-	      r.toString();
-	    }
-	    catch(CharacterCodingException e) {
-	      return false;
-	    }
-	    return true;
-	  }
-	
-	
-	public boolean isFilter(String spot) {
-		boolean isAscii = isPureAscii(spot);
-		if (isAscii) return false;
-		logger.debug("spot {} contains not ascii chars, filtering ",spot);
+		byte bytearray[] = v.getBytes();
+		CharsetDecoder d = Charset.forName("US-ASCII").newDecoder();
+		try {
+			CharBuffer r = d.decode(ByteBuffer.wrap(bytearray));
+			r.toString();
+		} catch (CharacterCodingException e) {
+			return false;
+		}
 		return true;
 	}
 
-	
+	public boolean isFilter(String spot) {
+		boolean isAscii = isPureAscii(spot);
+		if (isAscii)
+			return false;
+		logger.debug("spot {} contains not ascii chars, filtering ", spot);
+		return true;
+	}
+
 	public boolean post() {
 		return true;
 	}
 
-	
 	public boolean pre() {
 		return false;
 	}

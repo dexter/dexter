@@ -15,28 +15,21 @@
  */
 package it.cnr.isti.hpc.dexter.spot.clean;
 
-
 /**
- * StripCleaner.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 21/lug/2012
+ * LowerCaseCleaner, puts in lowercase the text of a spot
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/lug/2012
  */
 public class LowerCaseCleaner implements Cleaner {
-	
-	
 
-	
 	public String clean(String spot) {
 		return spot.toLowerCase();
 	}
 
-	
 	public boolean post() {
 		return false;
 	}
 
-	
 	public boolean pre() {
 		return true;
 	}

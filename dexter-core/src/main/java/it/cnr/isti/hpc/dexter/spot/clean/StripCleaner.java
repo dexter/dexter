@@ -18,7 +18,9 @@ package it.cnr.isti.hpc.dexter.spot.clean;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * StripCleaner.java
+ * StripCleaner trims characters at the beginning of at the end of a spot.
+ * More spaces in the final string will be replaced by one single space. 
+ * 
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 21/lug/2012
@@ -29,10 +31,21 @@ public class StripCleaner implements Cleaner {
 	private String trimChars;
 	private boolean pre = true;
 	private boolean post = true;
+	
+	/**
+	 * Default strip cleaner, will strip the characters <code>,#*-!`{}~[]='<>:%/</code>
+	 * if they are in the  beginning or at the end of a string.
+	 * 
+	 */
 	public StripCleaner(){
 		this(DEFAULT_TRIM_CHARS);
 	}
-			
+	
+	/**
+	 * Default strip cleaner, will strip the characters given in a string
+	 * if they are in the  beginning or at the end of a string.
+	 * @param trimChars - a string containing the characters to be stripped out
+	 */
 	public StripCleaner(String trimChars){
 		this.trimChars = trimChars;
 	}

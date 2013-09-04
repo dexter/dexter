@@ -19,43 +19,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * DiacriticsCleaner maps strings with diacritics in ascii 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * Parenthesis cleaner removes parenthesis from a spot.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class ParenthesesCleaner implements Cleaner {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(ParenthesesCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(ParenthesesCleaner.class);
 
-	
-	
-	
 	public String clean(String spot) {
-		return spot.replaceAll("[()]"," ");
+		return spot.replaceAll("[()]", " ");
 	}
 
-
-
-	
 	public boolean post() {
 		return true;
 	}
 
-
-
-	
 	public boolean pre() {
 		return false;
 	}
-	
-	
-	
-
-
-	
-	
 
 }

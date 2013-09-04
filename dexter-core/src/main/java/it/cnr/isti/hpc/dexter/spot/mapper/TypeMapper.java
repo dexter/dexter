@@ -21,14 +21,11 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * TypeMapper if the label contains data about the 
- * type of the label (between parenthesis or after a #) 
- * the data is filtered
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * TypeMapper if the label contains data about the type of the label (between
+ * parenthesis or after a #) the data is filtered
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  * 
  * @deprecated better as cleaner
  */
@@ -37,24 +34,23 @@ public class TypeMapper implements Mapper {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(TypeMapper.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(TypeMapper.class);
 
-	
 	public Set<String> mapper(String spot) {
 		Set<String> mappings = new HashSet<String>();
 		removeRegex(mappings, spot, " *[(][^)]+[)] *$");
 		removeRegex(mappings, spot, " *[#].*$");
 		return mappings;
-		
+
 	}
-	
-	private void removeRegex(Set<String> mappings, String spot, String regex){
-		String str = spot.replaceAll(regex,"");
-		if (! str.equals(spot)){
+
+	private void removeRegex(Set<String> mappings, String spot, String regex) {
+		String str = spot.replaceAll(regex, "");
+		if (!str.equals(spot)) {
 			mappings.add(str);
-			logger.debug("{} -> {} ",spot, str);
+			logger.debug("{} -> {} ", spot, str);
 		}
 	}
-	
 
 }

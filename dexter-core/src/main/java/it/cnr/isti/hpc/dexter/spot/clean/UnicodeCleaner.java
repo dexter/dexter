@@ -20,7 +20,10 @@ import static net.sf.junidecode.Junidecode.unidecode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
- * maps string in unicode in ascii
+ * UnicodeCleaner maps a Unicode string to ascii, the conversion is lossy,
+ * and it is performed using the unidecode library. 
+ * 
+ * FIXME add links to the unidecode library
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012

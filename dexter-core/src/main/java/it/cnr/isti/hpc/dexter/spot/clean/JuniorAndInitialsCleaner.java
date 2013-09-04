@@ -19,48 +19,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * DiacriticsCleaner maps strings with diacritics in ascii 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * JuniorAndInitialsCleaner trasforms a name removing initials or 'jr' (e.g.,
+ * <code> ted ginn, jr -> ted ginn </code>)
+ * 
+ * 
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class JuniorAndInitialsCleaner implements Cleaner {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(JuniorAndInitialsCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(JuniorAndInitialsCleaner.class);
 
-	
-	
-	
 	public String clean(String spot) {
-		String clean = spot.replaceAll("[, ]*[sj]r[.]?"," ");
-		clean = clean.replaceAll(" ([a-z][.] ?)+ "," ");
-		clean = clean.replaceAll("^([a-z][.] ?)+ "," ");
-		clean = clean.replaceAll(" [a-z][.]$"," ");
-		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		String clean = spot.replaceAll("[, ]*[sj]r[.]?", " ");
+		clean = clean.replaceAll(" ([a-z][.] ?)+ ", " ");
+		clean = clean.replaceAll("^([a-z][.] ?)+ ", " ");
+		clean = clean.replaceAll(" [a-z][.]$", " ");
+		if (!clean.equals(spot))
+			logger.debug("{} -> {}", spot, clean);
 		return clean;
 	}
-	
-	
-	
 
-
-	
 	public boolean post() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-
-	
 	public boolean pre() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
-
-	
-	
 
 }

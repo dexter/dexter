@@ -20,9 +20,10 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Typecleaner.java if the label contains data about the 
- * type of the label (between parenthesis or after a #) 
- * the data is removed
+ * Typecleaner will remove domain informations 
+ * usually appended at the end of the titles
+ * (between parenthesis or after a #), <br/>
+ * e.g. <code> dexter (tv-series) -> dexter </code>.
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012
