@@ -32,79 +32,60 @@ public class RamSpotRepository implements SpotRepository {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotRepository.class);
-
-	private ProjectProperties properties;
 	
+
 	RamSpotFile spots;
 	SpotMinimalPerfectHash hash;
 	SpotEliasFanoOffsets offsets;
-	
 
 	public RamSpotRepository() {
 		hash = SpotMinimalPerfectHash.getInstance();
 		offsets = SpotEliasFanoOffsets.getInstance();
 		spots = RamSpotFile.getInstance();
 	}
-	
-//	public RamSpotRepository(String spotBinFile, String spotBinOffsets, String spotPerfectHash) {
-//		Serializer serializer = new Serializer();
-//		logger.info("loading spots binary data");
-//		spotsData = load(spotBinFile);
-//		logger.info("loading spots perfect hash");
-//		hash =load(spotPerfectHash);
-//		logger.info("loading spots offsets");
-//		
-//	}
-	
-	
-	
-	
-	public Spot getSpot(String spot){
+
+	// public RamSpotRepository(String spotBinFile, String spotBinOffsets,
+	// String spotPerfectHash) {
+	// Serializer serializer = new Serializer();
+	// logger.info("loading spots binary data");
+	// spotsData = load(spotBinFile);
+	// logger.info("loading spots perfect hash");
+	// hash =load(spotPerfectHash);
+	// logger.info("loading spots offsets");
+	//
+	// }
+
+	public Spot getSpot(String spot) {
 		Stopwatch s = new Stopwatch();
 		s.start("hash");
 		long index = hash.hash(spot);
 		s.stop("hash");
-//		logger.info("index = {} ",index);
+		// logger.info("index = {} ",index);
 		s.start("offsets");
 		long from = offsets.getOffset(index);
-		long to = offsets.getOffset(index+1);
-		
-//		logger.info("offsetStart = {} ",from);
-//		logger.info("offsetEnd = {} ",to);
+		long to = offsets.getOffset(index + 1);
+
+		// logger.info("offsetStart = {} ",from);
+		// logger.info("offsetEnd = {} ",to);
 		byte[] binspot = spots.getOffset(from, to);
 		s.stop("offsets");
 		s.start("spot");
 		Spot sp = Spot.fromByteArray(spot, binspot);
 		s.stop("spot");
-		//System.out.println("retrieved: "+s.stat());
+		// System.out.println("retrieved: "+s.stat());
 		return sp;
-		
+
 	}
-	
+
 	public static void main(String[] args) {
 		RamSpotRepository rs = new RamSpotRepository();
 		Stopwatch s = new Stopwatch();
 		s.start("spot");
 		Spot spot = rs.getSpot("glass");
 		s.stop("spot");
-		//System.out.println(spot);
-		//System.out.println("retrieved: "+s.stat("spot"));
-		
-		
-		
+		// System.out.println(spot);
+		// System.out.println("retrieved: "+s.stat("spot"));
+
 	}
-	
-	
-	
-	
 
-
-
-	
-
-
-	
-	
-
-	
 }

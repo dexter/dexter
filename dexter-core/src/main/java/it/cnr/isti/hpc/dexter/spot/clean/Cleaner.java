@@ -16,7 +16,8 @@
 package it.cnr.isti.hpc.dexter.spot.clean;
 
 /**
- * Cleaner performs 
+ * A cleaner performs a transformation over an object. 
+ * 
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012
