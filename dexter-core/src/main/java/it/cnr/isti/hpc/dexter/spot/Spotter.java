@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Spotter.java
+ * Spotter
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */

@@ -34,6 +34,15 @@ package it.cnr.isti.hpc.dexter;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 
 /**
+ * Spotting aims at identifying spots, i.e., contiguous sequences 
+ * of n terms (n-grams) occurring in a document <code>D</code> 
+ * that might mention some entity <code>e</code>. 
+ * <br/>
+ * <br/>
+ * Each spot is associated with a set of candidate entities C, that could 
+ * be represented by the spot.
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  */
 public interface Spotter {
