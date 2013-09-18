@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<artifactId>dexter-parent</artifactId>
@@ -27,8 +27,7 @@
 			<artifactId>json-wikipedia</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
 		</dependency>
-		
-		
+
 		<!-- maps unicode chars in ascii chars -->
 		<dependency>
 			<groupId>junidecode</groupId>
@@ -38,7 +37,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-math</artifactId>
@@ -51,8 +50,6 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 		</dependency>
-		
-
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -92,36 +89,40 @@
 			<groupId>org.mapdb</groupId>
 			<artifactId>mapdb</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.opennlp</groupId>
 			<artifactId>opennlp-tools</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>simplenlg</groupId>
 			<artifactId>simplenlg</artifactId>
 		</dependency>
 
-	</dependencies>
-	
+		<dependency>
+			<groupId>info.bliki.wiki</groupId>
+			<artifactId>bliki-core</artifactId>
+			<version>3.0.19</version>
+		</dependency>
 
-	
+	</dependencies>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -156,6 +157,16 @@
 		<repository>
 			<id>sonatype-snapshots</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>info-bliki-repository</id>
+			<url>http://gwtwiki.googlecode.com/svn/maven-repository/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 </project>
