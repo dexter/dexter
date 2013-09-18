@@ -15,6 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import it.cnr.isti.hpc.dexter.spot.clean.HtmlCleaner;
@@ -30,8 +31,6 @@ import it.cnr.isti.hpc.dexter.spot.mapper.CityMapper;
 import it.cnr.isti.hpc.dexter.spot.mapper.QuotesMapper;
 
 import java.util.Set;
-
-import junit.framework.Assert;
 
 import org.junit.Test;
 
@@ -69,10 +68,10 @@ public class SpotManagerTest {
 	public void testNumericFilter() {
 		SpotManager sm = new SpotManager();
 		sm.add(new NumberFilter());
-		Assert.assertTrue(sm.isPreFilter("12345678900"));
-		Assert.assertTrue(sm.isPreFilter("135"));
-		Assert.assertTrue(sm.isPreFilter("000"));
-		Assert.assertTrue(sm.isPreFilter("1.345.123"));
+		assertTrue(sm.isPreFilter("12345678900"));
+		assertTrue(sm.isPreFilter("135"));
+		assertTrue(sm.isPreFilter("000"));
+		assertTrue(sm.isPreFilter("1.345.123"));
 	}
 	
 	@Test
@@ -94,12 +93,12 @@ public class SpotManagerTest {
 	public void testSymbolFilter(){
 		SpotManager sm = new SpotManager();
 		sm.add(new SymbolFilter());
-		Assert.assertTrue(sm.isPreFilter("$$$$$$$"));
-		Assert.assertTrue(sm.isPreFilter("$!\"£$%&/()"));
-		Assert.assertTrue(sm.isPreFilter("°°°°°"));
-		Assert.assertFalse(sm.isPreFilter("diego"));
-		Assert.assertFalse(sm.isPreFilter("a£$%&/("));
-		Assert.assertTrue(sm.isPreFilter("1.345.123"));
+		assertTrue(sm.isPreFilter("$$$$$$$"));
+		assertTrue(sm.isPreFilter("$!\"£$%&/()"));
+		assertTrue(sm.isPreFilter("°°°°°"));
+		assertFalse(sm.isPreFilter("diego"));
+		assertFalse(sm.isPreFilter("a£$%&/("));
+		assertTrue(sm.isPreFilter("1.345.123"));
 		
 		
 	}
@@ -117,7 +116,7 @@ public class SpotManagerTest {
 		assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
 		assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
 		assertFalse(sm.process("\"1968\"").contains("1968"));
-		//Assert.assertEquals("kose",);
+		//assertEquals("kose",);
 	}
 	
 	@Test
@@ -125,7 +124,7 @@ public class SpotManagerTest {
 		SpotManager sm = new SpotManager();
 		sm.add(new UnicodeCleaner());
 		sm.preClean("yenikent asa– stadium");
-		//Assert.assertEquals("kose",);
+		//assertEquals("kose",);
 		
 		
 	}
@@ -135,12 +134,12 @@ public class SpotManagerTest {
 	public void testUnidecode(){
 		SpotManager sm = new SpotManager();
 		sm.add(new UnicodeCleaner());
-		Assert.assertEquals("diego",sm.preClean("diègo"));
-		Assert.assertEquals("asociacion",sm.preClean("asociación"));
+		assertEquals("diego",sm.preClean("diègo"));
+		assertEquals("asociacion",sm.preClean("asociación"));
 		
-		//Assert.assertEquals("kose",);
-		Assert.assertEquals("misar",sm.preClean("misar"));
-		Assert.assertEquals("odon",sm.preClean("ödön"));
+		//assertEquals("kose",);
+		assertEquals("misar",sm.preClean("misar"));
+		assertEquals("odon",sm.preClean("ödön"));
 		
 		
 	}
@@ -149,34 +148,34 @@ public class SpotManagerTest {
 	public void testJavascriptCleaner(){
 		SpotManager sm = SpotManager.getStandardSpotManager();
 		HtmlCleaner cleaner = new HtmlCleaner();
-		Assert.assertEquals("''l'isola dei famosi''",cleaner.clean("%27%27l'isola dei famosi%27%27"));
-		Assert.assertEquals("7",sm.clean("&lt;7&gt;"));
-		Assert.assertEquals("diego",sm.clean("diego"));
-		Assert.assertEquals("o-3 fatty acid",sm.clean("&omega;-3 fatty acid"));
+		assertEquals("''l'isola dei famosi''",cleaner.clean("%27%27l'isola dei famosi%27%27"));
+		assertEquals("7",sm.clean("&lt;7&gt;"));
+		assertEquals("diego",sm.clean("diego"));
+		assertEquals("o-3 fatty acid",sm.clean("&omega;-3 fatty acid"));
 	}
 	
 	@Test
 	public void testLongSpotCleaner(){
 		SpotManager sp = SpotManager.getStandardSpotManager();
-		Assert.assertTrue(sp.process("this is a really long spot, more than 6 terms").isEmpty());
-		Assert.assertFalse(sp.process("this is a short spot (6terms)").isEmpty());
+		assertTrue(sp.process("this is a really long spot, more than 6 terms").isEmpty());
+		assertFalse(sp.process("this is a short spot (6terms)").isEmpty());
 	}
 	
 	@Test
 	public void testPrefixCleaner(){
 		PrefixCleaner pc = new PrefixCleaner("the ");
-		Assert.assertEquals("battle of troia",pc.clean("the battle of troia"));	
-		Assert.assertEquals("battle of troia",pc.clean("   the         battle of troia"));
-		Assert.assertEquals("battle of troia",pc.clean("   the battle of troia"));
-		Assert.assertEquals("battle of troia",pc.clean("the        battle of troia"));
+		assertEquals("battle of troia",pc.clean("the battle of troia"));	
+		assertEquals("battle of troia",pc.clean("   the         battle of troia"));
+		assertEquals("battle of troia",pc.clean("   the battle of troia"));
+		assertEquals("battle of troia",pc.clean("the        battle of troia"));
 		pc = new PrefixCleaner("a ");
-		Assert.assertEquals("game of thrones",pc.clean("a game of thrones"));
+		assertEquals("game of thrones",pc.clean("a game of thrones"));
 		pc = PrefixCleaner.A_OR_THE;
-		Assert.assertEquals("battle of troia",pc.clean("the battle of troia"));	
-		Assert.assertEquals("battle of troia",pc.clean("   the         battle of troia"));
-		Assert.assertEquals("battle of troia",pc.clean("   the battle of troia"));
-		Assert.assertEquals("battle of troia",pc.clean("the        battle of troia"));
-		Assert.assertEquals("game of thrones",pc.clean("a game of thrones"));	
+		assertEquals("battle of troia",pc.clean("the battle of troia"));	
+		assertEquals("battle of troia",pc.clean("   the         battle of troia"));
+		assertEquals("battle of troia",pc.clean("   the battle of troia"));
+		assertEquals("battle of troia",pc.clean("the        battle of troia"));
+		assertEquals("game of thrones",pc.clean("a game of thrones"));	
 	}
 	
 		
