@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
-import it.cnr.isti.hpc.dexter.spot.filter.ProbabilityFilter;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.property.ProjectProperties;
@@ -83,7 +83,7 @@ public class Spotter {
 			s.setStart(shingle.getStart());
 			s.setEnd(shingle.getEnd());
 
-			if (filter.isRemove(s)) {
+			if (filter.isFilter(s)) {
 				logger.debug("ignoring spot {}, probability too low {}",
 						s.getText(), s.getProbability());
 				continue;

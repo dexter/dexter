@@ -16,8 +16,8 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.spot.clean.TemplateCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.UnicodeCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.TemplateCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 
@@ -33,13 +33,14 @@ public class ArticleContextExtractor extends ContextExtractor {
 	 * Logger for this class
 	 */
 	static StringBuilder sb = new StringBuilder();
-	static SpotManager cleaner = new SpotManager();
+	static SpotManager cleaner = SpotManager.getStandardSpotCleaner();
 	
 	
-	static{
-		cleaner.add(new TemplateCleaner());
-		cleaner.add(new UnicodeCleaner());	
-	}
+//	static{
+//		
+//		cleaner.add(new TemplateCleaner());
+//		cleaner.add(new UnicodeCleaner());	
+//	}
 	private transient String cleanAsciiText;
 	
 	
@@ -60,7 +61,7 @@ public class ArticleContextExtractor extends ContextExtractor {
 		sb.setLength(0);
 		sb.append(a.getTitle()).append(". ");
 		for (String paragraph : a.getParagraphs()){
-			sb.append(cleaner.clean(paragraph).toLowerCase());
+			sb.append(cleaner.clean(paragraph));
 			sb.append(" ");
 		}
 		for (Link l : a.getLinks()){
