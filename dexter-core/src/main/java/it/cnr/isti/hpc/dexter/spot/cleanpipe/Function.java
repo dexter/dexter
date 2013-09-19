@@ -31,7 +31,6 @@
  */
 package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 
-import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe.OutputCollector;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
