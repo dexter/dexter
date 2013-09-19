@@ -16,8 +16,8 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.spot.clean.TemplateCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.UnicodeCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.TemplateCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 

@@ -13,51 +13,24 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
 /**
- * Quotes cleaner removes quotes from a spot.
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * LowerCaseCleaner, puts in lowercase the text of a spot
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/lug/2012
  */
-public class QuotesCleaner extends Cleaner<String> {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = LoggerFactory.getLogger(QuotesCleaner.class);
+public class LowerCaseCleaner extends Cleaner<String> {
 
-	
-	
-	
 	public String clean(String spot) {
-		String clean = spot.replaceAll("\"", " ");
-		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
-		return clean;
+		return spot.toLowerCase();
 	}
 
-
-
-	
 	public boolean post() {
-		return true;
-	}
-
-
-
-	
-	public boolean pre() {
 		return false;
 	}
-	
-	
-	
 
-
-	
-	
-
+	public boolean pre() {
+		return true;
+	}
 }

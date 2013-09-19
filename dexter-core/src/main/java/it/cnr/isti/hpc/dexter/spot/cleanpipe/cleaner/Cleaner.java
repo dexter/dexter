@@ -13,33 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
 
 /**
- * Parenthesis cleaner removes parenthesis from a spot.
+ * A cleaner performs a transformation over an object. 
  * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
+ *
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
+ * created on 20/lug/2012
  */
-public class ParenthesesCleaner extends Cleaner<String> {
+public abstract class Cleaner<T> extends Function<T> {
+
+	protected void eval(T elem, Pipe<T>.OutputCollector collector){
+		collector.pushResult(clean(elem));
+	}
+	
 	/**
-	 * Logger for this class
+	 * returns a spot cleaned with some particular policy
+	 * @param spot the spot to clean
+	 * @return the cleaned spot
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(ParenthesesCleaner.class);
-
-	public String clean(String spot) {
-		return spot.replaceAll("[()]", " ");
-	}
-
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return false;
-	}
+	public abstract T clean(T spot);
 
 }

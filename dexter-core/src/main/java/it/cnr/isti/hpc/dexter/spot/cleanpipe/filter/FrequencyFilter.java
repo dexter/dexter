@@ -13,24 +13,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
+
+import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * LowerCaseCleaner, puts in lowercase the text of a spot
+ * FrequencyFilter removes spots that are not associated to any entity
  * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/lug/2012
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class LowerCaseCleaner extends Cleaner<String> {
+public class FrequencyFilter extends Filter<Spot> {
 
-	public String clean(String spot) {
-		return spot.toLowerCase();
+	public boolean isFilter(Spot spot) {
+
+		return (spot.getEntities().size() == 0);
 	}
 
-	public boolean post() {
-		return false;
-	}
-
-	public boolean pre() {
-		return true;
-	}
 }

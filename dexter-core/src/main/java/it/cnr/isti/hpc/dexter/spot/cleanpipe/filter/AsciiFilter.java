@@ -13,29 +13,46 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
-import org.apache.commons.lang.StringUtils;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * NumberFilter filters out all the spots containing only numbers
+ * Ascii filters out all spot that do not contain alphabetic characters
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class NumberFilter extends Filter<String> {
+public class AsciiFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(NumberFilter.class);
+			.getLogger(AsciiFilter.class);
+
+	public static boolean isPureAscii(String v) {
+		byte bytearray[] = v.getBytes();
+		CharsetDecoder d = Charset.forName("US-ASCII").newDecoder();
+		try {
+			CharBuffer r = d.decode(ByteBuffer.wrap(bytearray));
+			r.toString();
+		} catch (CharacterCodingException e) {
+			return false;
+		}
+		return true;
+	}
 
 	public boolean isFilter(String spot) {
-		spot = spot.replaceAll("[-+,.]", "");
-		if (!StringUtils.isNumeric(spot))
+		boolean isAscii = isPureAscii(spot);
+		if (isAscii)
 			return false;
-		logger.debug(" spot {} is a number, filtering ", spot);
+		logger.debug("spot {} contains not ascii chars, filtering ", spot);
 		return true;
 	}
 
@@ -44,7 +61,7 @@ public class NumberFilter extends Filter<String> {
 	}
 
 	public boolean pre() {
-		return true;
+		return false;
 	}
 
 }

@@ -18,7 +18,7 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotReader;
-import it.cnr.isti.hpc.dexter.spot.filter.CommonnessFilter;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.CommonnessFilter;
 import it.cnr.isti.hpc.log.ProgressLogger;
 
 import org.slf4j.Logger;

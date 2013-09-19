@@ -13,39 +13,57 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
+import static net.sf.junidecode.Junidecode.unidecode;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
- * Removes a matching prefix 
+ * UnicodeCleaner maps a Unicode string to ascii, the conversion is lossy,
+ * and it is performed using the unidecode library. 
+ * 
+ * FIXME add links to the unidecode library
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 21/lug/2012
+ * created on 20/lug/2012
  */
-public class PrefixCleaner extends Cleaner<String> {
+
+public class UnicodeCleaner extends Cleaner<String> {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory.getLogger(UnicodeCleaner.class);
+
 	
-	String pattern;
-	
-	public final static PrefixCleaner A_OR_THE = new PrefixCleaner("(a|the) ");
-	
-	public PrefixCleaner(String pattern){
-		this.pattern = "^[ ]*"+pattern+"[ ]*";
-		System.out.println(this.pattern);
-	}
 	
 	
 	public String clean(String spot) {
-		return spot.replaceAll(pattern, "");
+		String clean = unidecode(spot);
+		clean = clean.replaceAll("&nbsp;" , " ");
+		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		return clean;
 	}
+
+
 
 	
 	public boolean post() {
-		return true;
+		return false;
 	}
+
+
 
 	
 	public boolean pre() {
 		return true;
 	}
 	
+	
+	
+
+
+	
+	
+
 }

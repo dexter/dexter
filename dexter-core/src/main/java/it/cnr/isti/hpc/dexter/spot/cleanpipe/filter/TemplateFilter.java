@@ -13,43 +13,35 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * LengthFilter filters out spots shorter than a given length (default is 3).
+ * TemplateFilter removes all spots about templates.
  * 
+ * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class LengthFilter extends Filter<String> {
+public class TemplateFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(LengthFilter.class);
-
-	private final static int DEFAULT_MIN_LENGTH = 3;
-	private int minLength;
-
-	public LengthFilter() {
-		this(DEFAULT_MIN_LENGTH);
-	}
-
-	public LengthFilter(int minLength) {
-		this.minLength = minLength;
-	}
+			.getLogger(TemplateFilter.class);
 
 	public boolean isFilter(String spot) {
-		return spot.length() < minLength;
+		return spot.contains("template");
 	}
 
 	public boolean post() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
 	public boolean pre() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 

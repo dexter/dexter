@@ -13,20 +13,33 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
-import it.cnr.isti.hpc.dexter.spot.Spot;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * FrequencyFilter removes spots that are not associated to any entity
+ * Parenthesis cleaner removes parenthesis from a spot.
  * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class FrequencyFilter extends Filter<Spot> {
+public class ParenthesesCleaner extends Cleaner<String> {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory
+			.getLogger(ParenthesesCleaner.class);
 
-	public boolean isFilter(Spot spot) {
+	public String clean(String spot) {
+		return spot.replaceAll("[()]", " ");
+	}
 
-		return (spot.getEntities().size() == 0);
+	public boolean post() {
+		return true;
+	}
+
+	public boolean pre() {
+		return false;
 	}
 
 }

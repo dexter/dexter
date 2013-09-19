@@ -13,35 +13,51 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Image filter remove spots linking to an image.
- * 
- * @deprecated depends on language
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
+ * Quotes cleaner removes quotes from a spot.
+ *
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
+ * created on 20/lug/2012
  */
-public class ImageFilter extends Filter<String> {
+public class QuotesCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(ImageFilter.class);
+	private static final Logger logger = LoggerFactory.getLogger(QuotesCleaner.class);
 
-	public boolean isFilter(String spot) {
-		// FIXME this is language dependent, replace with the locale.
-		return spot.contains("image:");
+	
+	
+	
+	public String clean(String spot) {
+		String clean = spot.replaceAll("\"", " ");
+		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		return clean;
 	}
 
+
+
+	
 	public boolean post() {
 		return true;
 	}
 
+
+
+	
 	public boolean pre() {
-		return true;
+		return false;
 	}
+	
+	
+	
+
+
+	
+	
 
 }

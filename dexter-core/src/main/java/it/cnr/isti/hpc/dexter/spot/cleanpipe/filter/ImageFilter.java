@@ -13,47 +13,27 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
-
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Ascii filters out all spot that do not contain alphabetic characters
+ * Image filter remove spots linking to an image.
  * 
+ * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class AsciiFilter extends Filter<String> {
+public class ImageFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(AsciiFilter.class);
-
-	public static boolean isPureAscii(String v) {
-		byte bytearray[] = v.getBytes();
-		CharsetDecoder d = Charset.forName("US-ASCII").newDecoder();
-		try {
-			CharBuffer r = d.decode(ByteBuffer.wrap(bytearray));
-			r.toString();
-		} catch (CharacterCodingException e) {
-			return false;
-		}
-		return true;
-	}
+			.getLogger(ImageFilter.class);
 
 	public boolean isFilter(String spot) {
-		boolean isAscii = isPureAscii(spot);
-		if (isAscii)
-			return false;
-		logger.debug("spot {} contains not ascii chars, filtering ", spot);
-		return true;
+		// FIXME this is language dependent, replace with the locale.
+		return spot.contains("image:");
 	}
 
 	public boolean post() {
@@ -61,7 +41,7 @@ public class AsciiFilter extends Filter<String> {
 	}
 
 	public boolean pre() {
-		return false;
+		return true;
 	}
 
 }

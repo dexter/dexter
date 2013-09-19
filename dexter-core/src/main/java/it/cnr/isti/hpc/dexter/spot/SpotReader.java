@@ -1,7 +1,7 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.entity.Entity;
-import it.cnr.isti.hpc.dexter.spot.filter.Filter;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.Filter;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 
 import java.io.BufferedReader;

@@ -13,48 +13,44 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.mapper;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Converts javascript strings in ascii
+ * TypeMapper if the label contains data about the type of the label (between
+ * parenthesis or after a #) the data is filtered
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
+ * 
+ * @deprecated better as cleaner
  */
-
-public class HtmlCleaner extends Cleaner<String> {
+@Deprecated
+public class TypeMapper extends Mapper<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(HtmlCleaner.class);
+			.getLogger(TypeMapper.class);
 
-	// @Override
-	public String clean(String spot) {
-		spot = StringEscapeUtils.unescapeHtml(spot);
-		try {
-			spot = URLDecoder.decode(spot, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			logger.debug("error trying to convert the text from javascript to string");
-		} catch (IllegalArgumentException e) {
-			logger.debug("error trying to convert the text from javascript to string");
+	public Set<String> map(String spot) {
+		Set<String> mappings = new HashSet<String>();
+		removeRegex(mappings, spot, " *[(][^)]+[)] *$");
+		removeRegex(mappings, spot, " *[#].*$");
+		return mappings;
+
+	}
+
+	private void removeRegex(Set<String> mappings, String spot, String regex) {
+		String str = spot.replaceAll(regex, "");
+		if (!str.equals(spot)) {
+			mappings.add(str);
+			logger.debug("{} -> {} ", spot, str);
 		}
-		return spot;
-
-	}
-
-	public boolean post() {
-		return false;
-	}
-
-	public boolean pre() {
-		return true;
 	}
 
 }

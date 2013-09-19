@@ -13,44 +13,44 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.mapper;
-
-import java.util.HashSet;
-import java.util.Set;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TypeMapper if the label contains data about the type of the label (between
- * parenthesis or after a #) the data is filtered
+ * LengthFilter filters out spots shorter than a given length (default is 3).
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
- * 
- * @deprecated better as cleaner
  */
-@Deprecated
-public class TypeMapper extends Mapper<String> {
+public class LengthFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(TypeMapper.class);
+			.getLogger(LengthFilter.class);
 
-	public Set<String> map(String spot) {
-		Set<String> mappings = new HashSet<String>();
-		removeRegex(mappings, spot, " *[(][^)]+[)] *$");
-		removeRegex(mappings, spot, " *[#].*$");
-		return mappings;
+	private final static int DEFAULT_MIN_LENGTH = 3;
+	private int minLength;
 
+	public LengthFilter() {
+		this(DEFAULT_MIN_LENGTH);
 	}
 
-	private void removeRegex(Set<String> mappings, String spot, String regex) {
-		String str = spot.replaceAll(regex, "");
-		if (!str.equals(spot)) {
-			mappings.add(str);
-			logger.debug("{} -> {} ", spot, str);
-		}
+	public LengthFilter(int minLength) {
+		this.minLength = minLength;
+	}
+
+	public boolean isFilter(String spot) {
+		return spot.length() < minLength;
+	}
+
+	public boolean post() {
+		return true;
+	}
+
+	public boolean pre() {
+		return true;
 	}
 
 }

@@ -13,42 +13,36 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.mapper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
+
+import java.util.Set;
 
 /**
- * SymbolFilter filters out all the spotsF that do not contain alphabetic
- * characters
+ * Mapper given a spot returns several different versions of the spot.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class SymbolFilter extends Filter<String> {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(SymbolFilter.class);
-
+public abstract class Mapper<T> extends Function<T>{
 	
-
-	public boolean isFilter(String spot) {
-		boolean containsAlphatetic = spot.matches(".*[a-z].*");
-		if (containsAlphatetic)
-			return false;
-		logger.debug(" Spot {} does not contains alphabetic char, filtering ",
-				spot);
-		return true;
-
+	
+	protected  void eval(T elem, Pipe<T>.OutputCollector collector){
+		for (T t : map(elem)){
+			collector.pushResult(t);
+		}
 	}
-
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return true;
-	}
+		
+	
+	
+	/**
+	 * given a spot returns several different versions of the spot.
+	 * 
+	 * @param spot
+	 *            the spot to be transformed in several versions
+	 * @return a set containing the different versions of the spot.
+	 */
+	public abstract Set<T> map(T elem);
 
 }

@@ -13,33 +13,38 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * UnderscoreCleaner removes all the underscores in a post, replacing them 
- * with spaces.
+ * SymbolFilter filters out all the spotsF that do not contain alphabetic
+ * characters
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class UnderscoreCleaner extends Cleaner<String> {
+public class SymbolFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(UnderscoreCleaner.class);
+			.getLogger(SymbolFilter.class);
 
-	public String clean(String spot) {
-		String clean = spot.replaceAll("_", " ");
-		if (!clean.equals(spot))
-			logger.debug("{} -> {}", spot, clean);
-		return clean;
+	
+
+	public boolean isFilter(String spot) {
+		boolean containsAlphatetic = spot.matches(".*[a-z].*");
+		if (containsAlphatetic)
+			return false;
+		logger.debug(" Spot {} does not contains alphabetic char, filtering ",
+				spot);
+		return true;
+
 	}
 
 	public boolean post() {
-		return false;
+		return true;
 	}
 
 	public boolean pre() {

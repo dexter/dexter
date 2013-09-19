@@ -13,35 +13,38 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.filter;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
-import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
-import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Filter allows to remove a given spot if it does not respect a filter
- * constraint.
+ * NumberFilter filters out all the spots containing only numbers
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public abstract class Filter<T> extends Function<T> {
-	
-	
+public class NumberFilter extends Filter<String> {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory
+			.getLogger(NumberFilter.class);
 
-
-	protected void eval(T elem, Pipe<T>.OutputCollector collector) {
-		if (!isFilter(elem)) {
-			collector.pushResult(elem);
-		}
+	public boolean isFilter(String spot) {
+		spot = spot.replaceAll("[-+,.]", "");
+		if (!StringUtils.isNumeric(spot))
+			return false;
+		logger.debug(" spot {} is a number, filtering ", spot);
+		return true;
 	}
 
-	/**
-	 * returns true if the given spot does not respect the filter constraint.
-	 * 
-	 * @param label
-	 * @return boolean if the current spot does not respect the filter
-	 *         constraint.
-	 */
-	public abstract boolean isFilter(T elem);
+	public boolean post() {
+		return true;
+	}
+
+	public boolean pre() {
+		return true;
+	}
 
 }

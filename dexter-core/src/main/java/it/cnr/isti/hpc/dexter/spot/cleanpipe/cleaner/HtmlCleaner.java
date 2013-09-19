@@ -13,50 +13,48 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * Typecleaner will remove domain informations 
- * usually appended at the end of the titles
- * (between parenthesis or after a #), <br/>
- * e.g. <code> dexter (tv-series) -> dexter </code>.
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * Converts javascript strings in ascii
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class TypeCleaner extends Cleaner<String> {
+
+public class HtmlCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(TypeCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(HtmlCleaner.class);
 
-
-	
+	// @Override
 	public String clean(String spot) {
-		spot =  spot.replaceAll(" *[(][^)]+[)] *$", "");
-		spot = spot.replaceAll(" *[#].*$", "");
-//		if (spot.matches(" *[(][^)]+[)] *$")){
-//			return spot.replaceAll(" *[(][^)]+[)] *$", "");
-//		} 
-//		if (spot.matches(" *[#].*$")){
-//			return spot.replaceAll(" *[#].*$", "");
-//		}	
+		spot = StringEscapeUtils.unescapeHtml(spot);
+		try {
+			spot = URLDecoder.decode(spot, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			logger.debug("error trying to convert the text from javascript to string");
+		} catch (IllegalArgumentException e) {
+			logger.debug("error trying to convert the text from javascript to string");
+		}
 		return spot;
+
 	}
 
-	
 	public boolean post() {
-		return true;
+		return false;
 	}
 
-	
 	public boolean pre() {
 		return true;
 	}
-	
 
 }

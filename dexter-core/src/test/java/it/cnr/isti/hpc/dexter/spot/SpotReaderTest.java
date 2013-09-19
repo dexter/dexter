@@ -18,7 +18,7 @@ package it.cnr.isti.hpc.dexter.spot;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import it.cnr.isti.hpc.dexter.entity.Entity;
-import it.cnr.isti.hpc.dexter.spot.filter.CommonnessFilter;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.CommonnessFilter;
 
 import org.junit.Test;
 

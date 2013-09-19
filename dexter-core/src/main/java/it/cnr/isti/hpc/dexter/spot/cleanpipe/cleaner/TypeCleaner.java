@@ -13,44 +13,50 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
- * JuniorAndInitialsCleaner trasforms a name removing initials or 'jr' (e.g.,
- * <code> ted ginn, jr -> ted ginn </code>)
- * 
- * 
- * 
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
+ * Typecleaner will remove domain informations 
+ * usually appended at the end of the titles
+ * (between parenthesis or after a #), <br/>
+ * e.g. <code> dexter (tv-series) -> dexter </code>.
+ *
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
+ * created on 20/lug/2012
  */
-public class JuniorAndInitialsCleaner extends Cleaner<String> {
+public class TypeCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory
-			.getLogger(JuniorAndInitialsCleaner.class);
+	private static final Logger logger = LoggerFactory.getLogger(TypeCleaner.class);
 
+
+	
 	public String clean(String spot) {
-		String clean = spot.replaceAll("[, ]*[sj]r[.]?", " ");
-		clean = clean.replaceAll(" ([a-z][.] ?)+ ", " ");
-		clean = clean.replaceAll("^([a-z][.] ?)+ ", " ");
-		clean = clean.replaceAll(" [a-z][.]$", " ");
-		if (!clean.equals(spot))
-			logger.debug("{} -> {}", spot, clean);
-		return clean;
+		spot =  spot.replaceAll(" *[(][^)]+[)] *$", "");
+		spot = spot.replaceAll(" *[#].*$", "");
+//		if (spot.matches(" *[(][^)]+[)] *$")){
+//			return spot.replaceAll(" *[(][^)]+[)] *$", "");
+//		} 
+//		if (spot.matches(" *[#].*$")){
+//			return spot.replaceAll(" *[#].*$", "");
+//		}	
+		return spot;
 	}
 
+	
 	public boolean post() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean pre() {
-		// TODO Auto-generated method stub
 		return true;
 	}
+
+	
+	public boolean pre() {
+		return true;
+	}
+	
 
 }

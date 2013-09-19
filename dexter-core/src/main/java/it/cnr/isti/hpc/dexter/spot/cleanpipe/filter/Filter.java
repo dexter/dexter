@@ -13,29 +13,35 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot.clean;
+package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
 
 /**
- * A cleaner performs a transformation over an object. 
+ * Filter allows to remove a given spot if it does not respect a filter
+ * constraint.
  * 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public abstract class Cleaner<T> extends Function<T> {
-
-	protected void eval(T elem, Pipe<T>.OutputCollector collector){
-		collector.pushResult(clean(elem));
-	}
+public abstract class Filter<T> extends Function<T> {
 	
+	
+
+
+	protected void eval(T elem, Pipe<T>.OutputCollector collector) {
+		if (!isFilter(elem)) {
+			collector.pushResult(elem);
+		}
+	}
+
 	/**
-	 * returns a spot cleaned with some particular policy
-	 * @param spot the spot to clean
-	 * @return the cleaned spot
+	 * returns true if the given spot does not respect the filter constraint.
+	 * 
+	 * @param label
+	 * @return boolean if the current spot does not respect the filter
+	 *         constraint.
 	 */
-	public abstract T clean(T spot);
+	public abstract boolean isFilter(T elem);
 
 }
