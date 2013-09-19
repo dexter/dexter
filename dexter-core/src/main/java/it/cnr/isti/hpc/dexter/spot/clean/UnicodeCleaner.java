@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * created on 20/lug/2012
  */
 
-public class UnicodeCleaner implements Cleaner {
+public class UnicodeCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */

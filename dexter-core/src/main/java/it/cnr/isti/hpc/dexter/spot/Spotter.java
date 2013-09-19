@@ -83,7 +83,7 @@ public class Spotter {
 			s.setStart(shingle.getStart());
 			s.setEnd(shingle.getEnd());
 
-			if (filter.isRemove(s)) {
+			if (filter.isFilter(s)) {
 				logger.debug("ignoring spot {}, probability too low {}",
 						s.getText(), s.getProbability());
 				continue;

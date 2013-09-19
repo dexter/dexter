@@ -25,7 +25,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 21/lug/2012
  */
-public class StripCleaner implements Cleaner {
+public class StripCleaner extends Cleaner<String> {
 	
 	private static final String DEFAULT_TRIM_CHARS = ",#*-!`{}~[]='<>:%/";
 	private String trimChars;

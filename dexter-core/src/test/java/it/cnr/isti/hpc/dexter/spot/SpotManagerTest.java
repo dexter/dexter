@@ -25,6 +25,7 @@ import it.cnr.isti.hpc.dexter.spot.clean.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.clean.StripCleaner;
 import it.cnr.isti.hpc.dexter.spot.clean.TypeCleaner;
 import it.cnr.isti.hpc.dexter.spot.clean.UnicodeCleaner;
+import it.cnr.isti.hpc.dexter.spot.filter.LongSpotFilter;
 import it.cnr.isti.hpc.dexter.spot.filter.NumberFilter;
 import it.cnr.isti.hpc.dexter.spot.filter.SymbolFilter;
 import it.cnr.isti.hpc.dexter.spot.mapper.CityMapper;
@@ -44,7 +45,7 @@ public class SpotManagerTest {
 
 	@Test
 	public void testCityMapper(){
-		SpotManager sm = new SpotManager();
+		SpotManager sm = new SpotManager(); 
 		sm.add(new CityMapper());
 		sm.add(new StripCleaner());
 		assertTrue(sm.process("ada, wisconsin").contains("ada"));
@@ -55,7 +56,7 @@ public class SpotManagerTest {
 	
 	@Test
 	public void testJuniorCleaner(){
-		SpotManager sm = SpotManager.getStandardSpotManager();
+		SpotManager sm = new SpotManager();
 		sm.add(new JuniorAndInitialsCleaner());
 		sm.add(new StripCleaner());
 		System.out.println(sm.process("ted ginn, jr. "));
@@ -68,10 +69,10 @@ public class SpotManagerTest {
 	public void testNumericFilter() {
 		SpotManager sm = new SpotManager();
 		sm.add(new NumberFilter());
-		assertTrue(sm.isPreFilter("12345678900"));
-		assertTrue(sm.isPreFilter("135"));
-		assertTrue(sm.isPreFilter("000"));
-		assertTrue(sm.isPreFilter("1.345.123"));
+		assertTrue(sm.isFilter("12345678900"));
+		assertTrue(sm.isFilter("135"));
+		assertTrue(sm.isFilter("000"));
+		assertTrue(sm.isFilter("1.345.123"));
 	}
 	
 	@Test
@@ -93,12 +94,12 @@ public class SpotManagerTest {
 	public void testSymbolFilter(){
 		SpotManager sm = new SpotManager();
 		sm.add(new SymbolFilter());
-		assertTrue(sm.isPreFilter("$$$$$$$"));
-		assertTrue(sm.isPreFilter("$!\"£$%&/()"));
-		assertTrue(sm.isPreFilter("°°°°°"));
-		assertFalse(sm.isPreFilter("diego"));
-		assertFalse(sm.isPreFilter("a£$%&/("));
-		assertTrue(sm.isPreFilter("1.345.123"));
+		assertTrue(sm.isFilter("$$$$$$$"));
+		assertTrue(sm.isFilter("$!\"£$%&/()"));
+		assertTrue(sm.isFilter("°°°°°"));
+		assertFalse(sm.isFilter("diego"));
+		assertFalse(sm.isFilter("a£$%&/("));
+		assertTrue(sm.isFilter("1.345.123"));
 		
 		
 	}
@@ -123,7 +124,7 @@ public class SpotManagerTest {
 	public void testUnicodeCleaner(){
 		SpotManager sm = new SpotManager();
 		sm.add(new UnicodeCleaner());
-		sm.preClean("yenikent asa– stadium");
+		sm.clean("yenikent asa– stadium");
 		//assertEquals("kose",);
 		
 		
@@ -134,12 +135,12 @@ public class SpotManagerTest {
 	public void testUnidecode(){
 		SpotManager sm = new SpotManager();
 		sm.add(new UnicodeCleaner());
-		assertEquals("diego",sm.preClean("diègo"));
-		assertEquals("asociacion",sm.preClean("asociación"));
+		assertEquals("diego",sm.clean("diègo"));
+		assertEquals("asociacion",sm.clean("asociación"));
 		
 		//assertEquals("kose",);
-		assertEquals("misar",sm.preClean("misar"));
-		assertEquals("odon",sm.preClean("ödön"));
+		assertEquals("misar",sm.clean("misar"));
+		assertEquals("odon",sm.clean("ödön"));
 		
 		
 	}
@@ -156,8 +157,10 @@ public class SpotManagerTest {
 	
 	@Test
 	public void testLongSpotCleaner(){
-		SpotManager sp = SpotManager.getStandardSpotManager();
+		SpotManager sp = new SpotManager();
+		sp.add(new LongSpotFilter());
 		assertTrue(sp.process("this is a really long spot, more than 6 terms").isEmpty());
+		System.out.println("-> "+sp.process("this is a short spot (6terms)"));
 		assertFalse(sp.process("this is a short spot (6terms)").isEmpty());
 	}
 	

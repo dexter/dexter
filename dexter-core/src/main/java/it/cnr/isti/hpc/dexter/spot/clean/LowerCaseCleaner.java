@@ -20,7 +20,7 @@ package it.cnr.isti.hpc.dexter.spot.clean;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/lug/2012
  */
-public class LowerCaseCleaner implements Cleaner {
+public class LowerCaseCleaner extends Cleaner<String> {
 
 	public String clean(String spot) {
 		return spot.toLowerCase();

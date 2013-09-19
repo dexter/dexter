@@ -35,7 +35,7 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class ProbabilityFilter implements SpotFilter {
+public class ProbabilityFilter extends Filter<Spot> {
 
 	static ProjectProperties properties = new ProjectProperties(
 			ProbabilityFilter.class);
@@ -48,7 +48,7 @@ public class ProbabilityFilter implements SpotFilter {
 		}
 	}
 
-	public boolean isRemove(Spot spot) {
+	public boolean isFilter(Spot spot) {
 		if (spot == null)
 			return true;
 		return (spot.getProbability() <= threshold);

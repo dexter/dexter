@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class LongSpotFilter implements Filter {
+public class LongSpotFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */

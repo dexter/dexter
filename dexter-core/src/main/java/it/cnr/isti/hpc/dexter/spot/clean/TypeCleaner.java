@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012
  */
-public class TypeCleaner implements Cleaner {
+public class TypeCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */

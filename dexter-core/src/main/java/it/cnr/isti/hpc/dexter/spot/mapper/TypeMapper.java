@@ -30,14 +30,14 @@ import org.slf4j.LoggerFactory;
  * @deprecated better as cleaner
  */
 @Deprecated
-public class TypeMapper implements Mapper {
+public class TypeMapper extends Mapper<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(TypeMapper.class);
 
-	public Set<String> mapper(String spot) {
+	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
 		removeRegex(mappings, spot, " *[(][^)]+[)] *$");
 		removeRegex(mappings, spot, " *[#].*$");

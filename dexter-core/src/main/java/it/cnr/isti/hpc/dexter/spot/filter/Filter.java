@@ -15,13 +15,25 @@
  */
 package it.cnr.isti.hpc.dexter.spot.filter;
 
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
+
 /**
  * Filter allows to remove a given spot if it does not respect a filter
  * constraint.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public interface Filter {
+public abstract class Filter<T> extends Function<T> {
+	
+	
+
+
+	protected void eval(T elem, Pipe<T>.OutputCollector collector) {
+		if (!isFilter(elem)) {
+			collector.pushResult(elem);
+		}
+	}
 
 	/**
 	 * returns true if the given spot does not respect the filter constraint.
@@ -30,9 +42,6 @@ public interface Filter {
 	 * @return boolean if the current spot does not respect the filter
 	 *         constraint.
 	 */
-	public boolean isFilter(String spot);
+	public abstract boolean isFilter(T elem);
 
-	public boolean post();
-
-	public boolean pre();
 }

@@ -17,11 +17,6 @@ package it.cnr.isti.hpc.dexter.shingle;
 
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.spot.SpotManager;
-import it.cnr.isti.hpc.dexter.spot.clean.LowerCaseCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.QuotesCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.StripCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.UnderscoreCleaner;
-import it.cnr.isti.hpc.dexter.spot.clean.UnicodeCleaner;
 import it.cnr.isti.hpc.text.Sentence;
 import it.cnr.isti.hpc.text.SentenceSegmenter;
 import it.cnr.isti.hpc.text.Token;
@@ -111,18 +106,20 @@ public class ShingleExtractor implements Iterable<Shingle> {
 	private static SentenceSegmenter ss;
 
 	static {
-		sm = new SpotManager();
+		//sm = new SpotManager();
+		sm = SpotManager.getStandardSpotCleaner();
 		ts = TokenSegmenter.getInstance();
 		ss = SentenceSegmenter.getInstance();
 
-		sm.add(new LowerCaseCleaner());
-		sm.add(new UnicodeCleaner());
-		// sm.add(new ParenthesesCleaner());
-		sm.add(new QuotesCleaner());
-		sm.add(new UnderscoreCleaner());
-		// sm.add(new JuniorAndInitialsCleaner());
-		sm.add(new StripCleaner());
-		// sm.add(new TypeCleaner());
+//		sm.add(new LowerCaseCleaner());
+//		sm.add(new UnicodeCleaner());
+//		// sm.add(new ParenthesesCleaner());
+//		sm.add(new QuotesCleaner());
+//		sm.add(new UnderscoreCleaner());
+//		// sm.add(new JuniorAndInitialsCleaner());
+//		sm.add(new StripCleaner());
+//		// sm.add(new TypeCleaner());
+//	}
 	}
 
 	private ShingleExtractor() {
@@ -194,3 +191,5 @@ public class ShingleExtractor implements Iterable<Shingle> {
 		this.maxShingleSize = maxShingleSize;
 	}
 }
+
+	

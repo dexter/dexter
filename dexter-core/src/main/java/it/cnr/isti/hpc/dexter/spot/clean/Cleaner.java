@@ -15,6 +15,9 @@
  */
 package it.cnr.isti.hpc.dexter.spot.clean;
 
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
+
 /**
  * A cleaner performs a transformation over an object. 
  * 
@@ -22,13 +25,17 @@ package it.cnr.isti.hpc.dexter.spot.clean;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 20/lug/2012
  */
-public interface Cleaner {
+public abstract class Cleaner<T> extends Function<T> {
+
+	protected void eval(T elem, Pipe<T>.OutputCollector collector){
+		collector.pushResult(clean(elem));
+	}
+	
 	/**
 	 * returns a spot cleaned with some particular policy
 	 * @param spot the spot to clean
 	 * @return the cleaned spot
 	 */
-	public String clean(String spot);
-	public boolean post();
-	public boolean pre();
+	public abstract T clean(T spot);
+
 }

@@ -15,6 +15,9 @@
  */
 package it.cnr.isti.hpc.dexter.spot.mapper;
 
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
+
 import java.util.Set;
 
 /**
@@ -22,7 +25,17 @@ import java.util.Set;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public interface Mapper {
+public abstract class Mapper<T> extends Function<T>{
+	
+	
+	protected  void eval(T elem, Pipe<T>.OutputCollector collector){
+		for (T t : map(elem)){
+			collector.pushResult(t);
+		}
+	}
+		
+	
+	
 	/**
 	 * given a spot returns several different versions of the spot.
 	 * 
@@ -30,6 +43,6 @@ public interface Mapper {
 	 *            the spot to be transformed in several versions
 	 * @return a set containing the different versions of the spot.
 	 */
-	public Set<String> mapper(String spot);
+	public abstract Set<T> map(T elem);
 
 }

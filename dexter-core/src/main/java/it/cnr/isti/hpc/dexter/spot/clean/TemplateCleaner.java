@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @Deprecated language dependent
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class TemplateCleaner implements Cleaner {
+public class TemplateCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */

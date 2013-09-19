@@ -20,28 +20,26 @@ import org.slf4j.LoggerFactory;
 
 /**
  * TemplateFilter removes all spots about templates.
- *
+ * 
  * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class TemplateFilter implements Filter {
+public class TemplateFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(TemplateFilter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(TemplateFilter.class);
 
-	
 	public boolean isFilter(String spot) {
 		return spot.contains("template");
 	}
 
-	
 	public boolean post() {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
-	
 	public boolean pre() {
 		// TODO Auto-generated method stub
 		return true;

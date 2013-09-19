@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class AsciiFilter implements Filter {
+public class AsciiFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */

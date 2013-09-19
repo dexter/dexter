@@ -31,7 +31,9 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class CommonnessFilter implements SpotFilter {
+public class CommonnessFilter extends Filter<Spot> {
+	
+	
 	/**
 	 * Logger for this class
 	 */
@@ -49,7 +51,7 @@ public class CommonnessFilter implements SpotFilter {
 		}
 	}
 
-	public boolean isRemove(Spot spot) {
+	public boolean isFilter(Spot spot) {
 		List<Entity> entities = new ArrayList<Entity>();
 		for (Entity e : spot.getEntities()) {
 			double commonness = spot.getEntityCommonness(e);

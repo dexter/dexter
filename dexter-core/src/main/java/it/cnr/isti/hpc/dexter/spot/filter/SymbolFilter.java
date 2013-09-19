@@ -24,12 +24,14 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class SymbolFilter implements Filter {
+public class SymbolFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(SymbolFilter.class);
+
+	
 
 	public boolean isFilter(String spot) {
 		boolean containsAlphatetic = spot.matches(".*[a-z].*");

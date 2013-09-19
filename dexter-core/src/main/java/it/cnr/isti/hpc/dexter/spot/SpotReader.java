@@ -1,7 +1,7 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.entity.Entity;
-import it.cnr.isti.hpc.dexter.spot.filter.SpotFilter;
+import it.cnr.isti.hpc.dexter.spot.filter.Filter;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 
 import java.io.BufferedReader;
@@ -19,7 +19,7 @@ public class SpotReader implements Iterator<Spot> {
 	
 	
 
-	List<SpotFilter> filters = new ArrayList<SpotFilter>();
+	List<Filter<Spot>> filters = new ArrayList<Filter<Spot>>();
 	boolean init = false;
 	Spot next = null;
 
@@ -33,7 +33,7 @@ public class SpotReader implements Iterator<Spot> {
 		
 	}
 
-	public void addFilter(SpotFilter filter) {
+	public void addFilter(Filter<Spot> filter) {
 		filters.add(filter);
 	}
 
@@ -117,8 +117,8 @@ public class SpotReader implements Iterator<Spot> {
 	}
 
 	public boolean isFilter(Spot spot) {
-		for (SpotFilter f : filters) {
-			if (f.isRemove(spot))
+		for (Filter<Spot> f : filters) {
+			if (f.isFilter(spot))
 				return true;
 		}
 		return false;

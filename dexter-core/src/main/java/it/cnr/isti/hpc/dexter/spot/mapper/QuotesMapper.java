@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class QuotesMapper implements Mapper {
+public class QuotesMapper extends Mapper<String> {
 	/**
 	 * Logger for this class
 	 */
@@ -41,7 +41,7 @@ public class QuotesMapper implements Mapper {
 
 	Pattern regex = Pattern.compile(pattern);
 
-	public Set<String> mapper(String spot) {
+	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
 		Matcher m = regex.matcher(spot);
 		if (m.find()) {

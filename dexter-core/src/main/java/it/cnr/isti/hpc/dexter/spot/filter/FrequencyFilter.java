@@ -22,9 +22,9 @@ import it.cnr.isti.hpc.dexter.spot.Spot;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class FrequencyFilter implements SpotFilter {
+public class FrequencyFilter extends Filter<Spot> {
 
-	public boolean isRemove(Spot spot) {
+	public boolean isFilter(Spot spot) {
 
 		return (spot.getEntities().size() == 0);
 	}

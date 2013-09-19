@@ -28,14 +28,14 @@ import org.slf4j.LoggerFactory;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 
-public class CityMapper implements Mapper {
+public class CityMapper extends Mapper<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(CityMapper.class);
 
-	public Set<String> mapper(String spot) {
+	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
 		if (spot.matches("^[^,]+,[a-z ]+$"))
 			removeRegex(mappings, spot, " *,.+$");

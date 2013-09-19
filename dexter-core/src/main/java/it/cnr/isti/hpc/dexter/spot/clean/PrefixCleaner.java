@@ -22,7 +22,7 @@ package it.cnr.isti.hpc.dexter.spot.clean;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 21/lug/2012
  */
-public class PrefixCleaner implements Cleaner {
+public class PrefixCleaner extends Cleaner<String> {
 	
 	String pattern;
 	

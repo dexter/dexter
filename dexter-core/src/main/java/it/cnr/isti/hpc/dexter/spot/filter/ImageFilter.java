@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @deprecated depends on language
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-public class ImageFilter implements Filter {
+public class ImageFilter extends Filter<String> {
 	/**
 	 * Logger for this class
 	 */
