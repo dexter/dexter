@@ -56,7 +56,7 @@ public class CommonnessFilter implements SpotFilter {
 			if (commonness > threshold) {
 				entities.add(e);
 			} else {
-				logger.debug("delete entity {} commonness = {} ", e.id(),
+				logger.debug("delete entity {} commonness = {} ", e.getId(),
 						commonness);
 			}
 		}

@@ -803,7 +803,7 @@ public class LuceneHelper {
 			String context, String field) {
 
 		if (context.trim().isEmpty()) {
-			logger.warn("no context for spot {}", spot.getText());
+			logger.warn("no context for spot {}", spot.getMention());
 			return;
 		}
 

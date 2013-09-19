@@ -85,7 +85,7 @@ public class Spotter {
 
 			if (filter.isRemove(s)) {
 				logger.debug("ignoring spot {}, probability too low {}",
-						s.getText(), s.getProbability());
+						s.getMention(), s.getLinkProbability());
 				continue;
 			}
 

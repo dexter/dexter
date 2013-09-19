@@ -28,15 +28,12 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	private Entity entity;
 	private double score;
 	private Spot spot;
-
 	
 	private EntityMatch(Entity e,  double score) {
 		super();
-		this.entity = new Entity(e.id(), e.getFrequency());
+		this.entity = new Entity(e.getId(), e.getFrequency());
 		this.score = score;
 	}
-	
-	
 
 	private EntityMatch(int id, double score) {
 		super();
@@ -54,14 +51,10 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		this(id, score);
 		this.spot = spot;
 	}
-
-	
 	
 	public double getPriorProbability(){
 		return spot.getEntityCommonness(entity);
 	}
-
-	
 
 	public int compareTo(EntityMatch em) {
 		if (score > em.getScore())
@@ -71,13 +64,12 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return 0;
 	}
 
-
 	public Entity getEntity() {
 		return entity;
 	}
 
 	public int getId() {
-		return entity.id();
+		return entity.getId();
 	}
 
 	public double getScore() {
@@ -96,36 +88,6 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return spot.getEnd();
 	}
 
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((entity == null) ? 0 : entity.hashCode());
-//		return result;
-//	}
-	
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		EntityMatch other = (EntityMatch) obj;
-//		if (entity == null) {
-//			if (other.entity != null)
-//				return false;
-//		} else if (!entity.equals(other.entity))
-//			return false;
-//		return true;
-//	}
-	
-	
-	
-	
-	
-
 	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
@@ -139,14 +101,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		public int compare(EntityMatch em, EntityMatch em1) {
 			return em.getStart() - em1.getStart();
 		}
-		 
 	 }
-
-
-
-
-
-
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
@@ -192,7 +147,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	}
 
 	public String toString() {
-		String str = spot.getText() + "[" + spot.getStart() + ","
+		String str = spot.getMention() + "[" + spot.getStart() + ","
 				+ spot.getEnd() + "]" +"\t score: "+score+"\t"+"prior:"+getPriorProbability()+"\n" + entity.toString() + "\n";
 		return str;
 	}
@@ -204,23 +159,17 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return "";
 	}
 
-	
-
 	public int getFrequency() {
 		return spot.getFrequency();
 	}
 
 	public double getSpotProbability() {
-		return spot.getProbability();
+		return spot.getLinkProbability();
 	}
 
 	public static class SpotLengthComparator implements Comparator<EntityMatch> {
-
-		
 		public int compare(EntityMatch em1, EntityMatch em2) {
-			return em1.getSpot().getText().length() - em2.getSpot().getText().length();
+			return em1.getSpot().getMention().length() - em2.getSpot().getMention().length();
 		}
-
 	}
-
 }

@@ -200,7 +200,7 @@ public class ReferentGraph {
 		}
 
 		Entity je = currentEntity.getEntity();
-		int jeID = je.id();
+		int jeID = je.getId();
 		for (EntityMatch candidateEntity : candidateSpot.getEntities()) {
 			int oeID = candidateEntity.getId();
 			if (jeID == oeID) {
@@ -400,7 +400,7 @@ public class ReferentGraph {
 			int pos = 0;
 			for (int i = 0; i < sml.size(); i++) {
 				w.write("SPOT ");
-				w.write(getSpot(pos).getSpot().getText()); // GhGh!
+				w.write(getSpot(pos).getSpot().getMention()); // GhGh!
 				pos++;
 				w.write("\n");
 			}
@@ -441,7 +441,7 @@ public class ReferentGraph {
 			}
 			double score = importance * evidence;
 
-			logger.debug("entity     {} \t spot {}", id, spot.getText());
+			logger.debug("entity     {} \t spot {}", id, spot.getMention());
 			logger.debug("importance {} \t evidence {} ", importance, evidence);
 
 			EntityMatch match = new EntityMatch(id, score, spot);

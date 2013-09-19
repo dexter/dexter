@@ -26,10 +26,7 @@ import java.util.Collections;
 
 public class EntityMatchList extends ArrayList<EntityMatch> {
 
-
 	private static final long serialVersionUID = 1L;
-
-
 
 	@Override
 	public boolean add(EntityMatch e) {
@@ -39,12 +36,11 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 	public void sort() {
 		Collections.sort(this);
 	}
-	
-	
-	public int entityIndex(int e){
+
+	public int entityIndex(int e) {
 		int pos = 0;
-		for (EntityMatch em : this){
-			if (em.getId() == e){
+		for (EntityMatch em : this) {
+			if (em.getId() == e) {
 				return pos;
 			}
 			pos++;
@@ -67,24 +63,22 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 		int i = 1;
 		for (EntityMatch match : this) {
 			sb.append(i++).append(" ").append(match.toString());
-			//.append("\n");
-			//sb.append(match.getExplanation());
+			// .append("\n");
+			// sb.append(match.getExplanation());
 		}
 		return sb.toString();
 	}
-	
+
 	public String toEntityString() {
 		StringBuilder sb = new StringBuilder();
 		int i = 1;
 		for (EntityMatch match : this) {
 			sb.append(i++).append(" ").append(match.toEntityString());
-			//.append("\n");
-			//sb.append(match.getExplanation());
+			// .append("\n");
+			// sb.append(match.getExplanation());
 		}
 		return sb.toString();
 	}
-	
-
 
 	public EntityMatchList removeOverlappings() {
 		EntityMatchList eml = new EntityMatchList();
@@ -93,14 +87,13 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 			for (EntityMatch e1 : eml) {
 				// check if e overlaps with some entity yet in the result list
 				overlaps = e1.getSpot().overlaps(e.getSpot());
-				if (overlaps) break;
+				if (overlaps)
+					break;
 			}
-			if (!overlaps) eml.add(e);
+			if (!overlaps)
+				eml.add(e);
 		}
 		return eml;
 	}
-	
-	
-	
 
 }

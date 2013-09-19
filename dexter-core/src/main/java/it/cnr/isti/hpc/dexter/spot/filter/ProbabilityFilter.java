@@ -51,7 +51,7 @@ public class ProbabilityFilter implements SpotFilter {
 	public boolean isRemove(Spot spot) {
 		if (spot == null)
 			return true;
-		return (spot.getProbability() <= threshold);
+		return (spot.getLinkProbability() <= threshold);
 	}
 
 }

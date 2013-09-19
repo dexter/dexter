@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class IntArrayString {
 
-	static StringBuffer sb = new StringBuffer();
+	private static StringBuffer sb = new StringBuffer();
 	private static final char SEPARATOR = ',';
 	private transient boolean deltaEncoded = true;
 
@@ -45,16 +45,16 @@ public class IntArrayString {
 		}
 		return arrayToString(array);
 	}
-	
+
 	public String toString(Integer[] array) {
 		return toString(Arrays.asList(array));
 	}
 
-
 	private List<Integer> deltaEncode(List<Integer> array) {
 		List<Integer> deltaEncoded = new ArrayList<Integer>(array.size());
 		Collections.sort(array);
-		if (array.isEmpty()) return array;
+		if (array.isEmpty())
+			return array;
 		int previous = array.get(0);
 		Integer current = 0;
 		deltaEncoded.add(previous);
@@ -65,13 +65,13 @@ public class IntArrayString {
 		}
 		return deltaEncoded;
 	}
-	
+
 	private List<Integer> deltaDecode(List<Integer> array) {
 		List<Integer> deltaDecode = new ArrayList<Integer>(array.size());
-		if (array.isEmpty()) return array;
-		
+		if (array.isEmpty())
+			return array;
+
 		Integer previous = array.get(0);
-		Integer current = 0;
 		deltaDecode.add(previous);
 		for (int i = 1; i < array.size(); i++) {
 			previous += array.get(i);
@@ -82,7 +82,8 @@ public class IntArrayString {
 
 	private String arrayToString(List<Integer> array) {
 		sb.setLength(0);
-		if (array.isEmpty()) return "";
+		if (array.isEmpty())
+			return "";
 		for (int i : array) {
 			sb.append(Integer.toHexString(i));
 			sb.append(SEPARATOR);
@@ -90,11 +91,12 @@ public class IntArrayString {
 		String string = sb.substring(0, sb.length() - 1);
 		return string;
 	}
-	
-	private List<Integer> stringToArray(String string){
+
+	private List<Integer> stringToArray(String string) {
 		sb.setLength(0);
 		List<Integer> array = new ArrayList<Integer>();
-		if (string.trim().isEmpty()) return array;
+		if (string.trim().isEmpty())
+			return array;
 		for (int i = 0; i < string.length(); i++) {
 			char ch = string.charAt(i);
 			if (ch == SEPARATOR) {
@@ -114,14 +116,9 @@ public class IntArrayString {
 
 	public List<Integer> toArray(String string) {
 		List<Integer> array = stringToArray(string);
-		if (deltaEncoded) array = deltaDecode(array);
+		if (deltaEncoded)
+			array = deltaDecode(array);
 		return array;
 	}
-	
-	
-
-	
-	
-
 
 }

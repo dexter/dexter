@@ -138,7 +138,7 @@ public class ShingleExtractor implements Iterable<Shingle> {
 	}
 
 	public ShingleExtractor(Document doc) {
-		this(doc.getText());
+		this(doc.getMention());
 	}
 
 	public ShingleExtractor(String text) {
