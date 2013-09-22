@@ -9,30 +9,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * SpotReader class iterates over a list of spots given two files:
+ * <ul>
+ * <li>a <strong>spotSrcTargetFile</strong> containing a list of spots extracted
+ * from the anchors in the wikipedia dump. The format of each line in the file
+ * is: <br>
+ * <code>
+ * spot <tab> source-id <tab> target-id 
+ * </code> <br>
+ * where <code>source-id</code> is the integer id of the entity containing the
+ * anchor, while <code>target-id</code> is the target of the anchor. The file is
+ * lexicographically sorted by the spot, source-id and then target-id.</li>
+ * <li>a <strong>spotDocFreqFile </strong> containing the document frequency
+ * (how many articles contain the spot as pure text) for each spot (each line
+ * containing <code> spot <tab> doc frequency </code>). The file is sorted by
+ * the spot.</li>
+ * </ul>
+ * 
+ * The SpotReader merges the informations in the two files and provides an
+ * iterator over a list of Spot objects.
+ * 
+ * @see Spot
+ * 
+ * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+ * 
+ *         Created on Sep 22, 2013
+ */
 public class SpotReader implements Iterator<Spot> {
 	BufferedReader br = null;
 	SpotSrcTarget currentSST;
 	SpotFrequency currentSF;
 	Iterator<SpotSrcTarget> spotSrcTargetIterator;
 	Iterator<SpotFrequency> spotFrequencyIterator;
-	
-	
-	
 
 	List<Filter<Spot>> filters = new ArrayList<Filter<Spot>>();
 	boolean init = false;
 	Spot next = null;
 
 	public SpotReader(String spotSrcTargetFile, String spotDocFreqFile) {
-		RecordReader<SpotSrcTarget> reader = new RecordReader<SpotSrcTarget>(spotSrcTargetFile, new SpotSrcTarget.Parser());
-;		spotSrcTargetIterator = reader.iterator();
+		RecordReader<SpotSrcTarget> reader = new RecordReader<SpotSrcTarget>(
+				spotSrcTargetFile, new SpotSrcTarget.Parser());
+		;
+		spotSrcTargetIterator = reader.iterator();
 		currentSST = spotSrcTargetIterator.next();
-		RecordReader<SpotFrequency> reader2 = new RecordReader<SpotFrequency>(spotDocFreqFile, new SpotFrequency.Parser());
+		RecordReader<SpotFrequency> reader2 = new RecordReader<SpotFrequency>(
+				spotDocFreqFile, new SpotFrequency.Parser());
 		spotFrequencyIterator = reader2.iterator();
 		currentSF = spotFrequencyIterator.next();
-		
-	}
 
+	}
+	/** 
+	 * Add a filter to the reader. The Iterator will return only Spot objects
+	 * that are not filtered by the filters. 
+	 * @param filter - the filter to apply
+	 * 
+	 * @see Filter
+	 */
 	public void addFilter(Filter<Spot> filter) {
 		filters.add(filter);
 	}
@@ -45,7 +78,8 @@ public class SpotReader implements Iterator<Spot> {
 		SpotSrcTarget next = spotSrcTargetIterator.next();
 		Spot nextSpot = null;
 		do {
-			while (spotSrcTargetIterator.hasNext() && next.hasSameSpot(currentSST)) {
+			while (spotSrcTargetIterator.hasNext()
+					&& next.hasSameSpot(currentSST)) {
 				// equals returns true if next has the same entity target
 				if (next.equals(currentSST))
 					currentSST.incrementEntityFrequency();
@@ -66,7 +100,7 @@ public class SpotReader implements Iterator<Spot> {
 	private Spot generateSpot(List<SpotSrcTarget> sstf) {
 		int link = 0;
 		String spot = sstf.get(0).getSpot();
-		
+
 		List<Entity> entities = new ArrayList<Entity>();
 
 		for (SpotSrcTarget e : sstf) {
@@ -80,13 +114,12 @@ public class SpotReader implements Iterator<Spot> {
 			}
 		}
 		int freq = currentSF.getFreq();
-		assert(currentSF.getSpot().equals(spot));
+		assert (currentSF.getSpot().equals(spot));
 		currentSF = spotFrequencyIterator.next();
 		Spot s = new Spot(spot, entities, link, freq);
 		return s;
 	}
 
-	
 	public boolean hasNext() {
 		if (!init)
 			init();
@@ -116,7 +149,7 @@ public class SpotReader implements Iterator<Spot> {
 		// }
 	}
 
-	public boolean isFilter(Spot spot) {
+	private boolean isFilter(Spot spot) {
 		for (Filter<Spot> f : filters) {
 			if (f.isFilter(spot))
 				return true;
@@ -124,7 +157,6 @@ public class SpotReader implements Iterator<Spot> {
 		return false;
 	}
 
-	
 	public Spot next() {
 		if (!init)
 			init();
