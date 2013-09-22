@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.Pipe;
 
 /**
- * A cleaner performs a transformation over an object. 
+ * A cleaner performs a simple transformation over an object. 
  * 
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it

@@ -33,6 +33,9 @@ package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 
 
 /**
+ * 
+ * Implements the identity function, it gives in output the input object.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Sep 18, 2013
