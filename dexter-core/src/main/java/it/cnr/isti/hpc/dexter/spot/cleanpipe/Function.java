@@ -33,12 +33,26 @@ package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 
 
 /**
+ * A function performs a single manipulation over an object within 
+ * a pipeline. 
+ * 
+ * @see it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.Cleaner
+ * @see it.cnr.isti.hpc.dexter.spot.cleanpipe.mapper.Mapper
+ * @see it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.Filter
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Sep 18, 2013
  */
 public abstract class Function<T> {
-
+	
+	/**
+	 * Performs the manipulation, eventual outputs produced by the function 
+	 * are output using the collector object. 
+	 * 
+	 * @param elem - the object to manipulate
+	 * @param collector - the output collector, use the method <code> pushResult </code> to output one or more manipulations
+	 */
 	protected abstract void eval(T elem, Pipe<T>.OutputCollector collector);
 
 	

@@ -37,6 +37,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Class pipe allows to create a chain of functions manipulating T objects. 
+ *  
+ * 
+ * Pipes are chained together through their constructors.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Sep 18, 2013
@@ -90,6 +95,10 @@ public class Pipe<T> {
 		return list;
 	}
 
+	/**
+	 * Performs all the pipeline over the object elem, and returns one 
+	 * or multiple manipulations of the object elem.
+	 */
 	public List<T> process(T elem) {
 		Pipe<T> p = head;
 		List<T> elems = new LinkedList<T>();
