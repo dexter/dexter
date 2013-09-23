@@ -508,7 +508,7 @@ public class Disambiguator {
 		EntityMatchList nonAmbiguous = getNonAmbiguousEntities(context);
 		eml.addAll(nonAmbiguous);
 		for (EntityMatch em : eml){
-			em.setScore((em.getSpotProbability()*em.getPriorProbability()*context.getRelatednessTo(em)));
+			em.setScore((em.getSpotLinkProbability()*em.getPriorProbability()*context.getRelatednessTo(em)));
 			
 				
 		}

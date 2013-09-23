@@ -1,5 +1,5 @@
 /**
- *  Copyright 2012 Diego Ceccarelli
+s *  Copyright 2012 Diego Ceccarelli
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.Field;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 
@@ -50,8 +51,8 @@ public class ArticleContextExtractor extends ContextExtractor {
 		init(this.text);
 	}
 
-	public ArticleContextExtractor(Document d){
-		super(d);
+	public ArticleContextExtractor(Field field){
+		super(field);
 	}
 	
 	public String getCleanAsciiText(Article a){

@@ -89,8 +89,8 @@ public class Context {
 				int pos = contextEntities.entityIndex(e.getId());
 				if (pos >= 0) {
 					EntityMatch sameEntity = contextEntities.get(pos);
-					if (e.getSpotProbability() > sameEntity
-							.getSpotProbability()) {
+					if (e.getSpotLinkProbability() > sameEntity
+							.getSpotLinkProbability()) {
 						contextEntities.remove(pos);
 						contextEntities.add(e);
 					}
@@ -105,7 +105,7 @@ public class Context {
 		TreeSet<EntityMatch> sortedEntities = new TreeSet<EntityMatch>();
 
 		for (EntityMatch e : contextEntities) {
-			double spotProbability = e.getSpotProbability();
+			double spotProbability = e.getSpotLinkProbability();
 			double avgRelatedness = 0;
 			// if (relatedness.hasNegativeScores()){
 			// for (EntityMatch e1 : contextEntities){

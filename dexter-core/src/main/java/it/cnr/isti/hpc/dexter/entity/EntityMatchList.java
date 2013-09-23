@@ -86,7 +86,7 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 			boolean overlaps = false;
 			for (EntityMatch e1 : eml) {
 				// check if e overlaps with some entity yet in the result list
-				overlaps = e1.getSpot().overlaps(e.getSpot());
+				overlaps = e1.overlaps(e);
 				if (overlaps)
 					break;
 			}

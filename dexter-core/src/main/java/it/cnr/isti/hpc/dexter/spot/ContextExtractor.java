@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,8 @@ public class ContextExtractor {
 
 	}
 
-	public ContextExtractor(Document document) {
-		this.text = SpotManager.cleanText(document.getMention());
+	public ContextExtractor(Field field) {
+		this.text = SpotManager.cleanText(field.getValue());
 		init(text);
 	}
 	

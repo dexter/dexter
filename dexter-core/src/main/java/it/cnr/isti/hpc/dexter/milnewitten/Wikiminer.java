@@ -15,15 +15,13 @@
  */
 package it.cnr.isti.hpc.dexter.milnewitten;
 
-import java.util.Collections;
-
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.entity.EntityRanker;
-import it.cnr.isti.hpc.dexter.randomwalk.ReferentGraph;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spot.Spotter;
+
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -22,10 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The Document interface is defines as a set of {@link Field fields}. Each
+ * The Document interface defines as a set of {@link Field fields}. Each
  * field has a name and a textual value. Thus each document should typically
  * contain one or more fields which uniquely identify it. <br/>
- * A document can contains only one field with a fixed name (duplicate fields
+ * A document can contain only one field with a fixed name (duplicate fields
  * are not supported).
  * 
  * @author Salvatore Trani, salvatore.trani@isti.cnr.it

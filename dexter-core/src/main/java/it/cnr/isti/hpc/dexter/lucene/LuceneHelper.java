@@ -18,8 +18,8 @@ package it.cnr.isti.hpc.dexter.lucene;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotManager;
+import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnderscoreCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
@@ -799,7 +799,7 @@ public class LuceneHelper {
 	 * 
 	 */
 	@SuppressWarnings("null")
-	public void rankBySimilarity(Spot spot, EntityMatchList eml,
+	public void rankBySimilarity(SpotMatch spot, EntityMatchList eml,
 			String context, String field) {
 
 		if (context.trim().isEmpty()) {
@@ -856,7 +856,7 @@ public class LuceneHelper {
 	 * 
 	 * 
 	 */
-	public void rankBySimilarity(Spot spot, EntityMatchList eml, String context) {
+	public void rankBySimilarity(SpotMatch spot, EntityMatchList eml, String context) {
 		rankBySimilarity(spot, eml, context, LUCENE_ARTICLE_DEFAULT_FIELD);
 		return;
 

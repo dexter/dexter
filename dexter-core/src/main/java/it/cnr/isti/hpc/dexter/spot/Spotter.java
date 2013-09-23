@@ -15,7 +15,10 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
+import java.util.Iterator;
+
 import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.Field;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
@@ -56,54 +59,61 @@ public class Spotter {
 	public SpotMatchList match(Document document) {
 		SpotMatchList matches = new SpotMatchList();
 
-		EntityRanker er = new EntityRanker(document);
+		
 
-		ShingleExtractor shingler = new ShingleExtractor(document);
-		Spot s;
-		String text;
-		for (Shingle shingle : shingler) {
-			logger.debug("SHINGLE: [{}] ", shingle);
-			text = shingle.getText();
-			if (cache.containsKey(text)) {
-				// hit in cache
-				s = cache.get(text);
-				if (s != null){
-					s = s.clone();
-				}
-			} else {
-				s = spotRepo.getSpot(text);
-				cache.put(text, s);
-			}
-
-			if (s == null) {
-				logger.debug("no shingle for [{}] ", shingle);
-				continue;
-			}
-
-			s.setStart(shingle.getStart());
-			s.setEnd(shingle.getEnd());
-
-			if (filter.isFilter(s)) {
-				logger.debug("ignoring spot {}, probability too low {}",
-						s.getMention(), s.getLinkProbability());
-				continue;
-			}
-
-			int pos = matches.index(s);
-			if (pos >= 0) {
-				// the spot is yet in the list, increment its occurrences
-				matches.get(pos).incrementOccurrences();
-				continue;
-			}
-
-			logger.debug("adding {} to matchset ", s);
+		Iterator<Field> fields = document.getFields();
+		while (fields.hasNext()) {
 			
-			SpotMatch match = new SpotMatch(s, er.rank(s));
-			matches.add(match);
+			Field field = fields.next();
+			EntityRanker er = new EntityRanker(field);
+			String fieldName = field.getName();
+			ShingleExtractor shingler = new ShingleExtractor(field.getValue()
+	);
+			Spot s;
+			String text;
+			for (Shingle shingle : shingler) {
+				logger.debug("SHINGLE: [{}] ", shingle);
+				text = shingle.getText();
+				if (cache.containsKey(text)) {
+					// hit in cache
+					s = cache.get(text);
+					if (s != null) {
+						s = s.clone();
+					}
+				} else {
+					s = spotRepo.getSpot(text);
+					cache.put(text, s);
+				}
 
+				if (s == null) {
+					logger.debug("no shingle for [{}] ", shingle);
+					continue;
+				}
+				
+//				s.setStart(shingle.getStart());
+//				s.setEnd(shingle.getEnd());
+
+				if (filter.isFilter(s)) {
+					logger.debug("ignoring spot {}, probability too low {}",
+							s.getMention(), s.getLinkProbability());
+					continue;
+				}
+
+//				int pos = matches.index(s);
+//				if (pos >= 0) {
+//					// the spot is yet in the list, increment its occurrences
+//					matches.get(pos).incrementOccurrences();
+//					continue;
+//				}
+				SpotMatch match = new SpotMatch(s,field);
+				logger.debug("adding {} to matchset ", s);
+				
+				match = new SpotMatch(s, er.rank(match));
+				matches.add(match);
+
+			}
 		}
 
-		
 		return matches;
 	}
 

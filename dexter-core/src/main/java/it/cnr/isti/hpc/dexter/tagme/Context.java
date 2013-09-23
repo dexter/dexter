@@ -175,7 +175,7 @@ public class Context {
 				EntityMatch c = eml.get(j); 
 				avgRel += relatedness.getScore(c.getId(), e.getId());
 			}
-			e.setScore(0.5*avgRel/(size-1)+0.5*e.getSpotProbability());
+			e.setScore(0.5*avgRel/(size-1)+0.5*e.getSpotLinkProbability());
 		}
 		return eml;
 		

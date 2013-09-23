@@ -18,6 +18,7 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
@@ -46,7 +47,7 @@ public class MatchSpotsInTextCLI extends AbstractCommandLineInterface {
 	public static void main(String[] args) {
 		MatchSpotsInTextCLI cli = new MatchSpotsInTextCLI(args);
 		String input = cli.getInput();
-		Document doc = new Document(IOUtils.getFileAsString(input));
+		Document doc = new FlatDocument(IOUtils.getFileAsString(input));
 		Spotter spotter = new Spotter();
 		logger.info("spotting file {}", input);
 

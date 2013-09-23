@@ -16,6 +16,7 @@
 package it.cnr.isti.hpc.dexter.entity;
 
 import it.cnr.isti.hpc.dexter.spot.Spot;
+import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 
 import java.util.Comparator;
 
@@ -26,8 +27,11 @@ import java.util.Comparator;
  */
 public class EntityMatch implements Comparable<EntityMatch> {
 	private Entity entity;
+	
+	private SpotMatch spot;
+	
+
 	private double score;
-	private Spot spot;
 	
 	private EntityMatch(Entity e,  double score) {
 		super();
@@ -41,13 +45,13 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		this.score = score;
 	}
 	
-	public EntityMatch(Entity e, double score, Spot spot) {
+	public EntityMatch(Entity e, double score, SpotMatch spot) {
 		this(e, score);
 		this.spot = spot;
 	}
 	
 	
-	public EntityMatch(int id, double score, Spot spot) {
+	public EntityMatch(int id, double score, SpotMatch spot) {
 		this(id, score);
 		this.spot = spot;
 	}
@@ -76,7 +80,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return score;
 	}
 
-	public Spot getSpot() {
+	public SpotMatch getSpot() {
 		return spot;
 	}
 	
@@ -86,6 +90,10 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	
 	public int getEnd(){
 		return spot.getEnd();
+	}
+	
+	public String getMention(){
+		return spot.getMention();
 	}
 
 	public void setEntity(Entity entity) {
@@ -142,13 +150,13 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		this.score = score;
 	}
 
-	public void setSpot(Spot spot) {
+	public void setSpot(SpotMatch spot) {
 		this.spot = spot;
 	}
 
 	public String toString() {
-		String str = spot.getMention() + "[" + spot.getStart() + ","
-				+ spot.getEnd() + "]" +"\t score: "+score+"\t"+"prior:"+getPriorProbability()+"\n" + entity.toString() + "\n";
+		String str = spot.getMention() + "[" + getStart() + ","
+				+ getEnd() + "]" +"\t score: "+score+"\t"+"prior:"+getPriorProbability()+"\n" + entity.toString() + "\n";
 		return str;
 	}
 
@@ -163,7 +171,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return spot.getFrequency();
 	}
 
-	public double getSpotProbability() {
+	public double getSpotLinkProbability() {
 		return spot.getLinkProbability();
 	}
 
@@ -172,4 +180,26 @@ public class EntityMatch implements Comparable<EntityMatch> {
 			return em1.getSpot().getMention().length() - em2.getSpot().getMention().length();
 		}
 	}
+	
+	/**
+	 * Returns true if this spot and the given spots overlaps in the annotated
+	 * text, e.g.,
+	 * <code> "neruda pablo picasso" -> 'neruda pablo' 'pablo picasso'
+	 </code>.
+	 * 
+	 * @param s
+	 *            - The spot to check
+	 * @return
+	 */
+	public boolean overlaps(EntityMatch s) {
+		boolean startOverlap = ((s.getStart() >= this.getStart()) && (s
+				.getStart() <= this.getEnd()));
+		if (startOverlap)
+			return true;
+		boolean endOverlap = ((s.getEnd() >= this.getStart()) && (s.getEnd() <= this
+				.getEnd()));
+		return endOverlap;
+	}
+
+	
 }

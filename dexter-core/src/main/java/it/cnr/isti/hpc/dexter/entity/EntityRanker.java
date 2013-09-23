@@ -18,10 +18,12 @@ package it.cnr.isti.hpc.dexter.entity;
 import java.util.List;
 
 import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.Field;
 import it.cnr.isti.hpc.dexter.hash.IdHelper;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.ContextExtractor;
 import it.cnr.isti.hpc.dexter.spot.Spot;
+import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
@@ -50,61 +52,68 @@ public class EntityRanker {
 			"rank.by.similarity").equals("true");
 	private static final boolean RANK_BY_PRIOR = properties
 			.get("rank.by.prior").equals("true");
-	
-	private static  float prior_threshold;
+
+	private static float prior_threshold;
 
 	private static final int WINDOW_SIZE = properties
 			.getInt("context.window.size");
 
-	public EntityRanker(Document document) {
+	public EntityRanker(Field field) {
 		prior_threshold = Float.parseFloat(properties.get("prior.threshold"));
 		if (RANK_BY_SIMILARITY) {
 			logger.info("(e|s) using cosine similarity");
 		} else {
 			if (RANK_BY_PRIOR) {
-				
+
 				logger.info("(e|s) using prior probability");
 			} else
 				logger.info("(e|s) NO PROBABILITY");
 		}
-		context = new ContextExtractor(document);
+		context = new ContextExtractor(field);
 		context.setWindowSize(WINDOW_SIZE);
 		this.document = document;
 	}
-	
-	
-	private EntityMatchList filterEntitiesByPrior(Spot s){
+
+	private EntityMatchList filterEntitiesByPrior(SpotMatch s) {
 		EntityMatchList eml = new EntityMatchList();
-		for (Entity e : s.getEntities()) {
+		for (EntityMatch e : s.getEntities()) {
 			if (e.getId() == IdHelper.NOID)
 				continue;
-			if (s.getEntityCommonness(e) < prior_threshold){
-				logger.debug("filter {} by commonness",e.getId());
+			if (e.getPriorProbability() < prior_threshold) {
+				logger.debug("filter {} by commonness", e.getId());
 				continue;
 			}
-			eml.add(new EntityMatch(e, 1, s));
+			eml.add(e);
 		}
-		
+
 		return eml;
-		
-		
+
 	}
 
-	public EntityMatchList rank(Spot spot) {
-		EntityMatchList eml = filterEntitiesByPrior(spot);
+	public EntityMatchList rank(SpotMatch spot) {
+		// FIXME filter by prior before
+		// EntityMatchList eml = filterEntitiesByPrior(spot);
+		EntityMatchList eml = new EntityMatchList();
+		EntityMatch match = null;
 		// can't happen that prior and similarity are both true
-		assert(!RANK_BY_PRIOR || !RANK_BY_SIMILARITY);
+		assert (!RANK_BY_PRIOR || !RANK_BY_SIMILARITY);
 		if (RANK_BY_PRIOR) {
-			
-			for (EntityMatch e : eml) {
-				e.setScore(spot.getEntityCommonness(e.getEntity()));
+
+			for (Entity e : spot.getSpot().getEntities()) {
+				match = new EntityMatch(e, spot.getEntityCommonness(e), spot);
+				eml.add(match);
+			}
+
+		}
+		if (RANK_BY_SIMILARITY) {
+			for (Entity e : spot.getSpot().getEntities()) {
+				match = new EntityMatch(e,0, spot);
+				eml.add(match);
 			}
 			
-		}
-		if (RANK_BY_SIMILARITY){
 			String c = context.getContext(spot.getMention());
 			logger.debug("context spot {} = {}", spot.getMention(), c);
-			 helper.rankBySimilarity(spot, eml, c);
+			helper.rankBySimilarity(spot, eml, c);
 		}
 		return eml;
 	}

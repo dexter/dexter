@@ -18,8 +18,8 @@ package it.cnr.isti.hpc.dexter.spot.repo;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 
 /**
- * SpotRepository allows to retrieve a Spot metadata, i.e., a piece of text
- * referring to one or more <emph>entities</entities>.
+ * SpotRepository allows to retrieve  metadata referring to a {@link Spot spot}, i.e., 
+ * a piece of text referring to one or more <i>entities</i>.
  * 
  * @see Spot
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -29,12 +29,12 @@ import it.cnr.isti.hpc.dexter.spot.Spot;
 public interface SpotRepository {
 
 	/**
-	 * Given the a piece of text, the method will return a Spot object if the
-	 * given text is associated to one or more entities. Otherwise, will return
+	 * Given the a piece of text, the method will return a {@link Spot} if the
+	 * given text is associated to one or more entities. Otherwise, it will return
 	 * null.
 	 * 
 	 * @param spot
-	 *            - a piece of text possibly referering to one or more entities
+	 *            - a piece of text possibly referring to one or more entities
 	 * @return a Spot object containing several informations about the spot and
 	 *         the possible entities linked by the spot, null if the string is
 	 *         not referring to any entity

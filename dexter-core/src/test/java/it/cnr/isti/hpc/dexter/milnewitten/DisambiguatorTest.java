@@ -15,8 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.milnewitten;
 
-import static org.junit.Assert.*;
-import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class DisambiguatorTest {
 	public void test() {
 		String conll4 = "China says time right for Taiwan talks. BEIJING 1996-08-22 China has said it was time for political talks with Taiwan and that the rival island should take practical steps towards that goal. Consultations should be held to set the time and format of the talks, the official Xinhua news agency quoted Tang Shubei, executive vice chairman of the Association for Relations Across the Taiwan Straits, as saying late on Wednesday.";
 		Wikiminer wiki = new Wikiminer();
-		EntityMatchList eml = wiki.tag(new Document(conll4));
+		EntityMatchList eml = wiki.tag(new FlatDocument(conll4));
 		System.out.println(eml);
 	}
 
