@@ -3,6 +3,7 @@ package it.cnr.isti.hpc.dexter;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import java.io.File;
+import java.util.Iterator;
 
 /**
  * A FlatDocument is a Document with only one Field.
@@ -11,9 +12,13 @@ import java.io.File;
  * 
  * @author Salvatore Trani, salvatore.trani@isti.cnr.it created on 18/sept/2013
  */	
-public class FlatDocument extends Document {
+public class FlatDocument extends UnorderedDocument {
 	private static final long serialVersionUID = 1L;
 	protected final String fieldName = "body";
+	
+	public FlatDocument() {
+		super();
+	}
 
 	/**
 	 * FlatDocument build with the "text" value as unique field  

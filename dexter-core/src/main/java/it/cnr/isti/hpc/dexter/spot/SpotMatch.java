@@ -22,8 +22,7 @@ import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 
 /**
- * Match contains the entities matched for a a spot ( @see EntityMatchList )
- * 
+ * SpotMatch contains the entities matched for a spot ( @see EntityMatchList )
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  */
