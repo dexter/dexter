@@ -22,64 +22,58 @@ import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 
 /**
- * Match contains the entities matched for a a spot ( @see EntityMatchList ) 
+ * SpotMatch contains the entities matched for a spot ( @see EntityMatchList )
  * 
- *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 03/ago/2012
  */
 public class SpotMatch implements Comparable<SpotMatch> {
-	Spot spot;
-	
-	EntityMatchList entities;
-	int occurrences = 1;
-	
-	
-	
-	public SpotMatch (Spot spot){
+
+	protected Spot spot;
+	protected EntityMatchList entities;
+	protected int occurrences = 1;
+
+	public SpotMatch(Spot spot) {
 		this.spot = spot;
-		
 	}
-	
-	public void incrementOccurrences(){
+
+	public void incrementOccurrences() {
 		occurrences++;
 	}
-	
-	public SpotMatch(Spot spot, EntityMatchList entities){
+
+	public SpotMatch(Spot spot, EntityMatchList entities) {
 		this(spot);
 		this.entities = entities;
 	}
-	
+
 	/**
 	 * @param s
 	 * @param entities2
 	 */
-	public SpotMatch(Spot s, List<Entity> entities) {
-		this(s);
+	public SpotMatch(Spot spot, List<Entity> entities) {
+		this(spot);
 		this.entities = new EntityMatchList();
-		for (Entity e : entities){
-			this.entities.add(new EntityMatch(e.clone(), s.getEntityCommonness(e), s));
-			
+		for (Entity e : entities) {
+			this.entities.add(new EntityMatch(e.clone(), spot
+					.getEntityCommonness(e), spot));
 		}
-		
+
 	}
 
-	public double getImportance(){
-		return spot.getIdf()*occurrences;
+	public double getImportance() {
+		return spot.getIdf() * occurrences;
 	}
-	
-	public void setProbability(double probability){
+
+	public void setProbability(double probability) {
 		spot.setLinkProbability(probability);
 	}
-	
 
-	
 	public int compareTo(SpotMatch m) {
-		if (spot.getIdf() >  m.spot.getIdf()) return 1;
-		if (spot.getIdf() <  m.spot.getIdf()) return -1;
+		if (spot.getIdf() > m.spot.getIdf())
+			return 1;
+		if (spot.getIdf() < m.spot.getIdf())
+			return -1;
 		return 1;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -97,7 +91,7 @@ public class SpotMatch implements Comparable<SpotMatch> {
 			return false;
 		return true;
 	}
-	
+
 	public EntityMatchList getEntities() {
 		return entities;
 	}
@@ -105,8 +99,6 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	public Spot getSpot() {
 		return spot;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -116,32 +108,27 @@ public class SpotMatch implements Comparable<SpotMatch> {
 		return result;
 	}
 
-
 	public void setEntities(EntityMatchList entities) {
 		this.entities = entities;
 	}
 
+	// @Override
+	// public int compareTo(Match m) {
+	// if (spot.getSpotProbability() > m.spot.getSpotProbability()) return 1;
+	// if (spot.getSpotProbability() < m.spot.getSpotProbability()) return -1;
+	// return 1;
+	// }
 
-//	@Override
-//	public int compareTo(Match m) {
-//		if (spot.getSpotProbability() >  m.spot.getSpotProbability()) return 1;
-//		if (spot.getSpotProbability() <  m.spot.getSpotProbability()) return -1;
-//		return 1;
-//	}
-	
 	public void setSpot(Spot spot) {
 		this.spot = spot;
 	}
-	
-	public String toString(){
-		return spot.toString() + " occ: "+occurrences;
+
+	public String toString() {
+		return spot.toString() + " occ: " + occurrences;
 	}
 
 	public double getProbability() {
-		return spot.getProbability();
+		return spot.getLinkProbability();
 	}
-	
-	
-	
 
 }

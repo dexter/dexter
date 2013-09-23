@@ -76,10 +76,10 @@ public class EntityRanker {
 	private EntityMatchList filterEntitiesByPrior(Spot s){
 		EntityMatchList eml = new EntityMatchList();
 		for (Entity e : s.getEntities()) {
-			if (e.id() == IdHelper.NOID)
+			if (e.getId() == IdHelper.NOID)
 				continue;
 			if (s.getEntityCommonness(e) < prior_threshold){
-				logger.debug("filter {} by commonness",e.id());
+				logger.debug("filter {} by commonness",e.getId());
 				continue;
 			}
 			eml.add(new EntityMatch(e, 1, s));
@@ -102,8 +102,8 @@ public class EntityRanker {
 			
 		}
 		if (RANK_BY_SIMILARITY){
-			String c = context.getContext(spot.getText());
-			logger.debug("context spot {} = {}", spot.getText(), c);
+			String c = context.getContext(spot.getMention());
+			logger.debug("context spot {} = {}", spot.getMention(), c);
 			 helper.rankBySimilarity(spot, eml, c);
 		}
 		return eml;

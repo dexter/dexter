@@ -51,7 +51,7 @@ public class ProbabilityFilter extends Filter<Spot> {
 	public boolean isFilter(Spot spot) {
 		if (spot == null)
 			return true;
-		return (spot.getProbability() <= threshold);
+		return (spot.getLinkProbability() <= threshold);
 	}
 
 }

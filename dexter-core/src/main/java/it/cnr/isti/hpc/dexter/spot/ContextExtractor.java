@@ -47,7 +47,7 @@ public class ContextExtractor {
 	}
 
 	public ContextExtractor(Document document) {
-		this.text = SpotManager.cleanText(document.getText());
+		this.text = SpotManager.cleanText(document.getMention());
 		init(text);
 	}
 	

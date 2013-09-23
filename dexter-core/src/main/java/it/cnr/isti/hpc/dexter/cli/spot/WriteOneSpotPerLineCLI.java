@@ -65,7 +65,7 @@ public class WriteOneSpotPerLineCLI extends AbstractCommandLineInterface {
 			sb.setLength(0);
 			progress.up();
 			Spot s = reader.next();
-			sb.append(s.getText()).append("\t").append(s.toTsv()).append("\n");
+			sb.append(s.getMention()).append("\t").append(s.toTsv()).append("\n");
 			cli.writeInOutput(sb.toString());
 		}
 		cli.closeOutput();

@@ -36,7 +36,7 @@ public class SpotReaderTest {
 		reader.addFilter(new CommonnessFilter());
 		Spot s = reader.next();
 		assertEquals(20, s.getLink());
-		assertEquals("argentina", s.getText());
+		assertEquals("argentina", s.getMention());
 		assertEquals(38541,s.getFrequency());
 		assertEquals(1,s.getEntities().size());
 		assertTrue(s.getEntities().contains(new Entity(18951905)));
@@ -45,12 +45,12 @@ public class SpotReaderTest {
 		
 		s = reader.next();
 		assertEquals(5, s.getLink());
-		assertEquals("goodbye argentina", s.getText());
+		assertEquals("goodbye argentina", s.getMention());
 		assertEquals(1,s.getFrequency());
 		assertEquals(2,s.getEntities().size());
 		assertTrue(s.getEntities().contains(new Entity(8423965)));
 		assertTrue(s.getEntities().contains(new Entity(8423966)));
-		assertEquals(1,s.getProbability(),0.001);
+		assertEquals(1,s.getLinkProbability(),0.001);
 		System.out.println(s);
 		System.out.println(s.toTsv());
 		

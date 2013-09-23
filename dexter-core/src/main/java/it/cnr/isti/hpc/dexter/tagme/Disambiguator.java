@@ -163,7 +163,7 @@ public class Disambiguator {
 			
 			
 			for (SpotMatch sm : ambiguousSpots) {
-				String spot = sm.getSpot().getText();
+				String spot = sm.getSpot().getMention();
 				if (correctIds.containsKey(spot))
 					corrects.addAll(correctIds.get(spot));
 				

@@ -262,7 +262,7 @@ public class Disambiguator {
 				.getPriorProbabilityThreshold();
 		
 		for (SpotMatch sm : ambiguousSpots) {
-			List<Integer> corrects = correctIds.get(sm.getSpot().getText());
+			List<Integer> corrects = correctIds.get(sm.getSpot().getMention());
 			if (corrects == null)
 				corrects = Collections.emptyList();
 			float contextQuality = context.getQuality();
@@ -400,7 +400,7 @@ public class Disambiguator {
 				
 				sml.add(new SpotMatch(s, s.getEntities()));
 				
-				spot2golden.put(s.getText(),wikiId);
+				spot2golden.put(s.getMention(),wikiId);
 				
 
 			}
@@ -409,7 +409,7 @@ public class Disambiguator {
 		Context context = new Context(sml);
 		List<SpotMatch> ambiguousSpots = context.getAmbiguousSpots();
 		for (SpotMatch sm : ambiguousSpots){
-			goldStandard.add(spot2golden.get(sm.getSpot().getText()));
+			goldStandard.add(spot2golden.get(sm.getSpot().getMention()));
 		}
 		float priorProbabilityThreshold = context
 				.getPriorProbabilityThreshold();

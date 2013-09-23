@@ -44,7 +44,7 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 	
 	@Override
 	public boolean add(SpotMatch m){
-		logger.debug("adding spot {} ",m.spot.getText());
+		logger.debug("adding spot {} ",m.spot.getMention());
 		totalIdf += m.getSpot().getIdf();
 		return super.add(m);
 		
@@ -88,7 +88,7 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
 		for (SpotMatch m  : this){
-			sb.append(m.spot.getText()).append("\n");
+			sb.append(m.spot.getMention()).append("\n");
 			sb.append("\t").append("entities: [ ");
 			for (EntityMatch e : m.getEntities()){
 				sb.append(e.toString()).append(" ");
