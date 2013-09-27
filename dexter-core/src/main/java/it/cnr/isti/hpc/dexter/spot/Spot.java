@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * the collection as a link to an entity</li>
  * <li>the idf score of the mentions</li>
  * </ul>
+ * 
  * The spot is not document related, but collection related.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it

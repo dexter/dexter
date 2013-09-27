@@ -15,7 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.entity;
 
-import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 
 import java.util.Comparator;

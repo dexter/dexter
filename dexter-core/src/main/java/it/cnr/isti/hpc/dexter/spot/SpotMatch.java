@@ -23,7 +23,22 @@ import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 
 /**
- * SpotMatch contains the entities matched for a spot ( @see EntityMatchList )
+ * SpotMatch contains all the additional informations regarding a spot matched
+ * in a particular position of the text. <br>
+ * In particular, such object contains:
+ * <ul>
+ * <li>a reference to the original spot</li>
+ * <li>a list of candidates entities, with relevance scores possibly affected by
+ * the position and the context of the match</li>
+ * <li>the document {@link Field field} where the spot was matched</li>
+ * <li>the position in the field where the match starts</li>
+ * <li>the position in the field where the match stops</li>
+ * 
+ * 
+ * 
+ * @see EntityMatchList
+ * @see Field
+ * @see Spot
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  */
@@ -32,7 +47,7 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	protected Spot spot;
 	protected EntityMatchList entities;
 	protected Field field;
-	
+
 	private int start;
 	private int end;
 
@@ -40,19 +55,15 @@ public class SpotMatch implements Comparable<SpotMatch> {
 		this.spot = spot;
 	}
 
-//	public void incrementOccurrences() {
-//		occurrences++;
-//	}
+	// public void incrementOccurrences() {
+	// occurrences++;
+	// }
 
 	public SpotMatch(Spot spot, EntityMatchList entities) {
 		this(spot);
 		this.entities = entities;
 	}
 
-	/**
-	 * @param s
-	 * @param entities2
-	 */
 	public SpotMatch(Spot spot, List<Entity> entities) {
 		this(spot);
 		this.entities = new EntityMatchList();
@@ -63,9 +74,9 @@ public class SpotMatch implements Comparable<SpotMatch> {
 
 	}
 
-//	public double getImportance() {
-//		return spot.getIdf() * occurrences;
-//	}
+	// public double getImportance() {
+	// return spot.getIdf() * occurrences;
+	// }
 
 	public SpotMatch(Spot s, Field field) {
 		this(s);
@@ -100,8 +111,6 @@ public class SpotMatch implements Comparable<SpotMatch> {
 			return false;
 		return true;
 	}
-	
-	
 
 	public int getStart() {
 		return start;
@@ -138,8 +147,8 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	public void setEntities(EntityMatchList entities) {
 		this.entities = entities;
 	}
-	
-	public String getMention(){
+
+	public String getMention() {
 		return spot.getMention();
 	}
 
@@ -154,14 +163,23 @@ public class SpotMatch implements Comparable<SpotMatch> {
 		this.spot = spot;
 	}
 
-//	public String toString() {
-//		return spot.toString() + " occ: " + occurrences;
-//	}
+	// public String toString() {
+	// return spot.toString() + " occ: " + occurrences;
+	// }
 
+	
+	/**
+	 * Returns probability to be a link to a entity for the text of this spot, 
+	 * it is computed dividing the number of documents in Wikipedia containing 
+	 * this spot as a anchor by the number of documents in wikipedia containing
+	 * this spot as simple text.
+	 * 
+	 * @returns the link probability
+	 */
 	public double getProbability() {
 		return spot.getLinkProbability();
 	}
-	
+
 	/**
 	 * Returns true if this spot and the given spots overlaps in the annotated
 	 * text, e.g.,

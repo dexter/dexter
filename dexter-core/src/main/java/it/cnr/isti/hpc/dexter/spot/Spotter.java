@@ -15,8 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import java.util.Iterator;
-
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.Field;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
@@ -27,6 +25,8 @@ import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.structure.LRUCache;
+
+import java.util.Iterator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,6 @@ public class Spotter {
 			
 			Field field = fields.next();
 			EntityRanker er = new EntityRanker(field);
-			String fieldName = field.getName();
 			ShingleExtractor shingler = new ShingleExtractor(field.getValue()
 	);
 			Spot s;
