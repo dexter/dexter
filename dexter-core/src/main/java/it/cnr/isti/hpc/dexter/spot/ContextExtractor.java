@@ -51,6 +51,11 @@ public class ContextExtractor {
 		init(text);
 	}
 	
+	protected ContextExtractor(String text){
+		this.text = text;
+		init(text);
+	}
+	
 	private String cleanContext(String context){
 		context = context.replaceAll("[\\[\\]]"," ");
 		return context;

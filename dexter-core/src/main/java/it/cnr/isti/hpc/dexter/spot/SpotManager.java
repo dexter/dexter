@@ -96,6 +96,7 @@ public class SpotManager {
 	 */
 	public SpotManager(Pipe<String> pipe) {
 		this.pipe = pipe;
+		
 
 	}
 
@@ -149,18 +150,19 @@ public class SpotManager {
 	 */
 	public static SpotManager getStandardSpotCleaner() {
 		if (standardSpotCleaner == null) {
-			Pipe<String> pipe = new Pipe<String>(new HtmlCleaner());
+			standardSpotCleaner = new SpotManager();
+			standardSpotCleaner.add(new HtmlCleaner());
 
 			// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
-			pipe = new Pipe<String>(pipe, new UnderscoreCleaner());
-			pipe = new Pipe<String>(pipe, new StripCleaner(",#*-!`{}~[]='<>:/"));
+			standardSpotCleaner.add(new UnderscoreCleaner());
+			standardSpotCleaner.add(new StripCleaner(",#*-!`{}~[]='<>:/"));
 			// post clean
-			pipe = new Pipe<String>(pipe, new LowerCaseCleaner());
-			pipe = new Pipe<String>(pipe, new ParenthesesCleaner());
-			pipe = new Pipe<String>(pipe, new QuotesCleaner());
-			pipe = new Pipe<String>(pipe, new StripCleaner(
+			standardSpotCleaner.add(new LowerCaseCleaner());
+			standardSpotCleaner.add(new ParenthesesCleaner());
+			standardSpotCleaner.add(new QuotesCleaner());
+			standardSpotCleaner.add(new StripCleaner(
 					",#*-!`{}~[]='<>:/;.&%"));
-			standardSpotCleaner = new SpotManager(pipe);
+			
 
 		}
 		return standardSpotCleaner;
