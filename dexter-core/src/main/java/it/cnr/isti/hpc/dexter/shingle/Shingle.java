@@ -20,51 +20,48 @@ import it.cnr.isti.hpc.text.Token;
 import java.util.List;
 
 /**
+ * A Shingle represents a fragment of text in a document to annotate.
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Sep 4, 2012
+ *         Created on Sep 4, 2012
  */
 public class Shingle {
-	
-	// cleaned text
+
+	/** cleaned text */
 	public String text;
-	// start position in the original text
+	/** start position in the original text */
 	public int start;
-	// end position in the original text
+	/** end position in the original text */
 	public int end;
-	
+
 	private static StringBuilder sb = new StringBuilder();
-	
-	
-	
-	
-	public Shingle(List<Token> tokens){
+
+	public Shingle(List<Token> tokens) {
 		sb.setLength(0);
 		start = tokens.get(0).getStart();
-		end = tokens.get(tokens.size()-1).getEnd();
-		for (Token t : tokens) sb.append(t.getText()).append(" ");
-		//sb.deleteCharAt(sb.length()-1);
-		text = sb.substring(0, sb.length()-1);
+		end = tokens.get(tokens.size() - 1).getEnd();
+		for (Token t : tokens)
+			sb.append(t.getText()).append(" ");
+		// sb.deleteCharAt(sb.length()-1);
+		text = sb.substring(0, sb.length() - 1);
 	}
-	
+
 	public Shingle(String text, int start, int end) {
 		super();
 		this.text = text;
 		this.start = start;
 		this.end = end;
 	}
-	
-	
-	
+
 	public Shingle(String text) {
-		this(text, -1 , -1);
+		this(text, -1, -1);
 	}
-	
-	public boolean isEmpty(){
+
+	public boolean isEmpty() {
 		return text.isEmpty();
 	}
-
-
 
 	/**
 	 * @return the text
@@ -72,46 +69,51 @@ public class Shingle {
 	public String getText() {
 		return text;
 	}
+
 	/**
-	 * @param text the text to set
+	 * @param text
+	 *            the text to set
 	 */
 	public void setText(String text) {
 		this.text = text;
 	}
+
 	/**
 	 * @return the start
 	 */
 	public int getStart() {
 		return start;
 	}
+
 	/**
-	 * @param start the start to set
+	 * @param start
+	 *            the start to set
 	 */
 	public void setStart(int start) {
 		this.start = start;
 	}
+
 	/**
 	 * @return the end
 	 */
 	public int getEnd() {
 		return end;
 	}
+
 	/**
-	 * @param end the end to set
+	 * @param end
+	 *            the end to set
 	 */
 	public void setEnd(int end) {
 		this.end = end;
 	}
-	
-	public String toString(){
-		return "<"+text+"> ["+start+","+end+"]";
+
+	public String toString() {
+		return "<" + text + "> [" + start + "," + end + "]";
 	}
-	
-	public String originalShingle(String originalText){
+
+	public String originalShingle(String originalText) {
 		return originalText.substring(start, end);
 	}
-	
-	
-	
 
 }

@@ -17,6 +17,7 @@ package it.cnr.isti.hpc.dexter.hash;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +26,7 @@ import ch.qos.logback.classic.Logger;
 
 /**
  * HashHelperTest.java
+ * #TODO generate a different database and test
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
@@ -65,6 +67,7 @@ public class HashHelperTest {
 	}
 	*/	
 	
+	@Ignore
 	@Test
 	public void test2() {
 		IdHelper hash = IdHelperFactory.getStdIdHelper();

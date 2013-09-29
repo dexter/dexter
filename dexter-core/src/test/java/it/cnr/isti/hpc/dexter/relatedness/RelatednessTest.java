@@ -15,8 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.relatedness;
 
-import static org.junit.Assert.*;
-
 import org.junit.Assert;
 import org.junit.Test;
 
