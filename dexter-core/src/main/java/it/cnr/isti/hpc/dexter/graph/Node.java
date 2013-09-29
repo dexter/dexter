@@ -16,8 +16,8 @@
  */
 package it.cnr.isti.hpc.dexter.graph;
 
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.io.reader.RecordParser;
 
 import java.util.Collections;

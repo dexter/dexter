@@ -19,8 +19,8 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.graph.Node;
 import it.cnr.isti.hpc.dexter.graph.NodeFactory;
 import it.cnr.isti.hpc.dexter.graph.NodeStar;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 

@@ -18,7 +18,7 @@ package it.cnr.isti.hpc.dexter.graph;
 
 import it.cnr.isti.hpc.dexter.graph.ram.RamIncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.ram.RamOutcomingNodes;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory.Type;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory.Type;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>

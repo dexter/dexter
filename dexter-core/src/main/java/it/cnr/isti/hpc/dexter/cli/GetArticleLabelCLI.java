@@ -16,8 +16,8 @@
 package it.cnr.isti.hpc.dexter.cli;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.hash;
+package it.cnr.isti.hpc.dexter.label;
 
 /**
  * 
@@ -24,16 +24,17 @@ package it.cnr.isti.hpc.dexter.hash;
  * 
  * Created on Oct 7, 2012
  */
-public interface IdToLabelWriter {
+public interface LabelToIdWriter {
 	
 	
-	/**
-	 * Adds the mapping <code> id -> label </code>.
+	/** 
+	 * Adds the mapping <code> label -> id </code>
 	 */
-	public void add(int id, String label);
+	public void add(String label, int id);
+	
 	
 	/**
-	 * Closes the writer.
+	 * Closes the writer
 	 */
 	public void close();
 	

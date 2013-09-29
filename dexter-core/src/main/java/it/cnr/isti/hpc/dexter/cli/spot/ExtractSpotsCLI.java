@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.cli.label.ExportArticlesIdCLI;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.spot.SpotManager;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;

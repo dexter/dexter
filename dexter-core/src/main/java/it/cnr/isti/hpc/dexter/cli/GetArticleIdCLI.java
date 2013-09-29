@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.cli;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import org.slf4j.Logger;

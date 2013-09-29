@@ -16,8 +16,8 @@
 package it.cnr.isti.hpc.dexter.cli.label;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
-import it.cnr.isti.hpc.dexter.hash.IdToLabelWriter;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdToLabelWriter;
 import it.cnr.isti.hpc.dexter.util.TitleRedirectId;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;

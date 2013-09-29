@@ -18,8 +18,8 @@ package it.cnr.isti.hpc.dexter.cli;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.NodeFactory;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 
 import org.slf4j.Logger;

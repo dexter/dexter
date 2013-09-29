@@ -19,7 +19,7 @@ import java.util.List;
 
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.Field;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.ContextExtractor;
 import it.cnr.isti.hpc.dexter.spot.Spot;

@@ -15,8 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.label.mapdb;
 
-import it.cnr.isti.hpc.dexter.hash.IdToLabel;
-import it.cnr.isti.hpc.dexter.hash.IdToLabelWriter;
+import it.cnr.isti.hpc.dexter.label.IdToLabel;
+import it.cnr.isti.hpc.dexter.label.IdToLabelWriter;
 import it.cnr.isti.hpc.mapdb.MapDB;
 import it.cnr.isti.hpc.property.ProjectProperties;
 

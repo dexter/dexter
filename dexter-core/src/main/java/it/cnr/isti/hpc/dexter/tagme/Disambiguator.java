@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.tagme;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.milnewitten.Result;
 import it.cnr.isti.hpc.dexter.milnewitten.ResultList;
 import it.cnr.isti.hpc.dexter.spot.Spot;

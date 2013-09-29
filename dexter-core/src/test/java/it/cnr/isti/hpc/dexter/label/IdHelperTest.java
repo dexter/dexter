@@ -13,9 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.hash;
+package it.cnr.isti.hpc.dexter.label;
 
 import static org.junit.Assert.assertEquals;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -30,7 +32,7 @@ import ch.qos.logback.classic.Logger;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class HashHelperTest {
+public class IdHelperTest {
 	/**
 	 * Logger for this class
 	 */

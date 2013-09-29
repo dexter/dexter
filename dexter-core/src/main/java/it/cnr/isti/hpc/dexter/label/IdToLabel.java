@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.hash;
+package it.cnr.isti.hpc.dexter.label;
 
 /**
  * HashToArticle stores the map <code> id  -> label </code>
