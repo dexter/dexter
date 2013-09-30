@@ -335,6 +335,7 @@ public class LuceneHelper {
 	 * @return the TFIDF-similarity between the query and wikiId
 	 */
 	public float getSimilarity(Query query, int wikiId) {
+		searcher = getSearcher();
 		int docId = getLuceneId(wikiId);
 		Explanation e = null;
 		try {
