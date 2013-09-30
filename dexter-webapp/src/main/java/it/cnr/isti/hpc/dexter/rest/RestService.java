@@ -18,15 +18,14 @@ package it.cnr.isti.hpc.dexter.rest;
 
 import it.cnr.isti.hpc.dexter.Dexter;
 import it.cnr.isti.hpc.dexter.Document;
+import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
-import it.cnr.isti.hpc.dexter.article.ArticleServer;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 import it.cnr.isti.hpc.dexter.tagme.Tagme;
-import it.isti.cnr.hpc.wikipedia.article.Article;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -50,21 +49,19 @@ public class RestService {
 	//private static ArticleServer server = ArticleServer.getInstance();
 	IdHelper helper = IdHelperFactory.getStdIdHelper();
 	
-	Tagme tagger = new Tagme();
-	static {
-		RelatednessFactory.register(new MilneRelatedness());
-	}
+	private Dexter tagger = new Dexter();
+
 	
 	@GET
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotate(@QueryParam("text") String text, @QueryParam("n") @DefaultValue( "5" ) String n ) {
 		Integer entitiesToAnnotate = Integer.parseInt(n);
-		Document doc = new Document(text);
+		Document doc = new FlatDocument(text);
 		EntityMatchList eml = tagger.tag(doc);
-		String annotated = doc.getAnnotatedText(eml,entitiesToAnnotate);
-		Result r = new Result(annotated);
-		return gson.toJson(r);
+		AnnotatedDocument adoc = new AnnotatedDocument(text);
+		adoc.annotate(eml, entitiesToAnnotate);
+		return gson.toJson(adoc);
 	} 
 	
 	
@@ -83,15 +80,6 @@ public class RestService {
 	}
 	
 	
-	public class Result {
-		public String text;
-
-		public Result(String text) {
-			super();
-			this.text = text;
-		}
-		
-		
-	}
+	
 
 }

@@ -25,6 +25,57 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<artifactId>json-wikipedia</artifactId>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.mapdb</groupId>
+			<artifactId>mapdb</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-queryparser</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-analyzers-common</artifactId>
+		</dependency>
+		
+		<!-- primitive data structures -->
+		<dependency>
+			<groupId>it.unimi.dsi</groupId>
+			<artifactId>fastutil</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>it.unimi.dsi</groupId>
+			<artifactId>sux4j</artifactId>
+			<version>3.0.8</version>
+		</dependency>
+		
+		<!-- nlp processing -->
+			<dependency>
+				<groupId>org.apache.opennlp</groupId>
+				<artifactId>opennlp-tools</artifactId>
+				<version>1.5.3</version>
+			</dependency>
+			<dependency>
+				<groupId>simplenlg</groupId>
+				<artifactId>simplenlg</artifactId>
+				<version>4.4</version>
+			</dependency>
+
+
 
 
 
@@ -44,10 +95,6 @@
 
 
 
-		<dependency>
-			<groupId>it.cnr.isti.hpc</groupId>
-			<artifactId>dexter-relatedness</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.99soft.semweb</groupId>
@@ -154,36 +201,37 @@
 			</resource>
 		</resources>
 		<plugins>
-<plugin>
-			<groupId>org.mortbay.jetty</groupId>
-			<artifactId>maven-jetty-plugin</artifactId>
-			<version>6.1.10</version>
-			<configuration>
-				<scanIntervalSeconds>0</scanIntervalSeconds>
-				<stopKey>foo</stopKey>
-				<stopPort>9999</stopPort>
-			</configuration>
-			<executions>
-				<execution>
-					<id>start-jetty</id>
-					<phase>pre-integration-test</phase>
-					<goals>
-						<goal>run</goal>
-					</goals>
-					<configuration>
-						<scanIntervalSeconds>0</scanIntervalSeconds>
-						<daemon>true</daemon>
-					</configuration>
-				</execution>
-				<execution>
-					<id>stop-jetty</id>
-					<phase>post-integration-test</phase>
-					<goals>
-						<goal>stop</goal>
-					</goals>
-				</execution>
-			</executions>
-			
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.10</version>
+				<configuration>
+					<jvmArgs>-Xmx3024m</jvmArgs>
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<stopKey>foo</stopKey>
+					<stopPort>9999</stopPort>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<scanIntervalSeconds>0</scanIntervalSeconds>
+							<daemon>true</daemon>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+
 			</plugin>
 
 			<!-- <plugin> -->

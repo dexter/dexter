@@ -16,15 +16,10 @@
 package it.cnr.isti.hpc.dexter.article;
 
 import it.cnr.isti.hpc.dexter.freebase.FreebaseEntity;
-import it.cnr.isti.hpc.net.FakeBrowser;
 import it.cnr.isti.hpc.structure.LRUCache;
-import it.isti.cnr.hpc.wikipedia.article.Article;
-import it.isti.cnr.hpc.wikipedia.article.Template;
+import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,10 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wikipedia.Wiki;
 
-import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.SerializedName;
+
+import de.tudarmstadt.ukp.wikipedia.parser.Template;
 
 
 
@@ -83,29 +77,29 @@ public class ArticleDescription {
 				break;
 		}
 
-		description = StringEscapeUtils.escapeHtml(sb.toString());
-
-		for (Template t : a.getTemplates()) {
-
-			if (t.getName().equals("Bio")) {
-				for (String d : t.getDescription()) {
-					String[] values = d.split("=");
-					if (values.length == 2) {
-						infobox.put(values[0], values[1]);
-					}
-				}
-			}
-		}
-		String img = seekImage(a.getTemplates());
-		if (!img.isEmpty()) {
-			image = getImageUrl(img);
-		} else {
-			FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
-			if (fe.hasId()) {
-				image = fe.getHtmlCode();
-			}
-
-		}
+//		description = StringEscapeUtils.escapeHtml(sb.toString());
+//
+//		for (Template t : a.getTemplates()) {
+//
+//			if (t.getName().equals("Bio")) {
+//				for (String d : t.getDescription()) {
+//					String[] values = d.split("=");
+//					if (values.length == 2) {
+//						infobox.put(values[0], values[1]);
+//					}
+//				}
+//			}
+//		}
+//		String img = seekImage(a.getTemplates());
+//		if (!img.isEmpty()) {
+//			image = getImageUrl(img);
+//		} else {
+//			FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
+//			if (fe.hasId()) {
+//				image = fe.getHtmlCode();
+//			}
+//
+//		}
 
 	}
 
@@ -224,19 +218,19 @@ public class ArticleDescription {
 		return hashtext;
 	}
 
-	private String seekImage(List<Template> templates) {
-		for (Template t : templates) {
-			for (String s : t.getDescription()) {
-				// System.out.println(s);
-				if (s.startsWith("image =")) {
-					String name = s.substring(10);
-					return name.trim();
-				}
-			}
-		}
-		return "";
-
-	}
+//	private String seekImage(List<Template> templates) {
+//		for (Template t : templates) {
+//			for (String s : t.getDescription()) {
+//				// System.out.println(s);
+//				if (s.startsWith("image =")) {
+//					String name = s.substring(10);
+//					return name.trim();
+//				}
+//			}
+//		}
+//		return "";
+//
+//	}
 
 	/**
 	 * @return the title

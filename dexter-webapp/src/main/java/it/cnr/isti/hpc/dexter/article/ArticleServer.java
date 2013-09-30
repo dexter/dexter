@@ -15,11 +15,9 @@
  */
 package it.cnr.isti.hpc.dexter.article;
 
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
-import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
-import it.cnr.isti.hpc.net.FakeBrowser;
-import it.isti.cnr.hpc.wikipedia.article.Article;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
+import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

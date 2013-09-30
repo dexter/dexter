@@ -7,7 +7,7 @@ function annotateText(){
 	$.getJSON("./rest/annotate?text="+text,
 	function(data) {
 			//alert(val)
-			annotate = data.text
+			annotate = data.annotatedText
 			document.getElementById("result").innerHTML = annotate;
 			document.getElementById('input').style.display="none";
 			document.getElementById('output').style.display="block";

@@ -17,14 +17,13 @@
 package it.cnr.isti.hpc.dexter.freebase;
 
 import it.cnr.isti.hpc.dexter.entity.Entity;
-import it.cnr.isti.hpc.dexter.hash.IdHelper;
-import it.cnr.isti.hpc.dexter.hash.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.net.FakeBrowser;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 
 import org.nnsoft.sameas4j.DefaultSameAsServiceFactory;
 import org.nnsoft.sameas4j.Equivalence;
@@ -112,7 +111,7 @@ public class FreebaseEntity {
 	
 	
 	public FreebaseEntity(Entity e){
-		this(helper.getLabel(e.id()));		
+		this(helper.getLabel(e.getId()));		
 	}
 	
 	public boolean hasId(){
