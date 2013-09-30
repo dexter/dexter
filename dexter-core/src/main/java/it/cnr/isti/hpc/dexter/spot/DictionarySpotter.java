@@ -17,6 +17,7 @@ package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.Field;
+import it.cnr.isti.hpc.dexter.Spotter;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
@@ -36,18 +37,18 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class Spotter {
+public class DictionarySpotter implements Spotter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(Spotter.class);
+	private static final Logger logger = LoggerFactory.getLogger(DictionarySpotter.class);
 	ProbabilityFilter filter = new ProbabilityFilter();
 	private static LRUCache<String, Spot> cache;
-	ProjectProperties properties = new ProjectProperties(Spotter.class);
+	ProjectProperties properties = new ProjectProperties(DictionarySpotter.class);
 	SpotRepository spotRepo;
 	private boolean usePriorProbability = false;
 
-	public Spotter() {
+	public DictionarySpotter() {	
 		int cachesize = properties.getInt("spotter.cache.size");
 		String prior = properties.get("prior.probabability");
 		usePriorProbability = (prior != null && prior.equals("true"));
@@ -106,7 +107,8 @@ public class Spotter {
 //				}
 				SpotMatch match = new SpotMatch(s,field);
 				logger.debug("adding {} to matchset ", s);
-				
+				match.setStart(shingle.getStart());
+				match.setEnd(shingle.getEnd());
 				match = new SpotMatch(s, er.rank(match));
 				matches.add(match);
 

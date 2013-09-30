@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.Spotter;
+import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
 
 import java.util.Collections;
 
@@ -37,13 +37,13 @@ public class Wikiminer {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Wikiminer.class);
 
-	Spotter spotter;
+	DictionarySpotter spotter;
 	Stopwatch stopwatch;
 	Disambiguator disambiguator;
 
 	public Wikiminer() {
 		stopwatch = new Stopwatch();
-		spotter = new Spotter();
+		spotter = new DictionarySpotter();
 		disambiguator = new Disambiguator();
 		disambiguator.loadDefaultClassifier();
 	}

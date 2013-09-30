@@ -24,7 +24,7 @@ import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotManager;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.Spotter;
+import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.log.ProgressLogger;

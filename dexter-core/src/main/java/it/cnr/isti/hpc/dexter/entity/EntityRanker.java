@@ -43,35 +43,32 @@ public class EntityRanker {
 	private static final Logger logger = LoggerFactory
 			.getLogger(EntityRanker.class);
 
-	Document document;
 	ContextExtractor context;
-	static ProjectProperties properties = new ProjectProperties(
-			EntityRanker.class);
-	static LuceneHelper helper = LuceneHelper.getDexterLuceneHelper();
-	private static final boolean RANK_BY_SIMILARITY = properties.get(
+	ProjectProperties properties = new ProjectProperties(EntityRanker.class);
+	private LuceneHelper helper;
+	private final boolean RANK_BY_SIMILARITY = properties.get(
 			"rank.by.similarity").equals("true");
-	private static final boolean RANK_BY_PRIOR = properties
-			.get("rank.by.prior").equals("true");
+	private final boolean RANK_BY_PRIOR = properties.get("rank.by.prior")
+			.equals("true");
 
-	private static float prior_threshold;
+	private float prior_threshold;
 
-	private static final int WINDOW_SIZE = properties
-			.getInt("context.window.size");
+	private final int WINDOW_SIZE = properties.getInt("context.window.size");
 
 	public EntityRanker(Field field) {
+
 		prior_threshold = Float.parseFloat(properties.get("prior.threshold"));
 		if (RANK_BY_SIMILARITY) {
 			logger.info("(e|s) using cosine similarity");
+			helper = LuceneHelper.getDexterLuceneHelper();
+			context = new ContextExtractor(field);
+			context.setWindowSize(WINDOW_SIZE);
 		} else {
 			if (RANK_BY_PRIOR) {
-
 				logger.info("(e|s) using prior probability");
 			} else
 				logger.info("(e|s) NO PROBABILITY");
 		}
-		context = new ContextExtractor(field);
-		context.setWindowSize(WINDOW_SIZE);
-		this.document = document;
 	}
 
 	private EntityMatchList filterEntitiesByPrior(SpotMatch s) {
@@ -107,10 +104,10 @@ public class EntityRanker {
 		}
 		if (RANK_BY_SIMILARITY) {
 			for (Entity e : spot.getSpot().getEntities()) {
-				match = new EntityMatch(e,0, spot);
+				match = new EntityMatch(e, 0, spot);
 				eml.add(match);
 			}
-			
+
 			String c = context.getContext(spot.getMention());
 			logger.debug("context spot {} = {}", spot.getMention(), c);
 			helper.rankBySimilarity(spot, eml, c);

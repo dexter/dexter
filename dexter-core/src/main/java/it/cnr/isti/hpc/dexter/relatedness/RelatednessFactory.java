@@ -16,7 +16,6 @@
 package it.cnr.isti.hpc.dexter.relatedness;
 
 import it.cnr.isti.hpc.property.ProjectProperties;
-import it.cnr.isti.hpc.structure.LRUCache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +46,7 @@ public class RelatednessFactory {
 			throw new UnsupportedOperationException("cannot find relatedness "+type);
 		}
 	}
+
 	
 	public RelatednessFactory(String type){
 		// register default relatedness
@@ -61,6 +61,8 @@ public class RelatednessFactory {
 	public static void register(Relatedness rel){
 		relmap.put(rel.getName(), rel);
 	}
+	
+	
 	
 	
 	public double getScore(int x, int y){

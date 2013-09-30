@@ -20,7 +20,7 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.Spotter;
+import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import org.slf4j.Logger;
@@ -45,7 +45,7 @@ public class SpotCLI extends AbstractCommandLineInterface {
 		SpotCLI cli = new SpotCLI(args);
 		String input = cli.getInput();
 		Document doc = new FlatDocument(IOUtils.getFileAsString(input));
-		Spotter spotter = new Spotter();
+		DictionarySpotter spotter = new DictionarySpotter();
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start("spot");
 		SpotMatchList sml =  spotter.match(doc);

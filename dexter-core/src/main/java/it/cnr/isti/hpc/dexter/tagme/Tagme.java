@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.Spotter;
+import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +35,12 @@ public class Tagme {
 	 */
 	private static final Logger logger = LoggerFactory.getLogger(Tagme.class);
 
-	Spotter spotter;
+	DictionarySpotter spotter;
 	Stopwatch stopwatch;
 	Disambiguator disambiguator;
 	public Tagme() {
 		stopwatch = new Stopwatch();
-		spotter = new Spotter();
+		spotter = new DictionarySpotter();
 		 disambiguator = new Disambiguator();
 	}
 

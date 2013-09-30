@@ -101,13 +101,16 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 		Collections.sort(this, new ProbabilityComparator());
 	}
 
-	public EntityMatchList getSortedEntities() {
-		this.normalizeSpotProbabilities();
-		EntityMatchList eml = this.getEntities();
-		eml.normalizeScores();
-		Collections.sort(eml, new EntityProbabilityComparar());
-		return eml;
-	}
+//	/**
+//	 * Sort the entity of th
+//	 */
+//	public EntityMatchList getSortedEntities() {
+//		this.normalizeSpotProbabilities();
+//		EntityMatchList eml = this.getEntities();
+//		eml.normalizeScores();
+//		Collections.sort(eml, new EntityProbabilityComparator());
+//		return eml;
+//	}
 
 	private class ProbabilityComparator implements Comparator<SpotMatch> {
 
@@ -120,7 +123,7 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 
 	}
 
-	private class EntityProbabilityComparar implements Comparator<EntityMatch> {
+	private class EntityProbabilityComparator implements Comparator<EntityMatch> {
 
 		public int compare(EntityMatch e1, EntityMatch e2) {
 
