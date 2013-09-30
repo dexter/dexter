@@ -1,0 +1,305 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>dexter-parent</artifactId>
+		<groupId>it.cnr.isti.hpc</groupId>
+		<version>0.0.1</version>
+		<relativePath> ../dexter-parent/pom.xml </relativePath>
+	</parent>
+	<artifactId>dexter-webapp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Dexter Webapp</name>
+	<packaging>war</packaging>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<artifactId>dexter-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>servlet-api-2.5</artifactId>
+					<groupId>org.mortbay.jetty</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-webapp</artifactId> -->
+		<!-- <version>9.0.4.v20130625</version> -->
+		<!-- <exclusions> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>javax.servlet</groupId> -->
+		<!-- <artifactId>servlet-api</artifactId> -->
+
+		<!-- </exclusion> -->
+
+		<!-- </exclusions> -->
+		<!-- </dependency> -->
+
+
+
+		<dependency>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<artifactId>dexter-relatedness</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.99soft.semweb</groupId>
+			<artifactId>sameas4j</artifactId>
+			<version>2.0</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-servlet</artifactId>
+			<version>1.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-server</artifactId>
+			<version>1.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+
+
+
+
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.12</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.servlet</groupId>
+					<artifactId>servlet-api</artifactId>
+
+				</exclusion>
+
+			</exclusions>
+		</dependency>
+
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>com.sun.jersey.contribs</groupId> -->
+		<!-- <artifactId>jersey-spring</artifactId> -->
+		<!-- <version>1.12</version> -->
+		<!-- <exclusions> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>javax.servlet</groupId> -->
+		<!-- <artifactId>servlet-api</artifactId> -->
+
+		<!-- </exclusion> -->
+
+		<!-- </exclusions> -->
+		<!-- </dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>asm</groupId> -->
+		<!-- <artifactId>asm</artifactId> -->
+		<!-- <version>3.3.1</version> -->
+		<!-- </dependency> -->
+
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/webapp</directory>
+			</resource>
+		</resources>
+		<plugins>
+<plugin>
+			<groupId>org.mortbay.jetty</groupId>
+			<artifactId>maven-jetty-plugin</artifactId>
+			<version>6.1.10</version>
+			<configuration>
+				<scanIntervalSeconds>0</scanIntervalSeconds>
+				<stopKey>foo</stopKey>
+				<stopPort>9999</stopPort>
+			</configuration>
+			<executions>
+				<execution>
+					<id>start-jetty</id>
+					<phase>pre-integration-test</phase>
+					<goals>
+						<goal>run</goal>
+					</goals>
+					<configuration>
+						<scanIntervalSeconds>0</scanIntervalSeconds>
+						<daemon>true</daemon>
+					</configuration>
+				</execution>
+				<execution>
+					<id>stop-jetty</id>
+					<phase>post-integration-test</phase>
+					<goals>
+						<goal>stop</goal>
+					</goals>
+				</execution>
+			</executions>
+			
+			</plugin>
+
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-shade-plugin</artifactId> -->
+			<!-- <version>1.7</version> -->
+
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <phase>package</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>shade</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <filters> -->
+			<!-- <filter> -->
+			<!-- <artifact>*:*</artifact> -->
+			<!-- <excludes> -->
+			<!-- <exclude>META-INF/*.SF</exclude> -->
+			<!-- <exclude>META-INF/*.DSA</exclude> -->
+			<!-- <exclude>META-INF/*.RSA</exclude> -->
+			<!-- </excludes> -->
+			<!-- </filter> -->
+			<!-- </filters> -->
+			<!-- <finalName>dexter</finalName> -->
+			<!-- <shadedArtifactAttached>true</shadedArtifactAttached> -->
+			<!-- <shadedClassifierName>jar-with-dependencies</shadedClassifierName> -->
+
+			<!-- <transformers> -->
+			<!-- <transformer -->
+			<!-- implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> -->
+			<!-- <mainClass>Main</mainClass> -->
+			<!-- </transformer> -->
+
+
+
+			<!-- </transformers> -->
+
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+
+
+			<!-- <plugin> -->
+			<!-- <artifactId>maven-war-plugin</artifactId> -->
+			<!-- <version>2.1.1</version> -->
+			<!-- <configuration> -->
+			<!-- <warName>${project.artifactId}-${project.version}</warName> -->
+			<!-- <archive> -->
+			<!-- <manifest> -->
+			<!-- <mainClass>Main</mainClass> -->
+			<!-- </manifest> -->
+			<!-- </archive> -->
+			<!-- </configuration> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>default-war</id> -->
+			<!-- <phase>package</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>war</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+			<!-- <plugin> -->
+			<!-- <artifactId>maven-antrun-plugin</artifactId> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>main-class-placement</id> -->
+			<!-- <phase>prepare-package</phase> -->
+			<!-- <configuration> -->
+			<!-- <tasks> -->
+			<!-- <move -->
+			<!-- todir="${project.build.directory}/${project.artifactId}-${project.version}/"> -->
+			<!-- <fileset dir="${project.build.directory}/classes/"> -->
+			<!-- <include name="Main.class" /> -->
+			<!-- </fileset> -->
+			<!-- </move> -->
+			<!-- </tasks> -->
+			<!-- </configuration> -->
+			<!-- <goals> -->
+			<!-- <goal>run</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-dependency-plugin</artifactId> -->
+			<!-- <version>2.3</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>jetty-classpath</id> -->
+			<!-- <phase>prepare-package</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>unpack-dependencies</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <includeGroupIds>org.eclipse.jetty,javax.servlet,com.jersey.jersey-server,com.jersey.jersey-servlet,com.sun.jersey,asm,it.cnr.isti.hpc</includeGroupIds> -->
+			<!-- <excludeArtifactIds>jsp-api,jstl,javax.servlet.servlet-api</excludeArtifactIds> -->
+			<!-- <excludes>META-INF/ECLIPSEF.*</excludes> -->
+			<!-- <outputDirectory> -->
+			<!-- ${project.build.directory}/${project.artifactId}-${project.version} -->
+			<!-- </outputDirectory> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+		</plugins>
+
+
+
+
+
+	</build>
+</project>
