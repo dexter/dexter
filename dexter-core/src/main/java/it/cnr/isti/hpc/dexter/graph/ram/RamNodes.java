@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ArticleToHash.java
+ * RamNodes implements NodeStar object in main memory.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
@@ -80,9 +80,9 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 	}
 
 	public int[] getNeighbours(int id) {
-		int[] n =  map.get(id);
-		if (n == null){
-			logger.debug("no neighbours for node {} ",id);
+		int[] n = map.get(id);
+		if (n == null) {
+			logger.debug("no neighbours for node {} ", id);
 			n = new int[0];
 		}
 		return n;
@@ -103,8 +103,8 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 
 	}
 
-	public  IntIterator iterator(){
+	public IntIterator iterator() {
 		return map.keySet().iterator();
 	}
-	
+
 }

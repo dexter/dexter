@@ -18,16 +18,29 @@ package it.cnr.isti.hpc.dexter.graph;
 
 
 /**
+ * Represents a collection of nodes in a graph, for each node (represented by 
+ * an integer id), can return addictional data (see @link{Node}) and a list of 
+ * neighbors.
+ * 
+ * @see IncomingNodes
+ * @see OutcomingNodes
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
- * 
- * Represents a central node with its neighbours;
- * 
  * Created on Oct 9, 2012
  */
 public interface NodeStar {
 	
+	/**
+	 * return the neighbors of the the node id; 
+	 */
 	public abstract int[] getNeighbours(int id);	
+	/** return a node description  */
 	public abstract Node getNode(int id);	
+	
+	/**
+	 * Compute the intersection between the xid nodestar and the 
+	 * yid node star. 
+	 * @return the size of the intersection
+	 */
 	public abstract int intersection(int xid, int yid);
 	
 	

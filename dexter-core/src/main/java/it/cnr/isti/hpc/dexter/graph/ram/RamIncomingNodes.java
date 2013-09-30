@@ -25,52 +25,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ArticleToHash.java
+ * RamIncomingNodes allows to keep the incoming nodes for each node in a graph
+ * directly in main memory.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class RamIncomingNodes extends RamNodes implements IncomingNodes, NodesWriter {
-	
-	
+public class RamIncomingNodes extends RamNodes implements IncomingNodes,
+		NodesWriter {
+
 	private static RamIncomingNodes instance = null;
-	
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamIncomingNodes.class);
-	
-	static private ProjectProperties properties = new ProjectProperties(RamIncomingNodes.class);
-	
-	private RamIncomingNodes(){
+
+	static private ProjectProperties properties = new ProjectProperties(
+			RamIncomingNodes.class);
+
+	private RamIncomingNodes() {
 		super(new File(properties.get("ram.incoming.nodes")));
 	}
-	
-	public static RamIncomingNodes getInstance(){
+
+	public static RamIncomingNodes getInstance() {
 		if (instance == null) {
 			logger.info("Loading ram incoming nodes");
 			instance = new RamIncomingNodes();
 		}
 		return instance;
 	}
-	
-	
-	
-	
-	
-	
-	//@Override
+
+	// @Override
 	public int[] getIncoming(int id) {
 		return getNeighbours(id);
-	}	
-	
-	
-	
-	
-
-
-	
-	
-	
-	
-	
+	}
 
 }

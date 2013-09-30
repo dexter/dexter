@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HashToArticle.java
+ * MapDBIdToLabel allows to retrieve the label of an entity given its ID.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */

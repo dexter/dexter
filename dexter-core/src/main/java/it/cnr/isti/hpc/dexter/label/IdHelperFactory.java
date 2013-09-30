@@ -19,10 +19,9 @@ import it.cnr.isti.hpc.dexter.label.mapdb.MapDBIdToLabel;
 import it.cnr.isti.hpc.dexter.label.mapdb.MapDBLabelToId;
 
 /**
- * Generates an IdHelper that takes care to convert 
- * the entity labels (i.e., the titles of the Wikipedia pages containing
- * the description of the entity) in integer identifiers used for 
- * internal processing. 
+ * Generates an IdHelper that takes care to convert the entity labels (i.e., the
+ * titles of the Wikipedia pages containing the description of the entity) in
+ * integer identifiers used for internal processing.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -30,17 +29,16 @@ import it.cnr.isti.hpc.dexter.label.mapdb.MapDBLabelToId;
  */
 public class IdHelperFactory {
 
-	
-	public static IdHelper stdIdHelper = null; 
-	
+	public static IdHelper stdIdHelper = null;
+
 	public static IdToLabelWriter stdIdToLabelWriter;
 	public static LabelToIdWriter stdLabelToIdWriter;
-	
+
 	public enum Type {
 		RAM, JDBM, HADOOP
 	};
+
 	public static final Type STD_TYPE = Type.JDBM;
-	
 
 	public IdHelperFactory() {
 
@@ -53,58 +51,58 @@ public class IdHelperFactory {
 			IdHelper helper = new IdHelper(h2l, l2h);
 			return helper;
 		}
-//		if (type == Type.HADOOP){
-//			IdToLabel h2l = new IdToLabelHadoopMapfile();
-//			LabelToId l2h = new LabelToIdHadoopMapfile();
-//			IdHelper helper = new IdHelper(h2l, l2h);
-//			return helper;
-//		}
-		throw new UnsupportedOperationException("Helper is not supported for type "+type);
+		// if (type == Type.HADOOP){
+		// IdToLabel h2l = new IdToLabelHadoopMapfile();
+		// LabelToId l2h = new LabelToIdHadoopMapfile();
+		// IdHelper helper = new IdHelper(h2l, l2h);
+		// return helper;
+		// }
+		throw new UnsupportedOperationException(
+				"Helper is not supported for type " + type);
 	}
-	
+
 	public static LabelToIdWriter getLabelToIdWriter(Type type) {
 		if (type == Type.JDBM) {
 			return MapDBLabelToId.getInstance();
 		}
-//		if (type == Type.HADOOP){
-//			return new LabelToIdHadoopWriter();
-//		}
-		throw new UnsupportedOperationException("Helper is not supported for type "+type);
+		// if (type == Type.HADOOP){
+		// return new LabelToIdHadoopWriter();
+		// }
+		throw new UnsupportedOperationException(
+				"Helper is not supported for type " + type);
 	}
-	
+
 	public static IdToLabelWriter getIdToLabelWriter(Type type) {
 		if (type == Type.JDBM) {
 			return MapDBIdToLabel.getInstance();
 		}
-//		if (type == Type.HADOOP){
-//			return new IdToLabelHadoopWriter();
-//		}
-		throw new UnsupportedOperationException("Helper is not supported for type "+type);
+		// if (type == Type.HADOOP){
+		// return new IdToLabelHadoopWriter();
+		// }
+		throw new UnsupportedOperationException(
+				"Helper is not supported for type " + type);
 	}
-	
-	public static LabelToIdWriter getStdLabelToIdWriter(){
-		if (stdLabelToIdWriter == null){
+
+	public static LabelToIdWriter getStdLabelToIdWriter() {
+		if (stdLabelToIdWriter == null) {
 			stdLabelToIdWriter = getLabelToIdWriter(STD_TYPE);
-			
+
 		}
 		return stdLabelToIdWriter;
 	}
-	
-	public static IdToLabelWriter getStdIdToLabelWriter(){
-		if (stdIdToLabelWriter == null){
+
+	public static IdToLabelWriter getStdIdToLabelWriter() {
+		if (stdIdToLabelWriter == null) {
 			stdIdToLabelWriter = getIdToLabelWriter(STD_TYPE);
-			
+
 		}
 		return stdIdToLabelWriter;
 	}
-	
-	
-	
-	
-	public static IdHelper getStdIdHelper(){
-		if (stdIdHelper == null){
+
+	public static IdHelper getStdIdHelper() {
+		if (stdIdHelper == null) {
 			stdIdHelper = getHashHelper(STD_TYPE);
-			
+
 		}
 		return stdIdHelper;
 	}

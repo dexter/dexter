@@ -15,6 +15,11 @@
 package it.cnr.isti.hpc.dexter.graph;
 
 /**
+ * 
+ * Represent a collection of nodes, where for each node 
+ * the list of neighbors represents the list of nodes that
+ * are linked by the given node.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 7, 2012

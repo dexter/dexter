@@ -15,11 +15,10 @@
  */
 package it.cnr.isti.hpc.dexter.graph;
 
-import it.cnr.isti.hpc.dexter.entity.Entity;
-
-import java.util.List;
 
 /**
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 7, 2012

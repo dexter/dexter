@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.mapdb.MapDB;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
- * JDBMInstance.java
+ * An instance of a MapDB object
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */

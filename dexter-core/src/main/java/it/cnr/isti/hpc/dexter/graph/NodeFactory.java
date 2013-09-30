@@ -18,9 +18,16 @@ package it.cnr.isti.hpc.dexter.graph;
 
 import it.cnr.isti.hpc.dexter.graph.ram.RamIncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.ram.RamOutcomingNodes;
-import it.cnr.isti.hpc.dexter.label.IdHelperFactory.Type;
 
 /**
+ * Returns a particular nodes collection, or a NodeWriter depending on how 
+ * the nodes are serialized (db, hadoop mapfile, ram). Please note that currently 
+ * only RAM is supported. 
+ * 
+ * 
+ * @see IncomingNodes
+ * @see OutcomintNodes
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 7, 2012

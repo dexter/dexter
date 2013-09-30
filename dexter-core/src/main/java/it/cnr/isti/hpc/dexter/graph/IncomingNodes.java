@@ -15,11 +15,12 @@
  */
 package it.cnr.isti.hpc.dexter.graph;
 
-import it.cnr.isti.hpc.dexter.entity.Entity;
-
-import java.util.List;
 
 /**
+ * Represent a collection of nodes, where for each node 
+ * the list of neighbors represents the list of nodes that
+ * link to the given node.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 7, 2012

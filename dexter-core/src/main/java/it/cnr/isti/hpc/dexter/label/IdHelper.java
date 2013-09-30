@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An IdHelper provides the conversion between an entity label (e.g., 
- * Pablo_Picasso) and an integer representing the entity (e.g., 24176). 
+ * An IdHelper provides the conversion between an entity label (e.g.,
+ * Pablo_Picasso) and an integer representing the entity (e.g., 24176).
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
@@ -39,21 +39,18 @@ public class IdHelper implements IdToLabel, LabelToId {
 
 	private IdToLabel idToLabel;
 	private LabelToId labelToId;
-	
+
 	public static final int NOID = 0;
-	
-	public IdHelper(IdToLabel idToLabel, LabelToId labelToHash){
+
+	public IdHelper(IdToLabel idToLabel, LabelToId labelToHash) {
 		this.idToLabel = idToLabel;
 		this.labelToId = labelToHash;
 	}
-
-	
 
 	public Integer getId(String label) {
 		return labelToId.getId(label);
 	}
 
-	
 	public String getLabel(Integer key) {
 		return idToLabel.getLabel(key);
 	}
@@ -80,10 +77,8 @@ public class IdHelper implements IdToLabel, LabelToId {
 		}
 		return ids;
 	}
-	
-	
-	
-	public boolean isDisambiguation(Integer id){
+
+	public boolean isDisambiguation(Integer id) {
 		return id < 0;
 	}
 
