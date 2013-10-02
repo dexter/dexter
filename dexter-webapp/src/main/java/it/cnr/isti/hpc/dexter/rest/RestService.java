@@ -20,6 +20,7 @@ import it.cnr.isti.hpc.dexter.Dexter;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.article.ArticleServer;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
@@ -46,8 +47,8 @@ import com.google.gson.Gson;
 public class RestService {
 	
 	private static Gson gson = new Gson();
-	//private static ArticleServer server = ArticleServer.getInstance();
-	IdHelper helper = IdHelperFactory.getStdIdHelper();
+	private ArticleServer server = new ArticleServer();
+	private IdHelper helper = IdHelperFactory.getStdIdHelper();
 	
 	private Dexter tagger = new Dexter();
 
@@ -70,12 +71,8 @@ public class RestService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getDescription(@QueryParam("id") String id) {
 		int i = Integer.parseInt(id);
-		//Article a = server.get(i);
-		//if (a == null) return "{\"error\":\"no id for article \"}";
-		String name = helper.getLabel(i);
 		
-		//ArticleDescription desc = new ArticleDescription(a);
-		ArticleDescription desc = ArticleDescription.fromWikipediaAPI(name);
+		ArticleDescription desc = server.get(i);
 		return desc.toJson();
 	}
 	

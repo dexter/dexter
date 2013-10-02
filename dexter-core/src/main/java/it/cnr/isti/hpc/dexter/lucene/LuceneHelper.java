@@ -219,6 +219,14 @@ public class LuceneHelper {
 	}
 
 	/**
+	 * @return true if the dexter lucene index exists, false otherwise
+	 */
+	public static boolean hasDexterLuceneIndex(){
+		File luceneFolder = new File(properties.get("data.dir"),properties.get("lucene.index"));
+		return luceneFolder.exists();
+	}
+	
+	/**
 	 * Returns an instance of the Dexter's Lucene index.
 	 * 
 	 * @return an instance of the Dexter's Lucene index
@@ -313,7 +321,7 @@ public class LuceneHelper {
 	}
 
 	/**
-	 * Returns the Lucene id of an article, given its wikiIds
+	 * @return the Lucene id of an article, given its wikiId
 	 */
 	protected int getLuceneId(int wikiId) {
 		if (wikiIdToLuceneId.isEmpty()){
@@ -766,6 +774,30 @@ public class LuceneHelper {
 		return a;
 
 	}
+	
+	/**
+	 * Retrieves only the article summary and the title from the index
+	 * 
+	 * @param id
+	 *            - the Wikipedia Id of the Article
+	 * @return the document from the index
+	 */
+	public Article getArticleSummary(int id) {
+		Article a = new Article();
+		a.setWikiId(id);
+
+		Document d = getDoc(id);
+		if (d != null) {			
+			a.setTitle(d.getField(LUCENE_ARTICLE_TITLE).stringValue());
+			a.setSummary(d.getField(LUCENE_ARTICLE_SUMMARY).stringValue());
+		}
+		//
+		return a;
+
+	}
+	
+	
+	
 	public int getWikiId(int luceneId) {
 		IndexReader reader = getReader();
 

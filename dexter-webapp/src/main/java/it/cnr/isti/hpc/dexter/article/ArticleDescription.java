@@ -24,19 +24,13 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wikipedia.Wiki;
 
 import com.google.gson.Gson;
-
-import de.tudarmstadt.ukp.wikipedia.parser.Template;
-
-
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -50,18 +44,14 @@ public class ArticleDescription {
 	private Map<String, String> infobox;
 	private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
-	
-	private static LRUCache<String,ArticleDescription> cache = new LRUCache<String,ArticleDescription>(1000);
-	
+
+	private static LRUCache<String, ArticleDescription> cache = new LRUCache<String, ArticleDescription>(
+			1000);
 
 	private static final ArticleDescription EMPTY = new ArticleDescription();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ArticleDescription.class);
-	
-	
-	
-	
 
 	private ArticleDescription() {
 		title = "NODESC";
@@ -70,42 +60,16 @@ public class ArticleDescription {
 	public ArticleDescription(Article a) {
 		title = a.getTitle();
 		infobox = new HashMap<String, String>();
-		StringBuffer sb = new StringBuffer();
-		for (String paragraph : a.getParagraphs()) {
-			sb.append(removeTemplates(paragraph));
-			if (sb.length() > MAX_LENGTH)
-				break;
-		}
-
-//		description = StringEscapeUtils.escapeHtml(sb.toString());
-//
-//		for (Template t : a.getTemplates()) {
-//
-//			if (t.getName().equals("Bio")) {
-//				for (String d : t.getDescription()) {
-//					String[] values = d.split("=");
-//					if (values.length == 2) {
-//						infobox.put(values[0], values[1]);
-//					}
-//				}
-//			}
+		description = a.getSummary();
+//		FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
+//		if (fe.hasId()) {
+//			image = fe.getHtmlCode();
 //		}
-//		String img = seekImage(a.getTemplates());
-//		if (!img.isEmpty()) {
-//			image = getImageUrl(img);
-//		} else {
-//			FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
-//			if (fe.hasId()) {
-//				image = fe.getHtmlCode();
-//			}
-//
-//		}
-
 	}
 
 	public static ArticleDescription fromWikipediaAPI(String name) {
-	
-		if (cache.containsKey(name)){
+
+		if (cache.containsKey(name)) {
 			return cache.get(name);
 		}
 		Wiki wiki = new Wiki();
@@ -114,47 +78,15 @@ public class ArticleDescription {
 		desc.setTitle(name);
 		try {
 			String rendered = wiki.getRenderedText(name);
-			//logger.info("render {} ",rendered);
+			// logger.info("render {} ",rendered);
 			desc.setDescription(rendered);
 		} catch (IOException e) {
 			logger.error("cannot retrieve description for {} using the wikipedia api");
-			
+
 			desc = EMPTY;
 		}
-		cache.put(name,desc);
+		cache.put(name, desc);
 		return desc;
-
-	}
-	
-	
-	
-
-	/**
-	 * Removes the TEMPLATE text from the row text of the article.
-	 * 
-	 * @param text
-	 * @return the 'cleaned' text
-	 */
-	private String removeTemplates(String text) {
-		// dirty code, i'm sure there is a better way to exclude
-		// template code from getText() (setting ignores..)
-		while (text.contains("TEMPLATE[")) {
-			int pos = text.indexOf("TEMPLATE[");
-			int start = pos + "TEMPLATE".length() + 1;
-			int end = start;
-			int c = 1;
-			while (c > 0) {
-				if (end >= text.length())
-					break;
-				if (text.charAt(end) == '[')
-					c++;
-				if (text.charAt(end) == ']')
-					c--;
-				end++;
-			}
-			text = text.substring(0, pos) + text.substring(end);
-		}
-		return text;
 
 	}
 
@@ -218,19 +150,19 @@ public class ArticleDescription {
 		return hashtext;
 	}
 
-//	private String seekImage(List<Template> templates) {
-//		for (Template t : templates) {
-//			for (String s : t.getDescription()) {
-//				// System.out.println(s);
-//				if (s.startsWith("image =")) {
-//					String name = s.substring(10);
-//					return name.trim();
-//				}
-//			}
-//		}
-//		return "";
-//
-//	}
+	// private String seekImage(List<Template> templates) {
+	// for (Template t : templates) {
+	// for (String s : t.getDescription()) {
+	// // System.out.println(s);
+	// if (s.startsWith("image =")) {
+	// String name = s.substring(10);
+	// return name.trim();
+	// }
+	// }
+	// }
+	// return "";
+	//
+	// }
 
 	/**
 	 * @return the title

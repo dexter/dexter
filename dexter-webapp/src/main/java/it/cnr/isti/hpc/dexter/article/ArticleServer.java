@@ -15,8 +15,10 @@
  */
 package it.cnr.isti.hpc.dexter.article;
 
+import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import org.slf4j.Logger;
@@ -24,46 +26,41 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
- *
+ * 
  */
-public class ArticleServer  {
+public class ArticleServer {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ArticleServer.class);
+
 	
-	//static LuceneHelper lucene = LuceneHelper.getDexterLuceneHelper();
-	static IdHelper idHelper = IdHelperFactory.getStdIdHelper();
-	private static ArticleServer instance = null;
-	
-	
-	
-	private ArticleServer(){
-	
-	}
-	
-	public Article get(int id){
-		Article a = new Article();
-		//a = lucene.getArticle(id);
-		//a.setWikiId(id);
-		String title = idHelper.getLabel(id);
-		
-		
-		
-		title = title.replace('_', ' ');
-		a.setTitle(title);
-		return a;
-		
-	}
-	
-	
-	public static ArticleServer getInstance(){
-		if (instance == null ){
-			instance = new ArticleServer();
+	private LuceneHelper lucene;
+	private IdHelper idHelper = IdHelperFactory.getStdIdHelper();
+	private Stopwatch timer = new Stopwatch();
+
+	public ArticleServer() {
+		if (LuceneHelper.hasDexterLuceneIndex()) {
+			lucene = LuceneHelper.getDexterLuceneHelper();
 		}
-		return instance;
 	}
 
-	 
-	
-	
+	public ArticleDescription get(int id) {
+		ArticleDescription desc;
+		Article a = new Article();
+		if (lucene != null){
+			timer.start("retrieve");
+			a = lucene.getArticleSummary(id);
+			timer.stop("retrieve");
+			logger.info("retrieve {} ",id);
+			logger.info(timer.stat("retrieve"));
+			 
+			desc = new ArticleDescription(a);
+		}
+		else{
+			String name = idHelper.getLabel(id);
+			desc = ArticleDescription.fromWikipediaAPI(name);
+		}
+		return desc;
+
+	}
 
 }
