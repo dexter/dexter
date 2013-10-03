@@ -33,19 +33,13 @@
 			<groupId>junidecode</groupId>
 			<artifactId>junidecode</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-math</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jama</groupId>
-			<artifactId>gov.nist.math</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -69,17 +63,6 @@
 			<version>3.0.8</version>
 		</dependency>
 
-		<dependency>
-			<groupId>weka-wrapper</groupId>
-			<artifactId>weka-wrapper</artifactId>
-			<version>1.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>weka</groupId>
-			<artifactId>weka</artifactId>
-			<version>1.0</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.mapdb</groupId>

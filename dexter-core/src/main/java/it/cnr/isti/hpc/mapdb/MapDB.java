@@ -69,7 +69,7 @@ public class MapDB {
 
 		// NOTE: i don't need transactions, disabling should improve speed
 		db = DBMaker.newFileDB(dbPath).transactionDisable()
-				.asyncFlushDelay(100).make();
+				.asyncFlushDelay(100).closeOnJvmShutdown().make();
 	}
 
 	private void openDb(File dbFolder, String dbName) {
@@ -82,7 +82,10 @@ public class MapDB {
 		logger.info("open db in {} ", dbPath.getAbsolutePath());
 
 		// NOTE: i don't need transactions, disabling should improve speed
-		db = DBMaker.newFileDB(dbPath).transactionDisable().make();
+		db = DBMaker.newFileDB(dbPath)
+				.transactionDisable()
+				 .closeOnJvmShutdown()
+				.make();
 
 	}
 
