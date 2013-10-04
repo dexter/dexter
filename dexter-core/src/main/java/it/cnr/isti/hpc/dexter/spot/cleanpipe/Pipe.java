@@ -110,13 +110,13 @@ public class Pipe<T> {
 		List<T> elems = new LinkedList<T>();
 		p.fun.eval(elem, p.collector);
 		while (p.getNext() != null) {
-			logger.info("pipe {}",p.fun.getClass());
+			//logger.info("pipe {}",p.fun.getClass());
 			Iterator<T> iter = p.getOutput();
 			elems.clear();
 			while (iter.hasNext()) {
 				elems.add(iter.next());
 			}
-			logger.info("output -> {}",elems);
+			//logger.info("output -> {}",elems);
 			p.clearOutput();
 
 			p = p.getNext();
