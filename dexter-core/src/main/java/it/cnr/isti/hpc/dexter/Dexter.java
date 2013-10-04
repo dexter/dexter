@@ -20,6 +20,7 @@ import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
+import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
@@ -42,16 +43,21 @@ public class Dexter implements Tagger {
 	private Spotter spotter;
 	private Disambiguator disambiguator;
 	private Stopwatch stopwatch;
+	
 
 	public Dexter() {
+		Relatedness r = new MilneRelatedness();
 		stopwatch = new Stopwatch();
 		PluginLoader pl = new PluginLoader();
+		logger.info("using the dexter tagger");
 		
 		if (properties.has("spotter.class")) {
 			spotter = pl.getSpotter(properties.get("spotter.class"));
 		} else {
 			spotter = new DictionarySpotter();
 		}
+		
+		
 		if (properties.has("disambiguator.class")) {
 			disambiguator = pl
 					.getDisambiguator(properties.get("disambiguator.class"));
@@ -60,10 +66,14 @@ public class Dexter implements Tagger {
 		}
 		
 		if (properties.has("relatedness.class")){
-			Relatedness r = pl
+			r = pl
 					.getRelatedness(properties.get("relatedness.class"));
 			RelatednessFactory.register(r);
 		}
+		
+		logger.info("Spotter: {}",spotter.getClass());
+		logger.info("Disambiguator: {}",disambiguator.getClass());
+		logger.info("Relatedness: {}",r.getClass());
 
 	}
 

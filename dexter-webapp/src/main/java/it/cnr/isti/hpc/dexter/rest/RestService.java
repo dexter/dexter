@@ -22,11 +22,6 @@ import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.label.IdHelper;
-import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
-import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
-import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
-import it.cnr.isti.hpc.dexter.tagme.Tagme;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -47,9 +42,7 @@ import com.google.gson.Gson;
 public class RestService {
 	
 	private static Gson gson = new Gson();
-	private ArticleServer server = new ArticleServer();
-	private IdHelper helper = IdHelperFactory.getStdIdHelper();
-	
+	private ArticleServer server = new ArticleServer();	
 	private Dexter tagger = new Dexter();
 
 	
