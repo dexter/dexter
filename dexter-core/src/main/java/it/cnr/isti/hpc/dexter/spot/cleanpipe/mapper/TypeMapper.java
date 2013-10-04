@@ -39,6 +39,7 @@ public class TypeMapper extends Mapper<String> {
 
 	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
+		mappings.add(spot);
 		removeRegex(mappings, spot, " *[(][^)]+[)] *$");
 		removeRegex(mappings, spot, " *[#].*$");
 		return mappings;

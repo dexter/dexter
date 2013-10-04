@@ -43,6 +43,7 @@ public class QuotesMapper extends Mapper<String> {
 
 	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
+		mappings.add(spot);
 		Matcher m = regex.matcher(spot);
 		if (m.find()) {
 			String p0 = m.group(1) + " " + m.group(3);

@@ -36,6 +36,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Class pipe allows to create a chain of functions manipulating T objects. 
  *  
@@ -55,6 +58,9 @@ public class Pipe<T> {
 	private Function<T> fun;
 
 	private Pipe<T> head;
+	
+	
+	private static final Logger logger = LoggerFactory.getLogger(Pipe.class);
 
 	private OutputCollector collector;
 
@@ -104,12 +110,13 @@ public class Pipe<T> {
 		List<T> elems = new LinkedList<T>();
 		p.fun.eval(elem, p.collector);
 		while (p.getNext() != null) {
-
+			logger.info("pipe {}",p.fun.getClass());
 			Iterator<T> iter = p.getOutput();
 			elems.clear();
 			while (iter.hasNext()) {
 				elems.add(iter.next());
 			}
+			logger.info("output -> {}",elems);
 			p.clearOutput();
 
 			p = p.getNext();

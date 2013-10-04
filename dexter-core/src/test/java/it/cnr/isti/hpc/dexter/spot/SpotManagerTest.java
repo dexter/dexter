@@ -181,6 +181,14 @@ public class SpotManagerTest {
 		assertEquals("game of thrones",pc.clean("a game of thrones"));	
 	}
 	
+	
+	@Test
+	public void testStandardSpotManager(){
+		SpotManager sm = SpotManager.getStandardSpotManager();
+		Set<String> spots = sm.process("Charlie Chaplin");
+		assertFalse(spots.isEmpty());
+		assertTrue(spots.contains("charlie chaplin"));
+	}
 		
 	
 	

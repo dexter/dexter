@@ -37,6 +37,7 @@ public class CityMapper extends Mapper<String> {
 
 	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
+		mappings.add(spot);
 		if (spot.matches("^[^,]+,[a-z ]+$"))
 			removeRegex(mappings, spot, " *,.+$");
 		return mappings;
