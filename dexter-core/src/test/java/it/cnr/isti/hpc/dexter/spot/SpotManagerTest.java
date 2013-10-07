@@ -214,7 +214,7 @@ public class SpotManagerTest {
 		set = sm.process("S. Zorig");
 		assertTrue(set.contains("zorig"));
 		
-		set = sm.process("- -1- benzofuran-2-yl -2-propylaminopentane");
+		set = sm.process("- -1- benzofuran-2-yl -2-propylaminopentane...");
 		assertTrue(set.contains("1- benzofuran-2-yl -2-propylaminopentane"));
 	}
 		
