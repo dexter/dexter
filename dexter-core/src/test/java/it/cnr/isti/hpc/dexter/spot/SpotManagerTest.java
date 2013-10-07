@@ -211,6 +211,8 @@ public class SpotManagerTest {
 		SpotManager sm = SpotManager.getStandardSpotManager();
 		Set<String> set = sm.process("William Arthur Waldegrave, Baron_Waldegrave of North Hill");
 		assertTrue(set.contains("william arthur waldegrave"));
+		set = sm.process("S. Zorig");
+		assertTrue(set.contains("zorig"));
 	}
 		
 	

@@ -118,10 +118,11 @@ public class SpotManager {
 			standardSpotManager.add(new HtmlCleaner());
 			standardSpotManager.add(new UnicodeCleaner());
 			standardSpotManager.add(new UnderscoreCleaner());
+			standardSpotManager.add(new LowerCaseCleaner());
 			standardSpotManager.add(new JuniorAndInitialsCleaner());
 			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/"));
 			standardSpotManager.add(new TypeCleaner());
-			standardSpotManager.add(new LowerCaseCleaner());
+			
 			// map
 
 			standardSpotManager.add(new CityMapper());
