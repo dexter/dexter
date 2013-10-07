@@ -61,10 +61,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 	
 
 		SpotManager spotManager = SpotManager.getStandardSpotManager();
-		IdHelperFactory idHelperFactory = new IdHelperFactory();
-
-		IdHelper hp = idHelperFactory.getStdIdHelper();
-
+		IdHelper hp = IdHelperFactory.getStdIdHelper();
 		RecordReader<Article> reader = new RecordReader<Article>(cli.getInput(),
 				new JsonRecordParser<Article>(Article.class)).filter(TypeFilter.STD_FILTER);
 		
@@ -79,6 +76,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
 				target = hp.getId(a.getRedirectNoAnchor());
+				// FIXME ha senso? 
 				for (String spot : spotManager.getAllSpots(a)) {
 					if (target == 0) {
 						logger.warn("cannot find id for redirect label {}",

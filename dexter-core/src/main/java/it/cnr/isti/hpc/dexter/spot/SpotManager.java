@@ -121,14 +121,14 @@ public class SpotManager {
 			standardSpotManager.add(new JuniorAndInitialsCleaner());
 			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/"));
 			standardSpotManager.add(new TypeCleaner());
-
+			standardSpotManager.add(new LowerCaseCleaner());
 			// map
 
 			standardSpotManager.add(new CityMapper());
 			standardSpotManager.add(new QuotesMapper());
 
 			// post clean
-			standardSpotManager.add(new LowerCaseCleaner());
+			
 			standardSpotManager.add(new ParenthesesCleaner());
 			standardSpotManager.add(new QuotesCleaner());
 			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%"));
@@ -189,9 +189,11 @@ public class SpotManager {
 	 */
 	public Set<String> getAllSpots(Article a) {
 		Set<String> spots = new HashSet<String>();
+		spots.addAll(process(a.getTitle()));
 		if (a.isRedirect()) {
 			spots.addAll(process(a.getRedirectNoAnchor()));
 		} else {
+			
 			for (Link l : a.getLinks()) {
 				spots.addAll(process(l.getDescription()));
 			}

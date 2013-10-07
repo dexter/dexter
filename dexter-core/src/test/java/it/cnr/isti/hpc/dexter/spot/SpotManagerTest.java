@@ -30,6 +30,9 @@ import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.NumberFilter;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.SymbolFilter;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.mapper.CityMapper;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.mapper.QuotesMapper;
+import it.cnr.isti.hpc.io.IOUtils;
+import it.cnr.isti.hpc.wikipedia.article.Article;
+import it.cnr.isti.hpc.wikipedia.article.Link;
 
 import java.util.Set;
 
@@ -188,6 +191,26 @@ public class SpotManagerTest {
 		Set<String> spots = sm.process("Charlie Chaplin");
 		assertFalse(spots.isEmpty());
 		assertTrue(spots.contains("charlie chaplin"));
+	}
+	
+//	@Test
+//	public void testGetAllSpots(){
+//		SpotManager sm = SpotManager.getStandardSpotManager();
+//		
+//		String json = IOUtils.getFileAsUTF8String("./src/test/resources/article.json.gz");
+//		Article a = Article.fromJson(json);
+//		Set<String> spots = sm.getAllSpots(a);
+//		for (String s : spots){
+//			System.out.println("---> "+s);
+//		}
+//	}
+	
+	@Test
+	public void testProcess(){
+	
+		SpotManager sm = SpotManager.getStandardSpotManager();
+		Set<String> set = sm.process("William Arthur Waldegrave, Baron_Waldegrave of North Hill");
+		assertTrue(set.contains("william arthur waldegrave"));
 	}
 		
 	

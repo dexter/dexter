@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class CityMapper extends Mapper<String> {
+	//TODO change the name in NameMapper? 
 	/**
 	 * Logger for this class
 	 */
