@@ -141,6 +141,7 @@ public class SpotManager {
 			standardSpotManager.add(new LengthFilter());
 			standardSpotManager.add(new ImageFilter());
 			standardSpotManager.add(new LongSpotFilter());
+			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%"));
 
 		}
 		return standardSpotManager;
