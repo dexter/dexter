@@ -120,7 +120,7 @@ public class SpotManager {
 			standardSpotManager.add(new UnderscoreCleaner());
 			standardSpotManager.add(new LowerCaseCleaner());
 			standardSpotManager.add(new JuniorAndInitialsCleaner());
-			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/"));
+			//standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
 			standardSpotManager.add(new TypeCleaner());
 			
 			// map
@@ -132,7 +132,7 @@ public class SpotManager {
 			
 			standardSpotManager.add(new ParenthesesCleaner());
 			standardSpotManager.add(new QuotesCleaner());
-			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%"));
+			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
 			standardSpotManager.add(new TypeCleaner());
 
 			// post filter
@@ -141,7 +141,7 @@ public class SpotManager {
 			standardSpotManager.add(new LengthFilter());
 			standardSpotManager.add(new ImageFilter());
 			standardSpotManager.add(new LongSpotFilter());
-			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%"));
+			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
 
 		}
 		return standardSpotManager;
@@ -157,13 +157,13 @@ public class SpotManager {
 
 			// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
 			standardSpotCleaner.add(new UnderscoreCleaner());
-			standardSpotCleaner.add(new StripCleaner(",#*-!`{}~[]='<>:/"));
+			standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>:/"));
 			// post clean
 			standardSpotCleaner.add(new LowerCaseCleaner());
 			standardSpotCleaner.add(new ParenthesesCleaner());
 			standardSpotCleaner.add(new QuotesCleaner());
 			standardSpotCleaner.add(new StripCleaner(
-					",#*-!`{}~[]='<>:/;.&%"));
+					",#*-!`{}~[]='<>:/;.&%|=+"));
 			
 
 		}
