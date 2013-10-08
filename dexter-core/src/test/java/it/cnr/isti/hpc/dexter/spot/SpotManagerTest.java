@@ -218,6 +218,9 @@ public class SpotManagerTest {
 		assertTrue(set.contains("1- benzofuran-2-yl -2-propylaminopentane"));
 		set = sm.process("-endo-fenchol dehydrogenase");
 		assertTrue(set.contains("endo-fenchol dehydrogenase"));
+		set = sm.process("(-)-zingiberene");
+		assertTrue(set.contains("zingiberene"));
+		
 	}
 		
 	
