@@ -286,7 +286,6 @@ public class Spot implements Serializable {
 	 */
 	public double getEntityCommonness(Entity e) {
 		return (double) e.getFrequency() / (double) link;
-
 	}
 
 	// /**

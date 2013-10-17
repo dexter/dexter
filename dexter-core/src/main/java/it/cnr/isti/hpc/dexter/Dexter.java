@@ -77,6 +77,10 @@ public class Dexter implements Tagger {
 
 	}
 
+	public SpotMatchList spot(Document doc){
+		SpotMatchList sml = spotter.match(doc);
+		return sml;
+	}
 	
 
 	public EntityMatchList tag(Document doc) {

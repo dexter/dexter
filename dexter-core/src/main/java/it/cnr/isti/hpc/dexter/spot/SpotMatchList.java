@@ -40,12 +40,10 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotMatchList.class);
 
-	private double totalIdf = 0;
 
 	@Override
 	public boolean add(SpotMatch m) {
 		logger.debug("adding spot {} ", m.spot.getMention());
-		totalIdf += m.getSpot().getIdf();
 		return super.add(m);
 
 	}
@@ -71,9 +69,7 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 
 	}
 
-	public double getTotalIdf() {
-		return totalIdf;
-	}
+	
 
 	public EntityMatchList getEntities() {
 		EntityMatchList eml = new EntityMatchList();
