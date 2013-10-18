@@ -81,16 +81,20 @@ public class RestService {
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String spot(@QueryParam("text") String document){
+		long start = System.currentTimeMillis();
 		Document d = new FlatDocument(document);
 		SpotMatchList sml = tagger.spot(d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
+		
 		for (SpotMatch spot : sml){
 			CandidateSpot s = new CandidateSpot();
 			s.setMention(spot.getMention());
 			s.setStart(spot.getStart());
 			s.setEnd(spot.getEnd());
 			s.setLinkProbability(spot.getLinkProbability());
+			s.setLinkFrequency(spot.getLinkFrequency());
+			s.setDocumentFrequency(spot.getFrequency());
 			candidates = new ArrayList<CandidateEntity>();
 			for (EntityMatch entity : spot.getEntities()){
 				CandidateEntity c = new CandidateEntity(entity.getId(), entity.getFrequency(), entity.getPriorProbability());
@@ -100,7 +104,8 @@ public class RestService {
 			s.setCandidates(candidates);
 			spots.add(s);
 		}
-		return gson.toJson(spots);
+		SpottedDocument sd = new SpottedDocument(document, spots, spots.size(), System.currentTimeMillis()-start);
+		return gson.toJson(sd);
 	}
 	
 	

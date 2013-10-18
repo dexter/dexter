@@ -29,12 +29,40 @@ public class CandidateSpot {
 	double linkProbability;
 	int start;
 	int end;
+	int linkFrequency;
+	int documentFrequency;
 	List<CandidateEntity> candidates;
 	
 	public CandidateSpot(){
-		candidates = new ArrayList<CandidateEntity>();
+		
 	}
 	
+	
+	
+	public int getLinkFrequency() {
+		return linkFrequency;
+	}
+
+
+
+	public void setLinkFrequency(int linkFrequency) {
+		this.linkFrequency = linkFrequency;
+	}
+
+
+
+	public int getDocumentFrequency() {
+		return documentFrequency;
+	}
+
+
+
+	public void setDocumentFrequency(int documentFrequency) {
+		this.documentFrequency = documentFrequency;
+	}
+
+
+
 	public String getMention() {
 		return mention;
 	}
@@ -66,6 +94,10 @@ public class CandidateSpot {
 	public void setCandidates(List<CandidateEntity> candidates) {
 		this.candidates = candidates;
 	}
+
+
+
+	
 	
 	
 	

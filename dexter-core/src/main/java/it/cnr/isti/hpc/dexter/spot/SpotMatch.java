@@ -207,6 +207,10 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	public int getFrequency() {
 		return spot.getFrequency();
 	}
+	
+	public int getLinkFrequency(){
+		return spot.getLink();
+	}
 
 	public double getLinkProbability() {
 		return spot.getLinkProbability();

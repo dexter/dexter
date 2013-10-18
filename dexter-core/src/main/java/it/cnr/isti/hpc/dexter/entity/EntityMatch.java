@@ -167,7 +167,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	}
 
 	public int getFrequency() {
-		return spot.getFrequency();
+		return entity.getFrequency();
 	}
 
 	public double getSpotLinkProbability() {

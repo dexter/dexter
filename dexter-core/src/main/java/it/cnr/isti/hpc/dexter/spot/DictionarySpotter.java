@@ -107,9 +107,10 @@ public class DictionarySpotter implements Spotter {
 //				}
 				SpotMatch match = new SpotMatch(s,field);
 				logger.debug("adding {} to matchset ", s);
+				
+				match = new SpotMatch(s, er.rank(match));
 				match.setStart(shingle.getStart());
 				match.setEnd(shingle.getEnd());
-				match = new SpotMatch(s, er.rank(match));
 				matches.add(match);
 
 			}
