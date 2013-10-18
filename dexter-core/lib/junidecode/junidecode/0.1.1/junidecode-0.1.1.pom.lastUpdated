@@ -1,0 +1,9 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Mon Jul 22 14:34:40 CEST 2013
+http\://bruciato.isti.cnr.it\:8081/artifactory/libs-release/.lastUpdated=1374496480734
+http\://repo.maven.apache.org/maven2/.lastUpdated=1374491059383
+default-http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/.lastUpdated=1374496434318
+http\://repo.maven.apache.org/maven2/.error=
+http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/.error=Could not transfer artifact junidecode\:junidecode\:pom\:0.1.1 from/to snapshots (http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot)\: Failed to transfer file\: http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/junidecode/junidecode/0.1.1/junidecode-0.1.1.pom. Return code is\: 503, ReasonPhrase\:Service Unavailable.
+https\://oss.sonatype.org/content/repositories/snapshots/.lastUpdated=1374491058978
+https\://oss.sonatype.org/content/repositories/snapshots/.error=
