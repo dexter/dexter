@@ -68,7 +68,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 
 
 		ProgressLogger progress = new ProgressLogger(
-				"getting features for document {}");
+				"extract spots for entity {}");
 
 		for (Article a : reader) {
 			progress.up();
