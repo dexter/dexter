@@ -76,7 +76,6 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
 				target = hp.getId(a.getRedirectNoAnchor());
-				// FIXME ha senso? 
 				for (String spot : spotManager.getAllSpots(a)) {
 					if (target == 0) {
 						logger.warn("cannot find id for redirect label {}",
@@ -85,7 +84,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 					}
 					if (target > 0 ){
 						// if target > 0, then target is not a disambiguation (disambiguations has id < 0)
-						cli.writeLineInOutput(spot + "\t" + source + "\t" + target);
+						cli.writeLineInOutput(spot + "\t" + target + "\t" + target);
 					}
 				}
 			} else {
