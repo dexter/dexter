@@ -8,5 +8,5 @@
 .project
 data
 target
-lib
+libs
 .DS_Store
