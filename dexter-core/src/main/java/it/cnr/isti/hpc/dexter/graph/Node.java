@@ -42,7 +42,7 @@ public class Node  {
 
 	int node;
 	int[] neighbours;
-	private static IdHelper ih = IdHelperFactory.getStdIdHelper();
+	private static IdHelper ih;
 
 	public Node() {
 		
@@ -86,6 +86,7 @@ public class Node  {
 
 	
 	public List<String> getNeighbourNames(){
+		if (ih == null)  ih = IdHelperFactory.getStdIdHelper();
 		List<String> neighbourNames = new LinkedList<String>();
 		for (int i : neighbours){
 			String name = ih.getLabel(i);
