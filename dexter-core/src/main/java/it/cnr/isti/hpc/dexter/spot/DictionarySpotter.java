@@ -18,6 +18,7 @@ package it.cnr.isti.hpc.dexter.spot;
 import it.cnr.isti.hpc.dexter.Document;
 import it.cnr.isti.hpc.dexter.Field;
 import it.cnr.isti.hpc.dexter.Spotter;
+import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
@@ -108,7 +109,8 @@ public class DictionarySpotter implements Spotter {
 				SpotMatch match = new SpotMatch(s,field);
 				logger.debug("adding {} to matchset ", s);
 				
-				match = new SpotMatch(s, er.rank(match));
+				EntityMatchList entities =  er.rank(match);
+				match.setEntities(entities);
 				match.setStart(shingle.getStart());
 				match.setEnd(shingle.getEnd());
 				matches.add(match);

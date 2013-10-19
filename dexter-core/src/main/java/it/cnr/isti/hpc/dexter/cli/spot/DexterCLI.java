@@ -46,7 +46,7 @@ public class DexterCLI extends AbstractCommandLineInterface {
 		Document doc = new FlatDocument(IOUtils.getFileAsString(input));
 		Dexter tagger = new Dexter();
 		EntityMatchList eml = tagger.tag(doc);
-		System.out.println(eml);
+		System.out.println(eml);	
 	}
 
 	public DexterCLI(String[] args) {
