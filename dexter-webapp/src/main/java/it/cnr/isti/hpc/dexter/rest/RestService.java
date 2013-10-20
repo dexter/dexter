@@ -21,10 +21,10 @@ import java.util.Collections;
 import java.util.List;
 
 import it.cnr.isti.hpc.dexter.Dexter;
-import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.FlatDocument;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
+import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
@@ -97,7 +97,7 @@ public class RestService {
 			s.setDocumentFrequency(spot.getFrequency());
 			candidates = new ArrayList<CandidateEntity>();
 			for (EntityMatch entity : spot.getEntities()){
-				CandidateEntity c = new CandidateEntity(entity.getId(), entity.getFrequency(), entity.getPriorProbability());
+				CandidateEntity c = new CandidateEntity(entity.getId(), entity.getFrequency(), entity.getCommonness());
 				candidates.add(c);
 			}
 			Collections.sort(candidates);

@@ -1,4 +1,4 @@
-package it.cnr.isti.hpc.dexter;
+package it.cnr.isti.hpc.dexter.document;
 
 import java.io.Serializable;
 

@@ -31,7 +31,7 @@ import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.util.Span;
 
 /**
- * SentenceSegmenter.java
+ * SentenceSegmenter allows to segment text in sentences.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 08/giu/2012
  */

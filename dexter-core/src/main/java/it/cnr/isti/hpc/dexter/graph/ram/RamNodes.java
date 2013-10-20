@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * RamNodes implements NodeStar object in main memory.
+ * RamNodes implements {@link NodeStar} object in main memory.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */

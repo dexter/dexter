@@ -56,12 +56,5 @@ public class AsciiFilter extends Filter<String> {
 		return true;
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return false;
-	}
 
 }

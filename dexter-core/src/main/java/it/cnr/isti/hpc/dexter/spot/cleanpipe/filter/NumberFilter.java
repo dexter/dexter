@@ -39,12 +39,4 @@ public class NumberFilter extends Filter<String> {
 		return true;
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return true;
-	}
-
 }

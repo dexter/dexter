@@ -42,7 +42,7 @@ public class RamOutcomingNodes extends RamNodes implements OutcomingNodes,
 			RamOutcomingNodes.class);
 
 	private RamOutcomingNodes() {
-		super(new File(properties.get("ram.outcoming.nodes")));
+		super(new File(properties.get("data.dir"),properties.get("ram.outcoming.nodes")));
 	}
 
 	public static RamOutcomingNodes getInstance() {

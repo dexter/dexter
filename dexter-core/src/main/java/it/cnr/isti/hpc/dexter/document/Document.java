@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter;
+package it.cnr.isti.hpc.dexter.document;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -45,7 +45,7 @@ public abstract class Document implements Serializable {
 	public abstract Field getField(String name);
 	
 	/**
-	 * Return an iterator over the fields being part of this document.
+	 * Returns an iterator over the fields being part of this document.
 	 * 
 	 * @return Iterator over the fields of the document
 	 */
@@ -71,45 +71,11 @@ public abstract class Document implements Serializable {
 	public abstract void removeField(String name);
 	
 	/**
-	 * Get the content of the document, appending the content of the different
+	 * Gets the content of the document, appending the content of the different
 	 * fields belonging to it.
 	 * 
 	 * @return The content of the document
 	 */
 	public abstract String getContent();
 
-	
-//	public String getAnnotatedText(EntityMatchList eml) {
-//		Collections.sort(eml, new EntityMatch.SortByPosition());
-//		StringBuffer sb = new StringBuffer();
-//		int pos = 0;
-//		for (EntityMatch em : eml) {
-//			assert em.getStart() >= 0;
-//			assert em.getEnd() >= 0;
-//			logger.info("<{},{}>", em.getStart(), em.getEnd());
-//
-//			sb.append(text.substring(pos, em.getStart()));
-//			// the spot has been normalized, i want to retrieve the real one
-//			String realSpot = text.substring(em.getStart(), em.getEnd());
-//			sb.append(
-//					"<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
-//					.append(realSpot).append("</a>");
-//			pos = em.getEnd();
-//		}
-//		if (pos < text.length()) {
-//			sb.append(text.substring(pos));
-//		}
-//
-//		return sb.toString();
-//	}
-
-//	public String getAnnotatedText(EntityMatchList eml, int nEntities) {
-//		eml.sort();
-//		EntityMatchList emlSub = new EntityMatchList();
-//		int size = Math.min(nEntities, eml.size());
-//		for (int i = 0; i < size; i++) {
-//			emlSub.add(eml.get(i));
-//		}
-//		return getAnnotatedText(emlSub);
-//	}
 }

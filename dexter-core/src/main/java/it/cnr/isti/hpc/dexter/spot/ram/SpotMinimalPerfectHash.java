@@ -23,11 +23,8 @@ import it.cnr.isti.hpc.io.reader.TsvRecordParser;
 import it.cnr.isti.hpc.io.reader.TsvTuple;
 import it.cnr.isti.hpc.log.ProgressLogger;
 import it.cnr.isti.hpc.property.ProjectProperties;
-import it.unimi.dsi.sux4j.mph.LcpMonotoneMinimalPerfectHashFunction;
-import it.unimi.dsi.sux4j.mph.MinimalPerfectHashFunction;
 import it.unimi.dsi.bits.TransformationStrategies;
-
-
+import it.unimi.dsi.sux4j.mph.MinimalPerfectHashFunction;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -40,50 +37,49 @@ import org.slf4j.LoggerFactory;
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Mar 8, 2013
+ *         Created on Mar 8, 2013
  */
 public class SpotMinimalPerfectHash {
-	
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotMinimalPerfectHash.class);
-	
+
 	private MinimalPerfectHashFunction<String> hash;
-	private static ProjectProperties properties = new ProjectProperties(SpotMinimalPerfectHash.class); 
-	
+	private static ProjectProperties properties = new ProjectProperties(
+			SpotMinimalPerfectHash.class);
+
 	private static SpotMinimalPerfectHash instance = null;
-	
-	private SpotMinimalPerfectHash(){
+
+	private SpotMinimalPerfectHash() {
 		properties = new ProjectProperties(SpotMinimalPerfectHash.class);
 		load();
 	}
-	
-	
-	public long hash(String spot){
+
+	public long hash(String spot) {
 		return hash.getLong(spot);
 	}
 
-	
-	public static SpotMinimalPerfectHash getInstance(){
-		if (instance == null) instance = new SpotMinimalPerfectHash();
+	public static SpotMinimalPerfectHash getInstance() {
+		if (instance == null)
+			instance = new SpotMinimalPerfectHash();
 		return instance;
 	}
-	
-	
-	public void dumpKeys(String hashValuesFile){
-		String spotFile = properties.get("spots");
-	
-		dumpKeys(spotFile, hashValuesFile);
+
+	public void dumpKeys(String hashValuesFile) {
+		File spotFile = new File(properties.get("data.dir"),
+				properties.get("spots"));
+
+		dumpKeys(spotFile.getAbsolutePath(), hashValuesFile);
 	}
-	
+
 	/**
 	 * @param output
 	 */
 	private void dumpKeys(String spotsFile, String output) {
-		SpotIterable reader  = new SpotIterable(spotsFile);
-		ProgressLogger pl = new ProgressLogger( "dumped {} keys", 100000);
+		SpotIterable reader = new SpotIterable(spotsFile);
+		ProgressLogger pl = new ProgressLogger("dumped {} keys", 100000);
 		BufferedWriter writer = IOUtils.getPlainOrCompressedWriter(output);
-		for (String s : reader){
+		for (String s : reader) {
 			pl.up();
 			try {
 				writer.write(String.valueOf(hash.getLong(s)));
@@ -99,94 +95,101 @@ public class SpotMinimalPerfectHash {
 			logger.error("closing {} ({})", output, e.toString());
 			System.exit(-1);
 		}
-		
-	}	
-	
-	private static MinimalPerfectHashFunction<String> generateHash(){
+
+	}
+
+	private static MinimalPerfectHashFunction<String> generateHash() {
 		return generateHash(properties.get("spots"));
-		
+
 	}
-	
-	private static MinimalPerfectHashFunction<String> generateHash(String spotFile){
+
+	private static MinimalPerfectHashFunction<String> generateHash(
+			String spotFile) {
 		return generateHash(new File(spotFile));
-		
+
 	}
-	private static MinimalPerfectHashFunction<String> generateHash(File spotFile){
-		SpotIterable iterator  = new SpotIterable(spotFile);
-		MinimalPerfectHashFunction<String> mph =  null;
+
+	private static MinimalPerfectHashFunction<String> generateHash(File spotFile) {
+		SpotIterable iterator = new SpotIterable(spotFile);
+		MinimalPerfectHashFunction<String> mph = null;
 		try {
-			mph = new MinimalPerfectHashFunction<String>(iterator, TransformationStrategies.utf16());
+			mph = new MinimalPerfectHashFunction<String>(iterator,
+					TransformationStrategies.utf16());
 		} catch (IOException e) {
-			logger.error("generating minimal perfect hash ({}) ",e.toString());
+			logger.error("generating minimal perfect hash ({}) ", e.toString());
 			System.exit(-1);
-		}	
+		}
 		return mph;
 	}
 
-	public static void dump(){
-		
-		
-		dump(properties.get("ram.spot.perfect.hash"));	
-	}
-	
-	private static  void dump(String outputFile){
-		
-		dump(new File(outputFile));
-		
-	}
-	
+	public static void dump() {
 
-	
-	private static void dump(File outputFile){
-		logger.info("dump minimal perfect hashing in {} ",outputFile);
+		dump(new File(properties.get("data.dir"),
+				properties.get("ram.spot.perfect.hash")));
+	}
+
+	private static void dump(String outputFile) {
+
+		dump(new File(outputFile));
+
+	}
+
+	private static void dump(File outputFile) {
+		logger.info("dump minimal perfect hashing in {} ", outputFile);
 		MinimalPerfectHashFunction<String> mph = generateHash();
-		
+
 		Serializer serializer = new Serializer();
 		serializer.dump(mph, outputFile.getAbsolutePath());
 	}
-	
-	private void load(){
-		load(properties.get("ram.spot.perfect.hash"));
+
+	private void load() {
+		load(new File(properties.get("data.dir"),
+				properties.get("ram.spot.perfect.hash")));
 	}
-	
-	private void load(String file){
+
+	private void load(File file) {
 		Serializer serializer = new Serializer();
-		logger.info("loading minimal perfect hashing in {} ",file);
+		logger.info("loading minimal perfect hashing in {} ",
+				file.getAbsolutePath());
 		Stopwatch progress = new Stopwatch();
 		progress.start("load");
-		hash = (MinimalPerfectHashFunction<String>)serializer.load(file);
+		hash = (MinimalPerfectHashFunction<String>) serializer.load(file
+				.getAbsolutePath());
 		progress.stop("load");
 		logger.info(progress.stat("load"));
 	}
-	
-	public long getLong(String spot){
+
+	public long getLong(String spot) {
 		return hash.getLong(spot);
 	}
-	
+
 	private static class SpotIterable implements Iterable<String> {
-		
+
 		File spotFile;
-		
-		public SpotIterable(String spotFile){
+
+		public SpotIterable(String spotFile) {
 			this(new File(spotFile));
 		}
-		public SpotIterable(File spotFile){
+
+		public SpotIterable(File spotFile) {
 			this.spotFile = spotFile;
 		}
+
 		@Override
 		public Iterator<String> iterator() {
 			return new SpotIterator(spotFile);
 		}
-		
+
 	}
-	
+
 	private static class SpotIterator implements Iterator<String> {
 		private Iterator<TsvTuple> iterator;
 		private static final String FIELD = "spot";
-		
-		public SpotIterator(File spotFile){
-			 RecordReader<TsvTuple> reader = new RecordReader<TsvTuple>(spotFile.getAbsolutePath(), new TsvRecordParser(FIELD));
-			 iterator = reader.iterator();
+
+		public SpotIterator(File spotFile) {
+			RecordReader<TsvTuple> reader = new RecordReader<TsvTuple>(
+					spotFile.getAbsolutePath(), new TsvRecordParser(FIELD));
+			iterator = reader.iterator();
 		}
 
 		@Override
@@ -203,11 +206,7 @@ public class SpotMinimalPerfectHash {
 		public void remove() {
 			iterator.remove();
 		}
-		
+
 	}
-
-
-	
-	
 
 }

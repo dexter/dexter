@@ -26,11 +26,4 @@ public class LowerCaseCleaner extends Cleaner<String> {
 		return spot.toLowerCase();
 	}
 
-	public boolean post() {
-		return false;
-	}
-
-	public boolean pre() {
-		return true;
-	}
 }

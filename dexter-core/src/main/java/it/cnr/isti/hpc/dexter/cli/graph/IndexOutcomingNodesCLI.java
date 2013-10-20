@@ -28,7 +28,17 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
+ * IndexOutcomingNodesCLI generate the binary file containing the incoming
+ * entities. Takes a file containing the outcoming entities in the format: <br>
+ * <br>
+ * <code>
+ * 	entity_id <tab> e1 e2 ... eN  
+ * </code> <br>
+ * <br>
+ * where <code> e1 e2 .. eN </code> are the entities linking from the given
+ * entity <code> entity_id </code>. The file is sorted by <code>entity_id</code>
+ * , and in each line the incoming entities are sorted by their numerical id.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
@@ -39,7 +49,6 @@ public class IndexOutcomingNodesCLI extends AbstractCommandLineInterface {
 	private static final Logger logger = LoggerFactory
 			.getLogger(IndexOutcomingNodesCLI.class);
 
-
 	private static String[] params = new String[] { "input" };
 
 	private static final String USAGE = "java -cp $jar "
@@ -47,29 +56,31 @@ public class IndexOutcomingNodesCLI extends AbstractCommandLineInterface {
 
 	public static void main(String[] args) {
 		IndexOutcomingNodesCLI cli = new IndexOutcomingNodesCLI(args);
-		ProjectProperties properties = new ProjectProperties(IndexOutcomingNodesCLI.class);
-		String outcoming = properties.get("ram.outcoming.nodes");
-		File outcomingFile = new File(outcoming);
-		if (outcomingFile.exists()){
-			logger.info("serialized file {} yet exists, removing", outcoming);
+		ProjectProperties properties = new ProjectProperties(
+				IndexOutcomingNodesCLI.class);
+
+		File outcomingFile = new File(properties.get("data.dir"),
+				properties.get("ram.outcoming.nodes"));
+
+		if (outcomingFile.exists()) {
+			logger.info("serialized file {} yet exists, removing",
+					outcomingFile);
 			outcomingFile.delete();
 		}
 		ProgressLogger pl = new ProgressLogger("indexed {} nodes", 100000);
-		RecordReader<Node> reader = new RecordReader<Node>(cli.getInput(), new Node.Parser());
-		NodesWriter writer = NodeFactory.getOutcomingNodeWriter(NodeFactory.STD_TYPE);
-		for (Node n : reader ){
+		RecordReader<Node> reader = new RecordReader<Node>(cli.getInput(),
+				new Node.Parser());
+		NodesWriter writer = NodeFactory
+				.getOutcomingNodeWriter(NodeFactory.STD_TYPE);
+		for (Node n : reader) {
 			pl.up();
 			writer.add(n);
 		}
 		writer.close();
-		
-		
 
 	}
-	
-	
 
 	public IndexOutcomingNodesCLI(String[] args) {
 		super(args, params, USAGE);
 	}
- }
+}

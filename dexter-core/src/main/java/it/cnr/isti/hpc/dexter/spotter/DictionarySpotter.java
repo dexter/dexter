@@ -13,15 +13,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot;
+package it.cnr.isti.hpc.dexter.spotter;
 
-import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.Field;
-import it.cnr.isti.hpc.dexter.Spotter;
-import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.document.Field;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
+import it.cnr.isti.hpc.dexter.spot.Spot;
+import it.cnr.isti.hpc.dexter.spot.SpotMatch;
+import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;

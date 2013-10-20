@@ -42,15 +42,4 @@ public class JuniorAndInitialsCleaner extends Cleaner<String> {
 			logger.debug("{} -> {}", spot, clean);
 		return clean;
 	}
-
-	public boolean post() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean pre() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 }

@@ -34,15 +34,4 @@ public class TemplateFilter extends Filter<String> {
 	public boolean isFilter(String spot) {
 		return spot.contains("template");
 	}
-
-	public boolean post() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	public boolean pre() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 }

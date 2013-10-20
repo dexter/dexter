@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The entity is the core concept on a NER system. The entity object is
- * described by:
+ * The entity is the core concept on a Entity Linking system. The entity object
+ * is described by:
  * <ul>
  * <li>The id of the entity in the external knowledge base
  * <li>The frequency of the entity, i.e. how many times the entity is linked in
@@ -42,23 +42,48 @@ public class Entity implements Comparable<Entity>, Serializable {
 
 	// private static IdHelper helper = IdHelperFactory.getStdIdHelper();
 
+	/**
+	 * builds an entity with identifier <code> id </code> and frequency
+	 * <code> frequency </code>
+	 * 
+	 * @param id
+	 *            the entity integer identifier (i.e., wikiId)
+	 * @param frequency
+	 *            how many times the entity is linked in the knowledge base
+	 */
 	public Entity(int id, int frequency) {
 		this.id = id;
 		this.frequency = frequency;
 	}
 
+	/**
+	 * builds an entity with identifier <code> id </code>.
+	 * 
+	 * @param id
+	 *            the entity integer identifier (i.e., wikiId)
+	 */
 	public Entity(int id) {
 		this(id, 1);
 	}
 
+	/**
+	 * @return the entity integer identifier (i.e., wikiId)
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * sets the entity integer identifier (i.e., wikiId)
+	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * @returns the frequency of the entity, i.e., how many times the entity is
+	 *          linked in the knowledge base
+	 */
 	public int getFrequency() {
 		return frequency;
 	}
@@ -67,6 +92,9 @@ public class Entity implements Comparable<Entity>, Serializable {
 		this.frequency = frequency;
 	}
 
+	/**
+	 * @returs true if the entity represent a disambiguation, false otherwise
+	 */
 	public static boolean isDisambiguation(int id) {
 		return id < 0;
 	}
@@ -84,6 +112,9 @@ public class Entity implements Comparable<Entity>, Serializable {
 		return o.frequency - frequency;
 	}
 
+	/**
+	 * @return a copy of this entity
+	 */
 	public Entity clone() {
 		return new Entity(id, frequency);
 	}

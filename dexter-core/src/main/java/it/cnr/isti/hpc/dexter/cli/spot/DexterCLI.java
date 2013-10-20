@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.Dexter;
-import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.FlatDocument;
+import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.io.IOUtils;
 
@@ -26,7 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Query the map file for a the spot given in input
+ * Given a file containing plain text prints on the stdout the entities
+ * detected by the {@link Dexter} tagger. 
  * 
  */
 public class DexterCLI extends AbstractCommandLineInterface {

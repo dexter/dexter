@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot;
+package it.cnr.isti.hpc.dexter.spot.clean;
 
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.Function;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.NopFunction;

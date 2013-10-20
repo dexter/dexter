@@ -26,6 +26,9 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
+ * Contains the relatedness between two entities, and several functions 
+ * on the graph useful to implement a relatedness function.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Oct 10, 2012

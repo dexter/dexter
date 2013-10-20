@@ -28,10 +28,12 @@ import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.tokenize.Tokenizer;
 
 /**
- * PosTagger.java
+ * PosTagger allows to annotate text with pos tag. 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 08/giu/2012
  */
+
+// FIXME depends on language
 public class PosTagger {
 	/**
 	 * Logger for this class

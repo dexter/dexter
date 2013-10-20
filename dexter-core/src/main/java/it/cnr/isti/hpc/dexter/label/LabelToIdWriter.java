@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.label;
 
 /**
  * 
- * IdToLabelWriter takes care to write in a persistent format the 
- * mapping <code> id -> label </code>.
+ * Label2IdWriter takes care to write in a persistent format the 
+ * mapping <code> label -> wiki-id </code>.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 

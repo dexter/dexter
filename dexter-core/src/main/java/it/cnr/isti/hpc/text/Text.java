@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * 
+ * Utils to manage text.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/nov/2011
  */

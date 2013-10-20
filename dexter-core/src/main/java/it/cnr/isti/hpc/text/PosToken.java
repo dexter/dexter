@@ -21,7 +21,7 @@ import simplenlg.lexicon.Lexicon;
 import simplenlg.phrasespec.SPhraseSpec;
 
 /**
- * Token.java
+ * A pos token
  * 
  * 
  * @see http://bulba.sdsu.edu/jeanette/thesis/PennTags.html

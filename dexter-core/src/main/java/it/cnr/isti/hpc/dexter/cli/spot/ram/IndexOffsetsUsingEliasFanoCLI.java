@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * encode the offsets file with  elias fano 
+ * Encodes the offsets file with elias fano 
  * 
  */
 public class IndexOffsetsUsingEliasFanoCLI extends AbstractCommandLineInterface {

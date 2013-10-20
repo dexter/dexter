@@ -18,19 +18,48 @@ package it.cnr.isti.hpc.dexter;
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator;
+import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
 import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
-import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Implements a standard entity linker, given a document the text is processed
+ * with a {@link Spotter} that returns the possible mentions detected as a
+ * {@link SpotMatchList}. Each {@link SpotMatch} contains a list of candidate
+ * entities for the spot (see {@link EntityMatchList}). The
+ * {@link Disambiguator} takes in input the SpotMatch list and takes care to
+ * select only one entity for spot (if the spot has more than one entity). The
+ * Disambiguator also gives a relevance score to each EntityMatch selected and
+ * rank the entity matches by relevance. The Disambiguator usually exploits a
+ * {@link Relatedness} function that provides the semantic distance between two
+ * entities to perform the disambiguation. Dexter takes care to remove the
+ * entity matches that overlaps in the text, removing the entity matches with
+ * the lower scores.
+ * 
+ * The Dexter tagger can use external spotter/disambiguation/relatedness classes
+ * if they are set in the <code>project.properties</code> file, you only have to
+ * implement the correspondent interface, to produce a jar with your code and
+ * put it in the folder <code>libs</code>. <br>
+ * <br>
+ * By default Dexter uses the {@link DictionarySpotter} as spotter, the the
+ * {@link TopScoreEntityDisambiguator} as disambiguator, and the
+ * {@link MilneRelatedness} as relatedness. If you do not set different classes
+ * in the property file this component will be used.
+ * 
+ * 
+ * @see Tagger
+ * 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Sep 5, 2012
@@ -43,45 +72,41 @@ public class Dexter implements Tagger {
 	private Spotter spotter;
 	private Disambiguator disambiguator;
 	private Stopwatch stopwatch;
-	
 
 	public Dexter() {
 		Relatedness r = new MilneRelatedness();
 		stopwatch = new Stopwatch();
 		PluginLoader pl = new PluginLoader();
 		logger.info("using the dexter tagger");
-		
+
 		if (properties.has("spotter.class")) {
 			spotter = pl.getSpotter(properties.get("spotter.class"));
 		} else {
 			spotter = new DictionarySpotter();
 		}
-		
-		
+
 		if (properties.has("disambiguator.class")) {
-			disambiguator = pl
-					.getDisambiguator(properties.get("disambiguator.class"));
+			disambiguator = pl.getDisambiguator(properties
+					.get("disambiguator.class"));
 		} else {
 			disambiguator = new TopScoreEntityDisambiguator();
 		}
-		
-		if (properties.has("relatedness.class")){
-			r = pl
-					.getRelatedness(properties.get("relatedness.class"));
+
+		if (properties.has("relatedness.class")) {
+			r = pl.getRelatedness(properties.get("relatedness.class"));
 			RelatednessFactory.register(r);
 		}
-		
-		logger.info("Spotter: {}",spotter.getClass());
-		logger.info("Disambiguator: {}",disambiguator.getClass());
-		logger.info("Relatedness: {}",r.getClass());
+
+		logger.info("Spotter: {}", spotter.getClass());
+		logger.info("Disambiguator: {}", disambiguator.getClass());
+		logger.info("Relatedness: {}", r.getClass());
 
 	}
 
-	public SpotMatchList spot(Document doc){
+	public SpotMatchList spot(Document doc) {
 		SpotMatchList sml = spotter.match(doc);
 		return sml;
 	}
-	
 
 	public EntityMatchList tag(Document doc) {
 
@@ -90,10 +115,10 @@ public class Dexter implements Tagger {
 
 		logger.info("spotting performed in {} millis",
 				stopwatch.stop("spotting"));
-		
+
 		stopwatch.start("disambiguation");
 		EntityMatchList eml = disambiguator.disambiguate(sml);
-		if (! eml.isEmpty()){
+		if (!eml.isEmpty()) {
 			eml = eml.removeOverlappings();
 		} else {
 			logger.warn("no spot identified in text");
@@ -103,7 +128,7 @@ public class Dexter implements Tagger {
 		return eml;
 
 	}
-	
+
 	public String stats() {
 		return stopwatch.stat();
 	}

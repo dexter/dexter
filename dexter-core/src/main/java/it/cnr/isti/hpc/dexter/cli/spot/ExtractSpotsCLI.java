@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.cli.label.ExportArticlesIdCLI;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
-import it.cnr.isti.hpc.dexter.spot.SpotManager;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
@@ -28,15 +28,21 @@ import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Retrieves all the title from the wikipedia articles, considers only pages,
- * templates and categories. Titles with length < 3 are ignored. The output file
- * contains the fields: spot \t id-article-containing the spot \t target spot;
- * 
- * FIXME getHash(getTitle) -> getID!
+ * Retrieves all the titles and anchors from the Wikipedia articles, considers
+ * only articles, redirects, templates and categories. The output file contains
+ * the fields: <br>
+ * <br>
+ * {@code spot <tab> source id (id article containing the spot) <tab> target id (id of the target) article }
+ * <br>
+ * <br>
+ * In case of a redirect or a title the source id is equal to the target id.
+ * Each spot is processed using the {@link SpotManager#getStandardSpotManager()
+ * standard spot manager}, which cleans, enriches and filters the text.
  * 
  */
 public class ExtractSpotsCLI extends AbstractCommandLineInterface {
@@ -55,17 +61,12 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 	public static void main(String[] args) {
 		ExtractSpotsCLI cli = new ExtractSpotsCLI(args);
 		cli.openOutput();
-		
-		ProjectProperties properties = new ProjectProperties(
-				ExportArticlesIdCLI.class);
-	
 
 		SpotManager spotManager = SpotManager.getStandardSpotManager();
 		IdHelper hp = IdHelperFactory.getStdIdHelper();
-		RecordReader<Article> reader = new RecordReader<Article>(cli.getInput(),
-				new JsonRecordParser<Article>(Article.class)).filter(TypeFilter.STD_FILTER);
-		
-
+		RecordReader<Article> reader = new RecordReader<Article>(
+				cli.getInput(), new JsonRecordParser<Article>(Article.class))
+				.filter(TypeFilter.STD_FILTER);
 
 		ProgressLogger progress = new ProgressLogger(
 				"extract spots for entity {}");
@@ -82,9 +83,11 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 								a.getRedirectNoAnchor());
 						continue;
 					}
-					if (target > 0 ){
-						// if target > 0, then target is not a disambiguation (disambiguations has id < 0)
-						cli.writeLineInOutput(spot + "\t" + target + "\t" + target);
+					if (target > 0) {
+						// if target > 0, then target is not a disambiguation
+						// (disambiguations has id < 0)
+						cli.writeLineInOutput(spot + "\t" + target + "\t"
+								+ target);
 					}
 				}
 			} else {

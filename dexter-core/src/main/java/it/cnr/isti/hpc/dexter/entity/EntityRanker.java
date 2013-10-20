@@ -15,14 +15,9 @@
  */
 package it.cnr.isti.hpc.dexter.entity;
 
-import java.util.List;
-
-import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.Field;
-import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.document.Field;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.ContextExtractor;
-import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
@@ -30,9 +25,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * EntityRanker assignes to an entity a score based on the similarity (tf-idf)
- * between a text window around the spot and the wikipedia article related to
- * the entity.
+ * EntityRanker assigns to the entities retrieved for a spot a score. The score
+ * can be based on two different measure:
+ * <ul>
+ * <li>the similarity (tf-idf) between a text window around the spot and the
+ * wikipedia article related to the entity, if in properties
+ * <code>rank.by.similarity</code> is true;</li>
+ * <li>the commonness score, i.e. the probability that the target of the spot is
+ * this entity ( <code>p(entity|spot)</code>), if in properties
+ * <code>rank.by.commonness</code> is true.
+ * </ul>
+ * 
+ * <strong> WARNING: </strong> this class could be removed or radically modified in the future 
+ * 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
  */
@@ -48,16 +53,13 @@ public class EntityRanker {
 	private LuceneHelper helper;
 	private final boolean RANK_BY_SIMILARITY = properties.get(
 			"rank.by.similarity").equals("true");
-	private final boolean RANK_BY_PRIOR = properties.get("rank.by.prior")
+	private final boolean RANK_BY_PRIOR = properties.get("rank.by.commonness")
 			.equals("true");
-
-	private float prior_threshold;
 
 	private final int WINDOW_SIZE = properties.getInt("context.window.size");
 
 	public EntityRanker(Field field) {
 
-		prior_threshold = Float.parseFloat(properties.get("prior.threshold"));
 		if (RANK_BY_SIMILARITY) {
 			logger.info("(e|s) using cosine similarity");
 			helper = LuceneHelper.getDexterLuceneHelper();
@@ -69,22 +71,6 @@ public class EntityRanker {
 			} else
 				logger.info("(e|s) NO PROBABILITY");
 		}
-	}
-
-	private EntityMatchList filterEntitiesByPrior(SpotMatch s) {
-		EntityMatchList eml = new EntityMatchList();
-		for (EntityMatch e : s.getEntities()) {
-			if (e.getId() == IdHelper.NOID)
-				continue;
-			if (e.getPriorProbability() < prior_threshold) {
-				logger.debug("filter {} by commonness", e.getId());
-				continue;
-			}
-			eml.add(e);
-		}
-
-		return eml;
-
 	}
 
 	public EntityMatchList rank(SpotMatch spot) {

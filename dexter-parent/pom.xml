@@ -8,25 +8,25 @@
 	<packaging>pom</packaging>
 	<name>Dexter Parent</name>
 	<description>Contains configuration for packages</description>
-	
+
 	<licenses>
-	        <license>
-	            <name>The Apache Software License, Version 2.0</name>
-	            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-	            <distribution>repo</distribution>
-	        </license>
-	    </licenses>
-	
-    <developers>
-          <developer>
-              <name>Diego Ceccarelli</name>
-              <id>diego</id>
-          </developer>
-          <developer>
-              <name>Salvatore Trani</name>
-              <id>salvo</id>
-          </developer>
-      </developers>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Diego Ceccarelli</name>
+			<id>diego</id>
+		</developer>
+		<developer>
+			<name>Salvatore Trani</name>
+			<id>salvo</id>
+		</developer>
+	</developers>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -34,7 +34,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-			
+
 			<!-- dexter dependecies -->
 			<dependency>
 				<artifactId>json-wikipedia</artifactId>
@@ -63,19 +63,19 @@
 				<artifactId>lucene-core</artifactId>
 				<version>4.1.0</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-analyzers-common</artifactId>
 				<version>4.1.0</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-queryparser</artifactId>
 				<version>4.1.0</version>
 			</dependency>
-			
+
 			<!-- evaluation -->
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
@@ -88,7 +88,7 @@
 				<artifactId>gson</artifactId>
 				<version>2.2.4</version>
 			</dependency>
-			
+
 			<!-- nlp processing -->
 			<dependency>
 				<groupId>org.apache.opennlp</groupId>
@@ -101,13 +101,13 @@
 				<version>4.4</version>
 			</dependency>
 			<!-- maps on disk -->
-		
+
 			<dependency>
 				<groupId>org.mapdb</groupId>
 				<artifactId>mapdb</artifactId>
 				<version>0.9.4</version>
 			</dependency>
-            <!-- to perform random walks -->
+			<!-- to perform random walks -->
 			<dependency>
 				<groupId>jama</groupId>
 				<artifactId>gov.nist.math</artifactId>
@@ -148,31 +148,31 @@
 
 
 		</dependencies>
-		
-		
+
+
 	</dependencyManagement>
-	
+
 	<build>
 		<pluginManagement>
 			<plugins>
-			  <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
-                    <configuration>
-                    	<encoding>UTF-8</encoding>
-                        <source>1.6</source>
-                        <target>1.6</target>
-                    </configuration>
-                </plugin>
 				<plugin>
-				    <groupId>org.codehaus.mojo</groupId>
-				    <artifactId>aspectj-maven-plugin</artifactId>
-				    <version>1.4</version>
-				    <configuration>
-				        <source>1.6</source>
-				        <complianceLevel>1.6</complianceLevel>
-				    </configuration>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>aspectj-maven-plugin</artifactId>
+					<version>1.4</version>
+					<configuration>
+						<source>1.6</source>
+						<complianceLevel>1.6</complianceLevel>
+					</configuration>
 				</plugin>
 				<plugin>
 
@@ -183,6 +183,20 @@
 							<descriptorRef>jar-with-dependencies</descriptorRef>
 						</descriptorRefs>
 					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>download-licenses</id>
+							<goals>
+								<goal>download-licenses</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

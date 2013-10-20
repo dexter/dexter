@@ -28,7 +28,18 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
+ * IndexIncomingNodesCLI generate the binary file containing the incoming entities.
+ * Takes a file containing the incoming entities in the format: 
+ * <br>
+ * <br>
+ * <code>
+ * 	entity_id <tab> e1 e2 ... eN  
+ * </code>
+ * <br>
+ * <br>
+ * where <code> e1 e2 .. eN </code> are the entities linking to the given entity <code> entity_id </code>.
+ * The file is sorted by <code>entity_id</code>, and in each line the incoming entities are sorted by their numerical id. 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
@@ -48,10 +59,10 @@ public class IndexIncomingNodesCLI extends AbstractCommandLineInterface {
 	public static void main(String[] args) {
 		IndexIncomingNodesCLI cli = new IndexIncomingNodesCLI(args);
 		ProjectProperties properties = new ProjectProperties(IndexIncomingNodesCLI.class);
-		String incoming = properties.get("ram.incoming.nodes");
-		File incomingFile = new File(incoming);
+		
+		File incomingFile = new File(properties.get("data.dir"),properties.get("ram.incoming.nodes"));
 		if (incomingFile.exists()){
-			logger.info("serialized file {} yet exists, removing", incoming);
+			logger.info("serialized file {} yet exists, removing", incomingFile);
 			incomingFile.delete();
 		}
 		ProgressLogger pl = new ProgressLogger("indexed {} nodes", 100000);

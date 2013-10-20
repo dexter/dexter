@@ -42,7 +42,8 @@ public class RamIncomingNodes extends RamNodes implements IncomingNodes,
 			RamIncomingNodes.class);
 
 	private RamIncomingNodes() {
-		super(new File(properties.get("ram.incoming.nodes")));
+		
+		super(new File(properties.get("data.dir"),properties.get("ram.incoming.nodes")));
 	}
 
 	public static RamIncomingNodes getInstance() {

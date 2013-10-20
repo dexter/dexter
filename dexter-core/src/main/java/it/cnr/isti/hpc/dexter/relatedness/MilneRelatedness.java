@@ -17,33 +17,38 @@ package it.cnr.isti.hpc.dexter.relatedness;
 
 import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.NodeFactory;
-import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.property.ProjectProperties;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
-
 
 /**
+ * Implements the standard relatedness function proposed by Milne and Witten [1].
+ * 
+ * <br>
+ * <br>
+ * [1] Learning to link with wikipedia, Milne, David and Witten, Ian H,
+ * Proceedings of the 17th ACM conference on Information and knowledge
+ * management 2008
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Oct 12, 2013
  */
 public class MilneRelatedness extends Relatedness {
-	
-	private static IncomingNodes in = NodeFactory.getIncomingNodes(NodeFactory.STD_TYPE);
-	private static ProjectProperties properties = new ProjectProperties(MilneRelatedness.class);
-	
-	private static final int W =  properties.getInt("w");
-	private static final double logW =  Math.log(W);
-	
-	
-	public MilneRelatedness(){
-		
+
+	private static IncomingNodes in = NodeFactory
+			.getIncomingNodes(NodeFactory.STD_TYPE);
+	private static ProjectProperties properties = new ProjectProperties(
+			MilneRelatedness.class);
+
+	private static final int W = properties.getInt("w");
+	private static final double logW = Math.log(W);
+
+	public MilneRelatedness() {
+
 	}
-	
+
 	protected MilneRelatedness(int x, int y) {
-		super(x,y);
-		
+		super(x, y);
+
 	}
 
 	@Override
@@ -52,21 +57,23 @@ public class MilneRelatedness extends Relatedness {
 		int[] inY = in.getNeighbours(y);
 		int sizex = inX.length;
 		int sizey = inY.length;
-		
+
 		int maxXY = Math.max(sizex, sizey);
 		int minXY = Math.min(sizex, sizey);
 		if (minXY == 0)
 			return 0;
-		
+
 		int intersection = intersectionSize(inX, inY);
 		if (intersection == 0)
 			return 0;
-		double rel = 1 - ((Math.log(maxXY) - Math.log(intersection)) / (logW - Math.log(minXY)));
-		if (rel < 0) rel = 0;
+		double rel = 1 - ((Math.log(maxXY) - Math.log(intersection)) / (logW - Math
+				.log(minXY)));
+		if (rel < 0)
+			rel = 0;
 		return rel;
-		
+
 	}
-	
+
 	public int intersectionSize(int[] a, int[] b) {
 		int i = 0, j = 0;
 		int size = 0;
@@ -89,8 +96,6 @@ public class MilneRelatedness extends Relatedness {
 		}
 		return size;
 	}
-	
-	
 
 	@Override
 	public String getName() {
@@ -99,19 +104,14 @@ public class MilneRelatedness extends Relatedness {
 
 	@Override
 	public Relatedness copy() {
-		MilneRelatedness rel = new MilneRelatedness(x,y);
+		MilneRelatedness rel = new MilneRelatedness(x, y);
 		rel.setScore(score);
 		return rel;
 	}
 
 	@Override
-	public boolean hasNegativeScores(){
+	public boolean hasNegativeScores() {
 		return false;
 	}
-
-
-
-	
-	
 
 }

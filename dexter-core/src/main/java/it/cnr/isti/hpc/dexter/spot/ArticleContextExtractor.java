@@ -15,7 +15,8 @@ s *  Copyright 2012 Diego Ceccarelli
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import it.cnr.isti.hpc.dexter.Field;
+import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 

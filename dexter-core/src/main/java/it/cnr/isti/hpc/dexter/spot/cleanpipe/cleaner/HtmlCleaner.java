@@ -49,12 +49,4 @@ public class HtmlCleaner extends Cleaner<String> {
 
 	}
 
-	public boolean post() {
-		return false;
-	}
-
-	public boolean pre() {
-		return true;
-	}
-
 }

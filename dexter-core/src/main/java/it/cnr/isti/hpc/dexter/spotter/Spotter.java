@@ -13,8 +13,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter;
+package it.cnr.isti.hpc.dexter.spotter;
 
+import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 
 /**
