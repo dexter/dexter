@@ -25,12 +25,16 @@ import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
+/**
+ * Given an entity ID or a entity label as input, and a direction (in/out) 
+ * returns the entities linking to the given entity (in) or the entities
+ * linked from the given entity (out).
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
 public class GetNeighbourNodesCLI extends AbstractCommandLineInterface {
 	/**
+	 * 
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory

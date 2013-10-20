@@ -18,8 +18,8 @@ package it.cnr.isti.hpc.dexter.lucene;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.spot.SpotManager;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnderscoreCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;

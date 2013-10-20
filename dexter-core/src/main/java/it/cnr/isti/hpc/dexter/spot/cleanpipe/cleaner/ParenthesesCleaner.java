@@ -34,12 +34,4 @@ public class ParenthesesCleaner extends Cleaner<String> {
 		return spot.replaceAll("[()]", " ");
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return false;
-	}
-
 }

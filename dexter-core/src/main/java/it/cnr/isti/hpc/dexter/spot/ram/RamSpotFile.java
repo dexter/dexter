@@ -40,48 +40,45 @@ import org.slf4j.LoggerFactory;
  * 
  *         Created on Mar 8, 2013
  */
-public class RamSpotFile  {
+public class RamSpotFile {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotFile.class);
 
-	private static ProjectProperties properties = new ProjectProperties(RamSpotFile.class);
-	
+	private static ProjectProperties properties = new ProjectProperties(
+			RamSpotFile.class);
+
 	private byte[] spotsData;
 	private static RamSpotFile instance;
-	
 
 	private RamSpotFile() {
-		String binarySpotFile = properties.get("ram.spot.data.bin");
+		File binarySpotFile = new File(properties.get("data.dir"),
+				properties.get("ram.spot.data.bin"));
 		spotsData = load(binarySpotFile);
-		 
-		
+
 	}
-	
-	
-	public static RamSpotFile getInstance(){
-		if (instance == null) instance = new RamSpotFile();
+
+	public static RamSpotFile getInstance() {
+		if (instance == null)
+			instance = new RamSpotFile();
 		return instance;
 	}
-	
-	public byte[] getOffset(long from, long to){
-		return Arrays.copyOfRange (spotsData, (int) from, (int)to);
+
+	public byte[] getOffset(long from, long to) {
+		return Arrays.copyOfRange(spotsData, (int) from, (int) to);
 	}
-	
 
-
-	public static void dumpSpotFile(String sortedSpotFile){
-		String binarySpotFile = properties.get("ram.spot.data.bin");
-		String offsetSpotFile = properties.get("ram.spot.offsets");
+	public static void dumpSpotFile(String sortedSpotFile) {
+		File binarySpotFile = new File(properties.get("data.dir"),properties.get("ram.spot.data.bin"));
+		File offsetSpotFile = new File(properties.get("data.dir"),properties.get("ram.spot.offsets"));
 		dumpSpotFile(sortedSpotFile, binarySpotFile, offsetSpotFile);
 	}
 
-	
-	private static void dumpSpotFile(String spotFile, String binarySpotFile,
-			String offsetSpotFile) {
+	private static void dumpSpotFile(String spotFile, File binarySpotFile,
+			File offsetSpotFile) {
 		RecordReader<Spot> reader = new RecordReader<Spot>(spotFile,
 				new Spot.Parser());
-		dumpSpotFile(reader, new File(binarySpotFile), new File(offsetSpotFile));
+		dumpSpotFile(reader, binarySpotFile, offsetSpotFile);
 	}
 
 	private static void dumpSpotFile(Iterable<Spot> spots, File output,
@@ -127,53 +124,46 @@ public class RamSpotFile  {
 		}
 
 	}
-	
-	public final static byte[] load(String fileName)
-	  {
-	    try { 
-	      FileInputStream fin=new FileInputStream(fileName);
-	      return load(fin);
-	    }
-	    catch (Exception e) {
-	 
-	      return new byte[0];
-	    }
-	  }
 
-	  public final static byte[] load(File file)
-	  {
-	    try { 
-	      FileInputStream fin=new FileInputStream(file);
-	      return load(fin);
-	    }
-	    catch (Exception e) {
-	     
-	      return new byte[0];
-	    }
-	  }
+	public final static byte[] load(String fileName) {
+		try {
+			FileInputStream fin = new FileInputStream(fileName);
+			return load(fin);
+		} catch (Exception e) {
 
-	  public final static byte[] load(FileInputStream fin)
-	  {
-	    byte readBuf[] = new byte[512*1024];
-	  
-	    try { 
-	      ByteArrayOutputStream bout = new ByteArrayOutputStream();
-	    
-	      int readCnt = fin.read(readBuf);
-	      while (0 < readCnt) {
-	        bout.write(readBuf, 0, readCnt);
-	        readCnt = fin.read(readBuf);
-	      }
-	      
-	      fin.close();
-	      
-	      return bout.toByteArray();
-	    }
-	    catch (Exception e) {
-	     
-	      return new byte[0];
-	    }
-	  }
+			return new byte[0];
+		}
+	}
 
-	
+	public final static byte[] load(File file) {
+		try {
+			FileInputStream fin = new FileInputStream(file);
+			return load(fin);
+		} catch (Exception e) {
+
+			return new byte[0];
+		}
+	}
+
+	public final static byte[] load(FileInputStream fin) {
+		byte readBuf[] = new byte[512 * 1024];
+
+		try {
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+			int readCnt = fin.read(readBuf);
+			while (0 < readCnt) {
+				bout.write(readBuf, 0, readCnt);
+				readCnt = fin.read(readBuf);
+			}
+
+			fin.close();
+
+			return bout.toByteArray();
+		} catch (Exception e) {
+
+			return new byte[0];
+		}
+	}
+
 }

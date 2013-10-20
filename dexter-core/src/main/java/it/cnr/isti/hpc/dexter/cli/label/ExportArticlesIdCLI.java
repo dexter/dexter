@@ -28,10 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * GenerateArticleHashCLI takes the json dump of wikipedia and creates a file
+ * GenerateArticleIdCLI takes the Json dump of Wikipedia and creates a file
  * which contains the mapping between each article title (the label) to an int
  * (used to represent the entity in the framework).
  * 
+ * @see <a href="https://github.com/diegoceccarelli/json-wikipedia"> Json-Wikipedia </a
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */
 public class ExportArticlesIdCLI extends AbstractCommandLineInterface {
@@ -50,14 +51,13 @@ public class ExportArticlesIdCLI extends AbstractCommandLineInterface {
 		ExportArticlesIdCLI cli = new ExportArticlesIdCLI(args);
 		String input = cli.getInput();
 		cli.openOutput();
-	
+
 		ProgressLogger pl = new ProgressLogger("Processed {} articles", 100000);
 
-		
 		RecordReader<Article> reader = new RecordReader<Article>(input,
-				new JsonRecordParser<Article>(Article.class)).filter(TypeFilter.STD_FILTER);
+				new JsonRecordParser<Article>(Article.class))
+				.filter(TypeFilter.STD_FILTER);
 
-		
 		RecordParser<TitleRedirectId> encoder = new TitleRedirectId.Parser();
 		for (Article a : reader) {
 			pl.up();

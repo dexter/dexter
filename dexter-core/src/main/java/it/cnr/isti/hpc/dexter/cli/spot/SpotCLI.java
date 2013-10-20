@@ -17,17 +17,18 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.Document;
-import it.cnr.isti.hpc.dexter.FlatDocument;
+import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.DictionarySpotter;
+import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Query the map file for a the spot given in input
+ * Performs the spotting over a document using the {@link DictionarySpotter},
+ * prints on the stout the list of the matched spots with their candidate entities.
  * 
  */
 public class SpotCLI extends AbstractCommandLineInterface {

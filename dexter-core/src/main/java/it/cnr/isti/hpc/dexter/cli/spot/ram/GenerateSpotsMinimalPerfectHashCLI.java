@@ -24,9 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * get in input a file containing the spots (one per line) generate the minimal 
- * perfect hash for each spot and store in ${ram.spot.perfect.hash}. 
- * print in the output file the hash values in the same order of the spot file. 
+ * Get in input a file containing the spots (one per line) generate the minimal 
+ * perfect hash for each spot and store in <code>${ram.spot.perfect.hash}</code>. 
+ * Puts in the output file the hash values in the same order of the spot file. 
  * 
  */
 public class GenerateSpotsMinimalPerfectHashCLI extends AbstractCommandLineInterface {

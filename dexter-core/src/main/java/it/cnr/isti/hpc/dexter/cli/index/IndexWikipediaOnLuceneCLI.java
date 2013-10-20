@@ -20,7 +20,6 @@ import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
 
@@ -28,8 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * IndexWikipediaOnLuceneCLI takes the wikipedia dump (in json) and indexes it
- * with lucene.
+ * IndexWikipediaOnLuceneCLI takes the Wikipedia Dump (in json) and indexes it
+ * with Lucene.
+ * 
+ * @see <a href="https://github.com/diegoceccarelli/json-wikipedia"> Json-Wikipedia </a>
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 02/lug/2012
  */

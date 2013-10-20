@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.spot.ram;
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

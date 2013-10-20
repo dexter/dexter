@@ -15,37 +15,24 @@
  */
 package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 
-
 /**
- * Removes a matching prefix 
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 21/lug/2012
+ * Removes a matching prefix
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/lug/2012
  */
 public class PrefixCleaner extends Cleaner<String> {
-	
+
 	String pattern;
-	
+
 	public final static PrefixCleaner A_OR_THE = new PrefixCleaner("(a|the) ");
-	
-	public PrefixCleaner(String pattern){
-		this.pattern = "^[ ]*"+pattern+"[ ]*";
+
+	public PrefixCleaner(String pattern) {
+		this.pattern = "^[ ]*" + pattern + "[ ]*";
 		System.out.println(this.pattern);
 	}
-	
-	
+
 	public String clean(String spot) {
 		return spot.replaceAll(pattern, "");
 	}
 
-	
-	public boolean post() {
-		return true;
-	}
-
-	
-	public boolean pre() {
-		return true;
-	}
-	
 }

@@ -15,7 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import it.cnr.isti.hpc.dexter.Field;
+import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ContextExtractor for each label extract the context (text around the the
- * label)
+ * A ContextExtractor extract the context of a spot (i.e., text around the the
+ * spot)
  * 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 24/lug/2012

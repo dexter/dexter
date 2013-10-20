@@ -36,12 +36,4 @@ public class ImageFilter extends Filter<String> {
 		return spot.contains("image:");
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return true;
-	}
-
 }

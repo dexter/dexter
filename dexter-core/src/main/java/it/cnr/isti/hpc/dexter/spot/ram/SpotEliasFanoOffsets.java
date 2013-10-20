@@ -24,6 +24,7 @@ import it.unimi.dsi.fastutil.longs.LongIterable;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.sux4j.util.EliasFanoMonotoneLongBigList;
 
+import java.io.File;
 import java.util.Iterator;
 
 import org.slf4j.Logger;
@@ -46,17 +47,21 @@ public class SpotEliasFanoOffsets {
 
 	private SpotEliasFanoOffsets() {
 		Serializer serializer = new Serializer();
-		String offsetsBinFile = properties.get("ram.spot.offsets.ef");
-		ef = (EliasFanoMonotoneLongBigList) serializer.load(offsetsBinFile);
+		File offsetsBinFile = new File(properties.get("data.dir"),
+				properties.get("ram.spot.offsets.ef"));
+		ef = (EliasFanoMonotoneLongBigList) serializer.load(offsetsBinFile
+				.getAbsolutePath());
 
 	}
 
 	public static void dumpEliasFanoFile() {
-		String offsetsFile = properties.get("ram.spot.offsets");
-		String offsetsBinFile = properties.get("ram.spot.offsets.ef");
-		
-		
-		dumpEliasFanoFile(offsetsFile, offsetsBinFile);
+		File offsetsFile = new File(properties.get("data.dir"),
+				properties.get("ram.spot.offsets"));
+		File offsetsBinFile = new File(properties.get("data.dir"),
+				properties.get("ram.spot.offsets.ef"));
+
+		dumpEliasFanoFile(offsetsFile.getAbsolutePath(),
+				offsetsBinFile.getAbsolutePath());
 	}
 
 	public long getOffset(long index) {

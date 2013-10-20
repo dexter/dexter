@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Allows to retrieve a particular relatedness function given its name. 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 10, 2012

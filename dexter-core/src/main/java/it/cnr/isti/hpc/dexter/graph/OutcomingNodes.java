@@ -16,7 +16,7 @@ package it.cnr.isti.hpc.dexter.graph;
 
 /**
  * 
- * Represent a collection of nodes, where for each node 
+ * Represents a collection of nodes, where for each node 
  * the list of neighbors represents the list of nodes that
  * are linked by the given node.
  * 

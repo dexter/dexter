@@ -43,12 +43,5 @@ public class SymbolFilter extends Filter<String> {
 
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return true;
-	}
 
 }

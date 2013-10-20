@@ -16,6 +16,9 @@
 package it.cnr.isti.hpc.text;
 
 /**
+ * 
+ * Represents a sentece in a text.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Sep 4, 2012

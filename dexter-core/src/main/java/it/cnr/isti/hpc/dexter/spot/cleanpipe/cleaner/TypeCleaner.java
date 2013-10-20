@@ -18,45 +18,30 @@ package it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * Typecleaner will remove domain informations 
- * usually appended at the end of the titles
- * (between parenthesis or after a #), <br/>
+ * Typecleaner will remove domain informations usually appended at the end of
+ * the titles (between parenthesis or after a #), <br/>
  * e.g. <code> dexter (tv-series) -> dexter </code>.
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class TypeCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(TypeCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(TypeCleaner.class);
 
-
-	
 	public String clean(String spot) {
-		spot =  spot.replaceAll(" *[(][^)]+[)] *$", "");
+		spot = spot.replaceAll(" *[(][^)]+[)] *$", "");
 		spot = spot.replaceAll(" *[#].*$", "");
-//		if (spot.matches(" *[(][^)]+[)] *$")){
-//			return spot.replaceAll(" *[(][^)]+[)] *$", "");
-//		} 
-//		if (spot.matches(" *[#].*$")){
-//			return spot.replaceAll(" *[#].*$", "");
-//		}	
+		// if (spot.matches(" *[(][^)]+[)] *$")){
+		// return spot.replaceAll(" *[(][^)]+[)] *$", "");
+		// }
+		// if (spot.matches(" *[#].*$")){
+		// return spot.replaceAll(" *[#].*$", "");
+		// }
 		return spot;
 	}
-
-	
-	public boolean post() {
-		return true;
-	}
-
-	
-	public boolean pre() {
-		return true;
-	}
-	
 
 }

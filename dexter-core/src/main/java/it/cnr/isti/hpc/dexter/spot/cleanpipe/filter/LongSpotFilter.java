@@ -45,12 +45,4 @@ public class LongSpotFilter extends Filter<String> {
 		return false;
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return false;
-	}
-
 }

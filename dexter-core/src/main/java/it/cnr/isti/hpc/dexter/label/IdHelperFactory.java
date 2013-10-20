@@ -44,7 +44,7 @@ public class IdHelperFactory {
 
 	}
 
-	public static IdHelper getHashHelper(Type type) {
+	public static IdHelper getIdHelper(Type type) {
 		if (type == Type.JDBM) {
 			IdToLabel h2l = MapDBIdToLabel.getInstance();
 			LabelToId l2h = MapDBLabelToId.getInstance();
@@ -99,9 +99,12 @@ public class IdHelperFactory {
 		return stdIdToLabelWriter;
 	}
 
+	/**
+	 * returns the standard id helper, you should probably want to use this.
+	 */
 	public static IdHelper getStdIdHelper() {
 		if (stdIdHelper == null) {
-			stdIdHelper = getHashHelper(STD_TYPE);
+			stdIdHelper = getIdHelper(STD_TYPE);
 
 		}
 		return stdIdHelper;

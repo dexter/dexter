@@ -1,4 +1,4 @@
-package it.cnr.isti.hpc.dexter;
+package it.cnr.isti.hpc.dexter.document;
 
 import it.cnr.isti.hpc.io.IOUtils;
 
@@ -12,7 +12,7 @@ import java.util.Iterator;
  * 
  * @author Salvatore Trani, salvatore.trani@isti.cnr.it created on 18/sept/2013
  */	
-public class FlatDocument extends UnorderedDocument {
+public class FlatDocument extends MultifieldDocument {
 	private static final long serialVersionUID = 1L;
 	protected final String fieldName = "body";
 	

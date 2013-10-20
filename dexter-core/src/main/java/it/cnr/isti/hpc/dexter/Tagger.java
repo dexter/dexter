@@ -31,6 +31,7 @@
  */
 package it.cnr.isti.hpc.dexter;
 
+import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 
 /**
@@ -58,12 +59,12 @@ public interface Tagger {
 	
 	/**
 	 * Takes a Document performs the entity linking. 
-	 * It returns an EntityMatch list, that maps some spots
+	 * It returns an {link EntityMatchList}, that maps some spots
 	 * detected in the document with one (and only one) entity. 
 	 * 
 	 * @param document - a document to annotate.  
 	 * @returns A list of entities detected in the document, an empty list
-	 * is the tagger does not annotate anything.
+	 * if the tagger does not annotate anything.
 	 */
 	public EntityMatchList tag(Document document);
 	

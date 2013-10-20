@@ -36,6 +36,13 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 
 /**
+ * Implements the Okkam's Razor principle, resolving the ambiguity for 
+ * a spot using the entity with the largest probability to be 
+ * represented by the spot (this probability is called <i>commonness</i>, 
+ * and it is computed as the ratio between the links that point to the entity
+ * (using the spot as anchor) and the total number of links that have the spot
+ * as anchor. 
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Sep 30, 2013

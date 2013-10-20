@@ -28,8 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * get the file containg the spots (sorted by minimal perfect hash) 
- * and generate the compressed spot file, and a offset file containing 
+ * Get the file containing the spots (sorted by minimal perfect hash) 
+ * and generate the compressed spot file, and an offset file containing 
  * for each spot the position in the compressed spot file, containing 
  * the spot data
  * 

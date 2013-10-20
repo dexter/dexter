@@ -17,7 +17,7 @@ package it.cnr.isti.hpc.dexter.spot;
 
 import java.util.List;
 
-import it.cnr.isti.hpc.dexter.Field;
+import it.cnr.isti.hpc.dexter.document.Field;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;

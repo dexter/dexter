@@ -20,44 +20,21 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Quotes cleaner removes quotes from a spot.
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class QuotesCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(QuotesCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(QuotesCleaner.class);
 
-	
-	
-	
 	public String clean(String spot) {
 		String clean = spot.replaceAll("\"", " ");
-		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		if (!clean.equals(spot))
+			logger.debug("{} -> {}", spot, clean);
 		return clean;
 	}
-
-
-
-	
-	public boolean post() {
-		return true;
-	}
-
-
-
-	
-	public boolean pre() {
-		return false;
-	}
-	
-	
-	
-
-
-	
-	
 
 }

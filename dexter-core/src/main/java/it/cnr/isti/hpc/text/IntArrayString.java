@@ -21,7 +21,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * IntArrayString.java
+ * Allows to encode a list of integers as string containing the integer encoded 
+ * in hexadecimal (and optionally compressed) 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 29/lug/2012
  */

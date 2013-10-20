@@ -16,7 +16,7 @@
 package it.cnr.isti.hpc.dexter.label;
 
 /**
- * ArticleToHash stores the map <code>label -> id </code>
+ * LabelToId stores the map <code>label -> id </code>
  *
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 05/lug/2012

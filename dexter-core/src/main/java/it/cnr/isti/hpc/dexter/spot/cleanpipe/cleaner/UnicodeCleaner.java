@@ -19,51 +19,28 @@ import static net.sf.junidecode.Junidecode.unidecode;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
- * UnicodeCleaner maps a Unicode string to ascii, the conversion is lossy,
- * and it is performed using the unidecode library. 
+ * UnicodeCleaner maps a Unicode string to ascii, the conversion is lossy, and
+ * it is performed using the unidecode library.
  * 
  * FIXME add links to the unidecode library
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 20/lug/2012
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 
 public class UnicodeCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(UnicodeCleaner.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(UnicodeCleaner.class);
 
-	
-	
-	
 	public String clean(String spot) {
 		String clean = unidecode(spot);
-		clean = clean.replaceAll("&nbsp;" , " ");
-		if (! clean.equals(spot)) logger.debug("{} -> {}",spot,clean);
+		clean = clean.replaceAll("&nbsp;", " ");
+		if (!clean.equals(spot))
+			logger.debug("{} -> {}", spot, clean);
 		return clean;
 	}
-
-
-
-	
-	public boolean post() {
-		return false;
-	}
-
-
-
-	
-	public boolean pre() {
-		return true;
-	}
-	
-	
-	
-
-
-	
-	
-
 }

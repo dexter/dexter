@@ -13,11 +13,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spot;
+package it.cnr.isti.hpc.dexter.spot.clean;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.HtmlCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.JuniorAndInitialsCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.PrefixCleaner;

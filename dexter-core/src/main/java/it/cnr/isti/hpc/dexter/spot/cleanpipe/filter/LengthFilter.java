@@ -45,12 +45,4 @@ public class LengthFilter extends Filter<String> {
 		return spot.length() < minLength;
 	}
 
-	public boolean post() {
-		return true;
-	}
-
-	public boolean pre() {
-		return true;
-	}
-
 }

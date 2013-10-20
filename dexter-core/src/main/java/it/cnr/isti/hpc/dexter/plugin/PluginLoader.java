@@ -15,16 +15,19 @@
  */
 package it.cnr.isti.hpc.dexter.plugin;
 
-import it.cnr.isti.hpc.dexter.Spotter;
 import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.apache.lucene.analysis.util.ClasspathResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoader;
 
 /**
+ * The PluginLoader allows to include in the framework new implementations of
+ * components linking project.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Sep 30, 2013

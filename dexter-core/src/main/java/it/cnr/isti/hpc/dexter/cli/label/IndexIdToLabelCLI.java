@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Takes a file containing a list of TitleRedirectId and indexes the mapping
+ * 
  * <code> id -> title </code>.
  * 
  * @see IdHelper,IdHelperFactory, TitleRedirectId

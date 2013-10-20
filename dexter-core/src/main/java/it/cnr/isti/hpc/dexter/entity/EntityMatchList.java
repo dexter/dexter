@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * EntityMatchList.java
+ * EntityMatchList represents a list of {@link EntityMatch}
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
  */
@@ -48,6 +48,10 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 		return -1;
 	}
 
+	/**
+	 * Normalizes the scores of the entity match, such that at the end of the
+	 * method the sum of all the scores equals to 1
+	 */
 	public void normalizeScores() {
 		double totalScore = 0;
 		for (EntityMatch e : this)
@@ -55,7 +59,6 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 		for (EntityMatch e : this) {
 			e.setScore(e.getScore() / (double) totalScore);
 		}
-		totalScore = 1;
 	}
 
 	public String toString() {
@@ -80,6 +83,13 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 		return sb.toString();
 	}
 
+	/**
+	 * Removes the entities whose spots overlaps, if some entity spots overlaps,
+	 * only the entity with the greatest score is keep while the others are
+	 * removed from the list.
+	 * 
+	 * @return a list of entity matches with no overlaps
+	 */
 	public EntityMatchList removeOverlappings() {
 		EntityMatchList eml = new EntityMatchList();
 		for (EntityMatch e : this) {

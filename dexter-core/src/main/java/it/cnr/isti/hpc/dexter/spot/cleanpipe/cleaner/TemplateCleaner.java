@@ -34,17 +34,6 @@ public class TemplateCleaner extends Cleaner<String> {
 
 	static StringBuilder sb = new StringBuilder();
 
-	public static void main(String[] args) {
-		TemplateCleaner cleaner = new TemplateCleaner();
-		System.out
-				.println(cleaner
-						.clean(" Spain, 1868-1898 [p. 135]. TEMPLATE[Main, Mutualism (economic theory)] Mutualism "));
-		System.out
-				.println(cleaner
-						.clean(" stateless society.TEMPLATE[Cite_book, last=Bakun      1 in, first=Mikhail, title=Statism and Anarchy, publisher=Cambridge University Press, location=Cambridge, year=1990, isbn=0-521-36182-6, quote=They [the Marxists] maintain that only a dictatorship - their dictatorship, of course - c      1 an create the will of the people, while our answer to this is: No dictatorship can have any other aim but that of self-perpetuation, and it can beget only slavery in the people tolerating it; freedom can be created only by freedom      1 , that is, by a universal rebellion on the part of the people and free organization of the toiling masses from the bottom up.] Anarchist,"));
-
-	}
-
 	public String clean(String spot) {
 		sb.setLength(0);
 		int lastIndex = 0;
@@ -78,15 +67,4 @@ public class TemplateCleaner extends Cleaner<String> {
 		logger.debug("* {}," + spot.substring(lastIndex));
 		return sb.toString();
 	}
-
-	public boolean post() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean pre() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 }

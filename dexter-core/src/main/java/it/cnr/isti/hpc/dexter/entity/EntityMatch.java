@@ -25,14 +25,16 @@ import java.util.Comparator;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
  */
 public class EntityMatch implements Comparable<EntityMatch> {
+	/** the entity matched */
 	private Entity entity;
-	
-	private SpotMatch spot;
-	
 
+	/** the spot where the entity was matched */
+	private SpotMatch spot;
+
+	/** the confidence score of the match */
 	private double score;
-	
-	private EntityMatch(Entity e,  double score) {
+
+	private EntityMatch(Entity e, double score) {
 		super();
 		this.entity = new Entity(e.getId(), e.getFrequency());
 		this.score = score;
@@ -43,19 +45,23 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		this.entity = new Entity(id);
 		this.score = score;
 	}
-	
+
 	public EntityMatch(Entity e, double score, SpotMatch spot) {
 		this(e, score);
 		this.spot = spot;
 	}
-	
-	
+
 	public EntityMatch(int id, double score, SpotMatch spot) {
 		this(id, score);
 		this.spot = spot;
 	}
-	
-	public double getPriorProbability(){
+
+	/**
+	 * @returns the commonness of the entity for the spot: the probability that
+	 *          the target of the spot is this entity (
+	 *          <code>p(entity|spot)</code>)
+	 */
+	public double getCommonness() {
 		return spot.getEntityCommonness(entity);
 	}
 
@@ -82,35 +88,39 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	public SpotMatch getSpot() {
 		return spot;
 	}
-	
-	public int getStart(){
+
+	public int getStart() {
 		return spot.getStart();
 	}
-	
-	public int getEnd(){
+
+	public int getEnd() {
 		return spot.getEnd();
 	}
-	
-	public String getMention(){
+
+	public String getMention() {
 		return spot.getMention();
 	}
 
 	public void setEntity(Entity entity) {
 		this.entity = entity;
 	}
-	
-	 public static class SortByPosition implements Comparator<EntityMatch> {
 
-		/* (non-Javadoc)
+	public static class SortByPosition implements Comparator<EntityMatch> {
+
+		/*
+		 * (non-Javadoc)
+		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
-		
+
 		public int compare(EntityMatch em, EntityMatch em1) {
 			return em.getStart() - em1.getStart();
 		}
-	 }
+	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -121,7 +131,9 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -154,41 +166,54 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	}
 
 	public String toString() {
-		String str = spot.getMention() + "[" + getStart() + ","
-				+ getEnd() + "]" +"\t score: "+score+"\t"+"prior:"+getPriorProbability()+"\n" + entity.toString() + "\n";
+		String str = spot.getMention() + "[" + getStart() + "," + getEnd()
+				+ "]" + "\t score: " + score + "\t" + "prior:"
+				+ getCommonness() + "\n" + entity.toString() + "\n";
 		return str;
 	}
 
 	public String toEntityString() {
-//		String str = entity.getName() + "\t" + spot.getSpot() + "["
-//				+ spot.getStart() + "," + spot.getEnd() + "]" + "\t"
-//				+ entity.toString() + "\n";
+		// String str = entity.getName() + "\t" + spot.getSpot() + "["
+		// + spot.getStart() + "," + spot.getEnd() + "]" + "\t"
+		// + entity.toString() + "\n";
 		return "";
 	}
 
+	/**
+	 * @return the frequency of this entity, i.e., how many times this entity
+	 *         was refernced by other entities.
+	 */
 	public int getFrequency() {
 		return entity.getFrequency();
 	}
 
+	/**
+	 * @return the spot link probability, i.e., the probability for the spot of
+	 *         this entity to be a link to an entity.
+	 */
 	public double getSpotLinkProbability() {
 		return spot.getLinkProbability();
 	}
 
 	public static class SpotLengthComparator implements Comparator<EntityMatch> {
 		public int compare(EntityMatch em1, EntityMatch em2) {
-			return em1.getSpot().getMention().length() - em2.getSpot().getMention().length();
+			return em1.getSpot().getMention().length()
+					- em2.getSpot().getMention().length();
 		}
 	}
-	
+
 	/**
 	 * Returns true if this spot and the given spots overlaps in the annotated
-	 * text, e.g.,
-	 * <code> "neruda pablo picasso" -> 'neruda pablo' 'pablo picasso'
-	 </code>.
+	 * text, e.g. <br>
+	 * <br>
+	 * <code> "neruda pablo picasso" </code>. <br>
+	 * <br>
+	 * the spots <code>neruda pablo</code> and <code>pablo picasso</code>
+	 * overlaps.
 	 * 
 	 * @param s
-	 *            - The spot to check
-	 * @return
+	 *            the entity match to check
+	 * @return true if this spot and the given spots overlaps, false otherwise
 	 */
 	public boolean overlaps(EntityMatch s) {
 		boolean startOverlap = ((s.getStart() >= this.getStart()) && (s
@@ -200,5 +225,4 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return endOverlap;
 	}
 
-	
 }

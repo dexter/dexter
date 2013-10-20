@@ -2,12 +2,14 @@ package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.Filter;
+import it.cnr.isti.hpc.io.reader.RecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * SpotReader class iterates over a list of spots given two files:
@@ -49,20 +51,23 @@ public class SpotReader implements Iterator<Spot> {
 
 	public SpotReader(String spotSrcTargetFile, String spotDocFreqFile) {
 		RecordReader<SpotSrcTarget> reader = new RecordReader<SpotSrcTarget>(
-				spotSrcTargetFile, new SpotSrcTarget.Parser());
+				spotSrcTargetFile, new SpotSrcTargetParser());
 		;
 		spotSrcTargetIterator = reader.iterator();
 		currentSST = spotSrcTargetIterator.next();
 		RecordReader<SpotFrequency> reader2 = new RecordReader<SpotFrequency>(
-				spotDocFreqFile, new SpotFrequency.Parser());
+				spotDocFreqFile, new SpotFrequencyParser());
 		spotFrequencyIterator = reader2.iterator();
 		currentSF = spotFrequencyIterator.next();
 
 	}
-	/** 
+
+	/**
 	 * Add a filter to the reader. The Iterator will return only Spot objects
-	 * that are not filtered by the filters. 
-	 * @param filter - the filter to apply
+	 * that are not filtered by the filters.
+	 * 
+	 * @param filter
+	 *            - the filter to apply
 	 * 
 	 * @see Filter
 	 */
@@ -180,6 +185,218 @@ public class SpotReader implements Iterator<Spot> {
 	public void remove() {
 		throw new UnsupportedOperationException();
 
+	}
+
+	public static class SpotSrcTarget {
+		String spot;
+		int src;
+		int target;
+
+		// entityFrequency
+		int entityFrequency = 1;
+
+		public SpotSrcTarget() {
+
+		}
+
+		public boolean hasSameSpot(SpotSrcTarget sstf) {
+			return spot.equals(sstf.getSpot());
+		}
+
+		public void incrementEntityFrequency() {
+			entityFrequency++;
+		}
+
+		public int getEntityFrequency() {
+			return entityFrequency;
+		}
+
+		/**
+		 * @return the spot
+		 */
+		public String getSpot() {
+			return spot;
+		}
+
+		/**
+		 * @param spot
+		 *            the spot to set
+		 */
+		public void setSpot(String spot) {
+			this.spot = spot;
+		}
+
+		/**
+		 * @return the src
+		 */
+		public int getSrc() {
+			return src;
+		}
+
+		/**
+		 * @param src
+		 *            the src to set
+		 */
+		public void setSrc(int src) {
+			this.src = src;
+		}
+
+		/**
+		 * @return the target
+		 */
+		public int getTarget() {
+			return target;
+		}
+
+		/**
+		 * @param target
+		 *            the target to set
+		 */
+		public void setTarget(int target) {
+			this.target = target;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#hashCode()
+		 */
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((spot == null) ? 0 : spot.hashCode());
+			result = prime * result + target;
+			return result;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#equals(java.lang.Object)
+		 */
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			SpotSrcTarget other = (SpotSrcTarget) obj;
+			if (spot == null) {
+				if (other.spot != null)
+					return false;
+			} else if (!spot.equals(other.spot))
+				return false;
+			if (target != other.target)
+				return false;
+			return true;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Object#toString()
+		 */
+		@Override
+		public String toString() {
+			return spot + "\t" + src + " -> " + target + " \t(entity freq = "
+					+ entityFrequency + " )";
+		}
+
+	}
+
+	public static class SpotSrcTargetParser implements
+			RecordParser<SpotSrcTarget> {
+
+		public SpotSrcTarget decode(String record) {
+			SpotSrcTarget rec = new SpotSrcTarget();
+			Scanner scanner = new Scanner(record).useDelimiter("\t");
+			rec.setSpot(scanner.next());
+			rec.setSrc(scanner.nextInt());
+			rec.setTarget(scanner.nextInt());
+			return rec;
+		}
+
+		public String encode(SpotSrcTarget r) {
+			return r.spot + "\t" + r.src + "\t" + r.target;
+		}
+
+	}
+
+	/**
+	 * Contains the text of a spot and its document frequency in the collection.
+	 * 
+	 * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+	 * 
+	 *         Created on Apr 29, 2013
+	 */
+	public static class SpotFrequency {
+		String spot;
+		int freq;
+
+		public SpotFrequency() {
+
+		}
+
+		public SpotFrequency(String spot, int freq) {
+			super();
+			this.spot = spot;
+			this.freq = freq;
+		}
+
+		/**
+		 * @return the spot
+		 */
+		public String getSpot() {
+			return spot;
+		}
+
+		/**
+		 * @param spot
+		 *            the spot to set
+		 */
+		public void setSpot(String spot) {
+			this.spot = spot;
+		}
+
+		/**
+		 * @return the freq
+		 */
+		public int getFreq() {
+			return freq;
+		}
+
+		/**
+		 * @param freq
+		 *            the freq to set
+		 */
+		public void setFreq(int freq) {
+			this.freq = freq;
+		}
+
+	}
+
+	/**
+	 * Parse a line containing the encoded version of a SpotFrequency object.
+	 * 
+	 * @see RecordParser
+	 */
+	public static class SpotFrequencyParser implements
+			RecordParser<SpotFrequency> {
+
+		public SpotFrequency decode(String record) {
+			SpotFrequency rec = new SpotFrequency();
+			Scanner scanner = new Scanner(record).useDelimiter("\t");
+			rec.setSpot(scanner.next());
+			rec.setFreq(scanner.nextInt());
+			return rec;
+		}
+
+		public String encode(SpotFrequency r) {
+			return r.spot + "\t" + r.freq;
+		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package it.cnr.isti.hpc.dexter;
+package it.cnr.isti.hpc.dexter.document;
 
 
 import java.util.HashMap;
@@ -13,10 +13,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Salvatore Trani, salvatore.trani@isti.cnr.it
  */
-public class UnorderedDocument extends Document {
+public class MultifieldDocument extends Document {
 	private static final long serialVersionUID = 1L;
 	private static final Logger logger = LoggerFactory
-			.getLogger(UnorderedDocument.class);
+			.getLogger(MultifieldDocument.class);
 
 	// protected List<Field> fields = new ArrayList<Field>();
 	protected Map<String, Field> fields;
@@ -24,7 +24,7 @@ public class UnorderedDocument extends Document {
 	/**
 	 * Constructs a new document with no fields.
 	 */
-	public UnorderedDocument() {
+	public MultifieldDocument() {
 		fields = new HashMap<String, Field>();
 	}
 
@@ -41,7 +41,7 @@ public class UnorderedDocument extends Document {
 	}
 
 	/**
-	 * Return an iterator over the fields being part of this document.
+	 * Returns an iterator over the fields being part of this document.
 	 * 
 	 * @return Iterator over the fields of the document
 	 */
@@ -73,7 +73,7 @@ public class UnorderedDocument extends Document {
 	}
 
 	/**
-	 * Get the content of the document, appending the content of the different
+	 * Gets the content of the document, appending the content of the different
 	 * fields belonging to it.
 	 * 
 	 * @return The content of the document

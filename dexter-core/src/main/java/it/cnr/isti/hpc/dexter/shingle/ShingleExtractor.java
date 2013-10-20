@@ -15,7 +15,7 @@ s *  Copyright 2012 Salvatore Trani
  */
 package it.cnr.isti.hpc.dexter.shingle;
 
-import it.cnr.isti.hpc.dexter.spot.SpotManager;
+import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.text.Sentence;
 import it.cnr.isti.hpc.text.SentenceSegmenter;
 import it.cnr.isti.hpc.text.Token;

@@ -26,8 +26,6 @@ import opennlp.tools.tokenize.TokenizerModel;
 import opennlp.tools.util.Span;
 
 /**
- * Tokenizer.java
- * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 08/giu/2012
  */
 public class TokenSegmenter {
@@ -56,25 +54,24 @@ public class TokenSegmenter {
 			}
 		}
 	}
-	
-	public static TokenSegmenter getInstance(){
-		if (instance== null) instance = new TokenSegmenter();
+
+	public static TokenSegmenter getInstance() {
+		if (instance == null)
+			instance = new TokenSegmenter();
 		return instance;
 	}
-	
+
 	public String[] tokenize(String sentence) {
 		return tokenizer.tokenize(sentence);
 	}
-	
-	public List<Token> tokenizePos(String sentence){
+
+	public List<Token> tokenizePos(String sentence) {
 		Span[] spans = tokenizer.tokenizePos(sentence);
 		List<Token> tokens = new LinkedList<Token>();
-		for (Span s : spans){
-			tokens.add(new Token(s.getStart(),s.getEnd()));
+		for (Span s : spans) {
+			tokens.add(new Token(s.getStart(), s.getEnd()));
 		}
 		return tokens;
 	}
-	
-	
 
 }
