@@ -198,6 +198,34 @@
 						</execution>
 					</executions>
 				</plugin>
+				
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>wagon-maven-plugin</artifactId>
+					<version>1.0-beta-3</version>
+					<configuration>
+						<fromDir>target/site/apidocs</fromDir>
+						<toDir>${artifactId}</toDir>
+						<url>scp://ceccarelli@pomino.isti.cnr.it:/home/ceccarelli/dexter/javadocs</url>
+					</configuration>
+			      <dependencies>
+			        <dependency>
+			          <groupId>org.apache.maven.wagon</groupId>
+			          <artifactId>wagon-ssh</artifactId>
+			          <version>1.0-beta-7</version>
+			        </dependency>
+			      </dependencies>
+					<executions>
+						<execution>
+							<id>javadoc</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>upload</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 	</build>

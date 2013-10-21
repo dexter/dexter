@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Match.java
+ * Represents a list of {@link SpotMatch}
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 03/ago/2012
  */
