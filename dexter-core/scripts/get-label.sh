@@ -12,5 +12,5 @@ then
   exit $E_BADARGS
 fi
 
-$JAVA it.cnr.isti.hpc.dexter.cli.GetArticleLabelCLI -id $1
+$JAVA $CLI.GetArticleLabelCLI -id $1
 

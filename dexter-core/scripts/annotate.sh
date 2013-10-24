@@ -14,5 +14,5 @@ then
   exit $E_BADARGS
 fi
 
-$JAVA it.cnr.isti.hpc.dexter.cli.spot.DexterCLI -input $1
+$JAVA it.cnr.isti.hpc.dexter.cli.DexterCLI -input $1
 
