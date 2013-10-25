@@ -67,29 +67,32 @@ public class PluginLoader {
 			}
 
 		}
-		
 
 	}
 
 	public Spotter getSpotter(String spotClass) {
-		//Spotter spotter = loader.newInstance(spotClass, Spotter.class);
-		Spotter spotter = (Spotter)ClasspathUtils.newInstance(spotClass, loader);
+		// Spotter spotter = loader.newInstance(spotClass, Spotter.class);
+		Spotter spotter = (Spotter) ClasspathUtils.newInstance(spotClass,
+				loader);
 		return spotter;
 	}
 
 	public Disambiguator getDisambiguator(String disambiguatorClass) {
-		Disambiguator disambiguator = (Disambiguator)ClasspathUtils.newInstance(disambiguatorClass, loader);
+		Disambiguator disambiguator = (Disambiguator) ClasspathUtils
+				.newInstance(disambiguatorClass, loader);
 		return disambiguator;
 	}
 
 	public Relatedness getRelatedness(String relatednessClass) {
-		Relatedness relatedness = (Relatedness)ClasspathUtils.newInstance(relatednessClass, loader);
+		Relatedness relatedness = (Relatedness) ClasspathUtils.newInstance(
+				relatednessClass, loader);
 
 		return relatedness;
 	}
 
 	public Tagger getTagger(String taggerClass) {
-		Tagger tagger =  (Tagger)ClasspathUtils.newInstance(taggerClass, loader);
+		Tagger tagger = (Tagger) ClasspathUtils
+				.newInstance(taggerClass, loader);
 		return tagger;
 	}
 
