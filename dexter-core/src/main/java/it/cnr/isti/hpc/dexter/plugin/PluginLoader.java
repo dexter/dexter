@@ -21,8 +21,15 @@ import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import org.apache.lucene.analysis.util.ClasspathResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The PluginLoader allows to include in the framework new implementations of
@@ -36,9 +43,29 @@ public class PluginLoader {
 
 	ResourceLoader loader;
 	ProjectProperties properties = new ProjectProperties(PluginLoader.class);
+	
+	private static final Logger logger = LoggerFactory
+			.getLogger(PluginLoader.class);
 
 	public PluginLoader() {
-		loader = new ClasspathResourceLoader();
+		
+		URLClassLoader loader = (URLClassLoader)ClassLoader.getSystemClassLoader(); 
+		PClassLoader pcl = new PClassLoader(loader.getURLs());
+		File libDir = new File(properties.get("lib.dir"));
+		if (! libDir.exists() || !libDir.isDirectory()) return;
+		for (File file : libDir.listFiles()){
+			if (file.isFile() && file.getName().endsWith(".jar")){
+				try {
+					pcl.addURL(file.toURL());
+				} catch (MalformedURLException e) {
+					logger.error("loading the library {} ",file.getName());
+					continue;
+				} 
+				logger.info("{} loaded ", file.getName());
+			}
+			
+		}
+		
 	}
 
 	public Spotter getSpotter(String spotClass) {
@@ -61,6 +88,24 @@ public class PluginLoader {
 	public Tagger getTagger(String taggerClass) {
 		Tagger tagger = loader.newInstance(taggerClass, Tagger.class);
 		return tagger;
+	}
+	
+	private class PClassLoader extends URLClassLoader{
+		   
+	    /** 
+	     * @param urls, to carryforward the existing classpath. 
+	     */  
+	    public PClassLoader(URL[] urls) {  
+	        super(urls);  
+	    }  
+	      
+	    @Override  
+	    /** 
+	     * add ckasspath to the loader. 
+	     */  
+	    public void addURL(URL url) {  
+	        super.addURL(url);  
+	    }
 	}
 
 }
