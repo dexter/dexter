@@ -28,6 +28,7 @@ import java.net.URLClassLoader;
 
 import org.apache.lucene.analysis.util.ClasspathResourceLoader;
 import org.apache.lucene.analysis.util.ResourceLoader;
+import org.apache.tools.ant.util.ClasspathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,71 +42,74 @@ import org.slf4j.LoggerFactory;
  */
 public class PluginLoader {
 
-	ResourceLoader loader;
+	PClassLoader loader;
 	ProjectProperties properties = new ProjectProperties(PluginLoader.class);
-	
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(PluginLoader.class);
 
 	public PluginLoader() {
-		
-		URLClassLoader loader = (URLClassLoader)ClassLoader.getSystemClassLoader(); 
-		PClassLoader pcl = new PClassLoader(loader.getURLs());
+
+		URLClassLoader l = (URLClassLoader) ClassLoader.getSystemClassLoader();
+		loader = new PClassLoader(l.getURLs());
 		File libDir = new File(properties.get("lib.dir"));
-		if (! libDir.exists() || !libDir.isDirectory()) return;
-		for (File file : libDir.listFiles()){
-			if (file.isFile() && file.getName().endsWith(".jar")){
+		if (!libDir.exists() || !libDir.isDirectory())
+			return;
+		for (File file : libDir.listFiles()) {
+			if (file.isFile() && file.getName().endsWith(".jar")) {
 				try {
-					pcl.addURL(file.toURL());
+					loader.addURL(file.toURL());
 				} catch (MalformedURLException e) {
-					logger.error("loading the library {} ",file.getName());
+					logger.error("loading the library {} ", file.getName());
 					continue;
-				} 
+				}
 				logger.info("{} loaded ", file.getName());
 			}
-			
+
 		}
 		
+
 	}
 
 	public Spotter getSpotter(String spotClass) {
-		Spotter spotter = loader.newInstance(spotClass, Spotter.class);
+		//Spotter spotter = loader.newInstance(spotClass, Spotter.class);
+		Spotter spotter = (Spotter)ClasspathUtils.newInstance(spotClass, loader);
 		return spotter;
 	}
 
 	public Disambiguator getDisambiguator(String disambiguatorClass) {
-		Disambiguator disambiguator = loader.newInstance(disambiguatorClass,
-				Disambiguator.class);
+		Disambiguator disambiguator = (Disambiguator)ClasspathUtils.newInstance(disambiguatorClass, loader);
 		return disambiguator;
 	}
 
 	public Relatedness getRelatedness(String relatednessClass) {
-		Relatedness relatedness = loader.newInstance(relatednessClass,
-				Relatedness.class);
+		Relatedness relatedness = (Relatedness)ClasspathUtils.newInstance(relatednessClass, loader);
+
 		return relatedness;
 	}
 
 	public Tagger getTagger(String taggerClass) {
-		Tagger tagger = loader.newInstance(taggerClass, Tagger.class);
+		Tagger tagger =  (Tagger)ClasspathUtils.newInstance(taggerClass, loader);
 		return tagger;
 	}
-	
-	private class PClassLoader extends URLClassLoader{
-		   
-	    /** 
-	     * @param urls, to carryforward the existing classpath. 
-	     */  
-	    public PClassLoader(URL[] urls) {  
-	        super(urls);  
-	    }  
-	      
-	    @Override  
-	    /** 
-	     * add ckasspath to the loader. 
-	     */  
-	    public void addURL(URL url) {  
-	        super.addURL(url);  
-	    }
+
+	private class PClassLoader extends URLClassLoader {
+
+		/**
+		 * @param urls
+		 *            , to carryforward the existing classpath.
+		 */
+		public PClassLoader(URL[] urls) {
+			super(urls);
+		}
+
+		@Override
+		/** 
+		 * add ckasspath to the loader. 
+		 */
+		public void addURL(URL url) {
+			super.addURL(url);
+		}
 	}
 
 }
