@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# Just a generic sample init-script. You should integrate it with a proper wrapper for your Distribution / OS.
+#
+
+APP_NAME=appname
+CONFIG=/etc/jetty.properties
+JETTY_ARGS="-Dconfig=${CONFIG}"
+GRACE=10 # 10 secs
+
+PREFIX=/var/apps/${APP_NAME}
+LOGS=/var/log/${APP_NAME}
+PIDFILE=/var/run/${APP_NAME}.pid
+
+CMD=$1
+
+if [[ -z ${CMD} ]]; then
+  java ${JETTY_ARGS} -jar ${PREFIX}/${APP_NAME}.jar usage
+  exit 1
+fi
+
+# Set working dir to LOGS
+cd ${LOGS}
+
+if [[ ${CMD} == 'start' ]]; then
+
+    if [[ -f ${PIDFILE} ]]; then
+        echo "Already running"
+        exit 1
+    fi
+
+    if [[ -f ${PREFIX}/${APP_NAME}.jar ]]; then
+        echo "Starting jetty"
+        java ${JETTY_ARGS} -jar ${PREFIX}/${APP_NAME}.jar \
+             1>${LOGS}/stdout.log \
+             2>${LOGS}/stderr.log &
+        PID=$!
+        echo "$PID" > ${PIDFILE}
+        echo "Started ${APP_NAME} with pid: ${PID}"
+    fi
+
+elif [[ ${CMD} == 'stop' ]]; then
+    # Try gracefully first
+    java ${JETTY_ARGS} -jar ${PREFIX}/${APP_NAME}.jar stop
+    sleep GRACE
+    if [[ -f ${PIDFILE} ]]; then
+        PID=`cat ${PIDFILE}`
+        test -z $PID || kill $PID
+        rm ${PIDFILE}
+        sleep 1
+        echo "Forcibly Stopped ${APP_NAME} with pid: ${PID}"
+    fi
+else # Just let the other cmds through...
+    java ${JETTY_ARGS} -jar ${PREFIX}/${APP_NAME}.jar ${CMD}
+fi
+
+exit 0

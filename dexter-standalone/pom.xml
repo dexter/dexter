@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+	<!-- modified by Diego Ceccarelli (changed parent, groupId, artifactId)--> 
+	
+	<parent>
+		<artifactId>dexter-parent</artifactId>
+		<groupId>it.cnr.isti.hpc</groupId>
+		<version>1.0.0</version>
+		<relativePath>../dexter-parent/pom.xml</relativePath>
+	</parent>
+	
+    <groupId>it.cnr.isti.hpc</groupId>
+    <artifactId>dexter-standalone</artifactId>
+    <version>1.0.0</version>
+    <name>Your project: Jetty Standalone Jar</name>
+    <organization>
+        <name>BEKK open source</name>
+        <url>http://github.com/bekkopen</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git@github.com:bekkopen/jetty-pkg.git</connection>
+        <developerConnection>scm:git:git@github.com:bekkopen/jetty-pkg.git</developerConnection>
+        <url>scm:git:git@github.com:bekkopen/jetty-pkg.git</url>
+    </scm>
+    <properties>
+        <!--
+        TODO: Set the final name of the deployable jar here (the überjar)
+        -->
+        <bundle.name>dexter-${project.version}</bundle.name>
+        <jetty.version>7.2.2.v20101205</jetty.version>
+        <glassfish-jsp-2.1.version>2.1.v20100127</glassfish-jsp-2.1.version>
+    </properties>
+
+    <dependencies>
+	
+	
+	
+        <dependency>
+			<artifactId>dexter-webapp</artifactId>
+			<groupId>it.cnr.isti.hpc</groupId>
+            <type>war</type>
+        </dependency>
+
+        <!--
+        Example: if your webapp requires jstl 1.2
+        -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--
+        I prefer the Glassfish JSP implementation.
+        In the future jetty@eclipse may have packages for this.
+        -->
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jsp-api-2.1-glassfish</artifactId>
+            <version>${glassfish-jsp-2.1.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jsp-2.1-glassfish</artifactId>
+            <version>${glassfish-jsp-2.1.version}</version>
+        </dependency>
+
+        <!--
+        Jetty artifacts. Note: They do have transitive dependencies.
+        -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+
+        <!--
+        Because I'm lazy.
+        -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--
+        Add container dependencies here...
+        Such as if you have pools, db, etc that are i.e. assumed provided by the webapp.
+        -->
+
+    </dependencies>
+
+    <build>
+        <finalName>${bundle.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>true</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>bekkopen.jetty.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Optionally use maven-assembly-plugin to do the same -->
+            <!--<plugin>-->
+                <!--<artifactId>maven-assembly-plugin</artifactId>-->
+                <!--<configuration>-->
+                    <!--<descriptorRefs>-->
+                        <!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+                    <!--</descriptorRefs>-->
+                    <!--<archive>-->
+                        <!--<manifest>-->
+                            <!--<mainClass>bekkopen.jetty.Main</mainClass>-->
+                        <!--</manifest>-->
+                    <!--</archive>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>single</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
+        </plugins>
+    </build>
+
+</project>
