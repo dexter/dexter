@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.spot.ram;
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,7 @@ public class RamSpotRepository implements SpotRepository {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotRepository.class);
 	
-	ProjectProperties properties = new ProjectProperties(RamSpotRepository.class);
+
 	RamSpotFile spots;
 	SpotMinimalPerfectHash hash;
 	SpotEliasFanoOffsets offsets;
@@ -43,7 +42,7 @@ public class RamSpotRepository implements SpotRepository {
 		hash = SpotMinimalPerfectHash.getInstance();
 		offsets = SpotEliasFanoOffsets.getInstance();
 		spots = RamSpotFile.getInstance();
-		commonnessThreshold = (float)properties.getDouble("entity.commonness.threshold");
+		
 	}
 
 	// public RamSpotRepository(String spotBinFile, String spotBinOffsets,
@@ -72,7 +71,7 @@ public class RamSpotRepository implements SpotRepository {
 		byte[] binspot = spots.getOffset(from, to);
 		s.stop("offsets");
 		s.start("spot");
-		Spot sp = Spot.fromByteArray(spot, binspot,commonnessThreshold);
+		Spot sp = Spot.fromByteArray(spot, binspot);
 		s.stop("spot");
 		// System.out.println("retrieved: "+s.stat());
 		return sp;

@@ -55,7 +55,8 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 		if (serializedFile.exists()) {
 			load();
 		} else {
-			// FIXME number of nodes from property file
+			logger.warn("cannot find {}, using empty ram nodes",serializedFile.getAbsolutePath());
+			
 			map = new Int2ObjectOpenHashMap<int[]>(5000000);
 		}
 	}
@@ -93,15 +94,6 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 		return new Node(id, neigh);
 	}
 
-	public int intersection(int xid, int yid) {
-		int[] x = getNeighbours(xid);
-		int[] y = getNeighbours(yid);
-		// FIXME arrays are sorted, intersection can be computing simply in
-		// x.size + y.size
-		return CollectionUtils.intersection(Arrays.asList(x), Arrays.asList(y))
-				.size();
-
-	}
 
 	public IntIterator iterator() {
 		return map.keySet().iterator();

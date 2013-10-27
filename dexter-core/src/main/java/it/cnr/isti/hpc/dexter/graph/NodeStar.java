@@ -36,12 +36,7 @@ public interface NodeStar {
 	/** return a node description  */
 	public abstract Node getNode(int id);	
 	
-	/**
-	 * Compute the intersection between the xid nodestar and the 
-	 * yid node star. 
-	 * @return the size of the intersection
-	 */
-	public abstract int intersection(int xid, int yid);
+
 	
 	
 }

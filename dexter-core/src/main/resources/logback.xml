@@ -16,6 +16,8 @@
   <root level="${log:-INFO}">
     <appender-ref ref="A1"/>
   </root>
+  <logger name="it.cnr.isti.hpc.property.ProjectProperties" level="ERROR" />
+  
   
   
    

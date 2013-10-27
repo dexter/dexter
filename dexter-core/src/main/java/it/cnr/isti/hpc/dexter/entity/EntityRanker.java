@@ -36,7 +36,11 @@ import org.slf4j.LoggerFactory;
  * <code>rank.by.commonness</code> is true.
  * </ul>
  * 
- * <strong> WARNING: </strong> this class could be removed or radically modified in the future 
+ * The entity ranker also prune candidate entities with a score lower than 
+ * the value 'entity.commonness.threshold' defined in the project.properties.
+ * 
+ * <strong> WARNING: </strong> this class could be removed or radically modified
+ * in the future
  * 
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
@@ -56,6 +60,9 @@ public class EntityRanker {
 	private final boolean RANK_BY_PRIOR = properties.get("rank.by.commonness")
 			.equals("true");
 
+	double commonnessThreshold = properties
+			.getDouble("entity.commonness.threshold");
+
 	private final int WINDOW_SIZE = properties.getInt("context.window.size");
 
 	public EntityRanker(Field field) {
@@ -74,7 +81,7 @@ public class EntityRanker {
 	}
 
 	public EntityMatchList rank(SpotMatch spot) {
-		// FIXME filter by prior before
+
 		// EntityMatchList eml = filterEntitiesByPrior(spot);
 		EntityMatchList eml = new EntityMatchList();
 		EntityMatch match = null;
@@ -83,6 +90,11 @@ public class EntityRanker {
 		if (RANK_BY_PRIOR) {
 
 			for (Entity e : spot.getSpot().getEntities()) {
+				if (spot.getEntityCommonness(e) < commonnessThreshold) {
+					logger.debug("filtering entity {}, low commonness ",
+							e.getId());
+					continue;
+				}
 				match = new EntityMatch(e, spot.getEntityCommonness(e), spot);
 				eml.add(match);
 			}
@@ -90,6 +102,11 @@ public class EntityRanker {
 		}
 		if (RANK_BY_SIMILARITY) {
 			for (Entity e : spot.getSpot().getEntities()) {
+				if (spot.getEntityCommonness(e) < commonnessThreshold) {
+					logger.info("filtering entity {}, low commonness ",
+							e.getId());
+					continue;
+				}
 				match = new EntityMatch(e, 0, spot);
 				eml.add(match);
 			}
