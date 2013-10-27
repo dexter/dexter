@@ -6,11 +6,11 @@
 	<parent>
 		<artifactId>dexter-parent</artifactId>
 		<groupId>it.cnr.isti.hpc</groupId>
-		<version>0.0.1</version>
+		<version>1.0.0</version>
 		<relativePath>../dexter-parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>dexter-core</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Dexter Core</name>
 	<description>Massive Entity Annotator</description>
 	<dependencies>
@@ -21,7 +21,6 @@
 		<dependency>
 			<artifactId>hpc-utils</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
-			<version>0.0.5</version>
 		</dependency>
 		<dependency>
 			<artifactId>json-wikipedia</artifactId>

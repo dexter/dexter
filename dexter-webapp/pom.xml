@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>dexter-parent</artifactId>
 		<groupId>it.cnr.isti.hpc</groupId>
-		<version>0.0.1</version>
+		<version>1.0.0</version>
 		<relativePath> ../dexter-parent/pom.xml </relativePath>
 	</parent>
 	<artifactId>dexter-webapp</artifactId>

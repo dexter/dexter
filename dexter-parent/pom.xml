@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.cnr.isti.hpc</groupId>
 	<artifactId>dexter-parent</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<packaging>pom</packaging>
 	<name>Dexter Parent</name>
 	<description>Contains configuration for packages</description>
@@ -46,7 +46,7 @@
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>
 				<artifactId>dexter-core</artifactId>
-				<version>0.0.4-SNAPSHOT</version>
+				<version>1.0.0</version>
 			</dependency>
 			
 			<dependency>
@@ -54,6 +54,12 @@
 				<artifactId>dexter-webapp</artifactId>
 				<version>1.0.0</version>
 				 <type>war</type>
+			</dependency>
+			
+			<dependency>
+				<groupId>it.cnr.isti.hpc</groupId>
+				<artifactId>hpc-utils</artifactId>
+				<version>0.0.5</version>
 			</dependency>
 			
 			<!-- dexter dependecies -->
