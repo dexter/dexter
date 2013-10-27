@@ -48,6 +48,14 @@
 				<artifactId>dexter-core</artifactId>
 				<version>0.0.4-SNAPSHOT</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>it.cnr.isti.hpc</groupId>
+				<artifactId>dexter-webapp</artifactId>
+				<version>1.0.0</version>
+				 <type>war</type>
+			</dependency>
+			
 			<!-- dexter dependecies -->
 
 			<!-- testing -->
