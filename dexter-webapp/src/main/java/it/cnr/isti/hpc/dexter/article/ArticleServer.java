@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Allows to retrieve entity descriptions given the it's wiki-id.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  */
@@ -43,6 +45,10 @@ public class ArticleServer {
 		}
 	}
 
+	/**
+	 * Retrieves an entity description 
+	 * @param id - the wiki-id of the entity
+	 */
 	public ArticleDescription get(int id) {
 		ArticleDescription desc;
 		Article a = new Article();

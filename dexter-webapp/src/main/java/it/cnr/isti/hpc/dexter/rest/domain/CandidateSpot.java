@@ -14,12 +14,13 @@
  *  limitations under the License.
  */
 
-package it.cnr.isti.hpc.dexter.rest;
+package it.cnr.isti.hpc.dexter.rest.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represent a candidate spot during the entity linking process.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 18, 2013

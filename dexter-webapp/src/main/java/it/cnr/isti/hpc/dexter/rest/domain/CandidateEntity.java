@@ -29,9 +29,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.rest;
+package it.cnr.isti.hpc.dexter.rest.domain;
 
 /**
+ * Represents a candidate entity for a spot.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 18, 2013

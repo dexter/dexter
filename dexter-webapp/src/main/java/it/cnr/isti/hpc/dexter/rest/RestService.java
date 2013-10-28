@@ -15,11 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.rest;
 
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import it.cnr.isti.hpc.dexter.Dexter;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
@@ -27,8 +22,16 @@ import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
+import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
+import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
+import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -37,57 +40,99 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Feb 2, 2013
+ *         Created on Feb 2, 2013
  */
 
 @Path("/")
 public class RestService {
-	
-	private static Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues().create();
-	private ArticleServer server = new ArticleServer();	
+
+	private static Gson gson = new GsonBuilder()
+			.serializeSpecialFloatingPointValues().create();
+	private ArticleServer server = new ArticleServer();
 	private Dexter tagger = new Dexter();
 
-	
+	private static final Logger logger = LoggerFactory
+			.getLogger(RestService.class);
+
+	/**
+	 * Performs the entity linking on a given text, annotating maximum n
+	 * entities.
+	 * 
+	 * @param text
+	 *            the text to annotate
+	 * @param n
+	 *            the maximum number of entities to annotate
+	 * @param an
+	 *            annotated document, containing the annotated text, and a list
+	 *            entities detected.
+	 */
 	@GET
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotate(@QueryParam("text") String text, @QueryParam("n") @DefaultValue( "5" ) String n ) {
+	public String annotate(@QueryParam("text") String text,
+			@QueryParam("n") @DefaultValue("5") String n) {
+
 		Integer entitiesToAnnotate = Integer.parseInt(n);
 		Document doc = new FlatDocument(text);
 		EntityMatchList eml = tagger.tag(doc);
 		AnnotatedDocument adoc = new AnnotatedDocument(text);
 		adoc.annotate(eml, entitiesToAnnotate);
-		return gson.toJson(adoc);
-	} 
-	
-	
+		String annotated = gson.toJson(adoc);
+		logger.info("annotate: {}", annotated);
+		return annotated;
+	}
+
+	/**
+	 * Given the Wiki-id of an entity, returns a snippet containing same
+	 * sentences that describe the entity.
+	 * 
+	 * @param id
+	 *            the Wiki-id of the entity
+	 * @returns a short description of the entity represented by the Wiki-id
+	 */
 	@GET
 	@Path("get-desc")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getDescription(@QueryParam("id") String id) {
 		int i = Integer.parseInt(id);
-		
+
 		ArticleDescription desc = server.get(i);
-		return desc.toJson();
+		String description = desc.toJson();
+		logger.info("getDescription: {}", description);
+		return description;
+
 	}
-	
+
+	/**
+	 * It only performs the first step of the entity linking process, i.e., find
+	 * all the mentions that could refer to an entity.
+	 * 
+	 * @param text
+	 *            the text to spot
+	 * @return all the spots detected in the text together with their link
+	 *         probability. For each spot it also returns the list of candidate
+	 *         entities associated with it, together with their commonness.
+	 */
 	@GET
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spot(@QueryParam("text") String document){
+	public String spot(@QueryParam("text") String text) {
 		long start = System.currentTimeMillis();
-		Document d = new FlatDocument(document);
+		Document d = new FlatDocument(text);
 		SpotMatchList sml = tagger.spot(d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
-		
-		for (SpotMatch spot : sml){
+
+		for (SpotMatch spot : sml) {
 			CandidateSpot s = new CandidateSpot();
 			s.setMention(spot.getMention());
 			s.setStart(spot.getStart());
@@ -96,19 +141,20 @@ public class RestService {
 			s.setLinkFrequency(spot.getLinkFrequency());
 			s.setDocumentFrequency(spot.getFrequency());
 			candidates = new ArrayList<CandidateEntity>();
-			for (EntityMatch entity : spot.getEntities()){
-				CandidateEntity c = new CandidateEntity(entity.getId(), entity.getFrequency(), entity.getCommonness());
+			for (EntityMatch entity : spot.getEntities()) {
+				CandidateEntity c = new CandidateEntity(entity.getId(),
+						entity.getFrequency(), entity.getCommonness());
 				candidates.add(c);
 			}
 			Collections.sort(candidates);
 			s.setCandidates(candidates);
 			spots.add(s);
 		}
-		SpottedDocument sd = new SpottedDocument(document, spots, spots.size(), System.currentTimeMillis()-start);
-		return gson.toJson(sd);
+		SpottedDocument sd = new SpottedDocument(text, spots, spots.size(),
+				System.currentTimeMillis() - start);
+		String spotted = gson.toJson(sd);
+		logger.info("spot: {}", spotted);
+		return spotted;
 	}
-	
-	
-	
 
 }

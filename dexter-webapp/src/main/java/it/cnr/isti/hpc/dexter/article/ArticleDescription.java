@@ -33,6 +33,9 @@ import org.wikipedia.Wiki;
 import com.google.gson.Gson;
 
 /**
+ * An entity description, contains several metadata extracted from 
+ * the Wikipedia article, describing the entity.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  */
@@ -57,6 +60,7 @@ public class ArticleDescription {
 		title = "NODESC";
 	}
 
+	
 	public ArticleDescription(Article a) {
 		title = a.getTitle();
 		infobox = new HashMap<String, String>();
@@ -131,6 +135,7 @@ public class ArticleDescription {
 	}
 
 	public String toJson() {
+		if (infobox.isEmpty()) infobox = null;
 		return gson.toJson(this);
 	}
 

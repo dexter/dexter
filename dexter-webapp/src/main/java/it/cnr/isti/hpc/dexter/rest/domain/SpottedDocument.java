@@ -29,11 +29,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.rest;
+package it.cnr.isti.hpc.dexter.rest.domain;
 
 import java.util.List;
 
 /**
+ * Represents a document with all the spot detected during 
+ * the spotting.
+ * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  * Created on Oct 18, 2013
