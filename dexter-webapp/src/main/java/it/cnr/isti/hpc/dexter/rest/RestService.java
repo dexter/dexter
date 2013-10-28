@@ -71,7 +71,7 @@ public class RestService {
 	 *            the text to annotate
 	 * @param n
 	 *            the maximum number of entities to annotate
-	 * @param an
+	 * @returns an
 	 *            annotated document, containing the annotated text, and a list
 	 *            entities detected.
 	 */
@@ -92,7 +92,7 @@ public class RestService {
 	}
 
 	/**
-	 * Given the Wiki-id of an entity, returns a snippet containing same
+	 * Given the Wiki-id of an entity, returns a snippet containing some
 	 * sentences that describe the entity.
 	 * 
 	 * @param id

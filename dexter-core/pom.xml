@@ -10,7 +10,6 @@
 		<relativePath>../dexter-parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>dexter-core</artifactId>
-	<version>1.0.0</version>
 	<name>Dexter Core</name>
 	<description>Massive Entity Annotator</description>
 	<dependencies>

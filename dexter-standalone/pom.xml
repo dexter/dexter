@@ -47,6 +47,14 @@
 			<artifactId>dexter-webapp</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
             <type>war</type>
+			<version> 1.0.0 </version>
+			
+        </dependency>
+		
+        <dependency>
+			<artifactId>dexter-core</artifactId>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<version> 1.0.0 </version>
         </dependency>
 
         <!--

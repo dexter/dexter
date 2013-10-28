@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 public class PluginLoader {
 
 	PClassLoader loader;
+	ClasspathResourceLoader luceneLoader = new ClasspathResourceLoader();
 	ProjectProperties properties = new ProjectProperties(PluginLoader.class);
 
 	private static final Logger logger = LoggerFactory
@@ -53,8 +54,10 @@ public class PluginLoader {
 		URLClassLoader l = (URLClassLoader) ClassLoader.getSystemClassLoader();
 		loader = new PClassLoader(l.getURLs());
 		File libDir = new File(properties.get("lib.dir"));
-		if (!libDir.exists() || !libDir.isDirectory())
+		if (!libDir.exists() || !libDir.isDirectory()){
+			logger.warn("cannot find {} ", libDir);
 			return;
+		}
 		for (File file : libDir.listFiles()) {
 			if (file.isFile() && file.getName().endsWith(".jar")) {
 				try {
@@ -78,8 +81,14 @@ public class PluginLoader {
 	}
 
 	public Disambiguator getDisambiguator(String disambiguatorClass) {
-		Disambiguator disambiguator = (Disambiguator) ClasspathUtils
+		Disambiguator disambiguator =null;
+		try{
+			disambiguator = (Disambiguator) ClasspathUtils
 				.newInstance(disambiguatorClass, loader);
+		}catch (Exception e){
+			disambiguator = luceneLoader.newInstance(disambiguatorClass, Disambiguator.class);
+			
+		}
 		return disambiguator;
 	}
 
