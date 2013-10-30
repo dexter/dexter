@@ -229,4 +229,14 @@ public class ArticleDescription {
 		this.infobox = infobox;
 	}
 
+
+	@Override
+	public String toString() {
+		return "ArticleDescription [title=" + title + ", description="
+				+ description + ", image=" + image + ", infobox=" + infobox
+				+ "]";
+	}
+	
+	
+
 }

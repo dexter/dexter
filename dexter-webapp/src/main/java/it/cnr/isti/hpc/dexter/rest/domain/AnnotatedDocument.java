@@ -109,6 +109,12 @@ public class AnnotatedDocument {
 	public void setSpots(List<AnnotatedSpot> spots) {
 		this.spots = spots;
 	}
+
+	@Override
+	public String toString() {
+		return "AnnotatedDocument [text=" + text + ", annotatedText="
+				+ annotatedText + ", spots=" + spots + "]";
+	}
 	
 
 }

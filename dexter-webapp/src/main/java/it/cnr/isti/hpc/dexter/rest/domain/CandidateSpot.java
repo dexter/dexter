@@ -98,6 +98,16 @@ public class CandidateSpot {
 
 
 
+	@Override
+	public String toString() {
+		return "CandidateSpot [mention=" + mention + ", linkProbability="
+				+ linkProbability + ", start=" + start + ", end=" + end
+				+ ", linkFrequency=" + linkFrequency + ", documentFrequency="
+				+ documentFrequency + ", candidates=" + candidates + "]";
+	}
+
+
+
 	
 	
 	

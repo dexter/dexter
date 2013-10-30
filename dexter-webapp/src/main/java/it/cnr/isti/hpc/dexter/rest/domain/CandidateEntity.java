@@ -75,6 +75,13 @@ public class CandidateEntity implements Comparable<CandidateEntity> {
 		if (o.getCommonness() < getCommonness()) return -1;
 		return 0;
 	}
+	@Override
+	public String toString() {
+		return "CandidateEntity [entity=" + entity + ", freq=" + freq
+				+ ", commonness=" + commonness + "]";
+	}
+	
+	
 	
 	
 

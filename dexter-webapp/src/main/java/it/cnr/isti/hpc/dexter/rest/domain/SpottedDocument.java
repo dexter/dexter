@@ -81,6 +81,13 @@ public class SpottedDocument {
 	public void setQuerytime(float querytime) {
 		this.querytime = querytime;
 	}
+	@Override
+	public String toString() {
+		return "SpottedDocument [text=" + text + ", spots=" + spots
+				+ ", nSpots=" + nSpots + ", querytime=" + querytime + "]";
+	}
+	
+	
 	
 	
 

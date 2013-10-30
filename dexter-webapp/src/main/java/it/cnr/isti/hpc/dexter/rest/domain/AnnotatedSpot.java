@@ -138,4 +138,16 @@ public class AnnotatedSpot {
 		this.score = score;
 	}
 
+	@Override
+	public String toString() {
+		return "AnnotatedSpot [mention=" + mention + ", linkProbability="
+				+ linkProbability + ", start=" + start + ", end=" + end
+				+ ", linkFrequency=" + linkFrequency + ", documentFrequency="
+				+ documentFrequency + ", entity=" + entity
+				+ ", entityFrequency=" + entityFrequency + ", commonness="
+				+ commonness + ", score=" + score + "]";
+	}
+
+	
+	
 }
