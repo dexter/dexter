@@ -70,7 +70,9 @@ public class ExtractCategoryEdgesCLI extends AbstractCommandLineInterface {
 			for (Link c : a.getCategories()){
 				logger.info("id {}", c.getCleanId());
 				int target = helper.getId(c.getCleanId());
+				logger.info("target {}", target);
 				if (target <= 0) continue;
+				
 				cli.writeLineInOutput(a.getType()+"\t"+id+"\t"+target);	
 			}
 			
