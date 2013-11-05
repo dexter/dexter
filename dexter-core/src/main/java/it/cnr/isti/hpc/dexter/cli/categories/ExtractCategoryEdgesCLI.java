@@ -55,7 +55,7 @@ public class ExtractCategoryEdgesCLI extends AbstractCommandLineInterface {
 
 	public static void main(String[] args) {
 		ExtractCategoryEdgesCLI cli = new ExtractCategoryEdgesCLI(args);
-		ProgressLogger progress = new ProgressLogger("retrieved {} categories",
+		ProgressLogger progress = new ProgressLogger("retrieved {} articles",
 				1000);
 		IdHelper helper = IdHelperFactory.getStdIdHelper();
 		RecordReader<Article> reader = new RecordReader<Article>(
@@ -68,9 +68,10 @@ public class ExtractCategoryEdgesCLI extends AbstractCommandLineInterface {
 			progress.up();
 			int id = a.getWid();
 			for (Link c : a.getCategories()){
+				logger.info("id ", c.getCleanId());
 				int target = helper.getId(c.getCleanId());
 				if (target <= 0) continue;
-				cli.writeLineInOutput(a.getType()+"\t"+id+"\t"+target);
+				cli.writeLineInOutput(a.getType()+"\t"+id+"\t"+target);	
 			}
 			
 
