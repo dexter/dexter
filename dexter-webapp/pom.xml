@@ -10,7 +10,9 @@
 	<artifactId>dexter-webapp</artifactId>
 	<version>1.0.0</version>
 	<name>Dexter Webapp</name>
-	<packaging>war</packaging>
+	<!-- packaging>war</packaging-->
+	<packaging>jar</packaging>
+	
 
 	<dependencies>
 
@@ -35,7 +37,7 @@
 			<groupId>org.mapdb</groupId>
 			<artifactId>mapdb</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
@@ -50,7 +52,7 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 		</dependency>
-		
+
 		<!-- primitive data structures -->
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
@@ -62,18 +64,18 @@
 			<artifactId>sux4j</artifactId>
 			<version>3.0.8</version>
 		</dependency>
-		
+
 		<!-- nlp processing -->
-			<dependency>
-				<groupId>org.apache.opennlp</groupId>
-				<artifactId>opennlp-tools</artifactId>
-				<version>1.5.3</version>
-			</dependency>
-			<dependency>
-				<groupId>simplenlg</groupId>
-				<artifactId>simplenlg</artifactId>
-				<version>4.4</version>
-			</dependency>
+		<dependency>
+			<groupId>org.apache.opennlp</groupId>
+			<artifactId>opennlp-tools</artifactId>
+			<version>1.5.3</version>
+		</dependency>
+		<dependency>
+			<groupId>simplenlg</groupId>
+			<artifactId>simplenlg</artifactId>
+			<version>4.4</version>
+		</dependency>
 
 
 
