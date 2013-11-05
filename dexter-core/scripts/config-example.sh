@@ -39,6 +39,7 @@ SPOT_FOLDER=$DATA_DIR/spot
 # <spot> <tab> <source entity> <tab> <target entity>
 SPOT=$SPOT_FOLDER/spot-src-target.tsv
 
+
 # contains the the document frequency for each spot, 
 # how many documents contains the spot as anchor text or raw text
 SPOT_DOC_FREQ=$SPOT_FOLDER/spots-doc-freq.tsv
@@ -52,6 +53,9 @@ SPOT_HASHES=$SPOT_FOLDER/spot-hashes.tsv.gz
 IN_EDGES=$GRAPH_DIR/incoming-edges.tsv.gz
 # plain outcoming node file
 OUT_EDGES=$GRAPH_DIR/outcoming-edges.tsv.gz
+
+#categories
+WIKI_CATEGORIES=$GRAPH_DIR/categories.tsv.gz
 
 #temporary files used by the scripts
 TMP=$DEXTER_TMP_DIR/tmp
