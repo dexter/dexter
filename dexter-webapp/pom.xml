@@ -346,10 +346,33 @@
 			<!-- </executions> -->
 			<!-- </plugin> -->
 		</plugins>
+		
+		
 
 
 
 
 
 	</build>
+	<repositories>
+		<repository>
+			<id>local jars</id>
+			<name>local jars</name>
+			<url>file://${basedir}/../lib</url>
+		</repository>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>info-bliki-repository</id>
+			<url>http://gwtwiki.googlecode.com/svn/maven-repository/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 </project>

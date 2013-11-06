@@ -128,7 +128,7 @@
 		<repository>
 			<id>local jars</id>
 			<name>local jars</name>
-			<url>file://${basedir}/lib</url>
+			<url>file://${basedir}/../lib</url>
 		</repository>
 		<repository>
 			<id>sonatype-snapshots</id>
