@@ -2,10 +2,13 @@
 
 source scripts/config.sh
 
+rm -f $TMP $TTMP
 
 echo "extracting spots for categories"
 $JAVA $CLI.categories.ExtractCategoryEdgesCLI --input $WIKI_JSON_DUMP --output $TMP
 echo "done in $TMP"
+
+
 
 echo "generates incoming and outcoming categories for each entity (in $IN_CATEGORIES and $OUT_CATEGORIES) "
 grep "ARTICLE" $TMP |  cut -f 2,3 > $TTMP
