@@ -19,12 +19,19 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 
 import java.util.Comparator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * EntityMatch contains the confidence score of an entity associated to a spot
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
  */
 public class EntityMatch implements Comparable<EntityMatch> {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(EntityMatch.class);
+
 	/** the entity matched */
 	private Entity entity;
 
@@ -38,12 +45,20 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		super();
 		this.entity = new Entity(e.getId(), e.getFrequency());
 		this.score = score;
+		if (Double.isNaN(score)) {
+			logger.warn("score is NaN");
+			this.score = 0;
+		}
 	}
 
 	private EntityMatch(int id, double score) {
 		super();
 		this.entity = new Entity(id);
 		this.score = score;
+		if (Double.isNaN(score)) {
+			logger.warn("score is NaN");
+			this.score = 0;
+		}
 	}
 
 	public EntityMatch(Entity e, double score, SpotMatch spot) {
@@ -65,6 +80,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		return spot.getEntityCommonness(entity);
 	}
 
+	@Override
 	public int compareTo(EntityMatch em) {
 		if (score > em.getScore())
 			return -1;
@@ -113,6 +129,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 
+		@Override
 		public int compare(EntityMatch em, EntityMatch em1) {
 			return em.getStart() - em1.getStart();
 		}
@@ -158,13 +175,19 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	}
 
 	public void setScore(double score) {
+
 		this.score = score;
+		if (Double.isNaN(score)) {
+			logger.warn("score is NaN");
+			this.score = 0;
+		}
 	}
 
 	public void setSpot(SpotMatch spot) {
 		this.spot = spot;
 	}
 
+	@Override
 	public String toString() {
 		String str = spot.getMention() + "[" + getStart() + "," + getEnd()
 				+ "]" + "\t score: " + score + "\t" + "prior:"
@@ -196,6 +219,7 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	}
 
 	public static class SpotLengthComparator implements Comparator<EntityMatch> {
+		@Override
 		public int compare(EntityMatch em1, EntityMatch em2) {
 			return em1.getSpot().getMention().length()
 					- em2.getSpot().getMention().length();
