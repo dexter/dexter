@@ -25,9 +25,26 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  */
 public class MapDBInstance {
 
-	static ProjectProperties properties = new ProjectProperties(
+	private static final ProjectProperties properties = new ProjectProperties(
 			MapDBInstance.class);
-	static public final MapDB DB = MapDB.getDb(properties.get("data.dir"),
-			properties.get("mapdb.dir"));
+	private static MapDB db;
+
+	public static MapDB getInstance() {
+		if (db == null) {
+			db = MapDB.getDb(properties.get("data.dir"),
+					properties.get("mapdb.dir"));
+		}
+		return db;
+
+	}
+
+	public static MapDB getInstance(boolean readonly) {
+		if (db == null) {
+			db = MapDB.getDb(properties.get("data.dir"),
+					properties.get("mapdb.dir"), readonly);
+		}
+		return db;
+
+	}
 
 }

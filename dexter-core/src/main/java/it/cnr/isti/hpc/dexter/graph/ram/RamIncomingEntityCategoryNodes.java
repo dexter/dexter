@@ -1,0 +1,63 @@
+/**
+ *  Copyright 2012 Diego Ceccarelli
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package it.cnr.isti.hpc.dexter.graph.ram;
+
+import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
+import it.cnr.isti.hpc.dexter.graph.NodesWriter;
+import it.cnr.isti.hpc.property.ProjectProperties;
+
+import java.io.File;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * RamIncomingEntityCategoryNodes allows to keep the incoming entity-category
+ * nodes for each node in a graph directly in main memory.
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 16/nov/2013
+ */
+public class RamIncomingEntityCategoryNodes extends RamNodes implements
+		IncomingNodes, NodesWriter {
+
+	private static RamIncomingEntityCategoryNodes instance = null;
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(RamIncomingEntityCategoryNodes.class);
+
+	static private ProjectProperties properties = new ProjectProperties(
+			RamIncomingEntityCategoryNodes.class);
+
+	private RamIncomingEntityCategoryNodes() {
+
+		super(new File(properties.get("data.dir"),
+				properties.get("ram.incoming.entity.category.nodes")));
+	}
+
+	public static RamIncomingEntityCategoryNodes getInstance() {
+		if (instance == null) {
+			logger.info("Loading ram incoming entity-category nodes");
+			instance = new RamIncomingEntityCategoryNodes();
+		}
+		return instance;
+	}
+
+	// @Override
+	public int[] getIncoming(int id) {
+		return getNeighbours(id);
+	}
+
+}

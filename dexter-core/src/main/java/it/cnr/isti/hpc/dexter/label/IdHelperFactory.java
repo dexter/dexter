@@ -44,10 +44,10 @@ public class IdHelperFactory {
 
 	}
 
-	public static IdHelper getIdHelper(Type type) {
+	public static IdHelper getIdHelper(Type type, boolean readonly) {
 		if (type == Type.JDBM) {
-			IdToLabel h2l = MapDBIdToLabel.getInstance();
-			LabelToId l2h = MapDBLabelToId.getInstance();
+			IdToLabel h2l = MapDBIdToLabel.getInstance(readonly);
+			LabelToId l2h = MapDBLabelToId.getInstance(readonly);
 			IdHelper helper = new IdHelper(h2l, l2h);
 			return helper;
 		}
@@ -63,7 +63,7 @@ public class IdHelperFactory {
 
 	public static LabelToIdWriter getLabelToIdWriter(Type type) {
 		if (type == Type.JDBM) {
-			return MapDBLabelToId.getInstance();
+			return MapDBLabelToId.getInstance(false);
 		}
 		// if (type == Type.HADOOP){
 		// return new LabelToIdHadoopWriter();
@@ -74,7 +74,7 @@ public class IdHelperFactory {
 
 	public static IdToLabelWriter getIdToLabelWriter(Type type) {
 		if (type == Type.JDBM) {
-			return MapDBIdToLabel.getInstance();
+			return MapDBIdToLabel.getInstance(false);
 		}
 		// if (type == Type.HADOOP){
 		// return new IdToLabelHadoopWriter();
@@ -100,11 +100,13 @@ public class IdHelperFactory {
 	}
 
 	/**
-	 * returns the standard id helper, you should probably want to use this.
+	 * returns the standard id helper (read only mode), you should probably want
+	 * to use this.
 	 */
 	public static IdHelper getStdIdHelper() {
 		if (stdIdHelper == null) {
-			stdIdHelper = getIdHelper(STD_TYPE);
+			// read only mode
+			stdIdHelper = getIdHelper(STD_TYPE, true);
 
 		}
 		return stdIdHelper;

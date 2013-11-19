@@ -42,6 +42,8 @@ public class MapDB {
 	// wrapped db instance
 	private DB db;
 
+	private boolean readonly = true;
+
 	private MapDB(String dbFolder) {
 		File folderPath = new File(dbFolder);
 		// if (dbFolder.endsWith(".zip"))
@@ -49,6 +51,20 @@ public class MapDB {
 
 		openDb(folderPath, DEFAULT_DB_NAME);
 
+	}
+
+	private MapDB(String dbFolder, boolean readonly) {
+		this.readonly = readonly;
+		File folderPath = new File(dbFolder);
+		// if (dbFolder.endsWith(".zip"))
+		// openZipDb(folderPath);
+
+		openDb(folderPath, DEFAULT_DB_NAME);
+
+	}
+
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
 	}
 
 	// private void openZipDb(File dbPath) {
@@ -64,12 +80,37 @@ public class MapDB {
 		openDb(folderPath, DEFAULT_DB_NAME);
 	}
 
+	public MapDB(String path, String dbFolder, boolean readonly) {
+		this.readonly = readonly;
+		File folderPath = new File(path, dbFolder);
+		// if (dbFolder.endsWith(".zip"))
+		// openZipDb(folderPath);
+		openDb(folderPath, DEFAULT_DB_NAME);
+	}
+
+	public MapDB(File dbPath, boolean readonly) {
+		this.readonly = readonly;
+		// NOTE: i don't need transactions, disabling should improve speed
+		if (readonly) {
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().readOnly().make();
+		} else {
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().make();
+		}
+	}
+
 	public MapDB(File dbPath) {
 		logger.info("open db in {} ", dbPath.getAbsolutePath());
 
 		// NOTE: i don't need transactions, disabling should improve speed
-		db = DBMaker.newFileDB(dbPath).transactionDisable()
-				.asyncFlushDelay(100).closeOnJvmShutdown().make();
+		if (readonly) {
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().readOnly().make();
+		} else {
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().make();
+		}
 	}
 
 	private void openDb(File dbFolder, String dbName) {
@@ -80,12 +121,14 @@ public class MapDB {
 					+ " exists but it is not a directory");
 		File dbPath = new File(dbFolder, dbName);
 		logger.info("open db in {} ", dbPath.getAbsolutePath());
-
-		// NOTE: i don't need transactions, disabling should improve speed
-		db = DBMaker.newFileDB(dbPath)
-				.transactionDisable()
-				 .closeOnJvmShutdown()
-				.make();
+		if (readonly) {
+			// NOTE: i don't need transactions, disabling should improve speed
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().readOnly().make();
+		} else {
+			db = DBMaker.newFileDB(dbPath).transactionDisable()
+					.closeOnJvmShutdown().make();
+		}
 
 	}
 
@@ -95,6 +138,10 @@ public class MapDB {
 
 	public static MapDB getDb(String path, String dbName) {
 		return new MapDB(path, dbName);
+	}
+
+	public static MapDB getDb(String path, String dbName, boolean readonly) {
+		return new MapDB(path, dbName, readonly);
 	}
 
 	public boolean hasCollection(String collection) {

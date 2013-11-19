@@ -41,36 +41,40 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	ProjectProperties properties;
 	private static final String COLLECTION_NAME = "id2a";
 	private static MapDBIdToLabel instance;
-	MapDB db = MapDBInstance.DB;
+	MapDB db;
 	Map<Integer, String> map;
-	//int numEntry = 0;
-	//int commitFrequency = -1;
 
-	private MapDBIdToLabel() {
+	// int numEntry = 0;
+	// int commitFrequency = -1;
+
+	private MapDBIdToLabel(boolean readonly) {
+		db = MapDBInstance.getInstance(readonly);
 		properties = new ProjectProperties(this.getClass());
 		map = db.getCollection(COLLECTION_NAME);
-		//commitFrequency = properties.getInt("mapdb.commit");
+		// commitFrequency = properties.getInt("mapdb.commit");
 	}
 
-	public static MapDBIdToLabel getInstance() {
+	public static MapDBIdToLabel getInstance(boolean readonly) {
 		if (instance == null)
-			instance = new MapDBIdToLabel();
+			instance = new MapDBIdToLabel(readonly);
 		return instance;
 	}
 
+	@Override
 	public void add(int key, String label) {
-		//numEntry++;
+		// numEntry++;
 		if (label.isEmpty() || key == 0) {
 			logger.error("label \"{}\" empty or key \"{}\" is 0 ", label, key);
 			return;
 		}
 		map.put(key, label);
-//		if (numEntry % commitFrequency == 0) {
-//			logger.info("autocommit");
-//			db.commit();
-//		}
+		// if (numEntry % commitFrequency == 0) {
+		// logger.info("autocommit");
+		// db.commit();
+		// }
 	}
 
+	@Override
 	public String getLabel(Integer key) {
 		String label = map.get(key);
 		if (label == null)
@@ -78,12 +82,12 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 		return label;
 	}
 
-	
 	public void commit() {
 		db.commit();
 
 	}
 
+	@Override
 	public void close() {
 		db.commit();
 		db.close();

@@ -41,25 +41,27 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 	ProjectProperties properties;
 	private static final String COLLECTION_NAME = "a2id";
 	private static MapDBLabelToId instance;
-	MapDB db = MapDBInstance.DB;
+	MapDB db;
 	Map<String, Integer> map;
 
 	// int numEntry = 0;
 	// int commitFrequency = -1;
 
-	private MapDBLabelToId() {
+	private MapDBLabelToId(boolean readonly) {
+		db = MapDBInstance.getInstance(readonly);
 		properties = new ProjectProperties(this.getClass());
 
 		map = db.getCollection(COLLECTION_NAME);
 		// commitFrequency = properties.getInt("mapdb.commit");
 	}
 
-	public static MapDBLabelToId getInstance() {
+	public static MapDBLabelToId getInstance(boolean readonly) {
 		if (instance == null)
-			instance = new MapDBLabelToId();
+			instance = new MapDBLabelToId(readonly);
 		return instance;
 	}
 
+	@Override
 	public void add(String label, int key) {
 		// numEntry++;
 		if (label.isEmpty() || key == 0) {
@@ -73,6 +75,7 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 		// }
 	}
 
+	@Override
 	public Integer getId(String label) {
 		Integer i = map.get(label);
 		if (i == null)
@@ -86,6 +89,7 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 
 	}
 
+	@Override
 	public void close() {
 		db.close();
 	}
