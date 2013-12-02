@@ -15,7 +15,6 @@
  */
 package it.cnr.isti.hpc.dexter.article;
 
-import it.cnr.isti.hpc.dexter.freebase.FreebaseEntity;
 import it.cnr.isti.hpc.structure.LRUCache;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
@@ -33,8 +32,8 @@ import org.wikipedia.Wiki;
 import com.google.gson.Gson;
 
 /**
- * An entity description, contains several metadata extracted from 
- * the Wikipedia article, describing the entity.
+ * An entity description, contains several metadata extracted from the Wikipedia
+ * article, describing the entity.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -51,24 +50,27 @@ public class ArticleDescription {
 	private static LRUCache<String, ArticleDescription> cache = new LRUCache<String, ArticleDescription>(
 			1000);
 
-	private static final ArticleDescription EMPTY = new ArticleDescription();
+	public static final ArticleDescription EMPTY = new ArticleDescription();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ArticleDescription.class);
 
-	private ArticleDescription() {
-		title = "NODESC";
+	public ArticleDescription() {
+		title = "NOTITLE";
+		description = "NODESC";
+		infobox = new HashMap<String, String>();
+		image = "";
+
 	}
 
-	
 	public ArticleDescription(Article a) {
 		title = a.getTitle();
 		infobox = new HashMap<String, String>();
 		description = a.getSummary();
-//		FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
-//		if (fe.hasId()) {
-//			image = fe.getHtmlCode();
-//		}
+		// FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
+		// if (fe.hasId()) {
+		// image = fe.getHtmlCode();
+		// }
 	}
 
 	public static ArticleDescription fromWikipediaAPI(String name) {
@@ -135,7 +137,8 @@ public class ArticleDescription {
 	}
 
 	public String toJson() {
-		if (infobox.isEmpty()) infobox = null;
+		if (infobox.isEmpty())
+			infobox = null;
 		return gson.toJson(this);
 	}
 
@@ -229,14 +232,11 @@ public class ArticleDescription {
 		this.infobox = infobox;
 	}
 
-
 	@Override
 	public String toString() {
 		return "ArticleDescription [title=" + title + ", description="
 				+ description + ", image=" + image + ", infobox=" + infobox
 				+ "]";
 	}
-	
-	
 
 }

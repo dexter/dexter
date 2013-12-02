@@ -34,10 +34,9 @@ public class ArticleServer {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ArticleServer.class);
 
-	
 	private LuceneHelper lucene;
-	private IdHelper idHelper = IdHelperFactory.getStdIdHelper();
-	private Stopwatch timer = new Stopwatch();
+	private final IdHelper idHelper = IdHelperFactory.getStdIdHelper();
+	private final Stopwatch timer = new Stopwatch();
 
 	public ArticleServer() {
 		if (LuceneHelper.hasDexterLuceneIndex()) {
@@ -46,27 +45,47 @@ public class ArticleServer {
 	}
 
 	/**
-	 * Retrieves an entity description 
-	 * @param id - the wiki-id of the entity
+	 * Retrieves an entity description
+	 * 
+	 * @param id
+	 *            - the wiki-id of the entity
 	 */
 	public ArticleDescription get(int id) {
 		ArticleDescription desc;
 		Article a = new Article();
-		if (lucene != null){
+		if (lucene != null) {
 			timer.start("retrieve");
 			a = lucene.getArticleSummary(id);
 			timer.stop("retrieve");
-			logger.info("retrieve {} ",id);
+			logger.info("retrieve {} ", id);
 			logger.info(timer.stat("retrieve"));
-			 
+
 			desc = new ArticleDescription(a);
-		}
-		else{
+		} else {
 			String name = idHelper.getLabel(id);
 			desc = ArticleDescription.fromWikipediaAPI(name);
+			if (desc == null) {
+				logger.warn(
+						"cannot retrieve data from wikipedia for article {}",
+						name);
+				desc = ArticleDescription.EMPTY;
+			}
 		}
 		return desc;
 
 	}
 
+	/**
+	 * Retrieves an entity description, containing only the entity label
+	 * 
+	 * @param id
+	 *            - the wiki-id of the entity
+	 */
+	public ArticleDescription getOnlyEntityLabel(int id) {
+		ArticleDescription desc = new ArticleDescription();
+		String label = idHelper.getLabel(id);
+		desc.setTitle(label);
+		return desc;
+
+	}
 }

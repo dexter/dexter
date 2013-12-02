@@ -57,8 +57,8 @@ public class RestService {
 
 	private static Gson gson = new GsonBuilder()
 			.serializeSpecialFloatingPointValues().create();
-	private ArticleServer server = new ArticleServer();
-	private Dexter tagger = new Dexter();
+	private final ArticleServer server = new ArticleServer();
+	private final Dexter tagger = new Dexter();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RestService.class);
@@ -71,9 +71,8 @@ public class RestService {
 	 *            the text to annotate
 	 * @param n
 	 *            the maximum number of entities to annotate
-	 * @returns an
-	 *            annotated document, containing the annotated text, and a list
-	 *            entities detected.
+	 * @returns an annotated document, containing the annotated text, and a list
+	 *          entities detected.
 	 */
 	@GET
 	@Path("annotate")
@@ -97,16 +96,36 @@ public class RestService {
 	 * 
 	 * @param id
 	 *            the Wiki-id of the entity
+	 * @param title
+	 *            (optional, false by default) "true" if the function only
+	 *            should return the label of the entity for the Wiki-id,
+	 *            otherwise it will return all the metadata available.
+	 * 
 	 * @returns a short description of the entity represented by the Wiki-id
 	 */
 	@GET
 	@Path("get-desc")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getDescription(@QueryParam("id") String id) {
+	public String getDescription(@QueryParam("id") String id,
+			@QueryParam("title-only") @DefaultValue("false") String titleonly) {
+
 		int i = Integer.parseInt(id);
+		boolean titleOnly = new Boolean(titleonly);
+		if (titleOnly) {
+			ArticleDescription desc = server.getOnlyEntityLabel(i);
+			return desc.toJson();
+
+		}
 
 		ArticleDescription desc = server.get(i);
+		if (desc == null) {
+			logger.warn("description for id {} is null ", i);
+			desc = ArticleDescription.EMPTY;
+		}
+		// desc.setImage("");
+		// desc.setInfobox(new HashMap<String, String>());
 		String description = desc.toJson();
+
 		logger.info("getDescription: {}", description);
 		return description;
 
