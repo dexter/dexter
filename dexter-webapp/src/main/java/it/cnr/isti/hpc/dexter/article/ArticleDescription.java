@@ -65,6 +65,7 @@ public class ArticleDescription {
 
 	public ArticleDescription(Article a) {
 		title = a.getTitle();
+		image = "http://wikiname2image.herokuapp.com/" + a.getWikiTitle();
 		infobox = new HashMap<String, String>();
 		description = a.getSummary();
 		// FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());

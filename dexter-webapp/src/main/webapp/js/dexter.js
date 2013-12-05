@@ -28,7 +28,7 @@ function manage(id){
 			title = data.title
 			document.getElementById("info").innerHTML = "<strong>"+title+"</strong><div id='desc'>"
 			if (typeof data.image != 'undefined' ){
-				document.getElementById("info").innerHTML += data.image
+				document.getElementById("info").innerHTML += "<img src='"+data.image+"' width='150' style='{float:left}'/>"
 			}
 			document.getElementById("info").innerHTML += "<p>"+data.description.substring(0,1000)+"..."+"</p></div>"
 			

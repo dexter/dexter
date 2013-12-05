@@ -127,13 +127,13 @@ public class LuceneHelper {
 	private Directory index;
 	private IndexWriter writer;
 	private IndexSearcher searcher;
-	private IndexWriterConfig config;
-	private ArticleSummarizer summarizer;
+	private final IndexWriterConfig config;
+	private final ArticleSummarizer summarizer;
 
 	/**
 	 * number of documents indexed
 	 */
-	private int collectionSize;
+	private final int collectionSize;
 
 	private static ProjectProperties properties = new ProjectProperties(
 			LuceneHelper.class);
@@ -157,7 +157,7 @@ public class LuceneHelper {
 
 	private static SpotManager cleaner = new SpotManager();
 
-	private File wikiIdtToLuceneIdSerialization;
+	private final File wikiIdtToLuceneIdSerialization;
 	private static Map<Integer, Integer> wikiIdToLuceneId;
 
 	static {
@@ -212,7 +212,8 @@ public class LuceneHelper {
 	}
 
 	private IndexSearcher getSearcher() {
-		if (searcher != null) return searcher;
+		if (searcher != null)
+			return searcher;
 		IndexReader reader = getReader();
 		searcher = new IndexSearcher(reader);
 		return searcher;
@@ -221,11 +222,12 @@ public class LuceneHelper {
 	/**
 	 * @return true if the dexter lucene index exists, false otherwise
 	 */
-	public static boolean hasDexterLuceneIndex(){
-		File luceneFolder = new File(properties.get("data.dir"),properties.get("lucene.index"));
+	public static boolean hasDexterLuceneIndex() {
+		File luceneFolder = new File(properties.get("data.dir"),
+				properties.get("lucene.index"));
 		return luceneFolder.exists();
 	}
-	
+
 	/**
 	 * Returns an instance of the Dexter's Lucene index.
 	 * 
@@ -233,8 +235,10 @@ public class LuceneHelper {
 	 */
 	public static LuceneHelper getDexterLuceneHelper() {
 		if (dexterHelper == null) {
-			File luceneFolder = new File(properties.get("data.dir"),properties.get("lucene.index"));
-			File serializedWikiFile = new File(luceneFolder,properties.get("lucene.wiki.id"));
+			File luceneFolder = new File(properties.get("data.dir"),
+					properties.get("lucene.index"));
+			File serializedWikiFile = new File(luceneFolder,
+					properties.get("lucene.wiki.id"));
 			dexterHelper = new LuceneHelper(serializedWikiFile, luceneFolder);
 		}
 		return dexterHelper;
@@ -297,7 +301,8 @@ public class LuceneHelper {
 	public void loadWikiIdToLuceneId() {
 
 		if (!wikiIdtToLuceneIdSerialization.exists()) {
-			logger.info("{} not exists, generating",wikiIdtToLuceneIdSerialization);
+			logger.info("{} not exists, generating",
+					wikiIdtToLuceneIdSerialization);
 			parseWikiIdToLuceneId();
 			logger.info("storing");
 			dumpWikiIdToLuceneId();
@@ -324,7 +329,7 @@ public class LuceneHelper {
 	 * @return the Lucene id of an article, given its wikiId
 	 */
 	protected int getLuceneId(int wikiId) {
-		if (wikiIdToLuceneId.isEmpty()){
+		if (wikiIdToLuceneId.isEmpty()) {
 			loadWikiIdToLuceneId();
 		}
 
@@ -618,10 +623,6 @@ public class LuceneHelper {
 
 		return doc;
 	}
-	
-	
-	
-	
 
 	/**
 	 * @param query
@@ -774,7 +775,7 @@ public class LuceneHelper {
 		return a;
 
 	}
-	
+
 	/**
 	 * Retrieves only the article summary and the title from the index
 	 * 
@@ -787,7 +788,8 @@ public class LuceneHelper {
 		a.setWikiId(id);
 
 		Document d = getDoc(id);
-		if (d != null) {			
+		if (d != null) {
+			a.setWikiTitle(d.getField(LUCENE_ARTICLE_WIKI_TITLE).stringValue());
 			a.setTitle(d.getField(LUCENE_ARTICLE_TITLE).stringValue());
 			a.setSummary(d.getField(LUCENE_ARTICLE_SUMMARY).stringValue());
 		}
@@ -795,14 +797,12 @@ public class LuceneHelper {
 		return a;
 
 	}
-	
-	
-	
+
 	public int getWikiId(int luceneId) {
 		IndexReader reader = getReader();
 
 		// System.out.println("get docId "+pos);
-		
+
 		Document doc = null;
 		try {
 			doc = reader.document(luceneId);
@@ -813,7 +813,6 @@ public class LuceneHelper {
 		}
 		return Integer.parseInt(doc.get(LUCENE_ARTICLE_ID));
 	}
-	
 
 	/**
 	 * 
@@ -889,7 +888,8 @@ public class LuceneHelper {
 	 * 
 	 * 
 	 */
-	public void rankBySimilarity(SpotMatch spot, EntityMatchList eml, String context) {
+	public void rankBySimilarity(SpotMatch spot, EntityMatchList eml,
+			String context) {
 		rankBySimilarity(spot, eml, context, LUCENE_ARTICLE_DEFAULT_FIELD);
 		return;
 
