@@ -79,7 +79,7 @@ public class PluginLoader {
 			spotter = (Spotter) ClasspathUtils.newInstance(spotClass, loader);
 		} catch (Exception e) {
 			logger.error("generating the spotter {}:", spotClass);
-			e.printStackTrace();
+			// e.printStackTrace();
 			spotter = luceneLoader.newInstance(spotClass, Spotter.class);
 
 		}
