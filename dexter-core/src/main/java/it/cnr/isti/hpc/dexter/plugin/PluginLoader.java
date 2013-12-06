@@ -27,7 +27,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import org.apache.lucene.analysis.util.ClasspathResourceLoader;
-import org.apache.lucene.analysis.util.ResourceLoader;
 import org.apache.tools.ant.util.ClasspathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,9 +51,10 @@ public class PluginLoader {
 	public PluginLoader() {
 
 		URLClassLoader l = (URLClassLoader) ClassLoader.getSystemClassLoader();
+
 		loader = new PClassLoader(l.getURLs());
 		File libDir = new File(properties.get("lib.dir"));
-		if (!libDir.exists() || !libDir.isDirectory()){
+		if (!libDir.exists() || !libDir.isDirectory()) {
 			logger.warn("cannot find {} ", libDir);
 			return;
 		}
@@ -74,20 +74,25 @@ public class PluginLoader {
 	}
 
 	public Spotter getSpotter(String spotClass) {
-		// Spotter spotter = loader.newInstance(spotClass, Spotter.class);
-		Spotter spotter = (Spotter) ClasspathUtils.newInstance(spotClass,
-				loader);
+		Spotter spotter = null;
+		try {
+			spotter = (Spotter) ClasspathUtils.newInstance(spotClass, loader);
+		} catch (Exception e) {
+			spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+
+		}
 		return spotter;
 	}
 
 	public Disambiguator getDisambiguator(String disambiguatorClass) {
-		Disambiguator disambiguator =null;
-		try{
-			disambiguator = (Disambiguator) ClasspathUtils
-				.newInstance(disambiguatorClass, loader);
-		}catch (Exception e){
-			disambiguator = luceneLoader.newInstance(disambiguatorClass, Disambiguator.class);
-			
+		Disambiguator disambiguator = null;
+		try {
+			disambiguator = (Disambiguator) ClasspathUtils.newInstance(
+					disambiguatorClass, loader);
+		} catch (Exception e) {
+			disambiguator = luceneLoader.newInstance(disambiguatorClass,
+					Disambiguator.class);
+
 		}
 		return disambiguator;
 	}
