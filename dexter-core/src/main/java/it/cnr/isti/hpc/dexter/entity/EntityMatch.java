@@ -240,13 +240,14 @@ public class EntityMatch implements Comparable<EntityMatch> {
 	 * @return true if this spot and the given spots overlaps, false otherwise
 	 */
 	public boolean overlaps(EntityMatch s) {
-		boolean startOverlap = ((s.getStart() >= this.getStart()) && (s
-				.getStart() <= this.getEnd()));
-		if (startOverlap)
-			return true;
-		boolean endOverlap = ((s.getEnd() >= this.getStart()) && (s.getEnd() <= this
-				.getEnd()));
-		return endOverlap;
+		return getSpot().overlaps(s.getSpot());
+		// boolean startOverlap = ((s.getStart() >= this.getStart()) && (s
+		// .getStart() <= this.getEnd()));
+		// if (startOverlap)
+		// return true;
+		// boolean endOverlap = ((s.getEnd() >= this.getStart()) && (s.getEnd()
+		// <= this
+		// .getEnd()));
+		// return endOverlap;
 	}
-
 }
