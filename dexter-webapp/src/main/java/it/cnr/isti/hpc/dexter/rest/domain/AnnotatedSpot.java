@@ -16,7 +16,6 @@
 
 package it.cnr.isti.hpc.dexter.rest.domain;
 
-
 /**
  * Represents an annotated spot.
  * 
@@ -35,8 +34,6 @@ public class AnnotatedSpot {
 	int entityFrequency;
 	double commonness;
 	double score;
-	
-	
 
 	public AnnotatedSpot(String mention, double linkProbability, int start,
 			int end, int linkFrequency, int documentFrequency, int entity,
@@ -148,6 +145,4 @@ public class AnnotatedSpot {
 				+ commonness + ", score=" + score + "]";
 	}
 
-	
-	
 }
