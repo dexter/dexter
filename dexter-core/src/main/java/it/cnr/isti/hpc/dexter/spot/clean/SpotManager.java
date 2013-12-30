@@ -43,23 +43,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A SpotManager takes care of cleaning the anchor texts extracted from the Wikipedia
- * articles in order to produce a dictionary of spots. 
- * Each anchor text is processed over a pipeline of functions that could filter out it, 
+ * A SpotManager takes care of cleaning the anchor texts extracted from the
+ * Wikipedia articles in order to produce a dictionary of spots. Each anchor
+ * text is processed over a pipeline of functions that could filter out it,
  * clean it, or generate several different variations of the text.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
 public class SpotManager {
 
-	
 	private Pipe<String> pipe;
 	private Pipe<String> cleanPipe;
 
 	private static SpotManager standardSpotManager = null;
 	private static SpotManager standardSpotCleaner = null;
 
-	
 	/**
 	 * Uses the standard cleaner to clean a given text
 	 */
@@ -88,15 +86,16 @@ public class SpotManager {
 	}
 
 	/**
-	 * Creates a spot manager performing the cleaning 
-	 * described in the given pipe.
+	 * Creates a spot manager performing the cleaning described in the given
+	 * pipe.
 	 * 
-	 * @param pipe - a pipe containing all the cleaning functions to apply to an anchor.
+	 * @param pipe
+	 *            - a pipe containing all the cleaning functions to apply to an
+	 *            anchor.
 	 * 
 	 */
 	public SpotManager(Pipe<String> pipe) {
 		this.pipe = pipe;
-		
 
 	}
 
@@ -120,19 +119,20 @@ public class SpotManager {
 			standardSpotManager.add(new UnderscoreCleaner());
 			standardSpotManager.add(new LowerCaseCleaner());
 			standardSpotManager.add(new JuniorAndInitialsCleaner());
-			//standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
+			// standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
 			standardSpotManager.add(new TypeCleaner());
-			
+
 			// map
 
 			standardSpotManager.add(new CityMapper());
 			standardSpotManager.add(new QuotesMapper());
 
 			// post clean
-			
+
 			standardSpotManager.add(new ParenthesesCleaner());
 			standardSpotManager.add(new QuotesCleaner());
-			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
+			standardSpotManager
+					.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
 			standardSpotManager.add(new TypeCleaner());
 
 			// post filter
@@ -141,7 +141,8 @@ public class SpotManager {
 			standardSpotManager.add(new LengthFilter());
 			standardSpotManager.add(new ImageFilter());
 			standardSpotManager.add(new LongSpotFilter());
-			standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+ "));
+			standardSpotManager.add(new StripCleaner(
+					",#*-!`{}~[]='<>:/;.&%|=+ "));
 
 		}
 		return standardSpotManager;
@@ -156,37 +157,36 @@ public class SpotManager {
 			standardSpotCleaner.add(new HtmlCleaner());
 
 			// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
+			standardSpotCleaner.add(new UnicodeCleaner());
 			standardSpotCleaner.add(new UnderscoreCleaner());
 			standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>:/"));
 			// post clean
 			standardSpotCleaner.add(new LowerCaseCleaner());
 			standardSpotCleaner.add(new ParenthesesCleaner());
 			standardSpotCleaner.add(new QuotesCleaner());
-			standardSpotCleaner.add(new StripCleaner(
-					",#*-!`{}~[]='<>:/;.&%|=+"));
-			
+			standardSpotCleaner
+					.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
 
 		}
 		return standardSpotCleaner;
 	}
 
 	/**
-	 * Cleans an anchor, i.e., performs over the text only the {@link Cleaner cleaners}
-	 * previously added to the pipe.
+	 * Cleans an anchor, i.e., performs over the text only the {@link Cleaner
+	 * cleaners} previously added to the pipe.
 	 */
 	public String clean(String spot) {
 		return cleanPipe.process(spot).iterator().next();
 	}
 
-	
 	protected boolean isFilter(String s) {
 		Set<String> res = process(s);
 		return res.isEmpty();
 	}
 
 	/**
-	 * Given a Wikipedia {@link Article article} returns a set containing all the processed anchors 
-	 * in the article. 
+	 * Given a Wikipedia {@link Article article} returns a set containing all
+	 * the processed anchors in the article.
 	 * 
 	 */
 	public Set<String> getAllSpots(Article a) {
@@ -195,7 +195,7 @@ public class SpotManager {
 		if (a.isRedirect()) {
 			spots.addAll(process(a.getRedirectNoAnchor()));
 		} else {
-			
+
 			for (Link l : a.getLinks()) {
 				spots.addAll(process(l.getDescription()));
 			}
