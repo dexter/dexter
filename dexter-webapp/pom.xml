@@ -10,8 +10,8 @@
 	<artifactId>dexter-webapp</artifactId>
 	<version>1.0.0</version>
 	<name>Dexter Webapp</name>
-	<!-- packaging>war</packaging-->
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
+	<!--packaging>jar</packaging-->
 	
 
 	<dependencies>

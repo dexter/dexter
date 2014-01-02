@@ -15,12 +15,12 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import java.util.List;
-
 import it.cnr.isti.hpc.dexter.document.Field;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+
+import java.util.List;
 
 /**
  * SpotMatch contains all the additional informations regarding a spot matched
@@ -87,6 +87,7 @@ public class SpotMatch implements Comparable<SpotMatch> {
 		spot.setLinkProbability(probability);
 	}
 
+	@Override
 	public int compareTo(SpotMatch m) {
 		if (spot.getIdf() > m.spot.getIdf())
 			return 1;
@@ -167,10 +168,9 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	// return spot.toString() + " occ: " + occurrences;
 	// }
 
-	
 	/**
-	 * Returns probability to be a link to a entity for the text of this spot, 
-	 * it is computed dividing the number of documents in Wikipedia containing 
+	 * Returns probability to be a link to a entity for the text of this spot,
+	 * it is computed dividing the number of documents in Wikipedia containing
 	 * this spot as a anchor by the number of documents in wikipedia containing
 	 * this spot as simple text.
 	 * 
@@ -191,6 +191,9 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	 * @return
 	 */
 	public boolean overlaps(SpotMatch s) {
+		if (!field.equals(s.getField())) {
+			return false;
+		}
 		boolean startOverlap = ((s.getStart() >= this.getStart()) && (s
 				.getStart() <= this.getEnd()));
 		if (startOverlap)
@@ -207,9 +210,17 @@ public class SpotMatch implements Comparable<SpotMatch> {
 	public int getFrequency() {
 		return spot.getFrequency();
 	}
-	
-	public int getLinkFrequency(){
+
+	public int getLinkFrequency() {
 		return spot.getLink();
+	}
+
+	public Field getField() {
+		return field;
+	}
+
+	public void setField(Field field) {
+		this.field = field;
 	}
 
 	public double getLinkProbability() {

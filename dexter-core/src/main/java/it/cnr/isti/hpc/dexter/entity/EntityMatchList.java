@@ -57,10 +57,11 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 		for (EntityMatch e : this)
 			totalScore += e.getScore();
 		for (EntityMatch e : this) {
-			e.setScore(e.getScore() / (double) totalScore);
+			e.setScore(e.getScore() / totalScore);
 		}
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		int i = 1;
@@ -91,6 +92,7 @@ public class EntityMatchList extends ArrayList<EntityMatch> {
 	 * @return a list of entity matches with no overlaps
 	 */
 	public EntityMatchList removeOverlappings() {
+
 		EntityMatchList eml = new EntityMatchList();
 		for (EntityMatch e : this) {
 			boolean overlaps = false;
