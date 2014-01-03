@@ -99,7 +99,9 @@ public class SpotMinimalPerfectHash {
 	}
 
 	private static MinimalPerfectHashFunction<String> generateHash() {
-		return generateHash(properties.get("spots"));
+		File spots = new File(properties.get("data.dir"),
+				properties.get("spots"));
+		return generateHash(spots);
 
 	}
 
@@ -123,7 +125,6 @@ public class SpotMinimalPerfectHash {
 	}
 
 	public static void dump() {
-
 		dump(new File(properties.get("data.dir"),
 				properties.get("ram.spot.perfect.hash")));
 	}
@@ -183,7 +184,7 @@ public class SpotMinimalPerfectHash {
 	}
 
 	private static class SpotIterator implements Iterator<String> {
-		private Iterator<TsvTuple> iterator;
+		private final Iterator<TsvTuple> iterator;
 		private static final String FIELD = "spot";
 
 		public SpotIterator(File spotFile) {
