@@ -47,7 +47,7 @@
 			<artifactId>junit</artifactId>
 			<scope> test </scope>
 		</dependency>
-	
+
 		<!-- primitive data structures -->
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
@@ -95,6 +95,14 @@
 			<groupId>info.bliki.wiki</groupId>
 			<artifactId>bliki-core</artifactId>
 			<version>3.0.19</version>
+		</dependency>
+
+		<!-- configuration -->
+
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
 		</dependency>
 
 	</dependencies>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+
+	<data>
+		<dir lang="en">en-data</dir>
+		<dir lang="it">it-data</dir>
+	</data>
+
+	<labeldir>mapdb</labeldir>
+
+	<index>
+		<dir>lucene</dir>
+		<wiki-id-map>wiki2lucene-map.bin</wiki-id-map>
+	</index>
+
+	<thresholds>
+		<commonness>0.005</commonness>
+		<linkprobability>0.02</linkprobability>
+	</thresholds>
+
+
+	<graph>
+		<dir>graph</dir>
+		<entity-entity>
+			<incoming>incoming-edges.bin</incoming>
+			<outcoming>outcoming-edges.bin</outcoming>
+		</entity-entity>
+		<entity-category>
+			<incoming>incoming-entity-category-edges.bin</incoming>
+			<outcoming>outcoming-entity-category-edges.bin</outcoming>
+		</entity-category>
+		<category-category>
+			<incoming>incoming-category-edges.bin</incoming>
+			<outcoming>outcoming-category-edges.bin</outcoming>
+		</category-category>
+	</graph>
+
+
+	<similarity>
+		<!-- context-similarity window=50></context-similarity -->
+		<commonness></commonness>
+	</similarity>
+
+	<spot>
+		<dir>spot</dir>
+	</spot>
+
+	<libs>libs</libs>
+
+	<relatedness name="milnewitten"
+		class="it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness"></relatedness>
+
+	<tagger name="dexter" default="true">
+		<spotter>spotter</spotter>
+		<disambiguator>tagme</disambiguator>
+		<relatedness>milnewitten</relatedness>
+	</tagger>
+
+	<spotter name="spotter"
+		class="it.cnr.isti.hpc.dexter.spotter.DictionarySpotter"></spotter>
+
+	<disambiguator name="wikiminer" class="it.cnr.isti.hpc.wikiminer.Wikiminer" />
+	<disambiguator name="tagme" class="it.cnr.isti.hpc.tagme.Tagme">
+		<params>
+			<window-size>30</window-size>
+			<epsilon>0.7</epsilon>
+		</params>
+	</disambiguator>
+
+</config>
+
+
+
+
+
+
+
+
+
+
+
+</config>
