@@ -31,7 +31,6 @@ public class RamSpotRepository implements SpotRepository {
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotRepository.class);
-	
 
 	RamSpotFile spots;
 	SpotMinimalPerfectHash hash;
@@ -42,7 +41,7 @@ public class RamSpotRepository implements SpotRepository {
 		hash = SpotMinimalPerfectHash.getInstance();
 		offsets = SpotEliasFanoOffsets.getInstance();
 		spots = RamSpotFile.getInstance();
-		
+
 	}
 
 	// public RamSpotRepository(String spotBinFile, String spotBinOffsets,
@@ -56,10 +55,15 @@ public class RamSpotRepository implements SpotRepository {
 	//
 	// }
 
+	@Override
 	public Spot getSpot(String spot) {
 		Stopwatch s = new Stopwatch();
 		s.start("hash");
 		long index = hash.hash(spot);
+		if (index < 0) {
+			s.stop("hash");
+			return null;
+		}
 		s.stop("hash");
 		// logger.info("index = {} ",index);
 		s.start("offsets");
