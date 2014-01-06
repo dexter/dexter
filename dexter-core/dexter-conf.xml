@@ -1,22 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
 
-	<data>
-		<dir lang="en">en-data</dir>
-		<dir lang="it">it-data</dir>
-	</data>
+    <models>
+       <model>
+           <name>en</name>
+           <path>data/en</path>
+       </model>
+       <model>
+           <name>it</name>
+           <path>data/it</path>
+       </model>
+    </models>
 
-	<labeldir>mapdb</labeldir>
+	<labels>
+		<dir>mapdb</dir>
+	</labels>
 
 	<index>
 		<dir>lucene</dir>
-		<wiki-id-map>wiki2lucene-map.bin</wiki-id-map>
+		<wikiIdMap>wiki2lucene-map.bin</wikiIdMap>
 	</index>
 
-	<thresholds>
+	<!-- <threshold>
 		<commonness>0.005</commonness>
 		<linkprobability>0.02</linkprobability>
-	</thresholds>
+	</threshold>
 
 
 	<graph>
@@ -36,47 +44,61 @@
 	</graph>
 
 
-	<similarity>
-		<!-- context-similarity window=50></context-similarity -->
-		<commonness></commonness>
-	</similarity>
+	<rankers>
+		<ranker>
+			<name>commonness</name>
+			<class></class>
+		</ranker>
+		<ranker>
+			<name>context-similarity</name>
+			<class></class>
+		</ranker>
+	</rankers>
 
 	<spot>
 		<dir>spot</dir>
 	</spot>
 
-	<libs>libs</libs>
+	<libs>
+		<lib>libs</lib>
+	</libs>
 
-	<relatedness name="milnewitten"
-		class="it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness"></relatedness>
-
-	<tagger name="dexter" default="true">
-		<spotter>spotter</spotter>
-		<disambiguator>tagme</disambiguator>
-		<relatedness>milnewitten</relatedness>
-	</tagger>
-
-	<spotter name="spotter"
-		class="it.cnr.isti.hpc.dexter.spotter.DictionarySpotter"></spotter>
-
-	<disambiguator name="wikiminer" class="it.cnr.isti.hpc.wikiminer.Wikiminer" />
-	<disambiguator name="tagme" class="it.cnr.isti.hpc.tagme.Tagme">
-		<params>
-			<window-size>30</window-size>
-			<epsilon>0.7</epsilon>
-		</params>
-	</disambiguator>
-
-</config>
-
-
-
-
-
-
-
-
-
-
-
+	<relatednesses>
+		<relatedness>
+			<name>milnewitten</name>
+			<class>it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness</class>
+		</relatedness>
+	</relatednesses>
+	
+	<disambiguators>
+		<disambigator>
+			<name>wikiminer</name>
+			<class>it.cnr.isti.hpc.wikiminer.Wikiminer</class>
+		</disambiguator>
+		<disambiguator>
+			<name>tagme</name>
+			<class>it.cnr.isti.hpc.tagme.Tagme</class>
+			<params>
+				<window-size>30</window-size>
+				<epsilon>0.7</epsilon>
+			</params>
+		</disambiguator>
+	</disambiguators>
+	
+	<spotters>
+		<spotter>
+			<name>wiki-dictionary</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
+		</spotter>
+	</spotters>
+	
+	
+	<taggers>
+		<tagger>
+			<name>dexter</name>
+			<disambiguator>tagme</disambiguator>
+			<relatedness>milnewitten</relatedness>
+		</tagger>
+		
+	</taggers> -->
 </config>

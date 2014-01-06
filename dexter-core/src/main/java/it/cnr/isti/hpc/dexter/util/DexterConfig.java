@@ -31,15 +31,17 @@
  */
 package it.cnr.isti.hpc.dexter.util;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import it.cnr.isti.hpc.io.IOUtils;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -47,27 +49,64 @@ import org.slf4j.LoggerFactory;
  *         Created on Jan 2, 2014
  */
 public class DexterConfig {
-	private XMLConfiguration config;
-
 	private static final Logger logger = LoggerFactory
 			.getLogger(DexterConfig.class);
 
-	// the paths containing the data folders for different languages
-	public Map<String, File> dataFolders;
+	Models models;
+	Labels labels;
+	Index index;
 
-	public DexterConfig(String configfile) {
-		try {
-			config = new XMLConfiguration(configfile);
-			// do something with config
-		} catch (ConfigurationException cex) {
-			logger.error("in {} config file: {}", configfile, cex.getMessage());
-		}
-		dataFolders = new HashMap<String, File>();
-		List<Object> dataFolders = config.getList("config.data");
-		for (Object o : dataFolders) {
+	public DexterConfig() {
 
+	}
+
+	@Override
+	public String toString() {
+		return "DexterConfig [ models=" + models + "]";
+	}
+
+	private static class Models {
+		List<Model> models = new ArrayList<Model>();
+
+		@Override
+		public String toString() {
+			return "Models [models=" + models + "]";
 		}
 
 	}
 
+	public static class Model {
+
+		String name;
+		String path;
+
+		@Override
+		public String toString() {
+			return "Model [name=" + name + ", path=" + path + "]";
+		}
+
+	}
+
+	public static class Labels {
+		String dir;
+	}
+
+	public static class Index {
+		String dir;
+		String wikiIdMap;
+	}
+
+	public static void main(String[] args) {
+		XStream xstream = new XStream(new StaxDriver());
+		xstream.alias("config", DexterConfig.class);
+		xstream.alias("model", Model.class);
+		xstream.alias("labels", Labels.class);
+		xstream.alias("index", Index.class);
+
+		xstream.addImplicitCollection(Models.class, "models");
+		String xml = IOUtils.getFileAsString("dexter-conf.xml");
+		DexterConfig config = (DexterConfig) xstream.fromXML(xml);
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(config));
+	}
 }
