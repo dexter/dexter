@@ -48,9 +48,9 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
  * 
  *         Created on Jan 2, 2014
  */
-public class DexterConfig {
+public class DexterParams {
 	private static final Logger logger = LoggerFactory
-			.getLogger(DexterConfig.class);
+			.getLogger(DexterParams.class);
 
 	private Models models;
 	private Labels labels;
@@ -63,22 +63,12 @@ public class DexterConfig {
 	private RelatednessFunctions relatednessFunctions;
 	private Disambiguators disambiguators;
 
-	private DexterConfig() {
+	private DexterParams() {
 
-	}
-
-	@Override
-	public String toString() {
-		return "DexterConfig [ models=" + models + "]";
 	}
 
 	private static class Models {
 		List<Model> models = new ArrayList<Model>();
-
-		@Override
-		public String toString() {
-			return "Models [models=" + models + "]";
-		}
 
 	}
 
@@ -86,11 +76,6 @@ public class DexterConfig {
 
 		String name;
 		String path;
-
-		@Override
-		public String toString() {
-			return "Model [name=" + name + ", path=" + path + "]";
-		}
 
 	}
 
@@ -191,10 +176,10 @@ public class DexterConfig {
 		String relatedness;
 	}
 
-	public static DexterConfig load(String xmlConfig) {
+	public static DexterParams load(String xmlConfig) {
 		logger.info("loading configuration from {} ", xmlConfig);
 		XStream xstream = new XStream(new StaxDriver());
-		xstream.alias("config", DexterConfig.class);
+		xstream.alias("config", DexterParams.class);
 		xstream.alias("model", Model.class);
 		xstream.alias("labels", Labels.class);
 		xstream.alias("index", Index.class);
@@ -238,12 +223,12 @@ public class DexterConfig {
 		xstream.alias("tagger", Tagger.class);
 
 		String xml = IOUtils.getFileAsString("dexter-conf.xml");
-		DexterConfig config = (DexterConfig) xstream.fromXML(xml);
+		DexterParams config = (DexterParams) xstream.fromXML(xml);
 		return config;
 	}
 
 	public static void main(String[] args) {
-		DexterConfig config = load("dexter-conf.xml");
+		DexterParams config = load("dexter-conf.xml");
 		Gson gson = new Gson();
 		System.out.println(gson.toJson(config));
 	}

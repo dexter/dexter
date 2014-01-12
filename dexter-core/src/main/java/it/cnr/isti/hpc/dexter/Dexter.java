@@ -24,9 +24,11 @@ import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
 import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
+import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
@@ -67,11 +69,14 @@ import org.slf4j.LoggerFactory;
 public class Dexter implements Tagger {
 
 	private static final Logger logger = LoggerFactory.getLogger(Dexter.class);
-	private ProjectProperties properties = new ProjectProperties(Dexter.class);
+	private final ProjectProperties properties = new ProjectProperties(
+			Dexter.class);
 
 	private Spotter spotter;
 	private Disambiguator disambiguator;
-	private Stopwatch stopwatch;
+	private final Stopwatch stopwatch;
+
+	private DexterParams params;
 
 	public Dexter() {
 		Relatedness r = new MilneRelatedness();
@@ -108,8 +113,12 @@ public class Dexter implements Tagger {
 		return sml;
 	}
 
-	public EntityMatchList tag(Document doc) {
+	@Override
+	public EntityMatchList tag(DexterParams dexterParams,
+			DexterParams localParams, Document doc) {
 
+		// TODO, perform the tag using what specified in the
+		// params
 		stopwatch.start("spotting");
 		SpotMatchList sml = spotter.match(doc);
 
@@ -133,4 +142,8 @@ public class Dexter implements Tagger {
 		return stopwatch.stat();
 	}
 
+	@Override
+	public EntityMatchList tag(Document document) {
+		return tag(params, null, document);
+	}
 }
