@@ -108,8 +108,9 @@ public class Dexter implements Tagger {
 
 	}
 
-	public SpotMatchList spot(Document doc) {
-		SpotMatchList sml = spotter.match(doc);
+	public SpotMatchList spot(DexterParams dexterParams,
+			DexterParams localParams, Document doc) {
+		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
 		return sml;
 	}
 
@@ -120,13 +121,14 @@ public class Dexter implements Tagger {
 		// TODO, perform the tag using what specified in the
 		// params
 		stopwatch.start("spotting");
-		SpotMatchList sml = spotter.match(doc);
+		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
 
 		logger.info("spotting performed in {} millis",
 				stopwatch.stop("spotting"));
 
 		stopwatch.start("disambiguation");
-		EntityMatchList eml = disambiguator.disambiguate(sml);
+		EntityMatchList eml = disambiguator.disambiguate(dexterParams,
+				localParams, sml);
 		if (!eml.isEmpty()) {
 			eml = eml.removeOverlappings();
 		} else {

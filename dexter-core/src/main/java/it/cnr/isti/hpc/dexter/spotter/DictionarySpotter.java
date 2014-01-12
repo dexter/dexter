@@ -27,6 +27,7 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.structure.LRUCache;
 
@@ -44,14 +45,16 @@ public class DictionarySpotter implements Spotter {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(DictionarySpotter.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(DictionarySpotter.class);
 	ProbabilityFilter filter = new ProbabilityFilter();
 	private static LRUCache<String, Spot> cache;
-	ProjectProperties properties = new ProjectProperties(DictionarySpotter.class);
+	ProjectProperties properties = new ProjectProperties(
+			DictionarySpotter.class);
 	SpotRepository spotRepo;
 	private boolean usePriorProbability = false;
 
-	public DictionarySpotter() {	
+	public DictionarySpotter() {
 		int cachesize = properties.getInt("spotter.cache.size");
 		String prior = properties.get("prior.probabability");
 		usePriorProbability = (prior != null && prior.equals("true"));
@@ -60,18 +63,17 @@ public class DictionarySpotter implements Spotter {
 		spotRepo = factory.getStdInstance();
 	}
 
-	public SpotMatchList match(Document document) {
+	@Override
+	public SpotMatchList match(DexterParams dexterParams,
+			DexterParams localParams, Document document) {
 		SpotMatchList matches = new SpotMatchList();
-
-		
 
 		Iterator<Field> fields = document.getFields();
 		while (fields.hasNext()) {
-			
+
 			Field field = fields.next();
 			EntityRanker er = new EntityRanker(field);
-			ShingleExtractor shingler = new ShingleExtractor(field.getValue()
-	);
+			ShingleExtractor shingler = new ShingleExtractor(field.getValue());
 			Spot s;
 			String text;
 			for (Shingle shingle : shingler) {
@@ -92,9 +94,9 @@ public class DictionarySpotter implements Spotter {
 					logger.debug("no shingle for [{}] ", shingle);
 					continue;
 				}
-				
-//				s.setStart(shingle.getStart());
-//				s.setEnd(shingle.getEnd());
+
+				// s.setStart(shingle.getStart());
+				// s.setEnd(shingle.getEnd());
 
 				if (filter.isFilter(s)) {
 					logger.debug("ignoring spot {}, probability too low {}",
@@ -102,16 +104,16 @@ public class DictionarySpotter implements Spotter {
 					continue;
 				}
 
-//				int pos = matches.index(s);
-//				if (pos >= 0) {
-//					// the spot is yet in the list, increment its occurrences
-//					matches.get(pos).incrementOccurrences();
-//					continue;
-//				}
-				SpotMatch match = new SpotMatch(s,field);
+				// int pos = matches.index(s);
+				// if (pos >= 0) {
+				// // the spot is yet in the list, increment its occurrences
+				// matches.get(pos).incrementOccurrences();
+				// continue;
+				// }
+				SpotMatch match = new SpotMatch(s, field);
 				logger.debug("adding {} to matchset ", s);
-				
-				EntityMatchList entities =  er.rank(match);
+
+				EntityMatchList entities = er.rank(match);
 				match.setEntities(entities);
 				match.setStart(shingle.getStart());
 				match.setEnd(shingle.getEnd());

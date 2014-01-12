@@ -33,50 +33,53 @@ package it.cnr.isti.hpc.dexter.disambiguation;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
- * A disambiguator is one of the main component of an entity tagger. 
- * A spot could refer to more than one entity, for example consider the sentence:
- * <br/>
+ * A disambiguator is one of the main component of an entity tagger. A spot
+ * could refer to more than one entity, for example consider the sentence: <br/>
  * <br/>
  * <em>On July 20, 1969, the <strong>Apollo 11</strong> astronauts - 
  * <strong>Neil Armstrong</strong>, <strong>Michael Collins</strong>, 
  * and <strong>Edwin “Buzz” Aldrin Jr.</strong> - realized 
- * <strong>President Kennedy</strong>’s dream.</em>
- * <br/>
+ * <strong>President Kennedy</strong>’s dream.</em> <br/>
  * <br/>
  * 
  * 
- * It is quite easy to map the spot to the entity John F. Kennedy, 
- * since in Wikipedia there are 98 anchors exactly 
- * matching such fragment of text and linking to the U.S. president page.
- * On the other hand, it could be not so easy for a software to decide 
- * if Michael Collins is an astronaut, an Irish leader or the president 
- * of the Irish provisional government in 1922.
+ * It is quite easy to map the spot to the entity John F. Kennedy, since in
+ * Wikipedia there are 98 anchors exactly matching such fragment of text and
+ * linking to the U.S. president page. On the other hand, it could be not so
+ * easy for a software to decide if Michael Collins is an astronaut, an Irish
+ * leader or the president of the Irish provisional government in 1922. <br/>
  * <br/>
- * <br/>
- * Given a list of matched spots, where each spot has 
- * one or more candidate entities, a disambiguator produces 
- * a list of entities, so that each spot can have at most
- * one entity.
+ * Given a list of matched spots, where each spot has one or more candidate
+ * entities, a disambiguator produces a list of entities, so that each spot can
+ * have at most one entity.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Aug 2, 2013
+ *         Created on Aug 2, 2013
  */
 public interface Disambiguator {
-	
+
 	/**
-	 * Given a list of matched spots, where each spot has 
-	 * one or more candidate entities, returns a list 
-	 * of entities, so that each spot can have at most
+	 * Given a list of matched spots, where each spot has one or more candidate
+	 * entities, returns a list of entities, so that each spot can have at most
 	 * one entity.
-	 *
-	 * @param sml - the list of spots detected in a document, each spot match contains a
-	 * list of candidate entities.
 	 * 
-	 * @returns a list of entities, so that each spot can have at most one entity.
+	 * @param dexterParams
+	 *            the global params of the project.
+	 * @param localParams
+	 *            contains particular parameters set for this query, can be
+	 *            null.
+	 * @param sml
+	 *            - the list of spots detected in a document, each spot match
+	 *            contains a list of candidate entities.
+	 * 
+	 * @returns a list of entities, so that each spot can have at most one
+	 *          entity.
 	 */
-	public EntityMatchList disambiguate(SpotMatchList sml);
+	public EntityMatchList disambiguate(DexterParams dexterParams,
+			DexterParams localParams, SpotMatchList sml);
 
 }

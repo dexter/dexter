@@ -67,6 +67,12 @@ public class DexterParams {
 
 	}
 
+	private final static DexterParams params = load("dexter-conf.xml");
+
+	public static DexterParams getInstance() {
+		return params;
+	}
+
 	private static class Models {
 		List<Model> models = new ArrayList<Model>();
 
