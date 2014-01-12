@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
 
-    <models>
-       <model>
-           <name>en</name>
-           <path>data/en</path>
-       </model>
-       <model>
-           <name>it</name>
-           <path>data/it</path>
-       </model>
-    </models>
+	<models>
+		<model>
+			<name>en</name>
+			<path>data/en</path>
+		</model>
+		<model>
+			<name>it</name>
+			<path>data/it</path>
+		</model>
+	</models>
 
 	<labels>
 		<dir>mapdb</dir>
@@ -21,84 +21,89 @@
 		<wikiIdMap>wiki2lucene-map.bin</wikiIdMap>
 	</index>
 
-	<!-- <threshold>
+	<threshold>
 		<commonness>0.005</commonness>
 		<linkprobability>0.02</linkprobability>
 	</threshold>
 
 
-	<graph>
+	<graphs>
 		<dir>graph</dir>
-		<entity-entity>
+		<graph>
+			<name>entity-entity</name>
 			<incoming>incoming-edges.bin</incoming>
 			<outcoming>outcoming-edges.bin</outcoming>
-		</entity-entity>
-		<entity-category>
+		</graph>
+		<graph>
+		    <name>entity-category</name>
 			<incoming>incoming-entity-category-edges.bin</incoming>
 			<outcoming>outcoming-entity-category-edges.bin</outcoming>
-		</entity-category>
-		<category-category>
+		
+		</graph>
+		<graph>
+		    <name>category-category</name>
 			<incoming>incoming-category-edges.bin</incoming>
 			<outcoming>outcoming-category-edges.bin</outcoming>
-		</category-category>
-	</graph>
+		</graph>
+	</graphs>
+
 
 
 	<rankers>
 		<ranker>
 			<name>commonness</name>
-			<class></class>
+			<class>asd</class>
 		</ranker>
 		<ranker>
 			<name>context-similarity</name>
-			<class></class>
+			<class>asd</class>
 		</ranker>
 	</rankers>
 
-	<spot>
+	<spots>
 		<dir>spot</dir>
-	</spot>
+	</spots>
+
 
 	<libs>
 		<lib>libs</lib>
 	</libs>
 
-	<relatednesses>
-		<relatedness>
+
+	<relatednessFunctions>
+		<relatednessFunction>
 			<name>milnewitten</name>
 			<class>it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness</class>
-		</relatedness>
-	</relatednesses>
-	
+		</relatednessFunction>
+	</relatednessFunctions>
+
+
 	<disambiguators>
-		<disambigator>
+		<disambiguator>
 			<name>wikiminer</name>
 			<class>it.cnr.isti.hpc.wikiminer.Wikiminer</class>
 		</disambiguator>
 		<disambiguator>
 			<name>tagme</name>
 			<class>it.cnr.isti.hpc.tagme.Tagme</class>
-			<params>
+			<!--  params>
 				<window-size>30</window-size>
 				<epsilon>0.7</epsilon>
-			</params>
+			</params-->
 		</disambiguator>
 	</disambiguators>
-	
 	<spotters>
 		<spotter>
 			<name>wiki-dictionary</name>
 			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
 		</spotter>
 	</spotters>
-	
-	
 	<taggers>
 		<tagger>
 			<name>dexter</name>
+			<spotter>wiki-dictionary</spotter>
 			<disambiguator>tagme</disambiguator>
 			<relatedness>milnewitten</relatedness>
 		</tagger>
-		
-	</taggers> -->
+	</taggers>
 </config>
