@@ -140,6 +140,10 @@ public class MapDB {
 		return new MapDB(path, dbName);
 	}
 
+	public static MapDB getDb(String dbName, boolean readonly) {
+		return new MapDB(dbName, readonly);
+	}
+
 	public static MapDB getDb(String path, String dbName, boolean readonly) {
 		return new MapDB(path, dbName, readonly);
 	}

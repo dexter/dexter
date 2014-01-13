@@ -16,13 +16,13 @@
 package it.cnr.isti.hpc.dexter.spot.ram;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.IOUtils;
 import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.io.reader.TsvRecordParser;
 import it.cnr.isti.hpc.io.reader.TsvTuple;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.unimi.dsi.bits.TransformationStrategies;
 import it.unimi.dsi.sux4j.mph.MinimalPerfectHashFunction;
 
@@ -45,13 +45,12 @@ public class SpotMinimalPerfectHash {
 			.getLogger(SpotMinimalPerfectHash.class);
 
 	private MinimalPerfectHashFunction<String> hash;
-	private static ProjectProperties properties = new ProjectProperties(
-			SpotMinimalPerfectHash.class);
+
+	private static DexterParams params = DexterParams.getInstance();
 
 	private static SpotMinimalPerfectHash instance = null;
 
 	private SpotMinimalPerfectHash() {
-		properties = new ProjectProperties(SpotMinimalPerfectHash.class);
 		load();
 	}
 
@@ -66,8 +65,7 @@ public class SpotMinimalPerfectHash {
 	}
 
 	public void dumpKeys(String hashValuesFile) {
-		File spotFile = new File(properties.get("data.dir"),
-				properties.get("spots"));
+		File spotFile = params.getPlainSpots();
 
 		dumpKeys(spotFile.getAbsolutePath(), hashValuesFile);
 	}
@@ -99,7 +97,7 @@ public class SpotMinimalPerfectHash {
 	}
 
 	private static MinimalPerfectHashFunction<String> generateHash() {
-		return generateHash(properties.get("spots"));
+		return generateHash(params.getPlainSpots());
 
 	}
 
@@ -124,8 +122,7 @@ public class SpotMinimalPerfectHash {
 
 	public static void dump() {
 
-		dump(new File(properties.get("data.dir"),
-				properties.get("ram.spot.perfect.hash")));
+		dump(params.getSpotsPerfectHash());
 	}
 
 	private static void dump(String outputFile) {
@@ -143,8 +140,7 @@ public class SpotMinimalPerfectHash {
 	}
 
 	private void load() {
-		load(new File(properties.get("data.dir"),
-				properties.get("ram.spot.perfect.hash")));
+		load(params.getSpotsPerfectHash());
 	}
 
 	private void load(File file) {
@@ -183,7 +179,7 @@ public class SpotMinimalPerfectHash {
 	}
 
 	private static class SpotIterator implements Iterator<String> {
-		private Iterator<TsvTuple> iterator;
+		private final Iterator<TsvTuple> iterator;
 		private static final String FIELD = "spot";
 
 		public SpotIterator(File spotFile) {

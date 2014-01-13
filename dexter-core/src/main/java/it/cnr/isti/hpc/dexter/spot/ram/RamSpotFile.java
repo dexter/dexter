@@ -16,10 +16,10 @@
 package it.cnr.isti.hpc.dexter.spot.ram;
 
 import it.cnr.isti.hpc.dexter.spot.Spot;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.IOUtils;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -45,15 +45,13 @@ public class RamSpotFile {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotFile.class);
 
-	private static ProjectProperties properties = new ProjectProperties(
-			RamSpotFile.class);
+	private static DexterParams params = DexterParams.getInstance();
 
-	private byte[] spotsData;
+	private final byte[] spotsData;
 	private static RamSpotFile instance;
 
 	private RamSpotFile() {
-		File binarySpotFile = new File(properties.get("data.dir"),
-				properties.get("ram.spot.data.bin"));
+		File binarySpotFile = params.getSpotsData();
 		spotsData = load(binarySpotFile);
 
 	}
@@ -69,8 +67,8 @@ public class RamSpotFile {
 	}
 
 	public static void dumpSpotFile(String sortedSpotFile) {
-		File binarySpotFile = new File(properties.get("data.dir"),properties.get("ram.spot.data.bin"));
-		File offsetSpotFile = new File(properties.get("data.dir"),properties.get("ram.spot.offsets"));
+		File binarySpotFile = params.getSpotsData();
+		File offsetSpotFile = params.getSpotsOffsetData();
 		dumpSpotFile(sortedSpotFile, binarySpotFile, offsetSpotFile);
 	}
 

@@ -15,28 +15,30 @@
  */
 package it.cnr.isti.hpc.dexter.graph;
 
-
-
 /**
- * Represents a collection of nodes in a graph, for each node (represented by 
- * an integer id), can return addictional data (see @link{Node}) and a list of 
+ * Represents a collection of nodes in a graph, for each node (represented by an
+ * integer id), can return addictional data (see @link{Node}) and a list of
  * neighbors.
  * 
  * @see IncomingNodes
  * @see OutcomingNodes
- * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
- * Created on Oct 9, 2012
+ * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it> Created on Oct 9,
+ *         2012
  */
 public interface NodeStar {
-	
-	/**
-	 * return the neighbors of the the node id; 
-	 */
-	public abstract int[] getNeighbours(int id);	
-	/** return a node description  */
-	public abstract Node getNode(int id);	
-	
 
-	
-	
+	public enum Direction {
+		IN, OUT
+	};
+
+	/**
+	 * return the neighbors of the the node id;
+	 */
+	public abstract int[] getNeighbours(int id);
+
+	/** return a node description */
+	public abstract Node getNode(int id);
+
+	public abstract int size();
+
 }

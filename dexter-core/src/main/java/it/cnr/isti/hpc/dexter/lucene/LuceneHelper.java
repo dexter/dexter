@@ -23,8 +23,8 @@ import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnderscoreCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.text.Text;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.ArticleSummarizer;
@@ -130,13 +130,12 @@ public class LuceneHelper {
 	private final IndexWriterConfig config;
 	private final ArticleSummarizer summarizer;
 
+	private static DexterParams params = DexterParams.getInstance();
+
 	/**
 	 * number of documents indexed
 	 */
 	private final int collectionSize;
-
-	private static ProjectProperties properties = new ProjectProperties(
-			LuceneHelper.class);
 
 	public static final FieldType STORE_TERM_VECTORS = new FieldType();
 	public static final FieldType STORE_TERM_VECTORS_NOT_STORED = new FieldType();
@@ -223,8 +222,7 @@ public class LuceneHelper {
 	 * @return true if the dexter lucene index exists, false otherwise
 	 */
 	public static boolean hasDexterLuceneIndex() {
-		File luceneFolder = new File(properties.get("data.dir"),
-				properties.get("lucene.index"));
+		File luceneFolder = params.getIndexDir();
 		return luceneFolder.exists();
 	}
 
@@ -235,10 +233,8 @@ public class LuceneHelper {
 	 */
 	public static LuceneHelper getDexterLuceneHelper() {
 		if (dexterHelper == null) {
-			File luceneFolder = new File(properties.get("data.dir"),
-					properties.get("lucene.index"));
-			File serializedWikiFile = new File(luceneFolder,
-					properties.get("lucene.wiki.id"));
+			File luceneFolder = params.getIndexDir();
+			File serializedWikiFile = params.getWikiToIdFile();
 			dexterHelper = new LuceneHelper(serializedWikiFile, luceneFolder);
 		}
 		return dexterHelper;
@@ -261,7 +257,6 @@ public class LuceneHelper {
 				Document doc = reader.document(i);
 				IndexableField f = doc.getField(LUCENE_ARTICLE_ID);
 				Integer wikiId = new Integer(f.stringValue());
-				logger.info("adding {} -> {}", wikiId, i);
 				wikiIdToLuceneId.put(wikiId, i);
 			} catch (CorruptIndexException e) {
 				// TODO Auto-generated catch block

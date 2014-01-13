@@ -15,11 +15,11 @@
  */
 package it.cnr.isti.hpc.dexter.spot.ram;
 
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.io.reader.TsvRecordParser;
 import it.cnr.isti.hpc.io.reader.TsvTuple;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.unimi.dsi.fastutil.longs.LongIterable;
 import it.unimi.dsi.fastutil.longs.LongIterator;
 import it.unimi.dsi.sux4j.util.EliasFanoMonotoneLongBigList;
@@ -40,25 +40,23 @@ public class SpotEliasFanoOffsets {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotEliasFanoOffsets.class);
 
-	private EliasFanoMonotoneLongBigList ef;
-	private static ProjectProperties properties = new ProjectProperties(
-			SpotEliasFanoOffsets.class);
+	private final EliasFanoMonotoneLongBigList ef;
+
+	private static DexterParams params = DexterParams.getInstance();
+
 	private static SpotEliasFanoOffsets instance;
 
 	private SpotEliasFanoOffsets() {
 		Serializer serializer = new Serializer();
-		File offsetsBinFile = new File(properties.get("data.dir"),
-				properties.get("ram.spot.offsets.ef"));
+		File offsetsBinFile = params.getSpotsEliasFano();
 		ef = (EliasFanoMonotoneLongBigList) serializer.load(offsetsBinFile
 				.getAbsolutePath());
 
 	}
 
 	public static void dumpEliasFanoFile() {
-		File offsetsFile = new File(properties.get("data.dir"),
-				properties.get("ram.spot.offsets"));
-		File offsetsBinFile = new File(properties.get("data.dir"),
-				properties.get("ram.spot.offsets.ef"));
+		File offsetsFile = params.getSpotsData();
+		File offsetsBinFile = params.getSpotsEliasFano();
 
 		dumpEliasFanoFile(offsetsFile.getAbsolutePath(),
 				offsetsBinFile.getAbsolutePath());
@@ -86,7 +84,7 @@ public class SpotEliasFanoOffsets {
 
 	public static class OffsetsFile implements LongIterable {
 
-		private String file;
+		private final String file;
 
 		public OffsetsFile(String file) {
 			this.file = file;

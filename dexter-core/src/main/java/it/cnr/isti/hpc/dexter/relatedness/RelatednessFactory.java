@@ -15,76 +15,58 @@
  */
 package it.cnr.isti.hpc.dexter.relatedness;
 
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Allows to retrieve a particular relatedness function given its name. 
+ * Allows to retrieve a particular relatedness function given its name.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Oct 10, 2012
+ *         Created on Oct 10, 2012
  */
 public class RelatednessFactory {
-	
-	
-	public static final String STD = "milne";
-	
-	
 
-	ProjectProperties properties = new ProjectProperties(
-			RelatednessFactory.class);
-	
-	private static Map<String,Relatedness> relmap = new HashMap<String,Relatedness>();
+	private static DexterParams params = DexterParams.getInstance();
+
+	private static Map<String, Relatedness> relmap = new HashMap<String, Relatedness>();
 	public Relatedness relatedness;
-	
-	public RelatednessFactory(){
-		String type = properties.get("relatedness");
-		register(new MilneRelatedness());
+
+	public RelatednessFactory() {
+		String type = params.getDefaultRelatedness();
 		relatedness = relmap.get(type);
-		if (relatedness == null){
-			throw new UnsupportedOperationException("cannot find relatedness "+type);
+		if (relatedness == null) {
+			throw new UnsupportedOperationException("cannot find relatedness "
+					+ type);
 		}
 	}
 
-	
-	public RelatednessFactory(String type){
-		// register default relatedness
-		register(new MilneRelatedness());
-		
+	public RelatednessFactory(String type) {
 		relatedness = relmap.get(type);
-		if (relatedness == null){
-			throw new UnsupportedOperationException("cannot find relatedness "+type);
+		if (relatedness == null) {
+			throw new UnsupportedOperationException("cannot find relatedness "
+					+ type);
 		}
 	}
-	
-	public static void register(Relatedness rel){
+
+	public static void register(Relatedness rel) {
 		relmap.put(rel.getName(), rel);
 	}
-	
-	
-	
-	
-	public double getScore(int x, int y){
-		relatedness.set(x,y);
+
+	public double getScore(int x, int y) {
+		relatedness.set(x, y);
 		return relatedness.getScore();
 	}
-	
-	public boolean hasNegativeScores(){
+
+	public boolean hasNegativeScores() {
 		return relatedness.hasNegativeScores();
 	}
-	
-	public Relatedness getRelatedness(int x, int y){
-		relatedness.set(x,y);
+
+	public Relatedness getRelatedness(int x, int y) {
+		relatedness.set(x, y);
 		return relatedness.copy();
 	}
-	
-	
-	
-	
-	
-	
 
 }

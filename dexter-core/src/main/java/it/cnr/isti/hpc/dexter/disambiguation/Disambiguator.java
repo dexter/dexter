@@ -33,6 +33,7 @@ package it.cnr.isti.hpc.dexter.disambiguation;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
@@ -80,6 +81,6 @@ public interface Disambiguator {
 	 *          entity.
 	 */
 	public EntityMatchList disambiguate(DexterParams dexterParams,
-			DexterParams localParams, SpotMatchList sml);
+			DexterLocalParams localParams, SpotMatchList sml);
 
 }

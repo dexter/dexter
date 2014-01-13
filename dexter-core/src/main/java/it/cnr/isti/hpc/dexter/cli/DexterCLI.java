@@ -44,8 +44,6 @@ public class DexterCLI extends AbstractCommandLineInterface {
 	private static final String USAGE = "java -cp $jar " + DexterCLI.class
 			+ " -input filetospot";
 
-	private static final DexterParams dexterConfig = DexterParams.getInstance();
-
 	public static void main(String[] args) {
 		DexterCLI cli = new DexterCLI(args);
 		String input = cli.getInput();

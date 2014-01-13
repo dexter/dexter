@@ -27,6 +27,7 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.structure.LRUCache;
@@ -65,7 +66,7 @@ public class DictionarySpotter implements Spotter {
 
 	@Override
 	public SpotMatchList match(DexterParams dexterParams,
-			DexterParams localParams, Document document) {
+			DexterLocalParams localParams, Document document) {
 		SpotMatchList matches = new SpotMatchList();
 
 		Iterator<Field> fields = document.getFields();

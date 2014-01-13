@@ -17,6 +17,7 @@ package it.cnr.isti.hpc.dexter.spotter;
 
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
@@ -51,6 +52,6 @@ public interface Spotter {
 	 * 
 	 */
 	public SpotMatchList match(DexterParams dexterParams,
-			DexterParams localParams, Document document);
+			DexterLocalParams localParams, Document document);
 
 }

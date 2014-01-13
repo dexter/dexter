@@ -33,6 +33,7 @@ package it.cnr.isti.hpc.dexter;
 
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
@@ -80,6 +81,6 @@ public interface Tagger {
 	 *          the tagger does not annotate anything.
 	 */
 	public EntityMatchList tag(DexterParams dexterParams,
-			DexterParams localParams, Document document);
+			DexterLocalParams localParams, Document document);
 
 }

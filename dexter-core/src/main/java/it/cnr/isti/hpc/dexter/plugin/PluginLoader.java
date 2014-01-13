@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -43,17 +42,16 @@ public class PluginLoader {
 
 	PClassLoader loader;
 	ClasspathResourceLoader luceneLoader = new ClasspathResourceLoader();
-	ProjectProperties properties = new ProjectProperties(PluginLoader.class);
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PluginLoader.class);
 
-	public PluginLoader() {
+	public PluginLoader(File libDir) {
 
 		URLClassLoader l = (URLClassLoader) ClassLoader.getSystemClassLoader();
 
 		loader = new PClassLoader(l.getURLs());
-		File libDir = new File(properties.get("lib.dir"));
+
 		if (!libDir.exists() || !libDir.isDirectory()) {
 			logger.warn("cannot find {} ", libDir);
 			return;

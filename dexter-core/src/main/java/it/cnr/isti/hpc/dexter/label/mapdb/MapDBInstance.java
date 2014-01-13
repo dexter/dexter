@@ -15,8 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.label.mapdb;
 
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.mapdb.MapDB;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
  * An instance of a MapDB object
@@ -25,14 +25,13 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  */
 public class MapDBInstance {
 
-	private static final ProjectProperties properties = new ProjectProperties(
-			MapDBInstance.class);
 	private static MapDB db;
+
+	private static DexterParams dexterParams = DexterParams.getInstance();
 
 	public static MapDB getInstance() {
 		if (db == null) {
-			db = MapDB.getDb(properties.get("data.dir"),
-					properties.get("mapdb.dir"));
+			db = MapDB.getDb(dexterParams.getLabelDir().getAbsolutePath());
 		}
 		return db;
 
@@ -40,8 +39,8 @@ public class MapDBInstance {
 
 	public static MapDB getInstance(boolean readonly) {
 		if (db == null) {
-			db = MapDB.getDb(properties.get("data.dir"),
-					properties.get("mapdb.dir"), readonly);
+			db = MapDB.getDb(dexterParams.getLabelDir().getAbsolutePath(),
+					readonly);
 		}
 		return db;
 

@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.structure.LRUCache;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -38,16 +38,16 @@ public abstract class Relatedness implements Comparable<Relatedness> {
 	protected int y;
 	protected double score;
 
+	private static DexterParams params = DexterParams.getInstance();
 	private static IntList list = new IntArrayList();
+
 	private IncomingNodes in;// =
 								// NodeFactory.getIncomingNodes(NodeFactory.STD_TYPE);
 	private OutcomingNodes out; // =
 								// NodeFactory.getOutcomingNodes(NodeFactory.STD_TYPE);
-	protected static ProjectProperties properties = new ProjectProperties(
-			Relatedness.class);
+
 	private static LRUCache<Couple, Double> cache = new LRUCache<Couple, Double>(
-			properties.getInt("relatedness.cache.size"));
-	protected static final int W = properties.getInt("w");
+			params.getCacheSize("relatedness"));
 
 	public Relatedness() {
 		super();

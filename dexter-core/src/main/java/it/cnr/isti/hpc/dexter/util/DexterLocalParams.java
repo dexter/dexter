@@ -1,5 +1,5 @@
 /**
- *  Copyright 2013 Diego Ceccarelli
+ *  Copyright 2014 Diego Ceccarelli
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 /**
- *  Copyright 2013 Diego Ceccarelli
+ *  Copyright 2014 Diego Ceccarelli
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,39 +29,56 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.disambiguation;
+package it.cnr.isti.hpc.dexter.util;
 
-import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.spot.SpotMatch;
-import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
-import it.cnr.isti.hpc.dexter.util.DexterParams;
+import it.cnr.isti.hpc.dexter.Tagger;
+import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
 
 /**
- * Implements the Okkam's Razor principle, resolving the ambiguity for a spot
- * using the entity with the largest probability to be represented by the spot
- * (this probability is called <i>commonness</i>, and it is computed as the
- * ratio between the links that point to the entity (using the spot as anchor)
- * and the total number of links that have the spot as anchor.
- * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- *         Created on Sep 30, 2013
+ *         Created on Jan 13, 2014
  */
-public class TopScoreEntityDisambiguator implements Disambiguator {
+public class DexterLocalParams {
+	public Spotter spotter;
+	public Disambiguator disambiguator;
+	public Tagger tagger;
 
-	@Override
-	public EntityMatchList disambiguate(DexterParams dexterParams,
-			DexterLocalParams localParams, SpotMatchList sml) {
-		EntityMatchList eml = new EntityMatchList();
-		for (SpotMatch match : sml) {
-			EntityMatchList list = match.getEntities();
-			if (!list.isEmpty()) {
-				list.sort();
-				eml.add(list.get(0));
-			}
-		}
-		return eml;
+	public Spotter getSpotter() {
+		return spotter;
+	}
+
+	public void setSpotter(Spotter spotter) {
+		this.spotter = spotter;
+	}
+
+	public Disambiguator getDisambiguator() {
+		return disambiguator;
+	}
+
+	public void setDisambiguator(Disambiguator disambiguator) {
+		this.disambiguator = disambiguator;
+	}
+
+	public Tagger getTagger() {
+		return tagger;
+	}
+
+	public void setTagger(Tagger tagger) {
+		this.tagger = tagger;
+	}
+
+	public boolean hasSpotter() {
+		return spotter != null;
+	}
+
+	public boolean hasDisambiguator() {
+		return disambiguator != null;
+	}
+
+	public boolean hasTagger() {
+		return tagger != null;
 	}
 
 }

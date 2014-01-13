@@ -2,6 +2,7 @@
 <config>
 
 	<models>
+	    <default>en</default>
 		<model>
 			<name>en</name>
 			<path>data/en</path>
@@ -21,10 +22,16 @@
 		<wikiIdMap>wiki2lucene-map.bin</wikiIdMap>
 	</index>
 
-	<threshold>
-		<commonness>0.005</commonness>
-		<linkprobability>0.02</linkprobability>
-	</threshold>
+	<thresholds>
+	    <threshold>
+	        <name>commonness</name>
+	        <value>0.005</value>
+	    </threshold>
+	    <threshold>
+	        <name>linkprobability</name>
+	        <value>0.02</value>
+	    </threshold>
+	</thresholds>
 
 
 	<graphs>
@@ -60,22 +67,40 @@
 		</ranker>
 	</rankers>
 
-	<spots>
-		<dir>spot</dir>
-	</spots>
+	
 
 
 	<libs>
 		<lib>libs</lib>
 	</libs>
-
+	
+	<caches>
+	    <cache>
+	        <name>relatedness</name>
+	        <size>5000</size>
+	    </cache>
+	    <cache>
+	        <name>spotter</name>
+	        <size>10000</size>
+	    </cache>
+	</caches>
 
 	<relatednessFunctions>
+	    <default>milnewitten</default>
 		<relatednessFunction>
 			<name>milnewitten</name>
 			<class>it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness</class>
 		</relatednessFunction>
 	</relatednessFunctions>
+	
+	<spotRepository>
+	    <dir>spot</dir>
+	    <plainSpots>spots.tsv.gz</plainSpots>
+	    <perfectHash>ram/minimal-perfect-hash.bin</perfectHash>
+	    <offsets>ram/offsets.gz</offsets>
+	    <eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
+	    <spotsData>ram/spots.bin</spotsData>
+	</spotRepository>
 
 
 	<disambiguators>
@@ -86,6 +111,7 @@
 		<disambiguator>
 			<name>tagme</name>
 			<class>it.cnr.isti.hpc.tagme.Tagme</class>
+			
 			<!--  params>
 				<window-size>30</window-size>
 				<epsilon>0.7</epsilon>

@@ -16,7 +16,7 @@
 package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import it.cnr.isti.hpc.dexter.spot.Spot;
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
  * ProbabilityFilter removes all the spots with link probability threshold lower
@@ -37,17 +37,15 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  */
 public class ProbabilityFilter extends Filter<Spot> {
 
-	static ProjectProperties properties = new ProjectProperties(
-			ProbabilityFilter.class);
-	private double threshold = 0;
+	private float threshold = 0.0f;
+
+	DexterParams params = DexterParams.getInstance();
 
 	public ProbabilityFilter() {
-		if (properties.has("spot.probability.threshold")) {
-			threshold = Double.parseDouble(properties
-					.get("spot.probability.threshold"));
-		}
+		threshold = params.getThreshold("linkprobability");
 	}
 
+	@Override
 	public boolean isFilter(Spot spot) {
 		if (spot == null)
 			return true;

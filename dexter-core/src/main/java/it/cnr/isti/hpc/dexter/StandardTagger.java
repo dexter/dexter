@@ -26,6 +26,7 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import org.slf4j.Logger;
@@ -111,7 +112,7 @@ public class StandardTagger implements Tagger {
 	}
 
 	public SpotMatchList spot(DexterParams dexterParams,
-			DexterParams localParams, Document doc) {
+			DexterLocalParams localParams, Document doc) {
 		Spotter spotter = this.spotter;
 		if (localParams != null) {
 			if (localParams.hasSpotter()) {
@@ -124,7 +125,7 @@ public class StandardTagger implements Tagger {
 
 	@Override
 	public EntityMatchList tag(DexterParams dexterParams,
-			DexterParams localParams, Document doc) {
+			DexterLocalParams localParams, Document doc) {
 
 		// TODO, perform the tag using what specified in the
 		// params
