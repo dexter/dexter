@@ -18,11 +18,11 @@ package it.cnr.isti.hpc.dexter.cli.graph;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.graph.CategoryNodeFactory;
 import it.cnr.isti.hpc.dexter.graph.Node;
-import it.cnr.isti.hpc.dexter.graph.NodeFactory;
+import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 
@@ -37,13 +37,15 @@ import org.slf4j.LoggerFactory;
  * 	entity/categories_id <tab> e1 e2 ... eN  
  * </code> <br>
  * <br>
- * where <code> e1 e2 .. eN </code> are the entities linking to the given
- * entity <code> category/entity_id </code>. The file is sorted by <code>entity_id</code>
- * , and in each line the outcoming entities are sorted by their numerical id.
+ * where <code> e1 e2 .. eN </code> are the entities linking to the given entity
+ * <code> category/entity_id </code>. The file is sorted by
+ * <code>entity_id</code> , and in each line the outcoming entities are sorted
+ * by their numerical id.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
-public class IndexOutcomingCategoryNodesCLI extends AbstractCommandLineInterface {
+public class IndexOutcomingCategoryNodesCLI extends
+		AbstractCommandLineInterface {
 	/**
 	 * Logger for this class
 	 */
@@ -53,15 +55,17 @@ public class IndexOutcomingCategoryNodesCLI extends AbstractCommandLineInterface
 	private static String[] params = new String[] { "input" };
 
 	private static final String USAGE = "java -cp $jar "
-			+ IndexOutcomingCategoryNodesCLI.class + " -input outcoming-categories-file";
+			+ IndexOutcomingCategoryNodesCLI.class
+			+ " -input outcoming-categories-file";
+
+	private static final DexterParams dexterParams = DexterParams.getInstance();
 
 	public static void main(String[] args) {
-		IndexOutcomingCategoryNodesCLI cli = new IndexOutcomingCategoryNodesCLI(args);
-		ProjectProperties properties = new ProjectProperties(
-				IndexOutcomingCategoryNodesCLI.class);
+		IndexOutcomingCategoryNodesCLI cli = new IndexOutcomingCategoryNodesCLI(
+				args);
 
-		File outcomingFile = new File(properties.get("data.dir"),
-				properties.get("ram.outcoming.category.nodes"));
+		File outcomingFile = dexterParams.getGraph("category-category",
+				Direction.OUT);
 
 		if (outcomingFile.exists()) {
 			logger.info("serialized file {} yet exists, removing",

@@ -17,7 +17,6 @@ package it.cnr.isti.hpc.dexter.lucene;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +35,6 @@ import com.google.common.io.Files;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 06/ago/2012
  */
 public class LuceneHelperTest {
-
-	static ProjectProperties properties = new ProjectProperties(
-			LuceneHelperTest.class);
 
 	static LuceneHelper helper = null;
 
@@ -63,7 +59,6 @@ public class LuceneHelperTest {
 		helper = new LuceneHelper(wikiIdtToLuceneId, luceneDir);
 		helper.parseWikiIdToLuceneId();
 		helper.dumpWikiIdToLuceneId();
-		
 
 	}
 

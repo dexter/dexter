@@ -19,7 +19,7 @@ import it.cnr.isti.hpc.dexter.document.Field;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.ContextExtractor;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,8 @@ import org.slf4j.LoggerFactory;
  * <code>rank.by.commonness</code> is true.
  * </ul>
  * 
- * The entity ranker also prune candidate entities with a score lower than 
- * the value 'entity.commonness.threshold' defined in the project.properties.
+ * The entity ranker also prune candidate entities with a score lower than the
+ * value 'entity.commonness.threshold' defined in the project.properties.
  * 
  * <strong> WARNING: </strong> this class could be removed or radically modified
  * in the future
@@ -52,32 +52,30 @@ public class EntityRanker {
 	private static final Logger logger = LoggerFactory
 			.getLogger(EntityRanker.class);
 
+	DexterParams params = DexterParams.getInstance();
+
 	ContextExtractor context;
-	ProjectProperties properties = new ProjectProperties(EntityRanker.class);
 	private LuceneHelper helper;
-	private final boolean RANK_BY_SIMILARITY = properties.get(
-			"rank.by.similarity").equals("true");
-	private final boolean RANK_BY_PRIOR = properties.get("rank.by.commonness")
-			.equals("true");
+	// FIXME move candidate entity ranker outside
+	private final boolean RANK_BY_PRIOR = true;
 
-	double commonnessThreshold = properties
-			.getDouble("entity.commonness.threshold");
+	double commonnessThreshold = params.getThreshold("commonness");
 
-	private final int WINDOW_SIZE = properties.getInt("context.window.size");
+	// private final int WINDOW_SIZE = properties.getInt("context.window.size");
 
 	public EntityRanker(Field field) {
 
-		if (RANK_BY_SIMILARITY) {
-			logger.info("(e|s) using cosine similarity");
-			helper = LuceneHelper.getDexterLuceneHelper();
-			context = new ContextExtractor(field);
-			context.setWindowSize(WINDOW_SIZE);
-		} else {
-			if (RANK_BY_PRIOR) {
-				logger.info("(e|s) using prior probability");
-			} else
-				logger.info("(e|s) NO PROBABILITY");
-		}
+		// if (RANK_BY_SIMILARITY) {
+		// logger.info("(e|s) using cosine similarity");
+		// helper = LuceneHelper.getDexterLuceneHelper();
+		// context = new ContextExtractor(field);
+		// context.setWindowSize(WINDOW_SIZE);
+		// } else {
+		if (RANK_BY_PRIOR) {
+			logger.info("(e|s) using prior probability");
+		} else
+			logger.info("(e|s) NO PROBABILITY");
+		// }
 	}
 
 	public EntityMatchList rank(SpotMatch spot) {
@@ -86,7 +84,7 @@ public class EntityRanker {
 		EntityMatchList eml = new EntityMatchList();
 		EntityMatch match = null;
 		// can't happen that prior and similarity are both true
-		assert (!RANK_BY_PRIOR || !RANK_BY_SIMILARITY);
+		// assert (!RANK_BY_PRIOR || !RANK_BY_SIMILARITY);
 		if (RANK_BY_PRIOR) {
 
 			for (Entity e : spot.getSpot().getEntities()) {
@@ -100,21 +98,21 @@ public class EntityRanker {
 			}
 
 		}
-		if (RANK_BY_SIMILARITY) {
-			for (Entity e : spot.getSpot().getEntities()) {
-				if (spot.getEntityCommonness(e) < commonnessThreshold) {
-					logger.info("filtering entity {}, low commonness ",
-							e.getId());
-					continue;
-				}
-				match = new EntityMatch(e, 0, spot);
-				eml.add(match);
-			}
+		// if (RANK_BY_SIMILARITY) {
+		// for (Entity e : spot.getSpot().getEntities()) {
+		// if (spot.getEntityCommonness(e) < commonnessThreshold) {
+		// logger.info("filtering entity {}, low commonness ",
+		// e.getId());
+		// continue;
+		// }
+		// match = new EntityMatch(e, 0, spot);
+		// eml.add(match);
+		// }
 
-			String c = context.getContext(spot.getMention());
-			logger.debug("context spot {} = {}", spot.getMention(), c);
-			helper.rankBySimilarity(spot, eml, c);
-		}
+		// String c = context.getContext(spot.getMention());
+		// logger.debug("context spot {} = {}", spot.getMention(), c);
+		// helper.rankBySimilarity(spot, eml, c);
+		// }
 		return eml;
 	}
 

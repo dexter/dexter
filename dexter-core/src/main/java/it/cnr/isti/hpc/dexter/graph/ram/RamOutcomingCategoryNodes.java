@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.graph.NodeStar;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,6 @@ public class RamOutcomingCategoryNodes extends RamNodes implements
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamOutcomingCategoryNodes.class);
-
-	static private ProjectProperties properties = new ProjectProperties(
-			RamOutcomingCategoryNodes.class);
 
 	private static DexterParams params = DexterParams.getInstance();
 

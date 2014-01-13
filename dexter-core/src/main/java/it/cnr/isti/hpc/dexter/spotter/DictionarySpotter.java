@@ -29,7 +29,6 @@ import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.structure.LRUCache;
 
 import java.util.Iterator;
@@ -50,15 +49,14 @@ public class DictionarySpotter implements Spotter {
 			.getLogger(DictionarySpotter.class);
 	ProbabilityFilter filter = new ProbabilityFilter();
 	private static LRUCache<String, Spot> cache;
-	ProjectProperties properties = new ProjectProperties(
-			DictionarySpotter.class);
+
+	DexterParams params = DexterParams.getInstance();
+
 	SpotRepository spotRepo;
-	private boolean usePriorProbability = false;
+	private final boolean usePriorProbability = false;
 
 	public DictionarySpotter() {
-		int cachesize = properties.getInt("spotter.cache.size");
-		String prior = properties.get("prior.probabability");
-		usePriorProbability = (prior != null && prior.equals("true"));
+		int cachesize = params.getCacheSize("spotter");
 		cache = new LRUCache<String, Spot>(cachesize);
 		SpotRepositoryFactory factory = new SpotRepositoryFactory();
 		spotRepo = factory.getStdInstance();

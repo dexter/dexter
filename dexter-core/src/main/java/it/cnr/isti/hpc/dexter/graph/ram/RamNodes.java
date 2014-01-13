@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.graph.Node;
 import it.cnr.isti.hpc.dexter.graph.NodeStar;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
 import it.cnr.isti.hpc.io.Serializer;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 
@@ -40,8 +39,6 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamNodes.class);
 
-	ProjectProperties properties;
-
 	Int2ObjectOpenHashMap<int[]> map;
 	File serializedFile = null;
 
@@ -49,7 +46,6 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 
 	protected RamNodes(File serializedFile) {
 		this.serializedFile = serializedFile;
-		properties = new ProjectProperties(this.getClass());
 		if (serializedFile.exists()) {
 			load();
 		} else {
