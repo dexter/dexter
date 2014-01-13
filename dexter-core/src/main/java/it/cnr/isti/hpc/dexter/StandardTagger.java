@@ -20,16 +20,13 @@ import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator;
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
-import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
 import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
-import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,10 +45,10 @@ import org.slf4j.LoggerFactory;
  * entity matches that overlaps in the text, removing the entity matches with
  * the lower scores.
  * 
- * The Dexter tagger can use external spotter/disambiguation/relatedness classes
- * if they are set in the <code>project.properties</code> file, you only have to
- * implement the correspondent interface, to produce a jar with your code and
- * put it in the folder <code>libs</code>. <br>
+ * The Standard Tagger uses external spotter/disambiguation/relatedness classes
+ * set in the <code>dexter-config.xml</code> file, you only have to implement
+ * the correspondent interface, to produce a jar with your code and put it in
+ * the folder <code>libs</code>. <br>
  * <br>
  * By default Dexter uses the {@link DictionarySpotter} as spotter, the the
  * {@link TopScoreEntityDisambiguator} as disambiguator, and the
@@ -66,50 +63,61 @@ import org.slf4j.LoggerFactory;
  * 
  *         Created on Sep 5, 2012
  */
-public class Dexter implements Tagger {
+public class StandardTagger implements Tagger {
 
-	private static final Logger logger = LoggerFactory.getLogger(Dexter.class);
-	private final ProjectProperties properties = new ProjectProperties(
-			Dexter.class);
-
-	private Spotter spotter;
-	private Disambiguator disambiguator;
+	private static final Logger logger = LoggerFactory
+			.getLogger(StandardTagger.class);
+	private final String name;
+	private final Spotter spotter;
+	private final Disambiguator disambiguator;
 	private final Stopwatch stopwatch;
+
+	DexterParams dexterParams = DexterParams.getInstance();
 
 	private DexterParams params;
 
-	public Dexter() {
-		Relatedness r = new MilneRelatedness();
+	public StandardTagger(String name, Spotter spotter,
+			Disambiguator disambiguator) {
+		this.name = name;
+		this.spotter = spotter;
+		this.disambiguator = disambiguator;
 		stopwatch = new Stopwatch();
-		PluginLoader pl = new PluginLoader();
-		logger.info("using the dexter tagger");
 
-		if (properties.has("spotter.class")) {
-			spotter = pl.getSpotter(properties.get("spotter.class"));
-		} else {
-			spotter = new DictionarySpotter();
-		}
-
-		if (properties.has("disambiguator.class")) {
-			disambiguator = pl.getDisambiguator(properties
-					.get("disambiguator.class"));
-		} else {
-			disambiguator = new TopScoreEntityDisambiguator();
-		}
-
-		if (properties.has("relatedness.class")) {
-			r = pl.getRelatedness(properties.get("relatedness.class"));
-			RelatednessFactory.register(r);
-		}
+		// Relatedness r = new MilneRelatedness();
+		//
+		// PluginLoader pl = new PluginLoader();
+		// logger.info("using the dexter tagger");
+		//
+		// if (properties.has("spotter.class")) {
+		// spotter = pl.getSpotter(properties.get("spotter.class"));
+		// } else {
+		// spotter = new DictionarySpotter();
+		// }
+		//
+		// if (properties.has("disambiguator.class")) {
+		// disambiguator = pl.getDisambiguator(properties
+		// .get("disambiguator.class"));
+		// } else {
+		// disambiguator = new TopScoreEntityDisambiguator();
+		// }
+		//
+		// if (properties.has("relatedness.class")) {
+		// r = pl.getRelatedness(properties.get("relatedness.class"));
+		// RelatednessFactory.register(r);
+		// }
 
 		logger.info("Spotter: {}", spotter.getClass());
 		logger.info("Disambiguator: {}", disambiguator.getClass());
-		logger.info("Relatedness: {}", r.getClass());
-
 	}
 
 	public SpotMatchList spot(DexterParams dexterParams,
 			DexterParams localParams, Document doc) {
+		Spotter spotter = this.spotter;
+		if (localParams != null) {
+			if (localParams.hasSpotter()) {
+				spotter = localParams.getSpotter();
+			}
+		}
 		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
 		return sml;
 	}
@@ -120,6 +128,20 @@ public class Dexter implements Tagger {
 
 		// TODO, perform the tag using what specified in the
 		// params
+
+		Spotter spotter = this.spotter;
+		Disambiguator disambiguator = this.disambiguator;
+
+		if (localParams != null) {
+			if (localParams.hasSpotter()) {
+				spotter = localParams.getSpotter();
+			}
+			if (localParams.hasDisambiguator()) {
+				disambiguator = localParams.getDisambiguator();
+			}
+
+		}
+
 		stopwatch.start("spotting");
 		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
 

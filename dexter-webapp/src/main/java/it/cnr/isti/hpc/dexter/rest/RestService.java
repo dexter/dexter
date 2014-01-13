@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.rest;
 
-import it.cnr.isti.hpc.dexter.Dexter;
+import it.cnr.isti.hpc.dexter.StandardTagger;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
 import it.cnr.isti.hpc.dexter.document.Document;
@@ -58,7 +58,7 @@ public class RestService {
 	private static Gson gson = new GsonBuilder()
 			.serializeSpecialFloatingPointValues().create();
 	private final ArticleServer server = new ArticleServer();
-	private final Dexter tagger = new Dexter();
+	private final StandardTagger tagger = new StandardTagger();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RestService.class);

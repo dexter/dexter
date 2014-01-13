@@ -31,17 +31,19 @@
  */
 package it.cnr.isti.hpc.dexter.util;
 
-import it.cnr.isti.hpc.io.IOUtils;
+import it.cnr.isti.hpc.dexter.StandardTagger;
+import it.cnr.isti.hpc.dexter.Tagger;
+import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
+import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
+import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
+import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -52,190 +54,92 @@ public class DexterParams {
 	private static final Logger logger = LoggerFactory
 			.getLogger(DexterParams.class);
 
-	private Models models;
-	private Labels labels;
-	private Index index;
-	private Threshold threshold;
-	private Graphs graphs;
-	private Rankers rankers;
-	private Spots spots;
-	private Libs libs;
-	private RelatednessFunctions relatednessFunctions;
-	private Disambiguators disambiguators;
+	private final static DexterParams dexterParams = new DexterParams(
+			"dexter-conf.xml");
+
+	Map<String, Tagger> taggers;
+	Map<String, Spotter> spotters;
+	Map<String, Disambiguator> disambiguators;
+
+	private final PluginLoader loader = new PluginLoader();
 
 	private DexterParams() {
-
+		taggers = new HashMap<String, Tagger>();
+		spotters = new HashMap<String, Spotter>();
+		disambiguators = new HashMap<String, Disambiguator>();
 	}
 
-	private final static DexterParams params = load("dexter-conf.xml");
+	private DexterParams(String xmlConfig) {
+		super();
+		DexterParamsXMLParser params = DexterParamsXMLParser.load(xmlConfig);
+		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Disambiguator function : params
+				.getDisambiguators().getDisambiguators()) {
+			Disambiguator disambiguator = loader.getDisambiguator(function
+					.getClazz());
+			logger.info("registering disambiguator {} -> {} ",
+					function.getName(), function.getClazz());
+			disambiguators.put(function.getName(), disambiguator);
+		}
+
+		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Spotter function : params
+				.getSpotters().getSpotters()) {
+			Spotter spotter = loader.getSpotter(function.getClazz());
+			logger.info("registering spotter {} -> {} ", function.getName(),
+					function.getClazz());
+			spotters.put(function.getName(), spotter);
+		}
+
+		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.RelatednessFunction function : params
+				.getRelatednessFunctions().getRelatednessFunctions()) {
+			Relatedness relatedness = loader
+					.getRelatedness(function.getClazz());
+			logger.info("registering relatedness {} -> {} ",
+					function.getName(), function.getClazz());
+			// FIXME remove relatedness factory??
+			RelatednessFactory.register(relatedness);
+		}
+
+		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Tagger tagger : params
+				.getTaggers().getTaggers()) {
+			// TODO add tagger from class
+			// TODO check if components exist
+
+			Spotter s = spotters.get(tagger.getSpotter());
+			Disambiguator d = disambiguators.get(tagger.getDisambiguator());
+			Tagger t = new StandardTagger(tagger.getName(), s, d);
+		}
+
+	}
 
 	public static DexterParams getInstance() {
-		return params;
+		return dexterParams;
 	}
 
-	private static class Models {
-		List<Model> models = new ArrayList<Model>();
-
+	public boolean hasSpotter() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	private static class Model {
-
-		String name;
-		String path;
-
+	public Spotter getSpotter() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	private static class Labels {
-		String dir;
+	public boolean hasDisambiguator() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	private static class Index {
-		String dir;
-		String wikiIdMap;
+	public Disambiguator getDisambiguator() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	private static class Threshold {
-		float commonness;
-		float linkprobability;
+	public boolean hasTagger(String name) {
+		return taggers.containsKey(name);
 	}
 
-	private static class Graphs {
-		String dir;
-		List<Graph> graphs = new ArrayList<Graph>();
-
-	}
-
-	private static class Graph {
-		String name;
-		String incoming;
-		String outcoming;
-
-	}
-
-	private static class EntityEntity {
-		String incoming;
-		String outcoming;
-	}
-
-	private static class EntityCategory {
-		String incoming;
-		String outcoming;
-	}
-
-	private static class CategoryCategory {
-		String incoming;
-		String outcoming;
-	}
-
-	private static class Rankers {
-		List<Ranker> rankers = new ArrayList<Ranker>();
-	}
-
-	private static class Ranker {
-		String name;
-		String clazz;
-	}
-
-	private static class Spots {
-		String dir;
-	}
-
-	private static class Libs {
-		String lib;
-	}
-
-	private static class RelatednessFunctions {
-		List<RelatednessFunction> relatednessFunctions = new ArrayList<RelatednessFunction>();
-	}
-
-	private static class RelatednessFunction {
-		String name;
-		String clazz;
-	}
-
-	private static class Disambiguators {
-		List<Disambiguator> disambiguators = new ArrayList<Disambiguator>();
-	}
-
-	private static class Spotters {
-		List<Spotter> spotters = new ArrayList<Spotter>();
-	}
-
-	private static class Spotter {
-		String name;
-		String clazz;
-	}
-
-	private static class Disambiguator {
-		String name;
-		String clazz;
-	}
-
-	private static class Taggers {
-		List<Tagger> taggers = new ArrayList<Tagger>();
-	}
-
-	private static class Tagger {
-		String name;
-		String spotter;
-		String disambiguator;
-		String relatedness;
-	}
-
-	public static DexterParams load(String xmlConfig) {
-		logger.info("loading configuration from {} ", xmlConfig);
-		XStream xstream = new XStream(new StaxDriver());
-		xstream.alias("config", DexterParams.class);
-		xstream.alias("model", Model.class);
-		xstream.alias("labels", Labels.class);
-		xstream.alias("index", Index.class);
-		xstream.alias("threshold", Threshold.class);
-		xstream.alias("graph", Graph.class);
-		xstream.alias("graphs", Graphs.class);
-		xstream.addImplicitCollection(Graphs.class, "graphs");
-
-		xstream.alias("rankers", Rankers.class);
-		xstream.addImplicitCollection(Models.class, "models");
-		xstream.addImplicitCollection(Rankers.class, "rankers");
-		xstream.alias("ranker", Ranker.class);
-		xstream.aliasField("class", Ranker.class, "clazz");
-
-		xstream.alias("entityEntity", EntityEntity.class);
-		xstream.alias("entityCategory", EntityCategory.class);
-
-		xstream.alias("categoryCategory", CategoryCategory.class);
-		xstream.alias("spots", Spots.class);
-		xstream.alias("libs", Libs.class);
-
-		xstream.addImplicitCollection(RelatednessFunctions.class,
-				"relatednessFunctions");
-		xstream.alias("relatednessFunctions", RelatednessFunctions.class);
-		xstream.alias("relatednessFunction", RelatednessFunction.class);
-
-		xstream.alias("disambiguators", Disambiguators.class);
-		xstream.addImplicitCollection(Disambiguators.class, "disambiguators");
-		xstream.alias("disambiguator", Disambiguator.class);
-
-		xstream.alias("spotters", Spotters.class);
-		xstream.addImplicitCollection(Spotters.class, "spotters");
-		xstream.alias("spotter", Spotter.class);
-
-		xstream.aliasField("class", RelatednessFunction.class, "clazz");
-		xstream.aliasField("class", Disambiguator.class, "clazz");
-		xstream.aliasField("class", Spotter.class, "clazz");
-
-		xstream.alias("taggers", Taggers.class);
-		xstream.addImplicitCollection(Taggers.class, "taggers");
-		xstream.alias("tagger", Tagger.class);
-
-		String xml = IOUtils.getFileAsString("dexter-conf.xml");
-		DexterParams config = (DexterParams) xstream.fromXML(xml);
-		return config;
-	}
-
-	public static void main(String[] args) {
-		DexterParams config = load("dexter-conf.xml");
-		Gson gson = new Gson();
-		System.out.println(gson.toJson(config));
+	public Tagger getTagger(String name) {
+		return taggers.get(name);
 	}
 }

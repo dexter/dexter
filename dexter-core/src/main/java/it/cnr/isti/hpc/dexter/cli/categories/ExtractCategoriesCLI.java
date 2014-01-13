@@ -16,7 +16,7 @@
 package it.cnr.isti.hpc.dexter.cli.categories;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.Dexter;
+import it.cnr.isti.hpc.dexter.StandardTagger;
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
