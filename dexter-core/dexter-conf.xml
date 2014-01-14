@@ -2,7 +2,7 @@
 <config>
 
 	<models>
-	    <default>en</default>
+		<default>en</default>
 		<model>
 			<name>en</name>
 			<path>data/en</path>
@@ -23,14 +23,14 @@
 	</index>
 
 	<thresholds>
-	    <threshold>
-	        <name>commonness</name>
-	        <value>0.005</value>
-	    </threshold>
-	    <threshold>
-	        <name>linkprobability</name>
-	        <value>0.02</value>
-	    </threshold>
+		<threshold>
+			<name>commonness</name>
+			<value>0.005</value>
+		</threshold>
+		<threshold>
+			<name>linkprobability</name>
+			<value>0.02</value>
+		</threshold>
 	</thresholds>
 
 
@@ -42,13 +42,13 @@
 			<outcoming>outcoming-edges.bin</outcoming>
 		</graph>
 		<graph>
-		    <name>entity-category</name>
+			<name>entity-category</name>
 			<incoming>incoming-entity-category-edges.bin</incoming>
 			<outcoming>outcoming-entity-category-edges.bin</outcoming>
-		
+
 		</graph>
 		<graph>
-		    <name>category-category</name>
+			<name>category-category</name>
 			<incoming>incoming-category-edges.bin</incoming>
 			<outcoming>outcoming-category-edges.bin</outcoming>
 		</graph>
@@ -67,56 +67,56 @@
 		</ranker>
 	</rankers>
 
-	
+
 
 
 	<libs>
 		<lib>libs</lib>
 	</libs>
-	
+
 	<caches>
-	    <cache>
-	        <name>relatedness</name>
-	        <size>5000</size>
-	    </cache>
-	    <cache>
-	        <name>spotter</name>
-	        <size>10000</size>
-	    </cache>
+		<cache>
+			<name>relatedness</name>
+			<size>5000</size>
+		</cache>
+		<cache>
+			<name>spotter</name>
+			<size>10000</size>
+		</cache>
 	</caches>
 
 	<relatednessFunctions>
-	    <default>milnewitten</default>
+		<default>milnewitten</default>
 		<relatednessFunction>
 			<name>milnewitten</name>
 			<class>it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness</class>
 		</relatednessFunction>
 	</relatednessFunctions>
-	
+
 	<spotRepository>
-	    <dir>spot</dir>
-	    <plainSpots>spots.tsv.gz</plainSpots>
-	    <perfectHash>ram/minimal-perfect-hash.bin</perfectHash>
-	    <offsets>ram/offsets.gz</offsets>
-	    <eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
-	    <spotsData>ram/spots.bin</spotsData>
+		<dir>spot</dir>
+		<plainSpots>spots.tsv.gz</plainSpots>
+		<perfectHash>ram/minimal-perfect-hash.bin</perfectHash>
+		<offsets>ram/offsets.gz</offsets>
+		<eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
+		<spotsData>ram/spots.bin</spotsData>
 	</spotRepository>
 
 
 	<disambiguators>
-		<disambiguator>
-			<name>wikiminer</name>
-			<class>it.cnr.isti.hpc.wikiminer.Wikiminer</class>
-		</disambiguator>
-		<disambiguator>
-			<name>tagme</name>
-			<class>it.cnr.isti.hpc.tagme.Tagme</class>
-			
-			<!--  params>
-				<window-size>30</window-size>
-				<epsilon>0.7</epsilon>
-			</params-->
-		</disambiguator>
+<!-- 		<disambiguator> -->
+<!-- 			<name>wikiminer</name> -->
+<!-- 			<class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
+<!-- 		</disambiguator> -->
+<!-- 		<disambiguator> -->
+<!-- 			<name>tagme</name> -->
+<!-- 			<class>it.cnr.isti.hpc.tagme.Tagme</class> -->
+
+<!-- 			<params> -->
+<!-- 				<window-size>30</window-size> -->
+<!-- 				<epsilon>0.7</epsilon> -->
+<!-- 			</params> -->
+<!-- 		</disambiguator> -->
 	</disambiguators>
 	<spotters>
 		<spotter>

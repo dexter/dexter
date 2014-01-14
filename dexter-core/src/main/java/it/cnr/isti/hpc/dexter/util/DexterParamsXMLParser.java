@@ -34,6 +34,7 @@ package it.cnr.isti.hpc.dexter.util;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -82,7 +83,7 @@ public class DexterParamsXMLParser {
 		this.caches = caches;
 	}
 
-	private Disambiguators disambiguators;
+	private Disambiguators disambiguators = new Disambiguators();
 
 	public Spotters getSpotters() {
 		return spotters;
@@ -158,6 +159,11 @@ public class DexterParamsXMLParser {
 	}
 
 	public Disambiguators getDisambiguators() {
+		if (disambiguators == null) {
+			Disambiguators dis = new Disambiguators();
+			dis.setDisambiguators(Collections.EMPTY_LIST);
+			return dis;
+		}
 		return disambiguators;
 	}
 
@@ -503,6 +509,9 @@ public class DexterParamsXMLParser {
 		List<Disambiguator> disambiguators = new ArrayList<Disambiguator>();
 
 		public List<Disambiguator> getDisambiguators() {
+			if (disambiguators == null) {
+				disambiguators = Collections.emptyList();
+			}
 			return disambiguators;
 		}
 

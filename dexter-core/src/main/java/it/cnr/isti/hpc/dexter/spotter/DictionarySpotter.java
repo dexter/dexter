@@ -47,7 +47,7 @@ public class DictionarySpotter implements Spotter {
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(DictionarySpotter.class);
-	ProbabilityFilter filter = new ProbabilityFilter();
+
 	private static LRUCache<String, Spot> cache;
 
 	DexterParams params = DexterParams.getInstance();
@@ -65,6 +65,7 @@ public class DictionarySpotter implements Spotter {
 	@Override
 	public SpotMatchList match(DexterParams dexterParams,
 			DexterLocalParams localParams, Document document) {
+		ProbabilityFilter filter = new ProbabilityFilter();
 		SpotMatchList matches = new SpotMatchList();
 
 		Iterator<Field> fields = document.getFields();
