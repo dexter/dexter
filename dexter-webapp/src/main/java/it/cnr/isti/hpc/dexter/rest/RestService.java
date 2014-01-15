@@ -102,6 +102,7 @@ public class RestService {
 			Tagmeta meta = new Tagmeta();
 			meta.setDisambiguator(d.getClass().toString());
 			meta.setSpotter(s.getClass().toString());
+			adoc.setMeta(meta);
 
 		}
 		adoc.annotate(eml, entitiesToAnnotate);

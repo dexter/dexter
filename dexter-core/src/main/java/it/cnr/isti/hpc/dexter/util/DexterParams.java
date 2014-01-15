@@ -36,6 +36,7 @@ import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
+import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 
 import java.io.File;
@@ -58,6 +59,8 @@ public class DexterParams {
 	Map<String, DexterParamsXMLParser.Tagger> taggers;
 	Map<String, String> spotters;
 	Map<String, String> disambiguators;
+	Map<String, String> relatednessFunctions;
+
 	Map<String, Map<Direction, String>> graphs;
 	Map<String, String> models;
 	Map<String, Integer> cacheSize;
@@ -88,6 +91,8 @@ public class DexterParams {
 		taggers = new HashMap<String, DexterParamsXMLParser.Tagger>();
 		spotters = new HashMap<String, String>();
 		disambiguators = new HashMap<String, String>();
+		relatednessFunctions = new HashMap<String, String>();
+
 		graphs = new HashMap<String, Map<Direction, String>>();
 		models = new HashMap<String, String>();
 		cacheSize = new HashMap<String, Integer>();
@@ -197,9 +202,13 @@ public class DexterParams {
 				.getRelatednessFunctions().getRelatednessFunctions()) {
 			logger.info("registering relatedness {} -> {} ",
 					function.getName(), function.getClazz());
+			relatednessFunctions.put(function.getName(), function.getClazz());
 			// FIXME remove relatedness factory??
 			// RelatednessFactory.register(relatedness);
 		}
+		String defaultName = defaultRelatedness;
+		String clazz = relatednessFunctions.get(defaultName);
+		relatednessFunctions.put(DEFAULT, clazz);
 	}
 
 	public File getSpotsData() {
@@ -269,6 +278,14 @@ public class DexterParams {
 		Tagger tagger = new StandardTagger(name, getSpotter(t.getSpotter()),
 				getDisambiguator(t.getDisambiguator()));
 		return tagger;
+	}
+
+	public Relatedness getRelatedness(String name) {
+		if ((name == null) || (name.isEmpty())) {
+			name = DEFAULT;
+		}
+
+		return loader.getRelatedness(relatednessFunctions.get(name));
 	}
 
 	public File getDefaultModel() {

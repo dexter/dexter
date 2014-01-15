@@ -36,7 +36,13 @@ public class RelatednessFactory {
 
 	public RelatednessFactory() {
 		String type = params.getDefaultRelatedness();
-		relatedness = relmap.get(type);
+		if (!relmap.containsKey(type)) {
+			// params.
+			relatedness = params.getRelatedness(type);
+			relmap.put(type, relatedness);
+		} else {
+			relatedness = relmap.get(type);
+		}
 		if (relatedness == null) {
 			throw new UnsupportedOperationException("cannot find relatedness "
 					+ type);
@@ -44,7 +50,13 @@ public class RelatednessFactory {
 	}
 
 	public RelatednessFactory(String type) {
-		relatedness = relmap.get(type);
+		if (!relmap.containsKey(type)) {
+			// params.
+			relatedness = params.getRelatedness(type);
+			relmap.put(type, relatedness);
+		} else {
+			relatedness = relmap.get(type);
+		}
 		if (relatedness == null) {
 			throw new UnsupportedOperationException("cannot find relatedness "
 					+ type);
