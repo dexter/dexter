@@ -28,6 +28,7 @@ import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
+import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
@@ -85,15 +86,24 @@ public class RestService {
 	public String annotate(@QueryParam("text") String text,
 			@QueryParam("n") @DefaultValue("5") String n,
 			@QueryParam("spt") String spotter,
-			@QueryParam("dsb") String disambiguator) {
+			@QueryParam("dsb") String disambiguator,
+			@QueryParam("debug") String dbg) {
 		Spotter s = params.getSpotter(spotter);
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
+		Boolean debug = new Boolean(dbg);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
 		Document doc = new FlatDocument(text);
 		EntityMatchList eml = tagger.tag(doc);
+
 		AnnotatedDocument adoc = new AnnotatedDocument(text);
+		if (debug) {
+			Tagmeta meta = new Tagmeta();
+			meta.setDisambiguator(d.getClass().toString());
+			meta.setSpotter(s.getClass().toString());
+
+		}
 		adoc.annotate(eml, entitiesToAnnotate);
 		String annotated = gson.toJson(adoc);
 		logger.info("annotate: {}", annotated);
