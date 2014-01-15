@@ -51,8 +51,8 @@ import it.cnr.isti.hpc.dexter.util.DexterParams;
 public class TopScoreEntityDisambiguator implements Disambiguator {
 
 	@Override
-	public EntityMatchList disambiguate(DexterParams dexterParams,
-			DexterLocalParams localParams, SpotMatchList sml) {
+	public EntityMatchList disambiguate(DexterLocalParams localParams,
+			SpotMatchList sml) {
 		EntityMatchList eml = new EntityMatchList();
 		for (SpotMatch match : sml) {
 			EntityMatchList list = match.getEntities();
@@ -62,6 +62,11 @@ public class TopScoreEntityDisambiguator implements Disambiguator {
 			}
 		}
 		return eml;
+	}
+
+	@Override
+	public void init(DexterParams dexterParams) {
+
 	}
 
 }

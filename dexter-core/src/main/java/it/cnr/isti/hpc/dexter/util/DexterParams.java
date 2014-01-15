@@ -74,6 +74,8 @@ public class DexterParams {
 	File spotsPerfectHash;
 	File plainSpots;
 
+	private static final String DEFAULT = "___default";
+
 	String defaultRelatedness;
 
 	private DexterParamsXMLParser params;
@@ -156,6 +158,10 @@ public class DexterParams {
 					function.getName(), function.getClazz());
 			disambiguators.put(function.getName(), function.getClazz());
 		}
+		String defaultName = params.getDisambiguators()
+				.getDefaultDisambiguator();
+		String clazz = disambiguators.get(defaultName);
+		disambiguators.put(DEFAULT, clazz);
 	}
 
 	private void loadSpotters() {
@@ -164,7 +170,11 @@ public class DexterParams {
 			logger.info("registering spotter {} -> {} ", function.getName(),
 					function.getClazz());
 			spotters.put(function.getName(), function.getClazz());
+
 		}
+		String defaultName = params.getSpotters().getDefaultSpotter();
+		String clazz = spotters.get(defaultName);
+		spotters.put(DEFAULT, clazz);
 	}
 
 	private void loadTaggers() {
@@ -175,6 +185,11 @@ public class DexterParams {
 
 			taggers.put(tagger.getName(), tagger);
 		}
+
+		String defaultName = params.getTaggers().getDefaultTagger();
+		DexterParamsXMLParser.Tagger tagger = taggers.get(defaultName);
+		taggers.put(DEFAULT, tagger);
+
 	}
 
 	private void loadRelatednessFunctions() {
@@ -221,6 +236,9 @@ public class DexterParams {
 	}
 
 	public Spotter getSpotter(String name) {
+		if ((name == null) || (name.isEmpty())) {
+			name = DEFAULT;
+		}
 		return loader.getSpotter(spotters.get(name));
 	}
 
@@ -229,6 +247,9 @@ public class DexterParams {
 	}
 
 	public Disambiguator getDisambiguator(String name) {
+		if ((name == null) || (name.isEmpty())) {
+			name = DEFAULT;
+		}
 		return loader.getDisambiguator(disambiguators.get(name));
 	}
 
@@ -241,6 +262,9 @@ public class DexterParams {
 	}
 
 	public Tagger getTagger(String name) {
+		if ((name == null) || (name.isEmpty())) {
+			name = DEFAULT;
+		}
 		DexterParamsXMLParser.Tagger t = taggers.get(name);
 		Tagger tagger = new StandardTagger(name, getSpotter(t.getSpotter()),
 				getDisambiguator(t.getDisambiguator()));

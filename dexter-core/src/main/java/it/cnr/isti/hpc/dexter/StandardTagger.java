@@ -119,13 +119,12 @@ public class StandardTagger implements Tagger {
 				spotter = localParams.getSpotter();
 			}
 		}
-		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
+		SpotMatchList sml = spotter.match(localParams, doc);
 		return sml;
 	}
 
 	@Override
-	public EntityMatchList tag(DexterParams dexterParams,
-			DexterLocalParams localParams, Document doc) {
+	public EntityMatchList tag(DexterLocalParams localParams, Document doc) {
 
 		// TODO, perform the tag using what specified in the
 		// params
@@ -144,14 +143,13 @@ public class StandardTagger implements Tagger {
 		}
 
 		stopwatch.start("spotting");
-		SpotMatchList sml = spotter.match(dexterParams, localParams, doc);
+		SpotMatchList sml = spotter.match(localParams, doc);
 
 		logger.info("spotting performed in {} millis",
 				stopwatch.stop("spotting"));
 
 		stopwatch.start("disambiguation");
-		EntityMatchList eml = disambiguator.disambiguate(dexterParams,
-				localParams, sml);
+		EntityMatchList eml = disambiguator.disambiguate(localParams, sml);
 		if (!eml.isEmpty()) {
 			eml = eml.removeOverlappings();
 		} else {
@@ -169,6 +167,12 @@ public class StandardTagger implements Tagger {
 
 	@Override
 	public EntityMatchList tag(Document document) {
-		return tag(params, null, document);
+		return tag(null, document);
+	}
+
+	@Override
+	public void init(DexterParams dexterParams) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -16,8 +16,10 @@
 package it.cnr.isti.hpc.dexter.rest;
 
 import it.cnr.isti.hpc.dexter.StandardTagger;
+import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
+import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
@@ -28,6 +30,8 @@ import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,7 +62,8 @@ public class RestService {
 	private static Gson gson = new GsonBuilder()
 			.serializeSpecialFloatingPointValues().create();
 	private final ArticleServer server = new ArticleServer();
-	private final StandardTagger tagger = new StandardTagger();
+
+	public static final DexterParams params = DexterParams.getInstance();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RestService.class);
@@ -78,7 +83,12 @@ public class RestService {
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotate(@QueryParam("text") String text,
-			@QueryParam("n") @DefaultValue("5") String n) {
+			@QueryParam("n") @DefaultValue("5") String n,
+			@QueryParam("spt") String spotter,
+			@QueryParam("dsb") String disambiguator) {
+		Spotter s = params.getSpotter(spotter);
+		Disambiguator d = params.getDisambiguator(disambiguator);
+		Tagger tagger = new StandardTagger("std", s, d);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
 		Document doc = new FlatDocument(text);
@@ -144,10 +154,12 @@ public class RestService {
 	@GET
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spot(@QueryParam("text") String text) {
+	public String spot(@QueryParam("text") String text,
+			@QueryParam("spt") String spt) {
 		long start = System.currentTimeMillis();
+		Spotter spotter = params.getSpotter(spt);
 		Document d = new FlatDocument(text);
-		SpotMatchList sml = tagger.spot(d);
+		SpotMatchList sml = spotter.match(null, d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
 
@@ -175,5 +187,4 @@ public class RestService {
 		logger.info("spot: {}", spotted);
 		return spotted;
 	}
-
 }

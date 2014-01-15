@@ -51,7 +51,13 @@ public interface Spotter {
 	 *         entities C, that could be represented by the spot.
 	 * 
 	 */
-	public SpotMatchList match(DexterParams dexterParams,
-			DexterLocalParams localParams, Document document);
+	public SpotMatchList match(DexterLocalParams localParams, Document document);
 
+	/**
+	 * Initializes the Spotter with the global params
+	 * 
+	 * @param dexterParams
+	 *            the global params of the project.
+	 */
+	public void init(DexterParams dexterParams);
 }

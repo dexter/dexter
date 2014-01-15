@@ -104,27 +104,36 @@
 
 
 	<disambiguators>
-<!-- 		<disambiguator> -->
-<!-- 			<name>wikiminer</name> -->
-<!-- 			<class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
-<!-- 		</disambiguator> -->
-<!-- 		<disambiguator> -->
-<!-- 			<name>tagme</name> -->
-<!-- 			<class>it.cnr.isti.hpc.tagme.Tagme</class> -->
+		<default>okkam</default>
+		<disambiguator>
+			<name>okkam</name>
+			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator
+			</class>
+		</disambiguator>
 
-<!-- 			<params> -->
-<!-- 				<window-size>30</window-size> -->
-<!-- 				<epsilon>0.7</epsilon> -->
-<!-- 			</params> -->
-<!-- 		</disambiguator> -->
+		<!-- <disambiguator> -->
+		<!-- <name>wikiminer</name> -->
+		<!-- <class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
+		<!-- </disambiguator> -->
+		<!-- <disambiguator> -->
+		<!-- <name>tagme</name> -->
+		<!-- <class>it.cnr.isti.hpc.tagme.Tagme</class> -->
+
+		<!-- <params> -->
+		<!-- <window-size>30</window-size> -->
+		<!-- <epsilon>0.7</epsilon> -->
+		<!-- </params> -->
+		<!-- </disambiguator> -->
 	</disambiguators>
 	<spotters>
+		<default>wiki-dictionary</default>
 		<spotter>
 			<name>wiki-dictionary</name>
 			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
 		</spotter>
 	</spotters>
 	<taggers>
+	    <default>dexter</default>
 		<tagger>
 			<name>dexter</name>
 			<spotter>wiki-dictionary</spotter>

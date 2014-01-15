@@ -63,8 +63,7 @@ public class DictionarySpotter implements Spotter {
 	}
 
 	@Override
-	public SpotMatchList match(DexterParams dexterParams,
-			DexterLocalParams localParams, Document document) {
+	public SpotMatchList match(DexterLocalParams localParams, Document document) {
 		ProbabilityFilter filter = new ProbabilityFilter();
 		SpotMatchList matches = new SpotMatchList();
 
@@ -123,6 +122,11 @@ public class DictionarySpotter implements Spotter {
 		}
 
 		return matches;
+	}
+
+	@Override
+	public void init(DexterParams dexterParams) {
+
 	}
 
 }

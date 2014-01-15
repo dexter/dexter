@@ -68,8 +68,7 @@ public interface Disambiguator {
 	 * entities, returns a list of entities, so that each spot can have at most
 	 * one entity.
 	 * 
-	 * @param dexterParams
-	 *            the global params of the project.
+	 * 
 	 * @param localParams
 	 *            contains particular parameters set for this query, can be
 	 *            null.
@@ -80,7 +79,14 @@ public interface Disambiguator {
 	 * @returns a list of entities, so that each spot can have at most one
 	 *          entity.
 	 */
-	public EntityMatchList disambiguate(DexterParams dexterParams,
-			DexterLocalParams localParams, SpotMatchList sml);
+	public EntityMatchList disambiguate(DexterLocalParams localParams,
+			SpotMatchList sml);
 
+	/**
+	 * Initializes the Disambiguator with the global params.
+	 * 
+	 * @param dexterParams
+	 *            the global params of the project.
+	 */
+	public void init(DexterParams dexterParams);
 }

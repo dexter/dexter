@@ -506,6 +506,7 @@ public class DexterParamsXMLParser {
 	}
 
 	public static class Disambiguators {
+		String defaultDisambiguator;
 		List<Disambiguator> disambiguators = new ArrayList<Disambiguator>();
 
 		public List<Disambiguator> getDisambiguators() {
@@ -519,9 +520,18 @@ public class DexterParamsXMLParser {
 			this.disambiguators = disambiguators;
 		}
 
+		public String getDefaultDisambiguator() {
+			return defaultDisambiguator;
+		}
+
+		public void setDefaultDisambiguator(String defaultDisambiguator) {
+			this.defaultDisambiguator = defaultDisambiguator;
+		}
+
 	}
 
 	public static class Spotters {
+		String defaultSpotter;
 		List<Spotter> spotters = new ArrayList<Spotter>();
 
 		public List<Spotter> getSpotters() {
@@ -530,6 +540,10 @@ public class DexterParamsXMLParser {
 
 		public void setSpotters(List<Spotter> spotters) {
 			this.spotters = spotters;
+		}
+
+		public String getDefaultSpotter() {
+			return defaultSpotter;
 		}
 
 	}
@@ -579,6 +593,7 @@ public class DexterParamsXMLParser {
 	}
 
 	public static class Taggers {
+		String defaultTagger;
 		List<Tagger> taggers = new ArrayList<Tagger>();
 
 		public List<Tagger> getTaggers() {
@@ -587,6 +602,10 @@ public class DexterParamsXMLParser {
 
 		public void setTaggers(List<Tagger> taggers) {
 			this.taggers = taggers;
+		}
+
+		public String getDefaultTagger() {
+			return defaultTagger;
 		}
 
 	}
@@ -650,6 +669,13 @@ public class DexterParamsXMLParser {
 		xstream.alias("rankers", Rankers.class);
 		xstream.addImplicitCollection(Models.class, "models");
 		xstream.aliasField("default", Models.class, "defaultModel");
+
+		xstream.aliasField("default", Disambiguators.class,
+				"defaultDisambiguator");
+
+		xstream.aliasField("default", Spotters.class, "defaultSpotter");
+
+		xstream.aliasField("default", Taggers.class, "defaultTagger");
 
 		xstream.addImplicitCollection(Rankers.class, "rankers");
 		xstream.alias("ranker", Ranker.class);

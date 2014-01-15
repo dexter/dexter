@@ -71,8 +71,6 @@ public interface Tagger {
 	 * EntityMatchList}, that maps some spots detected in the document with one
 	 * (and only one) entity.
 	 * 
-	 * @param dexterParams
-	 *            the global params of the project
 	 * @param localParams
 	 *            contains particular parameters set for this query, can be null
 	 * @param document
@@ -80,7 +78,13 @@ public interface Tagger {
 	 * @returns A list of entities detected in the document, an empty list if
 	 *          the tagger does not annotate anything.
 	 */
-	public EntityMatchList tag(DexterParams dexterParams,
-			DexterLocalParams localParams, Document document);
+	public EntityMatchList tag(DexterLocalParams localParams, Document document);
 
+	/**
+	 * Initializes the Tagger with the global params.
+	 * 
+	 * @param dexterParams
+	 *            the global params of the project.
+	 */
+	public void init(DexterParams dexterParams);
 }
