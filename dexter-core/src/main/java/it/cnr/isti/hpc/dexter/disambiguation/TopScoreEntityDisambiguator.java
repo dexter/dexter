@@ -65,7 +65,8 @@ public class TopScoreEntityDisambiguator implements Disambiguator {
 	}
 
 	@Override
-	public void init(DexterParams dexterParams) {
+	public void init(DexterParams dexterParams,
+			DexterLocalParams dexterModuleParams) {
 
 	}
 

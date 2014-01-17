@@ -35,12 +35,42 @@ import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Jan 13, 2014
  */
 public class DexterLocalParams {
+
+	public Map<String, String> params;
+
+	public DexterLocalParams() {
+		params = new HashMap<String, String>();
+	}
+
+	public void addParam(String key, String value) {
+		params.put(key, value);
+	}
+
+	public String getParam(String key) {
+		return params.get(key);
+	}
+
+	public int getIntParam(String key) {
+		return Integer.parseInt(params.get(key));
+	}
+
+	public double getDoubleParam(String key) {
+		return Double.parseDouble(params.get(key));
+	}
+
+	public double getFloatParam(String key) {
+		return Double.parseDouble(params.get(key));
+	}
+
 	public Spotter spotter;
 	public Disambiguator disambiguator;
 	public Tagger tagger;

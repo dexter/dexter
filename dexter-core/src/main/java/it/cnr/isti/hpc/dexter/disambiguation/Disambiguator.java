@@ -69,7 +69,7 @@ public interface Disambiguator {
 	 * one entity.
 	 * 
 	 * 
-	 * @param localParams
+	 * @param requestParams
 	 *            contains particular parameters set for this query, can be
 	 *            null.
 	 * @param sml
@@ -79,7 +79,7 @@ public interface Disambiguator {
 	 * @returns a list of entities, so that each spot can have at most one
 	 *          entity.
 	 */
-	public EntityMatchList disambiguate(DexterLocalParams localParams,
+	public EntityMatchList disambiguate(DexterLocalParams requestParams,
 			SpotMatchList sml);
 
 	/**
@@ -87,6 +87,10 @@ public interface Disambiguator {
 	 * 
 	 * @param dexterParams
 	 *            the global params of the project.
+	 * @param moduleInitParams
+	 *            the module init params
+	 * 
 	 */
-	public void init(DexterParams dexterParams);
+	public void init(DexterParams dexterParams,
+			DexterLocalParams moduleInitParams);
 }

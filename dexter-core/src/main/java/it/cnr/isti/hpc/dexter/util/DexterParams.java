@@ -38,6 +38,7 @@ import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Param;
 
 import java.io.File;
 import java.util.HashMap;
@@ -57,8 +58,8 @@ public class DexterParams {
 
 	private static DexterParams dexterParams;
 	Map<String, DexterParamsXMLParser.Tagger> taggers;
-	Map<String, String> spotters;
-	Map<String, String> disambiguators;
+	Map<String, DexterParamsXMLParser.Spotter> spotters;
+	Map<String, DexterParamsXMLParser.Disambiguator> disambiguators;
 	Map<String, String> relatednessFunctions;
 
 	Map<String, Map<Direction, String>> graphs;
@@ -89,8 +90,8 @@ public class DexterParams {
 
 	private DexterParams() {
 		taggers = new HashMap<String, DexterParamsXMLParser.Tagger>();
-		spotters = new HashMap<String, String>();
-		disambiguators = new HashMap<String, String>();
+		spotters = new HashMap<String, DexterParamsXMLParser.Spotter>();
+		disambiguators = new HashMap<String, DexterParamsXMLParser.Disambiguator>();
 		relatednessFunctions = new HashMap<String, String>();
 
 		graphs = new HashMap<String, Map<Direction, String>>();
@@ -156,30 +157,31 @@ public class DexterParams {
 	}
 
 	private void loadDisambiguators() {
-		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Disambiguator function : params
+		for (DexterParamsXMLParser.Disambiguator function : params
 				.getDisambiguators().getDisambiguators()) {
 
 			logger.info("registering disambiguator {} -> {} ",
 					function.getName(), function.getClazz());
-			disambiguators.put(function.getName(), function.getClazz());
+			disambiguators.put(function.getName(), function);
 		}
 		String defaultName = params.getDisambiguators()
 				.getDefaultDisambiguator();
-		String clazz = disambiguators.get(defaultName);
-		disambiguators.put(DEFAULT, clazz);
+		DexterParamsXMLParser.Disambiguator dis = disambiguators
+				.get(defaultName);
+		disambiguators.put(DEFAULT, dis);
 	}
 
 	private void loadSpotters() {
-		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Spotter function : params
-				.getSpotters().getSpotters()) {
+		for (DexterParamsXMLParser.Spotter function : params.getSpotters()
+				.getSpotters()) {
 			logger.info("registering spotter {} -> {} ", function.getName(),
 					function.getClazz());
-			spotters.put(function.getName(), function.getClazz());
+			spotters.put(function.getName(), function);
 
 		}
 		String defaultName = params.getSpotters().getDefaultSpotter();
-		String clazz = spotters.get(defaultName);
-		spotters.put(DEFAULT, clazz);
+		DexterParamsXMLParser.Spotter spotter = spotters.get(defaultName);
+		spotters.put(DEFAULT, spotter);
 	}
 
 	private void loadTaggers() {
@@ -248,7 +250,15 @@ public class DexterParams {
 		if ((name == null) || (name.isEmpty())) {
 			name = DEFAULT;
 		}
-		return loader.getSpotter(spotters.get(name));
+		DexterParamsXMLParser.Spotter spotter = spotters.get(name);
+		Spotter s = loader.getSpotter(spotter.getClazz());
+		DexterLocalParams initParams = new DexterLocalParams();
+		for (Param p : spotter.getParams().getParams()) {
+			logger.info("adding param {} -> {}", p.getName(), p.getValue());
+			initParams.addParam(p.getName(), p.getValue());
+		}
+		s.init(dexterParams, initParams);
+		return s;
 	}
 
 	public boolean hasDisambiguator(String name) {
@@ -259,7 +269,16 @@ public class DexterParams {
 		if ((name == null) || (name.isEmpty())) {
 			name = DEFAULT;
 		}
-		return loader.getDisambiguator(disambiguators.get(name));
+		DexterParamsXMLParser.Disambiguator disambiguator = disambiguators
+				.get(name);
+		Disambiguator s = loader.getDisambiguator(disambiguator.getClazz());
+		DexterLocalParams initParams = new DexterLocalParams();
+		for (Param p : disambiguator.getParams().getParams()) {
+			logger.info("adding param {} -> {}", p.getName(), p.getValue());
+			initParams.addParam(p.getName(), p.getValue());
+		}
+		s.init(dexterParams, initParams);
+		return s;
 	}
 
 	public Float getThreshold(String name) {
@@ -277,6 +296,12 @@ public class DexterParams {
 		DexterParamsXMLParser.Tagger t = taggers.get(name);
 		Tagger tagger = new StandardTagger(name, getSpotter(t.getSpotter()),
 				getDisambiguator(t.getDisambiguator()));
+		DexterLocalParams initParams = new DexterLocalParams();
+		for (Param p : t.getParams().getParams()) {
+			logger.info("adding param {} -> {}", p.getName(), p.getValue());
+			initParams.addParam(p.getName(), p.getValue());
+		}
+		tagger.init(dexterParams, initParams);
 		return tagger;
 	}
 

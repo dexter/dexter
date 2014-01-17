@@ -291,6 +291,41 @@ public class DexterParamsXMLParser {
 
 	}
 
+	public static class Params {
+		public List<Param> params = new ArrayList<Param>();
+
+		public List<Param> getParams() {
+			return params;
+		}
+
+		public void setParams(List<Param> params) {
+			this.params = params;
+		}
+
+	}
+
+	public static class Param {
+		public String name;
+		public String value;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+	}
+
 	public static class Model {
 
 		public String getName() {
@@ -445,6 +480,7 @@ public class DexterParamsXMLParser {
 	public static class Ranker {
 		String name;
 		String clazz;
+		Params params;
 	}
 
 	public static class Libs {
@@ -486,6 +522,7 @@ public class DexterParamsXMLParser {
 	public static class RelatednessFunction {
 		String name;
 		String clazz;
+		Params params;
 
 		public String getName() {
 			return name;
@@ -551,6 +588,7 @@ public class DexterParamsXMLParser {
 	public static class Spotter {
 		String name;
 		String clazz;
+		Params params;
 
 		public String getName() {
 			return name;
@@ -566,6 +604,14 @@ public class DexterParamsXMLParser {
 
 		public void setClazz(String clazz) {
 			this.clazz = clazz;
+		}
+
+		public Params getParams() {
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
 		}
 
 	}
@@ -573,6 +619,7 @@ public class DexterParamsXMLParser {
 	public static class Disambiguator {
 		String name;
 		String clazz;
+		Params params;
 
 		public String getName() {
 			return name;
@@ -588,6 +635,14 @@ public class DexterParamsXMLParser {
 
 		public void setClazz(String clazz) {
 			this.clazz = clazz;
+		}
+
+		public Params getParams() {
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
 		}
 
 	}
@@ -615,6 +670,7 @@ public class DexterParamsXMLParser {
 		String spotter;
 		String disambiguator;
 		String relatedness;
+		Params params;
 
 		public String getName() {
 			return name;
@@ -646,6 +702,14 @@ public class DexterParamsXMLParser {
 
 		public void setRelatedness(String relatedness) {
 			this.relatedness = relatedness;
+		}
+
+		public Params getParams() {
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
 		}
 
 	}
@@ -680,6 +744,11 @@ public class DexterParamsXMLParser {
 		xstream.addImplicitCollection(Rankers.class, "rankers");
 		xstream.alias("ranker", Ranker.class);
 		xstream.aliasField("class", Ranker.class, "clazz");
+
+		xstream.alias("params", Params.class);
+		xstream.alias("param", Param.class);
+
+		xstream.addImplicitCollection(Params.class, "params");
 
 		xstream.alias("libs", Libs.class);
 

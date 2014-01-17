@@ -107,23 +107,27 @@
 		<default>okkam</default>
 		<disambiguator>
 			<name>okkam</name>
-			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator
-			</class>
+			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator</class>
 		</disambiguator>
 
 		<!-- <disambiguator> -->
 		<!-- <name>wikiminer</name> -->
 		<!-- <class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
 		<!-- </disambiguator> -->
-		<!-- <disambiguator> -->
-		<!-- <name>tagme</name> -->
-		<!-- <class>it.cnr.isti.hpc.tagme.Tagme</class> -->
-
-		<!-- <params> -->
-		<!-- <window-size>30</window-size> -->
-		<!-- <epsilon>0.7</epsilon> -->
-		<!-- </params> -->
-		<!-- </disambiguator> -->
+			<disambiguator>
+		<name>tagme</name>
+		<class>it.cnr.isti.hpc.tagme.Tagme</class>
+		<params>
+		    <param>
+		    	<name>window-size</name>
+		    	<value>30</value>
+		    </param>
+		    <param>
+		        <name>epsilon</name>
+		        <value>0.7</value>
+		    </param>
+		</params>
+		</disambiguator>
 	</disambiguators>
 	<spotters>
 		<default>wiki-dictionary</default>
@@ -133,7 +137,7 @@
 		</spotter>
 	</spotters>
 	<taggers>
-	    <default>dexter</default>
+		<default>dexter</default>
 		<tagger>
 			<name>dexter</name>
 			<spotter>wiki-dictionary</spotter>

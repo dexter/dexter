@@ -50,7 +50,7 @@ public class SpotCLI extends AbstractCommandLineInterface {
 		Document doc = new FlatDocument(IOUtils.getFileAsString(input));
 		DexterParams dexterParams = DexterParams.getInstance();
 		DictionarySpotter spotter = new DictionarySpotter();
-		spotter.init(dexterParams);
+		spotter.init(dexterParams, null);
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start("spot");
 
