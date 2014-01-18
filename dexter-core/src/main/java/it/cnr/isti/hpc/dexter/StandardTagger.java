@@ -172,7 +172,7 @@ public class StandardTagger implements Tagger {
 
 	@Override
 	public void init(DexterParams dexterParams,
-			DexterLocalParams moduleInitParams) {
+			DexterLocalParams defaultModuleParams) {
 		// TODO Auto-generated method stub
 
 	}

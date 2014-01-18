@@ -126,7 +126,7 @@ public class DictionarySpotter implements Spotter {
 
 	@Override
 	public void init(DexterParams dexterParams,
-			DexterLocalParams dexterInitParams) {
+			DexterLocalParams defaultModuleParams) {
 
 	}
 

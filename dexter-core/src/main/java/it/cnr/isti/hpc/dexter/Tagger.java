@@ -86,9 +86,9 @@ public interface Tagger {
 	 * @param dexterParams
 	 *            the global params of the project.
 	 * 
-	 * @param moduleInitParams
+	 * @param defaultModuleParams
 	 *            the module init params
 	 */
 	public void init(DexterParams dexterParams,
-			DexterLocalParams moduleInitParams);
+			DexterLocalParams defaultModuleParams);
 }

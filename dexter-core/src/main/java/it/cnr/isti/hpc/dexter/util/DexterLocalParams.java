@@ -59,6 +59,10 @@ public class DexterLocalParams {
 		return params.get(key);
 	}
 
+	public boolean containsKey(String key) {
+		return params.containsKey(key);
+	}
+
 	public int getIntParam(String key) {
 		return Integer.parseInt(params.get(key));
 	}
