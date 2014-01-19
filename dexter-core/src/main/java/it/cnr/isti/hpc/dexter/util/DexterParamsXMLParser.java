@@ -540,6 +540,16 @@ public class DexterParamsXMLParser {
 			this.clazz = clazz;
 		}
 
+		public Params getParams() {
+			if (params == null)
+				params = new Params();
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
+		}
+
 	}
 
 	public static class Disambiguators {
@@ -607,6 +617,8 @@ public class DexterParamsXMLParser {
 		}
 
 		public Params getParams() {
+			if (params == null)
+				params = new Params();
 			return params;
 		}
 
@@ -638,6 +650,8 @@ public class DexterParamsXMLParser {
 		}
 
 		public Params getParams() {
+			if (params == null)
+				params = new Params();
 			return params;
 		}
 
@@ -705,6 +719,8 @@ public class DexterParamsXMLParser {
 		}
 
 		public Params getParams() {
+			if (params == null)
+				params = new Params();
 			return params;
 		}
 

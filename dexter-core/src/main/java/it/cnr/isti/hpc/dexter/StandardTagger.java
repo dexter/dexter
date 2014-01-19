@@ -135,6 +135,7 @@ public class StandardTagger implements Tagger {
 		if (localParams != null) {
 			if (localParams.hasSpotter()) {
 				spotter = localParams.getSpotter();
+
 			}
 			if (localParams.hasDisambiguator()) {
 				disambiguator = localParams.getDisambiguator();
