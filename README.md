@@ -38,3 +38,7 @@ containing all the resources for running Dexter.
 ### Updates
   - 19 November: added support (and REST API) for categories, more details on the [website](www.dxtr.it/dev)
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diegoceccarelli/dexter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
