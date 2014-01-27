@@ -34,10 +34,12 @@ public class AnnotatedDocument {
 	private String text;
 	private String annotatedText;
 	private List<AnnotatedSpot> spots;
+	private Tagmeta meta;
 
 	public AnnotatedDocument(String text) {
 		this.text = text;
 		spots = new ArrayList<AnnotatedSpot>();
+
 	}
 
 	public void annotate(EntityMatchList eml) {
@@ -115,6 +117,13 @@ public class AnnotatedDocument {
 		return "AnnotatedDocument [text=" + text + ", annotatedText="
 				+ annotatedText + ", spots=" + spots + "]";
 	}
-	
+
+	public Tagmeta getMeta() {
+		return meta;
+	}
+
+	public void setMeta(Tagmeta meta) {
+		this.meta = meta;
+	}
 
 }

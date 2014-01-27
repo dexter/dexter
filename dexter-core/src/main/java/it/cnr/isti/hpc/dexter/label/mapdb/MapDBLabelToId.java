@@ -19,7 +19,6 @@ import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.LabelToId;
 import it.cnr.isti.hpc.dexter.label.LabelToIdWriter;
 import it.cnr.isti.hpc.mapdb.MapDB;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(MapDBLabelToId.class);
 
-	ProjectProperties properties;
 	private static final String COLLECTION_NAME = "a2id";
 	private static MapDBLabelToId instance;
 	MapDB db;
@@ -49,7 +47,6 @@ public class MapDBLabelToId implements LabelToId, LabelToIdWriter {
 
 	private MapDBLabelToId(boolean readonly) {
 		db = MapDBInstance.getInstance(readonly);
-		properties = new ProjectProperties(this.getClass());
 
 		map = db.getCollection(COLLECTION_NAME);
 		// commitFrequency = properties.getInt("mapdb.commit");

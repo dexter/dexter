@@ -16,18 +16,17 @@
 package it.cnr.isti.hpc.dexter.relatedness;
 
 import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
-import it.cnr.isti.hpc.dexter.graph.NodeFactory;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.structure.LRUCache;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
- * Contains the relatedness between two entities, and several functions 
- * on the graph useful to implement a relatedness function.
+ * Contains the relatedness between two entities, and several functions on the
+ * graph useful to implement a relatedness function.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -38,16 +37,17 @@ public abstract class Relatedness implements Comparable<Relatedness> {
 	protected int x;
 	protected int y;
 	protected double score;
-	
+
+	private static DexterParams params = DexterParams.getInstance();
 	private static IntList list = new IntArrayList();
+
 	private IncomingNodes in;// =
 								// NodeFactory.getIncomingNodes(NodeFactory.STD_TYPE);
 	private OutcomingNodes out; // =
 								// NodeFactory.getOutcomingNodes(NodeFactory.STD_TYPE);
-	protected static ProjectProperties properties = new ProjectProperties(
-			Relatedness.class);
-	private static LRUCache<Couple, Double> cache = new LRUCache<Couple, Double>(properties.getInt("relatedness.cache.size"));
-	protected static final int W = properties.getInt("w");
+
+	private static LRUCache<Couple, Double> cache = new LRUCache<Couple, Double>(
+			params.getCacheSize("relatedness"));
 
 	public Relatedness() {
 		super();
@@ -77,6 +77,7 @@ public abstract class Relatedness implements Comparable<Relatedness> {
 
 	protected abstract double score();
 
+	@Override
 	public int compareTo(Relatedness r) {
 		if (this.equals(r))
 			return 0;

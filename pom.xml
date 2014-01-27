@@ -53,6 +53,20 @@
 				        <complianceLevel>1.6</complianceLevel>
 				    </configuration>
 				</plugin>
+				
+			    <plugin>
+			           <groupId>org.codehaus.mojo</groupId>
+			           <artifactId>license-maven-plugin</artifactId>
+			           <version>1.6</version>
+			           <executions>
+			             <execution>
+			               <id>download-licenses</id>
+			               <goals>
+			                 <goal>download-licenses</goal>
+			               </goals>
+			             </execution>
+			           </executions>
+			         </plugin>
 			
             </plugins>
         </pluginManagement>

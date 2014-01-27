@@ -18,10 +18,11 @@ package it.cnr.isti.hpc.dexter.cli.graph;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.graph.EntityCategoryNodeFactory;
 import it.cnr.isti.hpc.dexter.graph.Node;
+import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 
@@ -54,6 +55,8 @@ public class IndexIncomingEntityCategoryNodesCLI extends
 
 	private static String[] params = new String[] { "input" };
 
+	private static final DexterParams dexterParams = DexterParams.getInstance();
+
 	private static final String USAGE = "java -cp $jar "
 			+ IndexIncomingEntityCategoryNodesCLI.class
 			+ " -input incoming-categories-file";
@@ -61,11 +64,9 @@ public class IndexIncomingEntityCategoryNodesCLI extends
 	public static void main(String[] args) {
 		IndexIncomingEntityCategoryNodesCLI cli = new IndexIncomingEntityCategoryNodesCLI(
 				args);
-		ProjectProperties properties = new ProjectProperties(
-				IndexIncomingEntityCategoryNodesCLI.class);
 
-		File incomingFile = new File(properties.get("data.dir"),
-				properties.get("ram.incoming.entity.category.nodes"));
+		File incomingFile = dexterParams.getGraph("entity-category",
+				Direction.IN);
 		if (incomingFile.exists()) {
 			logger.info("serialized file {} yet exists, removing", incomingFile);
 			incomingFile.delete();

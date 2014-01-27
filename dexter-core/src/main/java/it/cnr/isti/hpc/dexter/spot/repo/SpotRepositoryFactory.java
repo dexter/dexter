@@ -15,11 +15,10 @@
  */
 package it.cnr.isti.hpc.dexter.spot.repo;
 
+import it.cnr.isti.hpc.dexter.spot.ram.RamSpotRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import it.cnr.isti.hpc.dexter.spot.ram.RamSpotRepository;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
  * SpotRepositoryFactory returns a spot repository instance given a string
@@ -32,13 +31,10 @@ import it.cnr.isti.hpc.property.ProjectProperties;
  */
 public class SpotRepositoryFactory {
 
-	private ProjectProperties properties;
-
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotRepositoryFactory.class);
 
 	public SpotRepositoryFactory() {
-		properties = new ProjectProperties(SpotRepository.class);
 	}
 
 	/**
@@ -76,7 +72,9 @@ public class SpotRepositoryFactory {
 	 * Dexter property file (<code> spot.repository </code>)
 	 */
 	public SpotRepository getStdInstance() {
-		return getInstance(properties.get("spot.repository"));
+		// return getInstance(properties.get("spot.repository"));
+		// FIXME remove spotRepositoryFactory?
+		return getInstance("ram");
 	}
 
 }

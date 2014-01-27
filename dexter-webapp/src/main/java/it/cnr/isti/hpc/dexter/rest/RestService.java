@@ -15,9 +15,11 @@
  */
 package it.cnr.isti.hpc.dexter.rest;
 
-import it.cnr.isti.hpc.dexter.Dexter;
+import it.cnr.isti.hpc.dexter.StandardTagger;
+import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
+import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
@@ -26,8 +28,12 @@ import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
+import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +44,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +67,20 @@ public class RestService {
 	private static Gson gson = new GsonBuilder()
 			.serializeSpecialFloatingPointValues().create();
 	private final ArticleServer server = new ArticleServer();
-	private final Dexter tagger = new Dexter();
+
+	public static final DexterParams params = DexterParams.getInstance();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RestService.class);
+
+	private DexterLocalParams getLocalParams(UriInfo ui) {
+		MultivaluedMap<String, String> queryParams = ui.getQueryParameters();
+		DexterLocalParams params = new DexterLocalParams();
+		for (String key : queryParams.keySet()) {
+			params.addParam(key, queryParams.getFirst(key));
+		}
+		return params;
+	}
 
 	/**
 	 * Performs the entity linking on a given text, annotating maximum n
@@ -77,13 +96,34 @@ public class RestService {
 	@GET
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotate(@QueryParam("text") String text,
-			@QueryParam("n") @DefaultValue("5") String n) {
+	public String annotate(@Context UriInfo ui,
+			@QueryParam("text") String text,
+			@QueryParam("n") @DefaultValue("5") String n,
+			@QueryParam("spt") String spotter,
+			@QueryParam("dsb") String disambiguator,
+			@QueryParam("debug") String dbg) {
+
+		Spotter s = params.getSpotter(spotter);
+		Disambiguator d = params.getDisambiguator(disambiguator);
+		Tagger tagger = new StandardTagger("std", s, d);
+		Boolean debug = new Boolean(dbg);
+
+		DexterLocalParams requestParams = getLocalParams(ui);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
 		Document doc = new FlatDocument(text);
-		EntityMatchList eml = tagger.tag(doc);
+		EntityMatchList eml = tagger.tag(requestParams, doc);
+
 		AnnotatedDocument adoc = new AnnotatedDocument(text);
+		if (debug) {
+			Tagmeta meta = new Tagmeta();
+			meta.setDisambiguator(d.getClass().toString());
+			meta.setSpotter(s.getClass().toString());
+			meta.setRequestParams(requestParams);
+
+			adoc.setMeta(meta);
+
+		}
 		adoc.annotate(eml, entitiesToAnnotate);
 		String annotated = gson.toJson(adoc);
 		logger.info("annotate: {}", annotated);
@@ -144,10 +184,12 @@ public class RestService {
 	@GET
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spot(@QueryParam("text") String text) {
+	public String spot(@QueryParam("text") String text,
+			@QueryParam("spt") String spt) {
 		long start = System.currentTimeMillis();
+		Spotter spotter = params.getSpotter(spt);
 		Document d = new FlatDocument(text);
-		SpotMatchList sml = tagger.spot(d);
+		SpotMatchList sml = spotter.match(null, d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
 
@@ -175,5 +217,4 @@ public class RestService {
 		logger.info("spot: {}", spotted);
 		return spotted;
 	}
-
 }

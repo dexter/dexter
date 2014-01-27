@@ -15,11 +15,10 @@
  */
 package it.cnr.isti.hpc.dexter.graph.ram;
 
+import it.cnr.isti.hpc.dexter.graph.NodeStar;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
-import it.cnr.isti.hpc.property.ProjectProperties;
-
-import java.io.File;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +37,10 @@ public class RamOutcomingEntityCategoryNodes extends RamNodes implements
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamOutcomingEntityCategoryNodes.class);
 
-	static private ProjectProperties properties = new ProjectProperties(
-			RamOutcomingEntityCategoryNodes.class);
+	private static DexterParams params = DexterParams.getInstance();
 
 	private RamOutcomingEntityCategoryNodes() {
-		super(new File(properties.get("data.dir"),
-				properties.get("ram.outcoming.entity.category.nodes")));
+		super(params.getGraph("entity-category", NodeStar.Direction.OUT));
 	}
 
 	public static RamOutcomingEntityCategoryNodes getInstance() {

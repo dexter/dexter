@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+
+	<models>
+		<default>en</default>
+		<model>
+			<name>en</name>
+			<path>../dexter-core/data</path>
+		</model>
+		<model>
+			<name>it</name>
+			<path>data/it</path>
+		</model>
+	</models>
+
+	<labels>
+		<dir>mapdb</dir>
+	</labels>
+
+	<index>
+		<dir>lucene</dir>
+		<wikiIdMap>wiki2lucene-map.bin</wikiIdMap>
+	</index>
+
+	<thresholds>
+		<threshold>
+			<name>commonness</name>
+			<value>0.005</value>
+		</threshold>
+		<threshold>
+			<name>linkprobability</name>
+			<value>0.02</value>
+		</threshold>
+	</thresholds>
+
+
+	<graphs>
+		<dir>graph</dir>
+		<graph>
+			<name>entity-entity</name>
+			<incoming>incoming-edges.bin</incoming>
+			<outcoming>outcoming-edges.bin</outcoming>
+		</graph>
+		<graph>
+			<name>entity-category</name>
+			<incoming>incoming-entity-category-edges.bin</incoming>
+			<outcoming>outcoming-entity-category-edges.bin</outcoming>
+
+		</graph>
+		<graph>
+			<name>category-category</name>
+			<incoming>incoming-category-edges.bin</incoming>
+			<outcoming>outcoming-category-edges.bin</outcoming>
+		</graph>
+	</graphs>
+
+
+
+	<rankers>
+		<ranker>
+			<name>commonness</name>
+			<class>asd</class>
+		</ranker>
+		<ranker>
+			<name>context-similarity</name>
+			<class>asd</class>
+		</ranker>
+	</rankers>
+
+
+
+
+	<libs>
+		<lib>../dexter-core/libs</lib>
+	</libs>
+
+	<caches>
+		<cache>
+			<name>relatedness</name>
+			<size>5000</size>
+		</cache>
+		<cache>
+			<name>spotter</name>
+			<size>10000</size>
+		</cache>
+	</caches>
+
+	<relatednessFunctions>
+		<default>milnewitten</default>
+		<relatednessFunction>
+			<name>milnewitten</name>
+			<class>it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness</class>
+		</relatednessFunction>
+	</relatednessFunctions>
+
+	<spotRepository>
+		<dir>spot</dir>
+		<plainSpots>spots.tsv.gz</plainSpots>
+		<perfectHash>ram/minimal-perfect-hash.bin</perfectHash>
+		<offsets>ram/offsets.gz</offsets>
+		<eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
+		<spotsData>ram/spots.bin</spotsData>
+	</spotRepository>
+
+
+	<disambiguators>
+		<default>okkam</default>
+		<disambiguator>
+			<name>okkam</name>
+			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator</class>
+		</disambiguator>
+
+		<!-- <disambiguator> -->
+		<!-- <name>wikiminer</name> -->
+		<!-- <class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
+		<!-- </disambiguator> -->
+			<disambiguator>
+		<name>tagme</name>
+		<class>it.cnr.isti.hpc.tagme.Tagme</class>
+		<params>
+		    <param>
+		    	<name>window-size</name>
+		    	<value>30</value>
+		    </param>
+		    <param>
+		        <name>epsilon</name>
+		        <value>0.7</value>
+		    </param>
+		</params>
+		</disambiguator>
+	</disambiguators>
+	<spotters>
+		<default>wiki-dictionary</default>
+		<spotter>
+			<name>wiki-dictionary</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
+		</spotter>
+	</spotters>
+	<taggers>
+		<default>dexter</default>
+		<tagger>
+			<name>dexter</name>
+			<spotter>wiki-dictionary</spotter>
+			<disambiguator>tagme</disambiguator>
+			<relatedness>milnewitten</relatedness>
+		</tagger>
+	</taggers>
+</config>

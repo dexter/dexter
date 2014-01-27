@@ -18,10 +18,11 @@ package it.cnr.isti.hpc.dexter.cli.graph;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.graph.EntityCategoryNodeFactory;
 import it.cnr.isti.hpc.dexter.graph.Node;
+import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
 
@@ -57,14 +58,14 @@ public class IndexOutcomingEntityCategoryNodesCLI extends
 			+ IndexOutcomingEntityCategoryNodesCLI.class
 			+ " -input outcoming-entity-categories-file";
 
+	private static final DexterParams dexterParams = DexterParams.getInstance();
+
 	public static void main(String[] args) {
 		IndexOutcomingEntityCategoryNodesCLI cli = new IndexOutcomingEntityCategoryNodesCLI(
 				args);
-		ProjectProperties properties = new ProjectProperties(
-				IndexOutcomingEntityCategoryNodesCLI.class);
 
-		File outcomingFile = new File(properties.get("data.dir"),
-				properties.get("ram.outcoming.entity.category.nodes"));
+		File outcomingFile = dexterParams.getGraph("entity-category",
+				Direction.OUT);
 
 		if (outcomingFile.exists()) {
 			logger.info("serialized file {} yet exists, removing",

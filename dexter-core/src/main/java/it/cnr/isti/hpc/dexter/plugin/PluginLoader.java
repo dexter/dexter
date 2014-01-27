@@ -19,15 +19,13 @@ import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import org.apache.lucene.analysis.util.ClasspathResourceLoader;
-import org.apache.tools.ant.util.ClasspathUtils;
+import jodd.util.ClassLoaderUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,31 +39,32 @@ import org.slf4j.LoggerFactory;
  */
 public class PluginLoader {
 
-	PClassLoader loader;
-	ClasspathResourceLoader luceneLoader = new ClasspathResourceLoader();
-	ProjectProperties properties = new ProjectProperties(PluginLoader.class);
+	// PClassLoader loader;
+	// ClasspathResourceLoader luceneLoader = new ClasspathResourceLoader();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(PluginLoader.class);
 
-	public PluginLoader() {
+	public PluginLoader(File libDir) {
 
-		URLClassLoader l = (URLClassLoader) ClassLoader.getSystemClassLoader();
+		// URLClassLoader l = (URLClassLoader)
+		// ClassLoader.getSystemClassLoader();
 
-		loader = new PClassLoader(l.getURLs());
-		File libDir = new File(properties.get("lib.dir"));
+		// loader = new PClassLoader(l.getURLs());
+
 		if (!libDir.exists() || !libDir.isDirectory()) {
-			logger.warn("cannot find {} ", libDir);
+			logger.warn("cannot find lib: {} ", libDir.getAbsolutePath());
 			return;
 		}
 		for (File file : libDir.listFiles()) {
 			if (file.isFile() && file.getName().endsWith(".jar")) {
-				try {
-					loader.addURL(file.toURL());
-				} catch (MalformedURLException e) {
-					logger.error("loading the library {} ", file.getName());
-					continue;
-				}
+				ClassLoaderUtil.addFileToClassPath(file);
+				// try {
+				// loader.addURL(file.toURL());
+				// } catch (MalformedURLException e) {
+				// logger.error("loading the library {} ", file.getName());
+				// continue;
+				// }
 				logger.info("{} loaded ", file.getName());
 			}
 
@@ -75,40 +74,101 @@ public class PluginLoader {
 
 	public Spotter getSpotter(String spotClass) {
 		Spotter spotter = null;
+		// try {
+		// spotter = (Spotter) ClasspathUtils.newInstance(spotClass, loader);
+		// } catch (Exception e) {
+		// logger.error("generating the spotter {}:", spotClass);
+		// e.printStackTrace();
+		Class c = null;
 		try {
-			spotter = (Spotter) ClasspathUtils.newInstance(spotClass, loader);
-		} catch (Exception e) {
-			logger.error("generating the spotter {}:", spotClass);
-			// e.printStackTrace();
-			spotter = luceneLoader.newInstance(spotClass, Spotter.class);
-
+			c = Class.forName(spotClass);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+		try {
+			spotter = (Spotter) c.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// }
 		return spotter;
 	}
 
 	public Disambiguator getDisambiguator(String disambiguatorClass) {
 		Disambiguator disambiguator = null;
+		Class c = null;
 		try {
-			disambiguator = (Disambiguator) ClasspathUtils.newInstance(
-					disambiguatorClass, loader);
-		} catch (Exception e) {
-			disambiguator = luceneLoader.newInstance(disambiguatorClass,
-					Disambiguator.class);
-
+			c = Class.forName(disambiguatorClass);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+		try {
+			disambiguator = (Disambiguator) c.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// }
+
 		return disambiguator;
 	}
 
 	public Relatedness getRelatedness(String relatednessClass) {
-		Relatedness relatedness = (Relatedness) ClasspathUtils.newInstance(
-				relatednessClass, loader);
+		Relatedness relatedness = null;
+		Class c = null;
+		try {
+			c = Class.forName(relatednessClass);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+		try {
+			relatedness = (Relatedness) c.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// }
 
 		return relatedness;
 	}
 
 	public Tagger getTagger(String taggerClass) {
-		Tagger tagger = (Tagger) ClasspathUtils
-				.newInstance(taggerClass, loader);
+		Tagger tagger = null;
+		Class c = null;
+		try {
+			c = Class.forName(taggerClass);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+		try {
+			tagger = (Tagger) c.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// }
+
 		return tagger;
 	}
 

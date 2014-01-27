@@ -19,14 +19,11 @@ import it.cnr.isti.hpc.dexter.graph.Node;
 import it.cnr.isti.hpc.dexter.graph.NodeStar;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
 import it.cnr.isti.hpc.io.Serializer;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.ints.IntIterator;
 
 import java.io.File;
-import java.util.Arrays;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,8 +39,6 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamNodes.class);
 
-	ProjectProperties properties;
-
 	Int2ObjectOpenHashMap<int[]> map;
 	File serializedFile = null;
 
@@ -51,12 +46,12 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 
 	protected RamNodes(File serializedFile) {
 		this.serializedFile = serializedFile;
-		properties = new ProjectProperties(this.getClass());
 		if (serializedFile.exists()) {
 			load();
 		} else {
-			logger.warn("cannot find {}, using empty ram nodes",serializedFile.getAbsolutePath());
-			
+			logger.warn("cannot find {}, using empty ram nodes",
+					serializedFile.getAbsolutePath());
+
 			map = new Int2ObjectOpenHashMap<int[]>(5000000);
 		}
 	}
@@ -66,6 +61,7 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 		map = (Int2ObjectOpenHashMap<int[]>) sr.load(serializedFile.getPath());
 	}
 
+	@Override
 	public void add(Node n) {
 		map.put(n.getNode(), n.getNeighbours());
 	}
@@ -74,12 +70,14 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 		return;
 	}
 
+	@Override
 	public void close() {
 		Serializer sr = new Serializer();
 		logger.info("storing edges in {} ", serializedFile);
 		sr.dump(map, serializedFile.getPath());
 	}
 
+	@Override
 	public int[] getNeighbours(int id) {
 		int[] n = map.get(id);
 		if (n == null) {
@@ -89,14 +87,19 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 		return n;
 	}
 
+	@Override
 	public Node getNode(int id) {
 		int[] neigh = getNeighbours(id);
 		return new Node(id, neigh);
 	}
 
-
 	public IntIterator iterator() {
 		return map.keySet().iterator();
+	}
+
+	@Override
+	public int size() {
+		return map.size();
 	}
 
 }

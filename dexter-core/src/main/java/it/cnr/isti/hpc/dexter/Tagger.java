@@ -33,40 +33,62 @@ package it.cnr.isti.hpc.dexter;
 
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
  * 
- * A tagger performs the whole entity linking process. 
- * A typical entity linking system performs this task
- * in two steps: spotting and disambiguation. 
+ * A tagger performs the whole entity linking process. A typical entity linking
+ * system performs this task in two steps: spotting and disambiguation. <br>
  * <br>
- * <br>
- * The spotting process identifies a set of candidate spots 
- * in the input document, and produces a list of candidate entities 
- * for each spot. 
- * </br>
- * Then, the disambiguation process selects the most 
- * relevant spots and the most likely entities among the candidates.
- * The spotting step exploits a given catalog of named entities, 
- * or some knowledge base, to devise the possible mentions of 
- * entities occurring in the input.
+ * The spotting process identifies a set of candidate spots in the input
+ * document, and produces a list of candidate entities for each spot. </br>
+ * Then, the disambiguation process selects the most relevant spots and the most
+ * likely entities among the candidates. The spotting step exploits a given
+ * catalog of named entities, or some knowledge base, to devise the possible
+ * mentions of entities occurring in the input.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Aug 2, 2013
+ *         Created on Aug 2, 2013
  */
 public interface Tagger {
-	
+
 	/**
-	 * Takes a Document performs the entity linking. 
-	 * It returns an {link EntityMatchList}, that maps some spots
-	 * detected in the document with one (and only one) entity. 
+	 * Takes a Document performs the entity linking. It returns an {link
+	 * EntityMatchList}, that maps some spots detected in the document with one
+	 * (and only one) entity.
 	 * 
-	 * @param document - a document to annotate.  
-	 * @returns A list of entities detected in the document, an empty list
-	 * if the tagger does not annotate anything.
+	 * @param document
+	 *            - a document to annotate.
+	 * @returns A list of entities detected in the document, an empty list if
+	 *          the tagger does not annotate anything.
 	 */
 	public EntityMatchList tag(Document document);
-	
 
+	/**
+	 * Takes a Document performs the entity linking. It returns an {link
+	 * EntityMatchList}, that maps some spots detected in the document with one
+	 * (and only one) entity.
+	 * 
+	 * @param localParams
+	 *            contains particular parameters set for this query, can be null
+	 * @param document
+	 *            - a document to annotate.
+	 * @returns A list of entities detected in the document, an empty list if
+	 *          the tagger does not annotate anything.
+	 */
+	public EntityMatchList tag(DexterLocalParams localParams, Document document);
+
+	/**
+	 * Initializes the Tagger with the global params.
+	 * 
+	 * @param dexterParams
+	 *            the global params of the project.
+	 * 
+	 * @param defaultModuleParams
+	 *            the module init params
+	 */
+	public void init(DexterParams dexterParams,
+			DexterLocalParams defaultModuleParams);
 }

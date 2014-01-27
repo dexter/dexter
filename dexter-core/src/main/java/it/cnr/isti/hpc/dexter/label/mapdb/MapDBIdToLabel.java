@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.label.mapdb;
 import it.cnr.isti.hpc.dexter.label.IdToLabel;
 import it.cnr.isti.hpc.dexter.label.IdToLabelWriter;
 import it.cnr.isti.hpc.mapdb.MapDB;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import java.util.Map;
 
@@ -38,7 +37,6 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(MapDBLabelToId.class);
 
-	ProjectProperties properties;
 	private static final String COLLECTION_NAME = "id2a";
 	private static MapDBIdToLabel instance;
 	MapDB db;
@@ -49,7 +47,6 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 
 	private MapDBIdToLabel(boolean readonly) {
 		db = MapDBInstance.getInstance(readonly);
-		properties = new ProjectProperties(this.getClass());
 		map = db.getCollection(COLLECTION_NAME);
 		// commitFrequency = properties.getInt("mapdb.commit");
 	}

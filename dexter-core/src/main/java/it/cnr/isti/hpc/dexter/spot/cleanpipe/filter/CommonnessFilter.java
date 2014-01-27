@@ -17,7 +17,7 @@ package it.cnr.isti.hpc.dexter.spot.cleanpipe.filter;
 
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.spot.Spot;
-import it.cnr.isti.hpc.property.ProjectProperties;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,25 +32,22 @@ import org.slf4j.LoggerFactory;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
 public class CommonnessFilter extends Filter<Spot> {
-	
-	
+
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(CommonnessFilter.class);
 
+	DexterParams params = DexterParams.getInstance();
 	double threshold = 0.005;
 
 	public CommonnessFilter() {
-		ProjectProperties properties = new ProjectProperties(
-				CommonnessFilter.class);
-		if (properties.has("spot.commonness.threshold")) {
-			threshold = Double.parseDouble(properties
-					.get("spot.commonness.threshold"));
-		}
+		// TODO check for errors
+		threshold = params.getThreshold("commonness");
 	}
 
+	@Override
 	public boolean isFilter(Spot spot) {
 		List<Entity> entities = new ArrayList<Entity>();
 		for (Entity e : spot.getEntities()) {

@@ -15,34 +15,32 @@
  */
 package it.cnr.isti.hpc.dexter.graph.ram;
 
+import it.cnr.isti.hpc.dexter.graph.NodeStar;
 import it.cnr.isti.hpc.dexter.graph.NodesWriter;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
-import it.cnr.isti.hpc.property.ProjectProperties;
-
-import java.io.File;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * RamIncomingCategoryNodes allows to keep the outcoming category nodes for each node in a graph
- * directly in main memory.
+ * RamIncomingCategoryNodes allows to keep the outcoming category nodes for each
+ * node in a graph directly in main memory.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 05/lug/2012
  */
-public class RamOutcomingCategoryNodes extends RamNodes implements OutcomingNodes,
-		NodesWriter {
+public class RamOutcomingCategoryNodes extends RamNodes implements
+		OutcomingNodes, NodesWriter {
 
 	private static RamOutcomingCategoryNodes instance = null;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamOutcomingCategoryNodes.class);
 
-	static private ProjectProperties properties = new ProjectProperties(
-			RamOutcomingCategoryNodes.class);
+	private static DexterParams params = DexterParams.getInstance();
 
 	private RamOutcomingCategoryNodes() {
-		super(new File(properties.get("data.dir"),properties.get("ram.outcoming.category.nodes")));
+		super(params.getGraph("category-category", NodeStar.Direction.IN));
 	}
 
 	public static RamOutcomingCategoryNodes getInstance() {

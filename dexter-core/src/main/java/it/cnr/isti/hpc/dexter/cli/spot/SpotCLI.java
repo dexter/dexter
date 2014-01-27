@@ -21,6 +21,7 @@ import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.IOUtils;
 
 import org.slf4j.Logger;
@@ -28,7 +29,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Performs the spotting over a document using the {@link DictionarySpotter},
- * prints on the stout the list of the matched spots with their candidate entities.
+ * prints on the stout the list of the matched spots with their candidate
+ * entities.
  * 
  */
 public class SpotCLI extends AbstractCommandLineInterface {
@@ -46,16 +48,18 @@ public class SpotCLI extends AbstractCommandLineInterface {
 		SpotCLI cli = new SpotCLI(args);
 		String input = cli.getInput();
 		Document doc = new FlatDocument(IOUtils.getFileAsString(input));
+		DexterParams dexterParams = DexterParams.getInstance();
 		DictionarySpotter spotter = new DictionarySpotter();
+		spotter.init(dexterParams, null);
 		Stopwatch stopwatch = new Stopwatch();
 		stopwatch.start("spot");
-		SpotMatchList sml =  spotter.match(doc);
+
+		SpotMatchList sml = spotter.match(null, doc);
 		stopwatch.stop("spot");
-		
+
 		logger.info("matched {} spot  ", sml.size());
 		logger.info("{}", stopwatch.stat("spot"));
 		System.out.println(sml);
-		
 
 	}
 

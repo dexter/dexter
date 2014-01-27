@@ -17,10 +17,10 @@ package it.cnr.isti.hpc.dexter.relatedness;
 
 import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
 import it.cnr.isti.hpc.dexter.graph.NodeFactory;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 /**
- * Implements the standard relatedness function proposed by Milne and Witten [1].
+ * Implements the standard relatedness function proposed by Milne and Witten
+ * [1].
  * 
  * <br>
  * <br>
@@ -36,10 +36,8 @@ public class MilneRelatedness extends Relatedness {
 
 	private static IncomingNodes in = NodeFactory
 			.getIncomingNodes(NodeFactory.STD_TYPE);
-	private static ProjectProperties properties = new ProjectProperties(
-			MilneRelatedness.class);
 
-	private static final int W = properties.getInt("w");
+	private static final int W = in.size();
 	private static final double logW = Math.log(W);
 
 	public MilneRelatedness() {

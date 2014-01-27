@@ -34,32 +34,40 @@ package it.cnr.isti.hpc.dexter.disambiguation;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 /**
- * Implements the Okkam's Razor principle, resolving the ambiguity for 
- * a spot using the entity with the largest probability to be 
- * represented by the spot (this probability is called <i>commonness</i>, 
- * and it is computed as the ratio between the links that point to the entity
- * (using the spot as anchor) and the total number of links that have the spot
- * as anchor. 
+ * Implements the Okkam's Razor principle, resolving the ambiguity for a spot
+ * using the entity with the largest probability to be represented by the spot
+ * (this probability is called <i>commonness</i>, and it is computed as the
+ * ratio between the links that point to the entity (using the spot as anchor)
+ * and the total number of links that have the spot as anchor.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Sep 30, 2013
+ *         Created on Sep 30, 2013
  */
 public class TopScoreEntityDisambiguator implements Disambiguator {
 
 	@Override
-	public EntityMatchList disambiguate(SpotMatchList sml) {
+	public EntityMatchList disambiguate(DexterLocalParams localParams,
+			SpotMatchList sml) {
 		EntityMatchList eml = new EntityMatchList();
-		for (SpotMatch match : sml){
+		for (SpotMatch match : sml) {
 			EntityMatchList list = match.getEntities();
-			if (! list.isEmpty()){
+			if (!list.isEmpty()) {
 				list.sort();
 				eml.add(list.get(0));
 			}
 		}
 		return eml;
+	}
+
+	@Override
+	public void init(DexterParams dexterParams,
+			DexterLocalParams dexterModuleParams) {
+
 	}
 
 }
