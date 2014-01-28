@@ -109,7 +109,7 @@ public class SpotManager {
 			// pre filter
 			standardSpotManager.add(new SymbolFilter());
 			standardSpotManager.add(new TemplateFilter());
-			standardSpotManager.add(new LengthFilter());
+			standardSpotManager.add(new LengthFilter(2));
 			standardSpotManager.add(new AsciiFilter());
 			standardSpotManager.add(new ImageFilter());
 
