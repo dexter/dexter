@@ -5,7 +5,7 @@
 		<default>en</default>
 		<model>
 			<name>en</name>
-			<path>data</path>
+			<path>/data/diego/model20130403</path>
 		</model>
 		<model>
 			<name>it</name>

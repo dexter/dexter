@@ -79,8 +79,8 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 				target = hp.getId(a.getRedirectNoAnchor());
 				for (String spot : spotManager.getAllSpots(a)) {
 					if (target == 0) {
-						logger.warn("cannot find id for redirect label {}",
-								a.getRedirectNoAnchor());
+						//logger.warn("cannot find id for redirect label {}",
+						//		a.getRedirectNoAnchor());
 						continue;
 					}
 					if (target > 0) {
@@ -102,8 +102,8 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 					for (String spot : spotManager.process(l.getDescription())) {
 						target = hp.getId(l.getCleanId());
 						if (target == 0) {
-							logger.warn("cannot find id for label {}",
-									l.getCleanId());
+							//logger.warn("cannot find id for label {}",
+							//		l.getCleanId());
 							continue;
 						}
 						if (hp.isDisambiguation(target)) {
