@@ -55,7 +55,7 @@ public class SpotEliasFanoOffsets {
 	}
 
 	public static void dumpEliasFanoFile() {
-		File offsetsFile = params.getSpotsData();
+		File offsetsFile = params.getSpotsOffsetData();
 		File offsetsBinFile = params.getSpotsEliasFano();
 
 		dumpEliasFanoFile(offsetsFile.getAbsolutePath(),
