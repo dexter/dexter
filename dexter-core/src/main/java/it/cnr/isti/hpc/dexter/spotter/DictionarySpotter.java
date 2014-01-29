@@ -98,7 +98,7 @@ public class DictionarySpotter implements Spotter {
 				// s.setEnd(shingle.getEnd());
 
 				if (filter.isFilter(s)) {
-					logger.debug("ignoring spot {}, probability too low {}",
+					logger.info("ignoring spot {}, probability too low {}",
 							s.getMention(), s.getLinkProbability());
 					continue;
 				}

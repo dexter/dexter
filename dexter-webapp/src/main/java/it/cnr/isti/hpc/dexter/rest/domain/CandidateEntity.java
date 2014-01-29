@@ -36,53 +36,66 @@ package it.cnr.isti.hpc.dexter.rest.domain;
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Oct 18, 2013
+ *         Created on Oct 18, 2013
  */
 public class CandidateEntity implements Comparable<CandidateEntity> {
 	int entity;
 	int freq;
 	double commonness;
-	
-	
-	
+	String wikiname;
+
 	public CandidateEntity(int entity, int freq, double commonness) {
 		super();
 		this.entity = entity;
 		this.freq = freq;
 		this.commonness = commonness;
 	}
+
 	public int getEntity() {
 		return entity;
 	}
+
 	public void setEntity(int entity) {
 		this.entity = entity;
 	}
+
 	public int getFreq() {
 		return freq;
 	}
+
 	public void setFreq(int freq) {
 		this.freq = freq;
 	}
+
 	public double getCommonness() {
 		return commonness;
 	}
+
 	public void setCommonness(double commonness) {
 		this.commonness = commonness;
 	}
+
 	@Override
 	public int compareTo(CandidateEntity o) {
-		if (o.getCommonness() > getCommonness()) return 1;
-		if (o.getCommonness() < getCommonness()) return -1;
+		if (o.getCommonness() > getCommonness())
+			return 1;
+		if (o.getCommonness() < getCommonness())
+			return -1;
 		return 0;
 	}
+
+	public String getWikiname() {
+		return wikiname;
+	}
+
+	public void setWikiname(String wikiname) {
+		this.wikiname = wikiname;
+	}
+
 	@Override
 	public String toString() {
 		return "CandidateEntity [entity=" + entity + ", freq=" + freq
 				+ ", commonness=" + commonness + "]";
 	}
-	
-	
-	
-	
 
 }

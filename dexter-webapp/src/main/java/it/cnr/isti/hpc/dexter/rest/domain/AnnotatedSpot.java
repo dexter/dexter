@@ -31,6 +31,7 @@ public class AnnotatedSpot {
 	int linkFrequency;
 	int documentFrequency;
 	int entity;
+	String wikiname;
 	int entityFrequency;
 	double commonness;
 	double score;
@@ -133,6 +134,14 @@ public class AnnotatedSpot {
 
 	public void setScore(double score) {
 		this.score = score;
+	}
+
+	public String getWikiname() {
+		return wikiname;
+	}
+
+	public void setWikiname(String wikiname) {
+		this.wikiname = wikiname;
 	}
 
 	@Override

@@ -60,7 +60,7 @@ public class GraphRestService {
 	@Path("get-target-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getTargetEntities(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		OutcomingNodes entityOutcomingNodes = NodeFactory
@@ -80,7 +80,7 @@ public class GraphRestService {
 	@Path("get-source-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getSourceEntities(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		IncomingNodes entityIncomingNodes = NodeFactory
@@ -100,7 +100,7 @@ public class GraphRestService {
 	@Path("get-entity-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getEntityCategories(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		OutcomingNodes entityOutcomingNodes = EntityCategoryNodeFactory
@@ -120,7 +120,7 @@ public class GraphRestService {
 	@Path("get-belonging-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getBelongingEntities(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		IncomingNodes entityIncomingNodes = EntityCategoryNodeFactory
@@ -140,7 +140,7 @@ public class GraphRestService {
 	@Path("get-parent-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getParentCategories(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		IncomingNodes categoryIncomingNodes = CategoryNodeFactory
@@ -160,7 +160,7 @@ public class GraphRestService {
 	@Path("get-child-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getChildCategories(@QueryParam("wid") String wikiId,
-			@QueryParam("asWikiNames") @DefaultValue("false") String asWikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		OutcomingNodes categoryOutcomingNodes = CategoryNodeFactory

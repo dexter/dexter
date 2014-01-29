@@ -151,7 +151,7 @@ public class DexterParams {
 				.getEliasFanoOffsets());
 		spotsPerfectHash = new File(spotsDir, params.getSpotRepository()
 				.getPerfectHash());
-		plainSpots = new File(defaultModel, params.getSpotRepository()
+		plainSpots = new File(spotsDir, params.getSpotRepository()
 				.getPlainSpots());
 
 	}
