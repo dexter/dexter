@@ -138,7 +138,7 @@ public class SpotManager {
 			// post filter
 			standardSpotManager.add(new SymbolFilter());
 			standardSpotManager.add(new TemplateFilter());
-			standardSpotManager.add(new LengthFilter());
+			standardSpotManager.add(new LengthFilter(2));
 			standardSpotManager.add(new ImageFilter());
 			standardSpotManager.add(new LongSpotFilter());
 			standardSpotManager.add(new StripCleaner(
