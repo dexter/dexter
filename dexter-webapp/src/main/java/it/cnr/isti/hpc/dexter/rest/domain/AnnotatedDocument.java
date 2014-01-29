@@ -17,6 +17,8 @@ package it.cnr.isti.hpc.dexter.rest.domain;
 
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +37,7 @@ public class AnnotatedDocument {
 	private String annotatedText;
 	private List<AnnotatedSpot> spots;
 	private Tagmeta meta;
+	private static IdHelper helper = IdHelperFactory.getStdIdHelper();
 
 	public AnnotatedDocument(String text) {
 		this.text = text;
@@ -42,11 +45,12 @@ public class AnnotatedDocument {
 
 	}
 
-	public void annotate(EntityMatchList eml) {
-		annotate(eml, eml.size());
+	public void annotate(EntityMatchList eml, boolean addWikiNames) {
+		annotate(eml, eml.size(), addWikiNames);
 	}
 
-	public void annotate(EntityMatchList eml, int nEntities) {
+	public void annotate(EntityMatchList eml, int nEntities,
+			boolean addWikiNames) {
 		eml.sort();
 		EntityMatchList emlSub = new EntityMatchList();
 		int size = Math.min(nEntities, eml.size());
@@ -59,6 +63,9 @@ public class AnnotatedDocument {
 							.getSpot().getLinkFrequency(), em.getSpot()
 							.getFrequency(), em.getId(), em.getFrequency(),
 					em.getCommonness(), em.getScore());
+			if (addWikiNames) {
+				spot.setWikiname(helper.getLabel(em.getId()));
+			}
 
 			spots.add(spot);
 		}

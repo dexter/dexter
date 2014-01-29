@@ -24,6 +24,8 @@ import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.label.IdHelper;
+import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
@@ -69,6 +71,7 @@ public class RestService {
 	private final ArticleServer server = new ArticleServer();
 
 	public static final DexterParams params = DexterParams.getInstance();
+	public static final IdHelper helper = IdHelperFactory.getStdIdHelper();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RestService.class);
@@ -101,12 +104,14 @@ public class RestService {
 			@QueryParam("n") @DefaultValue("5") String n,
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
-			@QueryParam("debug") String dbg) {
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
 
 		Spotter s = params.getSpotter(spotter);
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
 		Boolean debug = new Boolean(dbg);
+		boolean addWikinames = new Boolean(wikiNames);
 
 		DexterLocalParams requestParams = getLocalParams(ui);
 
@@ -115,6 +120,7 @@ public class RestService {
 		EntityMatchList eml = tagger.tag(requestParams, doc);
 
 		AnnotatedDocument adoc = new AnnotatedDocument(text);
+
 		if (debug) {
 			Tagmeta meta = new Tagmeta();
 			meta.setDisambiguator(d.getClass().toString());
@@ -124,7 +130,7 @@ public class RestService {
 			adoc.setMeta(meta);
 
 		}
-		adoc.annotate(eml, entitiesToAnnotate);
+		adoc.annotate(eml, entitiesToAnnotate, addWikinames);
 		String annotated = gson.toJson(adoc);
 		logger.info("annotate: {}", annotated);
 		return annotated;
@@ -185,10 +191,12 @@ public class RestService {
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String spot(@QueryParam("text") String text,
-			@QueryParam("spt") String spt) {
+			@QueryParam("spt") String spt,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames) {
 		long start = System.currentTimeMillis();
 		Spotter spotter = params.getSpotter(spt);
 		Document d = new FlatDocument(text);
+		boolean addWikinames = new Boolean(wikiNames);
 		SpotMatchList sml = spotter.match(null, d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
@@ -205,6 +213,9 @@ public class RestService {
 			for (EntityMatch entity : spot.getEntities()) {
 				CandidateEntity c = new CandidateEntity(entity.getId(),
 						entity.getFrequency(), entity.getCommonness());
+				if (addWikinames) {
+					c.setWikiname(helper.getLabel(entity.getId()));
+				}
 				candidates.add(c);
 			}
 			Collections.sort(candidates);
