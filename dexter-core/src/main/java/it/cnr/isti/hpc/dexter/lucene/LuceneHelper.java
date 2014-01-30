@@ -667,6 +667,10 @@ public class LuceneHelper {
 		return getFreq(query, LUCENE_ARTICLE_DEFAULT_FIELD);
 	}
 
+	public int getFreqFromSummary(String query) {
+		return getFreq(query, LUCENE_ARTICLE_SUMMARY);
+	}
+
 	private IndexWriter getWriter() {
 		if (writer == null)
 			try {
