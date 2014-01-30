@@ -16,19 +16,16 @@
 package it.cnr.isti.hpc.dexter.cli.spot;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.cli.label.ExportArticlesIdCLI;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.io.reader.JsonRecordParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +88,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 					}
 				}
 			} else {
+
 				if (!a.isDisambiguation()) {
 					for (String spot : spotManager.process(a.getTitle())) {
 						cli.writeLineInOutput(spot + "\t" + source + "\t"
@@ -106,12 +104,24 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 									l.getCleanId());
 							continue;
 						}
+
 						if (hp.isDisambiguation(target)) {
 							logger.debug(
 									"{} {} is a disambiguation (ignoring)",
 									target, hp.getLabel(target));
 							logger.debug("(source = {})", hp.getLabel(source));
 							continue;
+						}
+						if (a.isDisambiguation()) {
+							// if a is a disambiguation, the label of a is good
+							// for all
+							// the pointed articles
+							for (String label : spotManager.process(a
+									.getTitle())) {
+								cli.writeLineInOutput(label + "\t" + source
+										+ "\t" + target);
+
+							}
 						}
 
 						cli.writeLineInOutput(spot + "\t" + source + "\t"
