@@ -10,7 +10,7 @@
 	<artifactId>dexter-webapp</artifactId>
 	<version>2.0.0</version>
 	<name>Dexter Webapp</name>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<!--packaging>jar</packaging-->
 	
 
@@ -31,6 +31,11 @@
 			<groupId>it.cnr.isti.hpc</groupId>
 			<artifactId>json-wikipedia</artifactId>
 
+		</dependency>
+		
+		<dependency>
+			<groupId>it.cnr.isti.hpc</groupId>
+			<artifactId>dexter-client</artifactId>
 		</dependency>
 
 		<dependency>
