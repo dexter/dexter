@@ -64,6 +64,7 @@ public class DexterParamsXMLParser {
 	private Spotters spotters;
 	private Taggers taggers;
 	private Caches caches;
+	private SpotFilters spotFilters;
 
 	private SpotRepository spotRepository;
 
@@ -99,6 +100,14 @@ public class DexterParamsXMLParser {
 
 	public void setModels(Models models) {
 		this.models = models;
+	}
+
+	public SpotFilters getSpotFilters() {
+		return spotFilters;
+	}
+
+	public void setSpotFilters(SpotFilters spotFilters) {
+		this.spotFilters = spotFilters;
 	}
 
 	public Labels getLabels() {
@@ -598,6 +607,8 @@ public class DexterParamsXMLParser {
 	public static class Spotter {
 		String name;
 		String clazz;
+		List<Filter> filters = new ArrayList<Filter>();
+
 		Params params;
 
 		public String getName() {
@@ -619,6 +630,72 @@ public class DexterParamsXMLParser {
 		public Params getParams() {
 			if (params == null)
 				params = new Params();
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
+		}
+
+		public List<Filter> getFilters() {
+			return filters;
+		}
+
+		public void setFilters(List<Filter> filters) {
+			this.filters = filters;
+		}
+
+	}
+
+	public static class Filter {
+		String name;
+
+		public String getName() {
+			return name.trim();
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+	}
+
+	public static class SpotFilters {
+
+		List<SpotFilter> spotFilters = new ArrayList<SpotFilter>();
+
+		public List<SpotFilter> getSpotFilters() {
+			return spotFilters;
+		}
+
+		public void setSpotFilters(List<SpotFilter> filters) {
+			this.spotFilters = filters;
+		}
+
+	}
+
+	public static class SpotFilter {
+		String name;
+		String clazz;
+		Params params;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getClazz() {
+			return clazz;
+		}
+
+		public void setClazz(String clazz) {
+			this.clazz = clazz;
+		}
+
+		public Params getParams() {
 			return params;
 		}
 
@@ -742,6 +819,12 @@ public class DexterParamsXMLParser {
 
 		xstream.addImplicitCollection(Thresholds.class, "thresholds");
 		xstream.alias("threshold", Threshold.class);
+		xstream.alias("spotFilter", SpotFilter.class);
+		xstream.alias("spotFilters", SpotFilters.class);
+
+		xstream.addImplicitCollection(SpotFilters.class, "spotFilters");
+		xstream.aliasField("class", SpotFilter.class, "clazz");
+
 		xstream.alias("graph", Graph.class);
 		xstream.alias("graphs", Graphs.class);
 		xstream.addImplicitCollection(Graphs.class, "graphs");
@@ -787,6 +870,9 @@ public class DexterParamsXMLParser {
 		xstream.alias("spotters", Spotters.class);
 		xstream.addImplicitCollection(Spotters.class, "spotters");
 		xstream.alias("spotter", Spotter.class);
+
+		xstream.alias("filter", Filter.class);
+		xstream.addImplicitCollection(Filter.class, "filters");
 
 		xstream.aliasField("class", RelatednessFunction.class, "clazz");
 		xstream.aliasField("class", Disambiguator.class, "clazz");

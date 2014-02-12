@@ -17,8 +17,11 @@ package it.cnr.isti.hpc.dexter.spotter;
 
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
+
+import java.util.List;
 
 /**
  * Spotting aims at identifying spots, i.e., contiguous sequences of n terms
@@ -65,4 +68,11 @@ public interface Spotter {
 	 */
 	public void init(DexterParams dexterParams,
 			DexterLocalParams defaultModuleParams);
+
+	/**
+	 * Set the filter to apply to the spots after the spotting
+	 * 
+	 */
+	public void setFilters(List<SpotMatchFilter> filters);
+
 }
