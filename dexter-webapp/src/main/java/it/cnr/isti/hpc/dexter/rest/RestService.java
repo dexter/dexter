@@ -27,6 +27,7 @@ import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
+import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
@@ -125,15 +126,69 @@ public class RestService {
 			Tagmeta meta = new Tagmeta();
 			meta.setDisambiguator(d.getClass().toString());
 			meta.setSpotter(s.getClass().toString());
-			meta.setRequestParams(requestParams);
+			meta.setRequestParams(requestParams.getParams());
 
 			adoc.setMeta(meta);
 
 		}
-		adoc.annotate(eml, entitiesToAnnotate, addWikinames);
+		annotate(adoc, eml, entitiesToAnnotate, addWikinames);
 		String annotated = gson.toJson(adoc);
 		logger.info("annotate: {}", annotated);
 		return annotated;
+	}
+
+	public void annotate(AnnotatedDocument adoc, EntityMatchList eml,
+			boolean addWikiNames) {
+		annotate(adoc, eml, eml.size(), addWikiNames);
+	}
+
+	public void annotate(AnnotatedDocument adoc, EntityMatchList eml,
+			int nEntities, boolean addWikiNames) {
+		eml.sort();
+		EntityMatchList emlSub = new EntityMatchList();
+		int size = Math.min(nEntities, eml.size());
+		List<AnnotatedSpot> spots = adoc.getSpots();
+		spots.clear();
+		for (int i = 0; i < size; i++) {
+			emlSub.add(eml.get(i));
+			EntityMatch em = eml.get(i);
+			AnnotatedSpot spot = new AnnotatedSpot(em.getMention(),
+					em.getSpotLinkProbability(), em.getStart(), em.getEnd(), em
+							.getSpot().getLinkFrequency(), em.getSpot()
+							.getFrequency(), em.getId(), em.getFrequency(),
+					em.getCommonness(), em.getScore());
+			if (addWikiNames) {
+				spot.setWikiname(helper.getLabel(em.getId()));
+			}
+
+			spots.add(spot);
+		}
+		String annotatedText = getAnnotatedText(adoc, emlSub);
+		adoc.setAnnotatedText(annotatedText);
+	}
+
+	private String getAnnotatedText(AnnotatedDocument adoc, EntityMatchList eml) {
+		Collections.sort(eml, new EntityMatch.SortByPosition());
+		StringBuffer sb = new StringBuffer();
+		int pos = 0;
+		String text = adoc.getText();
+		for (EntityMatch em : eml) {
+			assert em.getStart() >= 0;
+			assert em.getEnd() >= 0;
+
+			sb.append(text.substring(pos, em.getStart()));
+			// the spot has been normalized, i want to retrieve the real one
+			String realSpot = text.substring(em.getStart(), em.getEnd());
+			sb.append(
+					"<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
+					.append(realSpot).append("</a>");
+			pos = em.getEnd();
+		}
+		if (pos < text.length()) {
+			sb.append(text.substring(pos));
+		}
+
+		return sb.toString();
 	}
 
 	/**
