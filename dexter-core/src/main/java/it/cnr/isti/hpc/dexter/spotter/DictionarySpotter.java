@@ -120,7 +120,7 @@ public class DictionarySpotter extends AbstractSpotter implements Spotter {
 
 			}
 		}
-
+		matches = filter(matches);
 		return matches;
 	}
 

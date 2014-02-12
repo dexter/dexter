@@ -120,7 +120,6 @@ public class StandardTagger implements Tagger {
 			}
 		}
 		SpotMatchList sml = spotter.match(localParams, doc);
-		sml = spotter.filter(sml);
 		return sml;
 	}
 
@@ -146,7 +145,6 @@ public class StandardTagger implements Tagger {
 
 		stopwatch.start("spotting");
 		SpotMatchList sml = spotter.match(localParams, doc);
-		sml = spotter.filter(sml);
 
 		logger.info("spotting performed in {} millis",
 				stopwatch.stop("spotting"));
