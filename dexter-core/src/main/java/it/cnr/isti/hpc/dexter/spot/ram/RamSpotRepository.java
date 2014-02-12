@@ -35,7 +35,8 @@ public class RamSpotRepository implements SpotRepository {
 	RamSpotFile spots;
 	SpotMinimalPerfectHash hash;
 	SpotEliasFanoOffsets offsets;
-	float commonnessThreshold;
+
+	// float commonnessThreshold;
 
 	public RamSpotRepository() {
 		hash = SpotMinimalPerfectHash.getInstance();
