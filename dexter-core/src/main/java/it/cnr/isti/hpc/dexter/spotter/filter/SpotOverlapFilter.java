@@ -60,17 +60,16 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 		SpotMatchList filtered = new SpotMatchList();
 
 		for (SpotMatch spot : sml) {
-			boolean overlaps = false;
-			for (SpotMatch spot1 : sml) {
-				overlaps = spot.overlaps(spot1);
-				if (overlaps) {
+			boolean clash = false;
+			for (SpotMatch s : filtered) {
+				if (s.overlaps(spot)) {
+					clash = true;
 					break;
 				}
 			}
-			if (!overlaps) {
+			if (!clash) {
 				filtered.add(spot);
 			}
-
 		}
 		return filtered;
 	}
