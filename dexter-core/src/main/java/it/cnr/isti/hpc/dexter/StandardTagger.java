@@ -120,6 +120,7 @@ public class StandardTagger implements Tagger {
 			}
 		}
 		SpotMatchList sml = spotter.match(localParams, doc);
+		sml = spotter.filter(sml);
 		return sml;
 	}
 
