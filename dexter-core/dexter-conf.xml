@@ -133,15 +133,24 @@
 
 	<spotFilters>
 		<spotFilter>
-			<name>probability</name>
-			<class>it.cnr.isti.hpc.tagme.Tagme</class>
+			<name>probability-filter</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.filter.SpotProbabilityFilter</class>
+			<params>
+				<param>
+					<name>lp</name>
+					<value>0.02</value>
+				</param>
+			</params>
+		</spotFilter>
+		<spotFilter>
+			<name>overlaps-filter</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.filter.SpotOverlapFilter</class>
 			<params>
 				<param>
 					<name>threshold</name>
 					<value>0.5</value>
 				</param>
 			</params>
-
 		</spotFilter>
 
 	</spotFilters>
