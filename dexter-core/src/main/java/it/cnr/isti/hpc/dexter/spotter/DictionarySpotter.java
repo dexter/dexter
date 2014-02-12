@@ -27,13 +27,11 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
-import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.structure.LRUCache;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +41,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class DictionarySpotter implements Spotter {
+public class DictionarySpotter extends AbstractSpotter implements Spotter {
 	/**
 	 * Logger for this class
 	 */
@@ -51,8 +49,6 @@ public class DictionarySpotter implements Spotter {
 			.getLogger(DictionarySpotter.class);
 
 	private static LRUCache<String, Spot> cache;
-
-	private List<SpotMatchFilter> filters;
 
 	DexterParams params = DexterParams.getInstance();
 
@@ -131,12 +127,6 @@ public class DictionarySpotter implements Spotter {
 	@Override
 	public void init(DexterParams dexterParams,
 			DexterLocalParams defaultModuleParams) {
-
-	}
-
-	@Override
-	public void setFilters(List<SpotMatchFilter> filters) {
-		this.filters = filters;
 
 	}
 

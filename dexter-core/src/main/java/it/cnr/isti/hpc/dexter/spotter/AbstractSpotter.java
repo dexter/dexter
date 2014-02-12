@@ -29,21 +29,44 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.spotter.filter;
+package it.cnr.isti.hpc.dexter.spotter;
 
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
-import it.cnr.isti.hpc.dexter.util.DexterParams;
+import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
+
+import java.util.List;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 12, 2014
  */
-public interface SpotMatchFilter {
+public abstract class AbstractSpotter implements Spotter {
+	private List<SpotMatchFilter> filters;
 
-	public SpotMatchList filter(SpotMatchList eml);
+	/**
+	 * Set the filter to apply to the spots after the spotting
+	 * 
+	 */
+	@Override
+	public void setFilters(List<SpotMatchFilter> filters) {
+		this.filters = filters;
+	}
 
-	public void init(DexterParams dexterParams, DexterLocalParams initParams);
+	/**
+	 * Removes the SpotMatch based on the filters.
+	 * 
+	 * @param sml
+	 *            the SpotMatchList to filter, at the end of the function the
+	 *            list is modified
+	 * 
+	 **/
+	@Override
+	public SpotMatchList filter(SpotMatchList sml) {
+		for (SpotMatchFilter filter : filters) {
+			sml = filter.filter(sml);
+		}
+		return sml;
 
+	}
 }

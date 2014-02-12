@@ -70,9 +70,20 @@ public interface Spotter {
 			DexterLocalParams defaultModuleParams);
 
 	/**
-	 * Set the filter to apply to the spots after the spotting
+	 * Set the filter to apply to the spots after the spotting.
 	 * 
 	 */
 	public void setFilters(List<SpotMatchFilter> filters);
+
+	/**
+	 * Removes the SpotMatch based on the filters.
+	 * 
+	 * @param sml
+	 *            the SpotMatchList to filter, at the end of the function the
+	 *            list is modified.
+	 * @return the SpotMatchList filtered.
+	 * 
+	 **/
+	public SpotMatchList filter(SpotMatchList sml);
 
 }
