@@ -55,8 +55,10 @@ import com.google.gson.Gson;
  */
 public class DexterRestClient {
 
-	private URI server;
-	private FakeBrowser browser;
+	private final URI server;
+	private final FakeBrowser browser;
+
+	private Boolean wikinames = false;
 
 	private static Gson gson = new Gson();
 
@@ -115,16 +117,15 @@ public class DexterRestClient {
 	public AnnotatedDocument annotate(String doc, int n) {
 		String text = URLEncoder.encode(doc);
 		String json = "";
+		String url = "/annotate?text=" + text;
+		if (wikinames) {
+			url += "&wn=true";
+		}
 		try {
 			if (n > 0) {
-				json = browser.fetchAsString(
-						server.toString() + "/annotate?text=" + text + "&n="
-								+ n).toString();
-			} else {
-				json = browser.fetchAsString(
-						server.toString() + "/annotate?text=" + text)
-						.toString();
+				url += "&n=" + n;
 			}
+			json = browser.fetchAsString(server.toString() + url).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -146,9 +147,12 @@ public class DexterRestClient {
 	public SpottedDocument spot(String doc) {
 		String text = URLEncoder.encode(doc);
 		String json = "";
+		String url = "/spot?text=" + text;
+		if (wikinames) {
+			url += "&wn=true";
+		}
 		try {
-			json = browser.fetchAsString(
-					server.toString() + "/spot?text=" + text).toString();
+			json = browser.fetchAsString(server.toString() + url).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -177,6 +181,14 @@ public class DexterRestClient {
 		}
 		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
 		return ad;
+	}
+
+	public Boolean getWikinames() {
+		return wikinames;
+	}
+
+	public void setWikinames(Boolean wikinames) {
+		this.wikinames = wikinames;
 	}
 
 	public static void main(String[] args) throws URISyntaxException {

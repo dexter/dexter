@@ -31,7 +31,7 @@
  */
 package it.cnr.isti.hpc.dexter.rest.domain;
 
-import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
+import java.util.Map;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -43,7 +43,7 @@ public class Tagmeta {
 	String spotter;
 	String disambiguator;
 
-	DexterLocalParams requestParams;
+	Map<String, String> requestParams;
 
 	public String getSpotter() {
 		return spotter;
@@ -61,13 +61,13 @@ public class Tagmeta {
 		this.disambiguator = disambiguator;
 	}
 
-	public DexterLocalParams getRequestParams() {
-		return requestParams;
-	}
+	// public DexterLocalParams getRequestParams() {
+	// return requestParams;
+	// }
 
-	public void setRequestParams(DexterLocalParams requestParams) {
-		this.requestParams = requestParams;
-	}
+	// public void setRequestParams(DexterLocalParams requestParams) {
+	// this.requestParams = requestParams;
+	// }
 
 	@Override
 	public int hashCode() {
@@ -77,6 +77,14 @@ public class Tagmeta {
 				+ ((disambiguator == null) ? 0 : disambiguator.hashCode());
 		result = prime * result + ((spotter == null) ? 0 : spotter.hashCode());
 		return result;
+	}
+
+	public Map<String, String> getRequestParams() {
+		return requestParams;
+	}
+
+	public void setRequestParams(Map<String, String> requestParams) {
+		this.requestParams = requestParams;
 	}
 
 	@Override
