@@ -99,7 +99,8 @@ public class SpottedDocument {
 	@Override
 	public String toString() {
 		return "SpottedDocument [text=" + text + ", spots=" + spots
-				+ ", nSpots=" + nSpots + ", querytime=" + querytime + "]";
+				+ ", nSpots=" + nSpots + ", querytime=" + querytime + ", meta="
+				+ meta + "]";
 	}
 
 }

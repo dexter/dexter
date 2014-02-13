@@ -125,6 +125,11 @@ public class ArticleDescription {
 
 	}
 
+	public String getUrl() {
+		String suffix = getTitleInWikistyle(title);
+		return "http://en.wikipedia.org/wiki/" + suffix;
+	}
+
 	public String toJson() {
 		if (infobox.isEmpty())
 			infobox = null;

@@ -109,4 +109,10 @@ public class Tagmeta {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "Tagmeta [spotter=" + spotter + ", disambiguator="
+				+ disambiguator + ", requestParams=" + requestParams + "]";
+	}
+
 }

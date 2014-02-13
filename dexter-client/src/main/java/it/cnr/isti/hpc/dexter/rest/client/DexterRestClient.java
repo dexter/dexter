@@ -60,6 +60,8 @@ public class DexterRestClient {
 
 	private Boolean wikinames = false;
 
+	public double linkProbability = -1;
+
 	private static Gson gson = new Gson();
 
 	private static final Logger logger = LoggerFactory
@@ -118,6 +120,9 @@ public class DexterRestClient {
 		String text = URLEncoder.encode(doc);
 		String json = "";
 		String url = "/annotate?text=" + text;
+		if (linkProbability > 0)
+			url += "&lp=" + linkProbability;
+
 		if (wikinames) {
 			url += "&wn=true";
 		}
@@ -148,9 +153,12 @@ public class DexterRestClient {
 		String text = URLEncoder.encode(doc);
 		String json = "";
 		String url = "/spot?text=" + text;
+		if (linkProbability > 0)
+			url += "&lp=" + linkProbability;
 		if (wikinames) {
 			url += "&wn=true";
 		}
+
 		try {
 			json = browser.fetchAsString(server.toString() + url).toString();
 		} catch (IOException e) {
@@ -187,22 +195,30 @@ public class DexterRestClient {
 		return wikinames;
 	}
 
+	public double getLinkProbability() {
+		return linkProbability;
+	}
+
+	public void setLinkProbability(double linkProbability) {
+		this.linkProbability = linkProbability;
+	}
+
 	public void setWikinames(Boolean wikinames) {
 		this.wikinames = wikinames;
 	}
 
 	public static void main(String[] args) throws URISyntaxException {
 		DexterRestClient client = new DexterRestClient(
-				"http://dexterdemo.isti.cnr.it:8080/rest");
+				"http://node5.novello.isti.cnr.it:8080/dexter-webapp/rest");
+		client.setLinkProbability(1);
 		AnnotatedDocument ad = client
 				.annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(ad);
+		System.out.println(gson.toJson(ad));
 		SpottedDocument sd = client
 				.spot("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(sd);
+		System.out.println(gson.toJson(sd));
 		ArticleDescription desc = client.getDesc(5981816);
 		System.out.println(desc);
 
 	}
-
 }
