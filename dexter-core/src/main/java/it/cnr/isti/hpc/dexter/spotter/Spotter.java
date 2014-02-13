@@ -84,6 +84,6 @@ public interface Spotter {
 	 * @return the SpotMatchList filtered.
 	 * 
 	 **/
-	public SpotMatchList filter(SpotMatchList sml);
+	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml);
 
 }

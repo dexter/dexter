@@ -52,11 +52,18 @@ public class SpotProbabilityFilter implements SpotMatchFilter {
 	float probability;
 
 	@Override
-	public SpotMatchList filter(SpotMatchList sml) {
+	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
+		if (params.containsKey("lp")) {
+			probability = Float.parseFloat(params.getParam("lp"));
+		}
+		logger.info("link probability filter = {}", probability);
 		SpotMatchList filtered = new SpotMatchList();
 		for (SpotMatch match : sml) {
-			if (match.getLinkProbability() > probability) {
+			if (match.getLinkProbability() >= probability) {
 				filtered.add(match);
+			} else {
+				logger.info("filtering spot '{}': link probability low {}",
+						match.getMention(), match.getLinkProbability());
 			}
 		}
 		return filtered;

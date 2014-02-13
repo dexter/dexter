@@ -58,7 +58,7 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 	float probability;
 
 	@Override
-	public SpotMatchList filter(SpotMatchList sml) {
+	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
 		Collections.sort(sml, new SpotMatchLinkProbabilityComparator());
 		SpotMatchList filtered = new SpotMatchList();
 

@@ -33,6 +33,7 @@ package it.cnr.isti.hpc.dexter.spotter;
 
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
+import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 
 import java.util.List;
 
@@ -62,9 +63,9 @@ public abstract class AbstractSpotter implements Spotter {
 	 * 
 	 **/
 	@Override
-	public SpotMatchList filter(SpotMatchList sml) {
+	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
 		for (SpotMatchFilter filter : filters) {
-			sml = filter.filter(sml);
+			sml = filter.filter(params, sml);
 		}
 		return sml;
 

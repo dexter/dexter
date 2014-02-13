@@ -42,7 +42,7 @@ import it.cnr.isti.hpc.dexter.util.DexterParams;
  */
 public interface SpotMatchFilter {
 
-	public SpotMatchList filter(SpotMatchList eml);
+	public SpotMatchList filter(DexterLocalParams params, SpotMatchList eml);
 
 	public void init(DexterParams dexterParams, DexterLocalParams initParams);
 
