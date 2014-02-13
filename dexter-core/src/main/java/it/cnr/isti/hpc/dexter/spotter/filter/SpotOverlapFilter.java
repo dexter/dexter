@@ -52,6 +52,9 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotOverlapFilter.class);
 
+	// FIXME it can be implemented more efficiently if spot are sorted by
+	// position
+
 	float probability;
 
 	@Override
@@ -63,12 +66,16 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 			boolean clash = false;
 			for (SpotMatch s : filtered) {
 				if (s.overlaps(spot)) {
+
 					clash = true;
 					break;
 				}
 			}
 			if (!clash) {
 				filtered.add(spot);
+			} else {
+				logger.info("spot [{}] in {} overlaps, ignoring", spot
+						.getSpot().getMention(), spot.getStart());
 			}
 		}
 		return filtered;
