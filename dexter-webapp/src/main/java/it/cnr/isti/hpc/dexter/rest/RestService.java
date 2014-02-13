@@ -245,14 +245,17 @@ public class RestService {
 	@GET
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spot(@QueryParam("text") String text,
+	public String spot(@Context UriInfo ui, @QueryParam("text") String text,
 			@QueryParam("spt") String spt,
-			@QueryParam("wn") @DefaultValue("false") String wikiNames) {
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
 		long start = System.currentTimeMillis();
+		DexterLocalParams requestParams = getLocalParams(ui);
 		Spotter spotter = params.getSpotter(spt);
+		boolean debug = new Boolean(dbg);
 		Document d = new FlatDocument(text);
 		boolean addWikinames = new Boolean(wikiNames);
-		SpotMatchList sml = spotter.match(null, d);
+		SpotMatchList sml = spotter.match(requestParams, d);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
 
@@ -279,6 +282,16 @@ public class RestService {
 		}
 		SpottedDocument sd = new SpottedDocument(text, spots, spots.size(),
 				System.currentTimeMillis() - start);
+
+		if (debug) {
+			Tagmeta meta = new Tagmeta();
+			meta.setSpotter(spotter.getClass().toString());
+			meta.setRequestParams(requestParams.getParams());
+
+			sd.setMeta(meta);
+
+		}
+
 		String spotted = gson.toJson(sd);
 		logger.info("spot: {}", spotted);
 		return spotted;

@@ -34,21 +34,19 @@ package it.cnr.isti.hpc.dexter.rest.domain;
 import java.util.List;
 
 /**
- * Represents a document with all the spot detected during 
- * the spotting.
+ * Represents a document with all the spot detected during the spotting.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Oct 18, 2013
+ *         Created on Oct 18, 2013
  */
 public class SpottedDocument {
 	private String text;
 	private List<CandidateSpot> spots;
 	private int nSpots;
 	private float querytime;
-	
-	
-	
+	private Tagmeta meta;
+
 	public SpottedDocument(String text, List<CandidateSpot> spots, int nSpots,
 			float querytime) {
 		super();
@@ -57,38 +55,51 @@ public class SpottedDocument {
 		this.nSpots = nSpots;
 		this.querytime = querytime;
 	}
+
 	public String getText() {
 		return text;
 	}
+
 	public void setText(String text) {
 		this.text = text;
 	}
+
 	public List<CandidateSpot> getSpots() {
 		return spots;
 	}
+
 	public void setSpots(List<CandidateSpot> spots) {
 		this.spots = spots;
 	}
+
 	public int getnSpots() {
 		return nSpots;
 	}
+
 	public void setnSpots(int nSpots) {
 		this.nSpots = nSpots;
 	}
+
 	public float getQuerytime() {
 		return querytime;
 	}
+
 	public void setQuerytime(float querytime) {
 		this.querytime = querytime;
 	}
+
+	public Tagmeta getMeta() {
+		return meta;
+	}
+
+	public void setMeta(Tagmeta meta) {
+		this.meta = meta;
+	}
+
 	@Override
 	public String toString() {
 		return "SpottedDocument [text=" + text + ", spots=" + spots
 				+ ", nSpots=" + nSpots + ", querytime=" + querytime + "]";
 	}
-	
-	
-	
-	
 
 }
