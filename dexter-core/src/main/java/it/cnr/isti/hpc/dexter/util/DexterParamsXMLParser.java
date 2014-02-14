@@ -301,6 +301,7 @@ public class DexterParamsXMLParser {
 	}
 
 	public static class Params {
+		public final static Params NO_PARAM = new Params();
 		public List<Param> params = new ArrayList<Param>();
 
 		public List<Param> getParams() {
@@ -609,7 +610,7 @@ public class DexterParamsXMLParser {
 		String clazz;
 		List<Filter> filters = new ArrayList<Filter>();
 
-		Params params;
+		Params params = Params.NO_PARAM;
 
 		public String getName() {
 			return name;
@@ -628,8 +629,6 @@ public class DexterParamsXMLParser {
 		}
 
 		public Params getParams() {
-			if (params == null)
-				params = new Params();
 			return params;
 		}
 
@@ -677,7 +676,7 @@ public class DexterParamsXMLParser {
 	public static class SpotFilter {
 		String name;
 		String clazz;
-		Params params;
+		Params params = Params.NO_PARAM;
 
 		public String getName() {
 			return name;

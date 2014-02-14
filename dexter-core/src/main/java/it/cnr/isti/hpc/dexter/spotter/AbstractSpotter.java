@@ -65,6 +65,8 @@ public abstract class AbstractSpotter implements Spotter {
 	@Override
 	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
 		for (SpotMatchFilter filter : filters) {
+			if (filter == null)
+				continue;
 			sml = filter.filter(params, sml);
 		}
 		return sml;

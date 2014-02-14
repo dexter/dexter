@@ -270,9 +270,14 @@ public class DexterParams {
 			return null;
 		}
 		DexterParamsXMLParser.SpotFilter spotter = spotFilters.get(name);
+		if (spotter == null) {
+			logger.warn("cannot find spot filter named {}, skipping", name);
+			return null;
+		}
 		SpotMatchFilter s = loader.getSpotFilter(spotter.getClazz());
 
 		DexterLocalParams initParams = new DexterLocalParams();
+
 		for (Param p : spotter.getParams().getParams()) {
 			logger.info("adding param {} -> {}", p.getName(), p.getValue());
 			initParams.addParam(p.getName(), p.getValue());

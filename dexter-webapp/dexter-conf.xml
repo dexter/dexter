@@ -107,33 +107,61 @@
 		<default>okkam</default>
 		<disambiguator>
 			<name>okkam</name>
-			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator</class>
+			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator
+			</class>
 		</disambiguator>
 
 		<!-- <disambiguator> -->
 		<!-- <name>wikiminer</name> -->
 		<!-- <class>it.cnr.isti.hpc.wikiminer.Wikiminer</class> -->
 		<!-- </disambiguator> -->
-			<disambiguator>
-		<name>tagme</name>
-		<class>it.cnr.isti.hpc.tagme.Tagme</class>
-		<params>
-		    <param>
-		    	<name>window-size</name>
-		    	<value>30</value>
-		    </param>
-		    <param>
-		        <name>epsilon</name>
-		        <value>0.7</value>
-		    </param>
-		</params>
+		<disambiguator>
+			<name>tagme</name>
+			<class>it.cnr.isti.hpc.tagme.Tagme</class>
+			<params>
+				<param>
+					<name>window-size</name>
+					<value>30</value>
+				</param>
+				<param>
+					<name>epsilon</name>
+					<value>0.7</value>
+				</param>
+			</params>
 		</disambiguator>
 	</disambiguators>
+
+	<spotFilters>
+		<spotFilter>
+			<name>probability-filter</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.filter.SpotProbabilityFilter</class>
+			<params>
+				<param>
+					<name>lp</name>
+					<value>0.02</value>
+				</param>
+			</params>
+		</spotFilter>
+		<spotFilter>
+			<name>overlaps-filter</name>
+			<class>it.cnr.isti.hpc.dexter.spotter.filter.SpotOverlapFilter</class>
+		</spotFilter>
+
+	</spotFilters>
+
 	<spotters>
 		<default>wiki-dictionary</default>
 		<spotter>
 			<name>wiki-dictionary</name>
 			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
+			<filters>
+				<filter>
+					<name>probability-filter</name>
+				</filter>
+				<filter>
+					<name>overlaps-filter</name>
+				</filter>
+			</filters>
 		</spotter>
 	</spotters>
 	<taggers>
