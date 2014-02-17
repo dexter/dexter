@@ -37,6 +37,7 @@ import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
+import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -228,6 +229,22 @@ public class RestService {
 		String description = desc.toJson();
 
 		logger.info("getDescription: {}", description);
+		return description;
+
+	}
+
+	@GET
+	@Path("get-id")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getDescription(@QueryParam("title") String title) {
+		String label = Article.getTitleInWikistyle(title);
+		int id = helper.getId(label);
+
+		ArticleDescription desc = new ArticleDescription();
+		desc.setTitle(label);
+		desc.setId(id);
+		String description = desc.toJson();
+		logger.info("getId: {}", description);
 		return description;
 
 	}

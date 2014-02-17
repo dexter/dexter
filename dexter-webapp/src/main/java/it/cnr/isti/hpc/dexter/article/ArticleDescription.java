@@ -43,6 +43,7 @@ public class ArticleDescription {
 	private String title;
 	private String description;
 	private String image;
+	private int id;
 	private Map<String, String> infobox;
 	private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
@@ -60,11 +61,13 @@ public class ArticleDescription {
 		description = "NODESC";
 		infobox = new HashMap<String, String>();
 		image = "";
+		id = -1;
 
 	}
 
 	public ArticleDescription(Article a) {
 		title = a.getTitle();
+		id = a.getWid();
 		image = "http://wikiname2image.herokuapp.com/" + a.getWikiTitle();
 		infobox = new HashMap<String, String>();
 		description = a.getSummary();
@@ -120,6 +123,14 @@ public class ArticleDescription {
 		} else if (!title.equals(other.title))
 			return false;
 		return true;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	static String getImageUrl(String imageName) {
