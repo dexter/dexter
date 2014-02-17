@@ -27,7 +27,7 @@ public class FlatDocument extends MultifieldDocument {
 	public FlatDocument(String text) {
 		super();
 		Field body = new Field(fieldName, text);
-		addField(body);
+		fields.put(fieldName, body);
 	}
 
 	/**
