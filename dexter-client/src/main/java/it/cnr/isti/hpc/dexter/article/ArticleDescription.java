@@ -42,6 +42,7 @@ public class ArticleDescription {
 	private String title;
 	private String description;
 	private String image;
+	private int id;
 	private Map<String, String> infobox;
 	private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
@@ -60,6 +61,14 @@ public class ArticleDescription {
 		infobox = new HashMap<String, String>();
 		image = "";
 
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public static ArticleDescription fromWikipediaAPI(String name) {
