@@ -107,8 +107,7 @@
 		<default>okkam</default>
 		<disambiguator>
 			<name>okkam</name>
-			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator
-			</class>
+			<class>it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator</class>
 		</disambiguator>
 
 		<!-- <disambiguator> -->
