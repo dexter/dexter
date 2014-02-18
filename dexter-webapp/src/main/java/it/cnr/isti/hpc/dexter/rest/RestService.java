@@ -115,7 +115,7 @@ public class RestService {
 	}
 
 	@POST
-	@Path("annotate")
+	@Path("annotate2")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(@Context UriInfo ui,
 			@QueryParam("text") String text,
@@ -131,6 +131,9 @@ public class RestService {
 
 	public String annotate(UriInfo ui, String text, String n, String spotter,
 			String disambiguator, String wikiNames, String dbg) {
+		if (text == null) {
+			return "{\"error\":\"text param is null\"}";
+		}
 		Spotter s = params.getSpotter(spotter);
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
