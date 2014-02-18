@@ -202,17 +202,38 @@ public class RestService {
 		for (EntityMatch em : eml) {
 			assert em.getStart() >= 0;
 			assert em.getEnd() >= 0;
-
-			sb.append(text.substring(pos, em.getStart()));
+			try {
+				sb.append(text.substring(pos, em.getStart()));
+			} catch (java.lang.StringIndexOutOfBoundsException e) {
+				logger.warn(
+						"error annotating text output of bound for range {} - {} ",
+						pos, em.getStart());
+				logger.warn("text: \n\n {}\n\n", text);
+			}
 			// the spot has been normalized, i want to retrieve the real one
-			String realSpot = text.substring(em.getStart(), em.getEnd());
+			String realSpot = "none";
+			try {
+				realSpot = text.substring(em.getStart(), em.getEnd());
+			} catch (java.lang.StringIndexOutOfBoundsException e) {
+				logger.warn(
+						"error annotating text output of bound for range {} - {} ",
+						pos, em.getStart());
+				logger.warn("text: \n\n {}\n\n", text);
+			}
 			sb.append(
 					"<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
 					.append(realSpot).append("</a>");
 			pos = em.getEnd();
 		}
 		if (pos < text.length()) {
-			sb.append(text.substring(pos));
+			try {
+				sb.append(text.substring(pos));
+			} catch (java.lang.StringIndexOutOfBoundsException e) {
+				logger.warn(
+						"error annotating text output of bound for range {} - end ",
+						pos);
+				logger.warn("text: \n\n {}\n\n", text);
+			}
 		}
 
 		return sb.toString();

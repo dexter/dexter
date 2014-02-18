@@ -149,7 +149,7 @@ public class DexterRestClient {
 			// if (n > 0) {
 			// url += "&n=" + n;
 			// }
-			System.out.println(sb.toString());
+			// System.out.println(sb.toString());
 			json = postQuery("annotate", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
