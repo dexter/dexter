@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -116,6 +117,7 @@ public class RestService {
 
 	@POST
 	@Path("annotate2")
+	@Consumes("application/x-www-form-urlencoded")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(@Context UriInfo ui,
 			@QueryParam("text") String text,
