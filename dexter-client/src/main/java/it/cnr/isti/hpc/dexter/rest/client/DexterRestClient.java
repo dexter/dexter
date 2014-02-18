@@ -36,9 +36,14 @@ import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.net.FakeBrowser;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,19 +128,29 @@ public class DexterRestClient {
 	public AnnotatedDocument annotate(String doc, int n) {
 		String text = URLEncoder.encode(doc);
 		String json = "";
+		StringBuilder sb = new StringBuilder(paramsToRequest());
+		sb.append("text=").append(text);
 
-		String url = "/annotate?" + paramsToRequest() + "&text=" + text;
+		// String url = "/annotate?" + paramsToRequest() + "&text=" + text;
 		if (linkProbability > 0)
-			url += "&lp=" + linkProbability;
+			sb.append("&lp=").append(linkProbability);
+
+		if (n > 0) {
+			sb.append("&n=").append(n);
+		}
 
 		if (wikinames) {
-			url += "&wn=true";
+			sb.append("&wn=true");
 		}
+		// if (wikinames) {
+		// url += "&wn=true";
+		// }
 		try {
-			if (n > 0) {
-				url += "&n=" + n;
-			}
-			json = browser.fetchAsString(server.toString() + url).toString();
+			// if (n > 0) {
+			// url += "&n=" + n;
+			// }
+			System.out.println(sb.toString());
+			json = postQuery("annotate", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -216,6 +231,34 @@ public class DexterRestClient {
 		}
 		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
 		return ad.getId();
+	}
+
+	private String postQuery(String restcall, String params) throws IOException {
+		HttpURLConnection con = (HttpURLConnection) new URL(server.toString()
+				+ "/annotate").openConnection();
+
+		// add reuqest header
+		con.setRequestMethod("POST");
+
+		// Send post request
+		con.setDoOutput(true);
+		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+		wr.writeBytes(params);
+		wr.flush();
+		wr.close();
+
+		int responseCode = con.getResponseCode();
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		return response.toString();
 	}
 
 	public void addParams(String name, String value) {

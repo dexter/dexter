@@ -124,6 +124,7 @@ public class RestService {
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		System.out.println("text " + text);
 		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
 
 	}
