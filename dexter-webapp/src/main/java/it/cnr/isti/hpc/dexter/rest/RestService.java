@@ -43,8 +43,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -117,10 +117,9 @@ public class RestService {
 
 	@POST
 	@Path("annotate2")
-	@Consumes("text/plain")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(@Context UriInfo ui,
-			@QueryParam("text") String text,
+			@FormParam("text") String text,
 			@QueryParam("n") @DefaultValue("5") String n,
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
