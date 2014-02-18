@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +61,8 @@ public class DexterRestClient {
 	private final FakeBrowser browser;
 
 	private Boolean wikinames = false;
+
+	Map<String, String> params = new HashMap<String, String>();
 
 	public double linkProbability = -1;
 
@@ -119,7 +123,8 @@ public class DexterRestClient {
 	public AnnotatedDocument annotate(String doc, int n) {
 		String text = URLEncoder.encode(doc);
 		String json = "";
-		String url = "/annotate?text=" + text;
+
+		String url = "/annotate?" + paramsToRequest() + "&text=" + text;
 		if (linkProbability > 0)
 			url += "&lp=" + linkProbability;
 
@@ -200,7 +205,7 @@ public class DexterRestClient {
 	 * @returns the wiki-id of the entity
 	 */
 	public int getId(String title) {
-
+		title = URLEncoder.encode(title);
 		String json = "";
 		try {
 			json = browser.fetchAsString(
@@ -211,6 +216,20 @@ public class DexterRestClient {
 		}
 		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
 		return ad.getId();
+	}
+
+	public void addParams(String name, String value) {
+		params.put(name, value);
+	}
+
+	private String paramsToRequest() {
+		StringBuilder sb = new StringBuilder();
+		for (Map.Entry<String, String> p : params.entrySet()) {
+			sb.append(p.getKey()).append('=');
+			sb.append(URLEncoder.encode(p.getValue()));
+			sb.append('&');
+		}
+		return sb.toString();
 	}
 
 	public Boolean getWikinames() {

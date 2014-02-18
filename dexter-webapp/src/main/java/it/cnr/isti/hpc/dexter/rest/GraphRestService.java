@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -56,6 +57,7 @@ public class GraphRestService {
 
 	private static IdHelper helper = IdHelperFactory.getStdIdHelper();
 
+	@POST
 	@GET
 	@Path("get-target-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -76,6 +78,7 @@ public class GraphRestService {
 		return gson.toJson(names);
 	}
 
+	@POST
 	@GET
 	@Path("get-source-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -96,6 +99,7 @@ public class GraphRestService {
 		return gson.toJson(names);
 	}
 
+	@POST
 	@GET
 	@Path("get-entity-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -116,6 +120,7 @@ public class GraphRestService {
 		return gson.toJson(names);
 	}
 
+	@POST
 	@GET
 	@Path("get-belonging-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -136,6 +141,7 @@ public class GraphRestService {
 		return gson.toJson(names);
 	}
 
+	@POST
 	@GET
 	@Path("get-parent-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -156,6 +162,7 @@ public class GraphRestService {
 		return gson.toJson(names);
 	}
 
+	@POST
 	@GET
 	@Path("get-child-categories")
 	@Produces({ MediaType.APPLICATION_JSON })

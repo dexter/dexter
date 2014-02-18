@@ -45,6 +45,7 @@ import java.util.List;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -98,6 +99,7 @@ public class RestService {
 	 * @returns an annotated document, containing the annotated text, and a list
 	 *          entities detected.
 	 */
+	@POST
 	@GET
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -205,6 +207,7 @@ public class RestService {
 	 * 
 	 * @returns a short description of the entity represented by the Wiki-id
 	 */
+	@POST
 	@GET
 	@Path("get-desc")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -233,6 +236,7 @@ public class RestService {
 
 	}
 
+	@POST
 	@GET
 	@Path("get-id")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -259,6 +263,7 @@ public class RestService {
 	 *         probability. For each spot it also returns the list of candidate
 	 *         entities associated with it, together with their commonness.
 	 */
+	@POST
 	@GET
 	@Path("spot")
 	@Produces({ MediaType.APPLICATION_JSON })
