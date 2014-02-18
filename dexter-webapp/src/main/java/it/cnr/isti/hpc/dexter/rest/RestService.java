@@ -116,15 +116,15 @@ public class RestService {
 	}
 
 	@POST
-	@Path("annotate2")
+	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(@Context UriInfo ui,
 			@FormParam("text") String text,
-			@QueryParam("n") @DefaultValue("5") String n,
-			@QueryParam("spt") String spotter,
-			@QueryParam("dsb") String disambiguator,
-			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
+			@FormParam("n") @DefaultValue("5") String n,
+			@FormParam("spt") String spotter,
+			@FormParam("dsb") String disambiguator,
+			@FormParam("wn") @DefaultValue("false") String wikiNames,
+			@FormParam("debug") @DefaultValue("false") String dbg) {
 		System.out.println("text " + text);
 		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
 
