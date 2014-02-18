@@ -117,7 +117,7 @@ public class RestService {
 
 	@POST
 	@Path("annotate2")
-	@Consumes("application/x-www-form-urlencoded")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(@Context UriInfo ui,
 			@QueryParam("text") String text,
