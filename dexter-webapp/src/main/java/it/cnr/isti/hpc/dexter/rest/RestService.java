@@ -99,18 +99,37 @@ public class RestService {
 	 * @returns an annotated document, containing the annotated text, and a list
 	 *          entities detected.
 	 */
-	@POST
+
 	@GET
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotate(@Context UriInfo ui,
+	public String annotateGet(@Context UriInfo ui,
 			@QueryParam("text") String text,
 			@QueryParam("n") @DefaultValue("5") String n,
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
 
+	}
+
+	@POST
+	@Path("annotate")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String annotatePost(@Context UriInfo ui,
+			@QueryParam("text") String text,
+			@QueryParam("n") @DefaultValue("5") String n,
+			@QueryParam("spt") String spotter,
+			@QueryParam("dsb") String disambiguator,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
+
+	}
+
+	public String annotate(UriInfo ui, String text, String n, String spotter,
+			String disambiguator, String wikiNames, String dbg) {
 		Spotter s = params.getSpotter(spotter);
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
@@ -207,7 +226,7 @@ public class RestService {
 	 * 
 	 * @returns a short description of the entity represented by the Wiki-id
 	 */
-	@POST
+
 	@GET
 	@Path("get-desc")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -236,7 +255,6 @@ public class RestService {
 
 	}
 
-	@POST
 	@GET
 	@Path("get-id")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -263,14 +281,9 @@ public class RestService {
 	 *         probability. For each spot it also returns the list of candidate
 	 *         entities associated with it, together with their commonness.
 	 */
-	@POST
-	@GET
-	@Path("spot")
-	@Produces({ MediaType.APPLICATION_JSON })
-	public String spot(@Context UriInfo ui, @QueryParam("text") String text,
-			@QueryParam("spt") String spt,
-			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
+
+	private String spot(UriInfo ui, String text, String spt, String wikiNames,
+			String dbg) {
 		long start = System.currentTimeMillis();
 		DexterLocalParams requestParams = getLocalParams(ui);
 		Spotter spotter = params.getSpotter(spt);
@@ -317,5 +330,25 @@ public class RestService {
 		String spotted = gson.toJson(sd);
 		logger.info("spot: {}", spotted);
 		return spotted;
+	}
+
+	@GET
+	@Path("spot")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String spotGet(@Context UriInfo ui, @QueryParam("text") String text,
+			@QueryParam("spt") String spt,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		return spot(ui, text, spt, wikiNames, dbg);
+	}
+
+	@POST
+	@Path("spot")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String spotPost(@Context UriInfo ui,
+			@QueryParam("text") String text, @QueryParam("spt") String spt,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		return spot(ui, text, spt, wikiNames, dbg);
 	}
 }
