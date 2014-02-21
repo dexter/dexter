@@ -60,6 +60,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.sun.jersey.api.representation.Form;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -111,27 +112,40 @@ public class RestService {
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
-		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
+		DexterLocalParams requestParams = getLocalParams(ui);
+		return annotate(requestParams, text, n, spotter, disambiguator,
+				wikiNames, dbg);
 
 	}
 
 	@POST
 	@Path("annotate")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotatePost(@Context UriInfo ui,
-			@FormParam("text") String text,
+	public String annotatePost(Form form, @FormParam("text") String text,
 			@FormParam("n") @DefaultValue("5") String n,
 			@FormParam("spt") String spotter,
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg) {
 		System.out.println("text " + text);
-		return annotate(ui, text, n, spotter, disambiguator, wikiNames, dbg);
+		DexterLocalParams requestParams = getLocalParams(form);
+		return annotate(requestParams, text, n, spotter, disambiguator,
+				wikiNames, dbg);
 
 	}
 
-	public String annotate(UriInfo ui, String text, String n, String spotter,
-			String disambiguator, String wikiNames, String dbg) {
+	private DexterLocalParams getLocalParams(Form form) {
+		MultivaluedMap<String, String> queryParams = form;
+		DexterLocalParams params = new DexterLocalParams();
+		for (String key : queryParams.keySet()) {
+			params.addParam(key, queryParams.getFirst(key));
+		}
+		return params;
+	}
+
+	public String annotate(DexterLocalParams requestParams, String text,
+			String n, String spotter, String disambiguator, String wikiNames,
+			String dbg) {
 		if (text == null) {
 			return "{\"error\":\"text param is null\"}";
 		}
@@ -140,8 +154,6 @@ public class RestService {
 		Tagger tagger = new StandardTagger("std", s, d);
 		Boolean debug = new Boolean(dbg);
 		boolean addWikinames = new Boolean(wikiNames);
-
-		DexterLocalParams requestParams = getLocalParams(ui);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
 		Document doc = new FlatDocument(text);
