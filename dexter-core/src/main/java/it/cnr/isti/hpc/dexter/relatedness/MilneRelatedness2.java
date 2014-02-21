@@ -62,7 +62,7 @@ public class MilneRelatedness2 extends Relatedness {
 			return 0;
 
 		int intersection = intersectionSize(inX, inY);
-		if (intersection <= 2)
+		if (intersection <= 1)
 			return 0;
 		double rel = 1 - ((Math.log(maxXY) - Math.log(intersection)) / (logW - Math
 				.log(minXY)));
