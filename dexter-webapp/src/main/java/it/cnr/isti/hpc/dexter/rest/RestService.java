@@ -127,7 +127,7 @@ public class RestService {
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg) {
-		System.out.println("text " + text);
+
 		DexterLocalParams requestParams = getLocalParams(form);
 		return annotate(requestParams, text, n, spotter, disambiguator,
 				wikiNames, dbg);
