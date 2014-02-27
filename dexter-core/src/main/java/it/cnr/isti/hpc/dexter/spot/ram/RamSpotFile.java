@@ -72,7 +72,7 @@ public class RamSpotFile {
 		dumpSpotFile(sortedSpotFile, binarySpotFile, offsetSpotFile);
 	}
 
-	private static void dumpSpotFile(String spotFile, File binarySpotFile,
+	public static void dumpSpotFile(String spotFile, File binarySpotFile,
 			File offsetSpotFile) {
 		RecordReader<Spot> reader = new RecordReader<Spot>(spotFile,
 				new Spot.Parser());
