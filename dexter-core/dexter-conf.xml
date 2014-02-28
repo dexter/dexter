@@ -100,6 +100,7 @@
 		<offsets>ram/offsets.gz</offsets>
 		<eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
 		<spotsData>ram/spots.bin</spotsData>
+		<entityToSpots>ram/spots.bin</entityToSpots>
 	</spotRepository>
 
 

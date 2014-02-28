@@ -192,6 +192,7 @@ public class DexterParamsXMLParser {
 		public String offsets;
 		public String eliasFanoOffsets;
 		public String spotsData;
+		public String entityToSpots;
 
 		public String getDir() {
 			return dir;
@@ -239,6 +240,14 @@ public class DexterParamsXMLParser {
 
 		public void setSpotsData(String spotsData) {
 			this.spotsData = spotsData;
+		}
+
+		public String getEntityToSpots() {
+			return entityToSpots;
+		}
+
+		public void setEntityToSpots(String entityToSpots) {
+			this.entityToSpots = entityToSpots;
 		}
 
 	}

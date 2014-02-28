@@ -34,6 +34,7 @@ package it.cnr.isti.hpc.dexter.spot.ram;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.io.reader.TsvRecordParser;
@@ -63,6 +64,8 @@ public class EntityToSpotListMap implements Serializable {
 	Int2ObjectFunction<String> map;
 
 	private static EntityToSpotListMap instance;
+
+	private static final DexterParams params = DexterParams.getInstance();
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EntityToSpotListMap.class);
@@ -123,7 +126,7 @@ public class EntityToSpotListMap implements Serializable {
 
 	public static EntityToSpotListMap getInstance() {
 		if (instance == null) {
-			instance = load("/tmp/tmp.bin");
+			instance = load(params.getEntityToSpots().getAbsolutePath());
 		}
 		return instance;
 	}

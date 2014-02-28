@@ -18,6 +18,7 @@ package it.cnr.isti.hpc.dexter.cli.spot.ram;
 
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.spot.ram.EntityToSpotListMap;
+import it.cnr.isti.hpc.dexter.util.DexterParams;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,17 +34,19 @@ public class IndexEntityToSpotsCLI extends AbstractCommandLineInterface {
 	private static final Logger logger = LoggerFactory
 			.getLogger(IndexEntityToSpotsCLI.class);
 
-	private static String[] params = new String[] { INPUT, OUTPUT };
+	private static String[] params = new String[] { INPUT };
 
 	private static final String USAGE = "java -cp $jar "
 			+ IndexEntityToSpotsCLI.class
 			+ " -input spot<tab>entity -output binarymap";
 
+	private static DexterParams dexterParams = DexterParams.getInstance();
+
 	public static void main(String[] args) {
 		IndexEntityToSpotsCLI cli = new IndexEntityToSpotsCLI(args);
 		EntityToSpotListMap map = new EntityToSpotListMap();
 		map.loadFromFile(cli.getInput());
-		map.dump(cli.getOutput());
+		map.dump(dexterParams.getEntityToSpots().getAbsolutePath());
 	}
 
 	public IndexEntityToSpotsCLI(String[] args) {

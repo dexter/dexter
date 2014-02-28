@@ -81,6 +81,7 @@ public class DexterParams {
 	File spotsOffsetData;
 	File spotsPerfectHash;
 	File plainSpots;
+	File entityToSpots;
 
 	private static final String DEFAULT = "___default";
 
@@ -159,6 +160,9 @@ public class DexterParams {
 				.getPerfectHash());
 		plainSpots = new File(spotsDir, params.getSpotRepository()
 				.getPlainSpots());
+
+		entityToSpots = new File(spotsDir, params.getSpotRepository()
+				.getEntityToSpots());
 
 	}
 
@@ -386,6 +390,10 @@ public class DexterParams {
 
 	public File getSpotsOffsetData() {
 		return spotsOffsetData;
+	}
+
+	public File getEntityToSpots() {
+		return entityToSpots;
 	}
 
 	public File getSpotsEliasFano() {
