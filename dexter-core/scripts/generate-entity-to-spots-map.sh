@@ -17,10 +17,10 @@ then
 fi
 
 echo "generating spots per entity from $SPOT"
-cut -f 1,3 $SPOT | sort -t"\t" -nk2 | uniq > $TMP
+cut -f 1,3 $SPOT | sort -u | sort -t'	' -nk2 | uniq > $TMP
 
 echo "index spots per entity"
-$JAVA $CLI.spot.ram.IndexEntityToSpotsCLI -input $1
+#$JAVA $CLI.spot.ram.IndexEntityToSpotsCLI -input $1
 
 
 
