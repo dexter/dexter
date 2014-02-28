@@ -31,6 +31,7 @@ import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
+import it.cnr.isti.hpc.dexter.rest.domain.EntitySpots;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
 import it.cnr.isti.hpc.dexter.spot.Spot;
@@ -353,7 +354,13 @@ public class RestService {
 			s.setCandidates(candidates);
 			cspots.add(s);
 		}
-		return gson.toJson(spots);
+		EntitySpots entitySpots = new EntitySpots();
+		entitySpots.setEntity(wid);
+		if (addWikinames) {
+			entitySpots.setWikiname(helper.getLabel(wid));
+		}
+		entitySpots.setSpots(cspots);
+		return gson.toJson(entitySpots);
 
 	}
 
