@@ -39,6 +39,7 @@ import it.cnr.isti.hpc.log.ProgressLogger;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +52,10 @@ import org.slf4j.LoggerFactory;
  * 
  *         Created on Feb 27, 2014
  */
-public class EntityToSpotListMap {
+public class EntityToSpotListMap implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	Int2ObjectFunction<String> map;
 
 	private static final Logger logger = LoggerFactory
