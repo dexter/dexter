@@ -31,6 +31,9 @@
  */
 package it.cnr.isti.hpc.dexter.spot.ram;
 
+import it.cnr.isti.hpc.dexter.spot.Spot;
+import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
+import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.io.reader.TsvRecordParser;
@@ -42,6 +45,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -58,11 +62,28 @@ public class EntityToSpotListMap implements Serializable {
 
 	Int2ObjectFunction<String> map;
 
+	private static EntityToSpotListMap instance;
+
 	private static final Logger logger = LoggerFactory
 			.getLogger(EntityToSpotListMap.class);
 
 	public EntityToSpotListMap() {
 		map = new Int2ObjectArrayMap<String>(1000000);
+	}
+
+	public List<Spot> getSpots(int wikiid) {
+		List<Spot> spots = new LinkedList<Spot>();
+		SpotRepository repo = new SpotRepositoryFactory().getStdInstance();
+		List<String> mentions = getMentions(wikiid);
+		for (String s : mentions) {
+			Spot spot = repo.getSpot(s);
+			if (spot == null) {
+				logger.warn("spot {} does not have associated object spot ", s);
+				continue;
+			}
+			spots.add(spot);
+		}
+		return spots;
 	}
 
 	public void loadFromFile(String file) {
@@ -100,14 +121,24 @@ public class EntityToSpotListMap implements Serializable {
 		serializer.dump(this, outputFile);
 	}
 
-	public static EntityToSpotListMap load(String serializedFile) {
+	public static EntityToSpotListMap getInstance() {
+		if (instance == null) {
+			instance = load("/tmp/tmp.bin");
+		}
+		return instance;
+	}
+
+	private static EntityToSpotListMap load(String serializedFile) {
+		logger.info("loading serialized entity to spot map in {} ",
+				serializedFile);
 		Serializer serializer = new Serializer();
 		EntityToSpotListMap obj = (EntityToSpotListMap) serializer
 				.load(serializedFile);
+		logger.info("done");
 		return obj;
 	}
 
-	public List<String> getSpots(int wikiid) {
+	public List<String> getMentions(int wikiid) {
 		String spots = map.get(wikiid);
 		if (spots == null) {
 			logger.warn("no spots for wiki-id {}", wikiid);

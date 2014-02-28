@@ -22,6 +22,7 @@ import it.cnr.isti.hpc.dexter.article.ArticleServer;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.document.FlatDocument;
+import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
@@ -32,8 +33,10 @@ import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
+import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
+import it.cnr.isti.hpc.dexter.spot.ram.EntityToSpotListMap;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
@@ -41,6 +44,7 @@ import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -306,6 +310,50 @@ public class RestService {
 		String description = desc.toJson();
 		logger.info("getId: {}", description);
 		return description;
+
+	}
+
+	@GET
+	@Path("get-spots")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getEntitySpots(@QueryParam("id") String id,
+			@QueryParam("title") String title,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames) {
+		int wid = 0;
+		boolean addWikinames = new Boolean(wikiNames);
+		if (title != null) {
+			String label = Article.getTitleInWikistyle(title);
+			wid = helper.getId(label);
+		}
+		if (id != null) {
+			wid = Integer.parseInt(id);
+		}
+		if (wid == 0) {
+			return "{ \"error\":\"retrieving the spot for the given entity\"}";
+		}
+		EntityToSpotListMap map = EntityToSpotListMap.getInstance();
+		List<Spot> spots = map.getSpots(wid);
+		List<CandidateSpot> cspots = new LinkedList<CandidateSpot>();
+		for (Spot spot : spots) {
+			CandidateSpot s = new CandidateSpot();
+			s.setMention(spot.getMention());
+			s.setLinkProbability(spot.getLinkProbability());
+			s.setLinkFrequency(spot.getLink());
+			s.setDocumentFrequency(spot.getFrequency());
+			List<CandidateEntity> candidates = new ArrayList<CandidateEntity>();
+			for (Entity entity : spot.getEntities()) {
+				CandidateEntity c = new CandidateEntity(entity.getId(),
+						entity.getFrequency(), spot.getEntityCommonness(entity));
+				if (addWikinames) {
+					c.setWikiname(helper.getLabel(entity.getId()));
+				}
+				candidates.add(c);
+			}
+			Collections.sort(candidates);
+			s.setCandidates(candidates);
+			cspots.add(s);
+		}
+		return gson.toJson(spots);
 
 	}
 
