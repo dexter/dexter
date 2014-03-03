@@ -21,6 +21,9 @@ import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,4 +91,15 @@ public class ArticleServer {
 		return desc;
 
 	}
+
+	public List<ArticleDescription> getEntities(String query, String field) {
+		List<Integer> entities = lucene.query(query, field);
+		List<ArticleDescription> descriptions = new LinkedList<ArticleDescription>();
+		for (Integer entity : entities) {
+			descriptions.add(get(entity));
+
+		}
+		return descriptions;
+	}
+
 }

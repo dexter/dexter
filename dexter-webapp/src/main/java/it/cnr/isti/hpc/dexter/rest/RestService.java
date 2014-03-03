@@ -444,4 +444,13 @@ public class RestService {
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
 		return spot(ui, text, spt, wikiNames, dbg);
 	}
+
+	@GET
+	@Path("get-candidates")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String queryLucene(@Context UriInfo ui,
+			@QueryParam("field") @DefaultValue("content") String field,
+			@QueryParam("query") String query) {
+		return gson.toJson(server.getEntities(field, query));
+	}
 }
