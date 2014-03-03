@@ -93,7 +93,9 @@ public class ArticleServer {
 	}
 
 	public List<ArticleDescription> getEntities(String query, String field) {
+		logger.info("query lucene index: {}:{}", field, query);
 		List<Integer> entities = lucene.query(query, field);
+		logger.info("results: ", entities);
 		List<ArticleDescription> descriptions = new LinkedList<ArticleDescription>();
 		for (Integer entity : entities) {
 			descriptions.add(get(entity));
@@ -101,5 +103,4 @@ public class ArticleServer {
 		}
 		return descriptions;
 	}
-
 }
