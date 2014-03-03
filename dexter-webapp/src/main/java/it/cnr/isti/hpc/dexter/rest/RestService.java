@@ -451,6 +451,6 @@ public class RestService {
 	public String queryLucene(@Context UriInfo ui,
 			@QueryParam("field") @DefaultValue("content") String field,
 			@QueryParam("query") String query) {
-		return gson.toJson(server.getEntities(field, query));
+		return gson.toJson(server.getEntities(query, field));
 	}
 }
