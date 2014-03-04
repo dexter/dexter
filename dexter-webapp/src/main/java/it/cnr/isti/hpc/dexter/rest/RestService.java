@@ -450,7 +450,9 @@ public class RestService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String queryLucene(@Context UriInfo ui,
 			@QueryParam("field") @DefaultValue("content") String field,
+			@QueryParam("n") @DefaultValue("10") String results,
 			@QueryParam("query") String query) {
-		return gson.toJson(server.getEntities(query, field));
+		Integer n = Integer.parseInt(results);
+		return gson.toJson(server.getEntities(query, field, n));
 	}
 }
