@@ -708,12 +708,19 @@ public class LuceneHelper {
 	}
 
 	/**
-	 * @return the top Lucene Document ids matching the query
+	 * @param query
+	 *            entities containing the text of the query as a phrase (terms
+	 *            consecutive) will be be returned.
+	 * @param field
+	 *            the field where the query must be performed (summary, content,
+	 *            title ..).
+	 * @param n
+	 *            the max number of results to produce.
+	 * @return the top wiki-id matching the query
 	 */
-	public List<Integer> query(String query, String field) {
+	public List<Integer> query(String query, String field, int n) {
 		searcher = getSearcher();
-		TopScoreDocCollector collector = TopScoreDocCollector.create(10000,
-				true);
+		TopScoreDocCollector collector = TopScoreDocCollector.create(n, true);
 		List<Integer> results = new ArrayList<Integer>();
 		Query q = null;
 
@@ -740,6 +747,21 @@ public class LuceneHelper {
 
 		logger.debug("query {} docs {}", query, results);
 		return results;
+	}
+
+	/**
+	 * @param query
+	 *            entities containing the text of the query as a phrase (terms
+	 *            consecutive) will be be returned.
+	 * @param field
+	 *            the field where the query must be performed (summary, content,
+	 *            title ..).
+	 * @param n
+	 *            the max number of results to produce.
+	 * @return the top wiki-id matching the query (returns max 10000 wiki-id );
+	 */
+	public List<Integer> query(String query, String field) {
+		return query(query, field, 10000);
 	}
 
 	/**
