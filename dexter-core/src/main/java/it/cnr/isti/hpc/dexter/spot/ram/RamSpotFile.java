@@ -72,6 +72,7 @@ public class RamSpotFile {
 				chunks.set(i, spotsData);
 				logger.info("loaded spot chunk {} : {}", i,
 						chunk.getAbsolutePath());
+				chunk = new File(binarySpotFile.getAbsolutePath() + "." + i);
 			}
 		}
 
