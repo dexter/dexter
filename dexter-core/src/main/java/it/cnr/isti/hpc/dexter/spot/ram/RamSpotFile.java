@@ -66,6 +66,7 @@ public class RamSpotFile {
 					binarySpotFile.getAbsolutePath());
 		} else {
 			File chunk = new File(binarySpotFile.getAbsolutePath() + "." + i);
+			logger.info("loading chunk {} ", chunk.getAbsolutePath());
 			while (chunk.exists()) {
 
 				byte[] spotsData = load(chunk);
