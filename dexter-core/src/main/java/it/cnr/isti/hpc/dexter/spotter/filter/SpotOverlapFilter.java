@@ -57,9 +57,11 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 
 	float probability;
 
+	Comparator<SpotMatch> comparator = new SpotMatchLengthComparator();
+
 	@Override
 	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
-		Collections.sort(sml, new SpotMatchLinkProbabilityComparator());
+		Collections.sort(sml, comparator);
 		SpotMatchList filtered = new SpotMatchList();
 
 		for (SpotMatch spot : sml) {
@@ -110,6 +112,16 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 
 	@Override
 	public void init(DexterParams dexterParams, DexterLocalParams initParams) {
-
+		if (initParams.containsKey("filter-by")) {
+			String filterBy = initParams.getParam("filter-by");
+			if (filterBy.equals("length")) {
+				logger.info("removes overlap selecting the longest spot");
+				comparator = new SpotMatchLengthComparator();
+			}
+			if (filterBy.equals("probability")) {
+				logger.info("removes overlap selecting the most probablespot");
+				comparator = new SpotMatchLinkProbabilityComparator();
+			}
+		}
 	}
 }
