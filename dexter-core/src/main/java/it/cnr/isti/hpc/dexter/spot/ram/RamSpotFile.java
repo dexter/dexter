@@ -48,7 +48,7 @@ public class RamSpotFile {
 			.getLogger(RamSpotFile.class);
 
 	// MAX CHUNK SIZE (byte)
-	private static int CHUNK_SIZE = 1000000000;
+	private static int CHUNK_SIZE = 100000000;
 
 	private static DexterParams params = DexterParams.getInstance();
 	private final List<byte[]> chunks;
@@ -133,7 +133,7 @@ public class RamSpotFile {
 			e1.printStackTrace();
 		}
 		for (Spot s : spots) {
-			int relativeOffset = (int) offset & CHUNK_SIZE;
+			int relativeOffset = (int) offset % CHUNK_SIZE;
 
 			pl.up();
 			try {
