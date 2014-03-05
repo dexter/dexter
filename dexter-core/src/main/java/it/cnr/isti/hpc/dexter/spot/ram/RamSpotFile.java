@@ -70,9 +70,10 @@ public class RamSpotFile {
 			while (chunk.exists()) {
 
 				byte[] spotsData = load(chunk);
-				chunks.set(i, spotsData);
+				chunks.add(i, spotsData);
 				logger.info("loaded spot chunk {} : {}", i,
 						chunk.getAbsolutePath());
+				i++;
 				chunk = new File(binarySpotFile.getAbsolutePath() + "." + i);
 			}
 		}
