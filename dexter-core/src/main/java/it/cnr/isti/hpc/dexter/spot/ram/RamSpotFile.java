@@ -91,10 +91,14 @@ public class RamSpotFile {
 		int tochunkid = (int) to / CHUNK_SIZE;
 		int fromOffset = (int) from % CHUNK_SIZE;
 		int toOffset = (int) to % CHUNK_SIZE;
+		logger.info("chunks: [{},{}]", fromchunkid, tochunkid);
+		logger.info("offset: [{},{}]", from, to);
 		if (fromchunkid != tochunkid) {
 			fromchunkid = tochunkid;
 			fromOffset = 0;
 		}
+		logger.info("chunk: [{}]", fromchunkid);
+		logger.info("offset: [{},{}]", from, to);
 		byte[] spotsData = chunks.get(fromchunkid);
 		return Arrays.copyOfRange(spotsData, fromOffset, toOffset);
 	}
