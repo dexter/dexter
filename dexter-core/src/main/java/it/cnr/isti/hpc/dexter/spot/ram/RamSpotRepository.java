@@ -68,8 +68,8 @@ public class RamSpotRepository implements SpotRepository {
 		s.stop("hash");
 		// logger.info("index = {} ",index);
 		s.start("offsets");
-		long from = offsets.getOffset(index + 1);
-		long to = offsets.getOffset(index + 2);
+		long from = offsets.getOffset(index);
+		long to = offsets.getOffset(index + 1);
 
 		// logger.info("offsetStart = {} ",from);
 		// logger.info("offsetEnd = {} ",to);
