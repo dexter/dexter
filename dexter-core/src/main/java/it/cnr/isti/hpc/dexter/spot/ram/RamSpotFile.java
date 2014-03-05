@@ -155,9 +155,11 @@ public class RamSpotFile {
 					outputWriter = new FileOutputStream(
 							output.getAbsolutePath() + "." + currentChunk);
 					offset += content.length + (CHUNK_SIZE - relativeOffset);
+				} else {
+					offsetsWriter.write(String.valueOf(offset));
+					offsetsWriter.newLine();
+					offset += content.length;
 				}
-				offset += content.length;
-
 				outputWriter.write(content);
 
 			} catch (IOException e) {
