@@ -77,12 +77,12 @@ public class SpotDocumentFrequencyFilter implements SpotMatchFilter {
 
 	@Override
 	public void init(DexterParams dexterParams, DexterLocalParams initParams) {
-		if (initParams.containsKey("min")) {
-			min = initParams.getIntParam("min");
+		if (initParams.containsKey("df-min")) {
+			min = initParams.getIntParam("df-min");
 			logger.info("min param set to {}", min);
 		}
-		if (initParams.containsKey("max")) {
-			max = initParams.getIntParam("max");
+		if (initParams.containsKey("df-max")) {
+			max = initParams.getIntParam("df-max");
 			logger.info("max param set to {}", max);
 		}
 
