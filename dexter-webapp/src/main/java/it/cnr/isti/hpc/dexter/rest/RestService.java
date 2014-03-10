@@ -66,6 +66,8 @@ import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sun.jersey.api.representation.Form;
+import com.wordnik.swagger.annotations.Api;
+import com.wordnik.swagger.annotations.ApiOperation;
 
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
@@ -73,7 +75,8 @@ import com.sun.jersey.api.representation.Form;
  *         Created on Feb 2, 2013
  */
 
-@Path("/")
+@Path("api")
+@Api(value = "api", description = "Dexter Rest Service")
 public class RestService {
 
 	private static Gson gson = new GsonBuilder()
@@ -108,7 +111,8 @@ public class RestService {
 	 */
 
 	@GET
-	@Path("annotate")
+	@Path("/annotate")
+	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotateGet(@Context UriInfo ui,
 			@QueryParam("text") String text,
