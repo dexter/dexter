@@ -59,8 +59,9 @@ public class RamSpotFile {
 		File binarySpotFile = params.getSpotsData();
 		int i = 0;
 		if (binarySpotFile.exists()) {
+			// just to support the old format
 			byte[] spotsData = load(binarySpotFile);
-			chunks.set(i, spotsData);
+			chunks.add(i, spotsData);
 			CHUNK_SIZE = Integer.MAX_VALUE;
 			logger.info("loaded unique chunk {} : {}", i,
 					binarySpotFile.getAbsolutePath());
