@@ -128,7 +128,8 @@ public class RestService {
 	}
 
 	@POST
-	@Path("annotate")
+	@Path("/annotate")
+	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String annotatePost(Form form, @FormParam("text") String text,
 			@FormParam("n") @DefaultValue("5") String n,
@@ -275,7 +276,8 @@ public class RestService {
 	 */
 
 	@GET
-	@Path("get-desc")
+	@Path("/get-desc")
+	@ApiOperation(value = "Provides the description of an entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getDescription(@QueryParam("id") String id,
 			@QueryParam("title-only") @DefaultValue("false") String titleonly) {
@@ -303,7 +305,8 @@ public class RestService {
 	}
 
 	@GET
-	@Path("get-id")
+	@Path("/get-id")
+	@ApiOperation(value = "Provides the wiki-id of an entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getDescription(@QueryParam("title") String title) {
 		String label = Article.getTitleInWikistyle(title);
@@ -319,7 +322,8 @@ public class RestService {
 	}
 
 	@GET
-	@Path("get-spots")
+	@Path("/get-spots")
+	@ApiOperation(value = "Provides all the spots that could refer to the given entity", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getEntitySpots(@QueryParam("id") String id,
 			@QueryParam("title") String title,
@@ -378,11 +382,9 @@ public class RestService {
 	 *         probability. For each spot it also returns the list of candidate
 	 *         entities associated with it, together with their commonness.
 	 */
-
-	private String spot(UriInfo ui, String text, String spt, String wikiNames,
-			String dbg) {
+	private String spot(DexterLocalParams requestParams, String text,
+			String spt, String wikiNames, String dbg) {
 		long start = System.currentTimeMillis();
-		DexterLocalParams requestParams = getLocalParams(ui);
 		Spotter spotter = params.getSpotter(spt);
 		boolean debug = new Boolean(dbg);
 		Document d = new FlatDocument(text);
@@ -430,27 +432,32 @@ public class RestService {
 	}
 
 	@GET
-	@Path("spot")
+	@Path("/spot")
+	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String spotGet(@Context UriInfo ui, @QueryParam("text") String text,
 			@QueryParam("spt") String spt,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
-		return spot(ui, text, spt, wikiNames, dbg);
+		DexterLocalParams requestParams = getLocalParams(ui);
+		return spot(requestParams, text, spt, wikiNames, dbg);
 	}
 
 	@POST
-	@Path("spot")
+	@Path("/spot")
+	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotPost(@Context UriInfo ui,
-			@QueryParam("text") String text, @QueryParam("spt") String spt,
-			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
-		return spot(ui, text, spt, wikiNames, dbg);
+	public String spotPost(Form form, @FormParam("text") String text,
+			@FormParam("spt") String spt,
+			@FormParam("wn") @DefaultValue("false") String wikiNames,
+			@FormParam("debug") @DefaultValue("false") String dbg) {
+		DexterLocalParams requestParams = getLocalParams(form);
+		return spot(requestParams, text, spt, wikiNames, dbg);
 	}
 
 	@GET
-	@Path("get-candidates")
+	@Path("/get-candidates")
+	@ApiOperation(value = "Given a query, returns a list of candidates entities represented by the query", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String queryLucene(@Context UriInfo ui,
 			@QueryParam("field") @DefaultValue("content") String field,
