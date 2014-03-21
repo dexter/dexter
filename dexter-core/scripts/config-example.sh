@@ -57,7 +57,11 @@ IN_EDGES=$GRAPH_DIR/incoming-edges.tsv.gz
 OUT_EDGES=$GRAPH_DIR/outcoming-edges.tsv.gz
 
 #categories
-WIKI_CATEGORIES=$GRAPH_DIR/categories.tsv.gz
+WIKI_CATEGORIES=$GRAPH_DIR/categories.json.gz
+IN_CATEGORIES=$GRAPH_DIR/incoming-categories.tsv.gz
+OUT_CATEGORIES=$GRAPH_DIR/outcoming-categories.tsv.gz
+IN_ENTITY_CATEGORIES=$GRAPH_DIR/incoming-entity-categories.tsv.gz
+OUT_ENTITY_CATEGORIES=$GRAPH_DIR/outcoming-entity-categories.tsv.gz
 
 #temporary files used by the scripts
 TMP=$DEXTER_TMP_DIR/tmp
