@@ -28,6 +28,8 @@ TITLE_FILE=$DATA_DIR/title-redirect-id.tsv
 # directory use for storing temporary files during files 
 DEXTER_TMP_DIR=$DATA_DIR/tmp
 
+# dump language
+LANG=en
 # json wikipedia dump path
 WIKI_JSON_DUMP=../enwiki-latest-pages-articles.json.gz
 
