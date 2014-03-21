@@ -13,7 +13,7 @@ bunzip2 $TMP.bz2
 
 echo "extracting categories relationships"
 
-grep broader $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
+grep broader $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$LANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
 
 echo "generate edges"
 $JAVA $CLI.categories.ExtractDbpediaCategoriesCLI --input $TTMP --output $TTTMP
