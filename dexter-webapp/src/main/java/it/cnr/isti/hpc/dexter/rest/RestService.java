@@ -25,6 +25,11 @@ import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
+import it.cnr.isti.hpc.dexter.graph.CategoryNodeFactory;
+import it.cnr.isti.hpc.dexter.graph.EntityCategoryNodeFactory;
+import it.cnr.isti.hpc.dexter.graph.IncomingNodes;
+import it.cnr.isti.hpc.dexter.graph.NodeFactory;
+import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
@@ -75,8 +80,8 @@ import com.wordnik.swagger.annotations.ApiOperation;
  *         Created on Feb 2, 2013
  */
 
-@Path("api")
-@Api(value = "api", description = "Dexter Rest Service")
+@Path("rest")
+@Api(value = "rest", description = "Dexter Rest Service")
 public class RestService {
 
 	private static Gson gson = new GsonBuilder()
@@ -465,5 +470,127 @@ public class RestService {
 			@QueryParam("query") String query) {
 		Integer n = Integer.parseInt(results);
 		return gson.toJson(server.getEntities(query, field, n));
+	}
+
+	// graph
+
+	@GET
+	@Path("/get-target-entities")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getTargetEntities(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		OutcomingNodes entityOutcomingNodes = NodeFactory
+				.getOutcomingNodes(NodeFactory.STD_TYPE);
+		int[] out = entityOutcomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(out);
+		}
+		List<String> names = new ArrayList<String>(out.length);
+		for (int entity : out) {
+			names.add(helper.getLabel(entity));
+		}
+		return gson.toJson(names);
+	}
+
+	@GET
+	@Path("/get-source-entities")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getSourceEntities(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		IncomingNodes entityIncomingNodes = NodeFactory
+				.getIncomingNodes(NodeFactory.STD_TYPE);
+		int[] in = entityIncomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(in);
+		}
+		List<String> names = new ArrayList<String>(in.length);
+		for (int entity : in) {
+			names.add(helper.getLabel(entity));
+		}
+		return gson.toJson(names);
+	}
+
+	@GET
+	@Path("/get-entity-categories")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getEntityCategories(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		OutcomingNodes entityOutcomingNodes = EntityCategoryNodeFactory
+				.getOutcomingNodes(EntityCategoryNodeFactory.STD_TYPE);
+		int[] out = entityOutcomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(out);
+		}
+		List<String> names = new ArrayList<String>(out.length);
+		for (int entity : out) {
+			names.add(helper.getLabel(entity));
+		}
+		return gson.toJson(names);
+	}
+
+	@GET
+	@Path("/get-belonging-entities")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getBelongingEntities(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		IncomingNodes entityIncomingNodes = EntityCategoryNodeFactory
+				.getIncomingNodes(EntityCategoryNodeFactory.STD_TYPE);
+		int[] in = entityIncomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(in);
+		}
+		List<String> names = new ArrayList<String>(in.length);
+		for (int entity : in) {
+			names.add(helper.getLabel(entity));
+		}
+		return gson.toJson(names);
+	}
+
+	@GET
+	@Path("/get-parent-categories")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getParentCategories(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		IncomingNodes categoryIncomingNodes = CategoryNodeFactory
+				.getIncomingNodes(CategoryNodeFactory.STD_TYPE);
+		int[] in = categoryIncomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(in);
+		}
+		List<String> names = new ArrayList<String>(in.length);
+		for (int category : in) {
+			names.add(helper.getLabel(category));
+		}
+		return gson.toJson(names);
+	}
+
+	@GET
+	@Path("/get-child-categories")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String getChildCategories(@QueryParam("wid") String wikiId,
+			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
+		boolean convert = new Boolean(asWikiNames);
+		int id = Integer.parseInt(wikiId);
+		OutcomingNodes categoryOutcomingNodes = CategoryNodeFactory
+				.getOutcomingNodes(CategoryNodeFactory.STD_TYPE);
+		int[] out = categoryOutcomingNodes.getNeighbours(id);
+		if (!convert) {
+			return gson.toJson(out);
+		}
+		List<String> names = new ArrayList<String>(out.length);
+		for (int category : out) {
+			names.add(helper.getLabel(category));
+		}
+		return gson.toJson(names);
 	}
 }
