@@ -19,6 +19,7 @@ import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
+import it.cnr.isti.hpc.structure.LRUCache;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import java.util.LinkedList;
@@ -38,12 +39,15 @@ public class ArticleServer {
 			.getLogger(ArticleServer.class);
 
 	private LuceneHelper lucene;
+
+	private LRUCache<Query, List<ArticleDescription>> lruCache;
 	private final IdHelper idHelper = IdHelperFactory.getStdIdHelper();
 	private final Stopwatch timer = new Stopwatch();
 
 	public ArticleServer() {
 		if (LuceneHelper.hasDexterLuceneIndex()) {
 			lucene = LuceneHelper.getDexterLuceneHelper();
+			lruCache = new LRUCache<Query, List<ArticleDescription>>(1000);
 		}
 	}
 
@@ -94,7 +98,10 @@ public class ArticleServer {
 
 	public List<ArticleDescription> getEntities(String query, String field,
 			int n) {
+		Query q = new Query(query, field, n);
 		logger.info("query lucene index: {}:{}", field, query);
+		if (lruCache.containsKey(q))
+			return lruCache.get(q);
 		List<Integer> entities = lucene.query(query, field, n);
 		logger.info("results: ", entities);
 		List<ArticleDescription> descriptions = new LinkedList<ArticleDescription>();
@@ -102,6 +109,86 @@ public class ArticleServer {
 			descriptions.add(get(entity));
 
 		}
+		lruCache.put(q, descriptions);
 		return descriptions;
+	}
+
+	private class Query {
+		String query;
+		String field;
+		int n;
+
+		public Query(String query, String field, int n) {
+			super();
+			this.query = query;
+			this.field = field;
+			this.n = n;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result + ((field == null) ? 0 : field.hashCode());
+			result = prime * result + n;
+			result = prime * result + ((query == null) ? 0 : query.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Query other = (Query) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (field == null) {
+				if (other.field != null)
+					return false;
+			} else if (!field.equals(other.field))
+				return false;
+			if (n != other.n)
+				return false;
+			if (query == null) {
+				if (other.query != null)
+					return false;
+			} else if (!query.equals(other.query))
+				return false;
+			return true;
+		}
+
+		public String getQuery() {
+			return query;
+		}
+
+		public void setQuery(String query) {
+			this.query = query;
+		}
+
+		public String getField() {
+			return field;
+		}
+
+		public void setField(String field) {
+			this.field = field;
+		}
+
+		public int getN() {
+			return n;
+		}
+
+		public void setN(int n) {
+			this.n = n;
+		}
+
+		private ArticleServer getOuterType() {
+			return ArticleServer.this;
+		}
+
 	}
 }
