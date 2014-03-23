@@ -284,13 +284,16 @@ public class RestService {
 	@Path("/get-desc")
 	@ApiOperation(value = "Provides the description of an entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getDescription(@QueryParam("id") String id,
+	public String getDescription(
+			@QueryParam("id") @DefaultValue("11983070") String id,
 			@QueryParam("title-only") @DefaultValue("false") String titleonly) {
 
 		int i = Integer.parseInt(id);
 		boolean titleOnly = new Boolean(titleonly);
 		if (titleOnly) {
 			ArticleDescription desc = server.getOnlyEntityLabel(i);
+			desc.setDescription(null);
+			desc.setImage(null);
 			return desc.toJson();
 
 		}
@@ -313,13 +316,16 @@ public class RestService {
 	@Path("/get-id")
 	@ApiOperation(value = "Provides the wiki-id of an entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getDescription(@QueryParam("title") String title) {
+	public String getDescription(
+			@QueryParam("title") @DefaultValue("Johnny_Cash") String title) {
 		String label = Article.getTitleInWikistyle(title);
 		int id = helper.getId(label);
 
 		ArticleDescription desc = new ArticleDescription();
 		desc.setTitle(label);
 		desc.setId(id);
+		desc.setDescription(null);
+		desc.setImage(null);
 		String description = desc.toJson();
 		logger.info("getId: {}", description);
 		return description;
@@ -330,8 +336,9 @@ public class RestService {
 	@Path("/get-spots")
 	@ApiOperation(value = "Provides all the spots that could refer to the given entity", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getEntitySpots(@QueryParam("id") String id,
-			@QueryParam("title") String title,
+	public String getEntitySpots(
+			@QueryParam("id") @DefaultValue("11983070") String id,
+			@QueryParam("title") @DefaultValue("Johnny_Cash") String title,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames) {
 		int wid = 0;
 		boolean addWikinames = new Boolean(wikiNames);
@@ -440,7 +447,9 @@ public class RestService {
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotGet(@Context UriInfo ui, @QueryParam("text") String text,
+	public String spotGet(
+			@Context UriInfo ui,
+			@QueryParam("text") @DefaultValue("Bob Dylan and Johnny Cash had formed a mutual admiration society even before they met in the early 1960s") String text,
 			@QueryParam("spt") String spt,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg) {
@@ -452,8 +461,10 @@ public class RestService {
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotPost(Form form, @FormParam("text") String text,
-			@FormParam("spt") String spt,
+	public String spotPost(
+			Form form,
+			@FormParam("text") @DefaultValue("Bob Dylan and Johnny Cash had formed a mutual admiration society even before they met in the early 1960s") String text,
+			@FormParam("spt") @DefaultValue("wiki-dictionary") String spt,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg) {
 		DexterLocalParams requestParams = getLocalParams(form);
@@ -465,9 +476,9 @@ public class RestService {
 	@ApiOperation(value = "Given a query, returns a list of candidates entities represented by the query", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String queryLucene(@Context UriInfo ui,
-			@QueryParam("field") @DefaultValue("content") String field,
+			@QueryParam("field") @DefaultValue("title") String field,
 			@QueryParam("n") @DefaultValue("10") String results,
-			@QueryParam("query") String query) {
+			@QueryParam("query") @DefaultValue("johnny cash") String query) {
 		Integer n = Integer.parseInt(results);
 		return gson.toJson(server.getEntities(query, field, n));
 	}
@@ -477,7 +488,7 @@ public class RestService {
 	@GET
 	@Path("/get-target-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getTargetEntities(@QueryParam("wid") String wikiId,
+	public String getTargetEntities(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
@@ -497,7 +508,7 @@ public class RestService {
 	@GET
 	@Path("/get-source-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getSourceEntities(@QueryParam("wid") String wikiId,
+	public String getSourceEntities(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
@@ -517,7 +528,7 @@ public class RestService {
 	@GET
 	@Path("/get-entity-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getEntityCategories(@QueryParam("wid") String wikiId,
+	public String getEntityCategories(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
@@ -537,7 +548,7 @@ public class RestService {
 	@GET
 	@Path("/get-belonging-entities")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getBelongingEntities(@QueryParam("wid") String wikiId,
+	public String getBelongingEntities(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
@@ -557,7 +568,7 @@ public class RestService {
 	@GET
 	@Path("/get-parent-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getParentCategories(@QueryParam("wid") String wikiId,
+	public String getParentCategories(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
@@ -577,7 +588,7 @@ public class RestService {
 	@GET
 	@Path("/get-child-categories")
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getChildCategories(@QueryParam("wid") String wikiId,
+	public String getChildCategories(@QueryParam("id") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
 		boolean convert = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);

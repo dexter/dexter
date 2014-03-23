@@ -40,14 +40,17 @@ public class ArticleServer {
 
 	private LuceneHelper lucene;
 
-	private LRUCache<Query, List<ArticleDescription>> lruCache;
+	private static LRUCache<Query, List<ArticleDescription>> lruCache = new LRUCache<Query, List<ArticleDescription>>(
+			2000);
+	private static LRUCache<Integer, ArticleDescription> cache = new LRUCache<Integer, ArticleDescription>(
+			1000);
 	private final IdHelper idHelper = IdHelperFactory.getStdIdHelper();
 	private final Stopwatch timer = new Stopwatch();
 
 	public ArticleServer() {
 		if (LuceneHelper.hasDexterLuceneIndex()) {
 			lucene = LuceneHelper.getDexterLuceneHelper();
-			lruCache = new LRUCache<Query, List<ArticleDescription>>(1000);
+
 		}
 	}
 
@@ -58,6 +61,8 @@ public class ArticleServer {
 	 *            - the wiki-id of the entity
 	 */
 	public ArticleDescription get(int id) {
+		if (cache.containsKey(id))
+			return cache.get(id);
 		ArticleDescription desc;
 		Article a = new Article();
 		if (lucene != null) {
@@ -78,6 +83,10 @@ public class ArticleServer {
 				desc = ArticleDescription.EMPTY;
 			}
 		}
+		synchronized (cache) {
+			cache.put(id, desc);
+		}
+
 		return desc;
 
 	}
@@ -99,9 +108,11 @@ public class ArticleServer {
 	public List<ArticleDescription> getEntities(String query, String field,
 			int n) {
 		Query q = new Query(query, field, n);
-		logger.info("query lucene index: {}:{}", field, query);
-		if (lruCache.containsKey(q))
+		logger.info("query lucene index: {} hc{}", q, q.hashCode());
+		if (lruCache.containsKey(q)) {
+			logger.info("cache hit for {} ", q);
 			return lruCache.get(q);
+		}
 		List<Integer> entities = lucene.query(query, field, n);
 		logger.info("results: ", entities);
 		List<ArticleDescription> descriptions = new LinkedList<ArticleDescription>();
@@ -109,11 +120,15 @@ public class ArticleServer {
 			descriptions.add(get(entity));
 
 		}
-		lruCache.put(q, descriptions);
+		synchronized (lruCache) {
+			lruCache.put(q, descriptions);
+		}
+
+		logger.info("addde to cash {}", q.hashCode());
 		return descriptions;
 	}
 
-	private class Query {
+	private static class Query {
 		String query;
 		String field;
 		int n;
@@ -129,7 +144,6 @@ public class ArticleServer {
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;
-			result = prime * result + getOuterType().hashCode();
 			result = prime * result + ((field == null) ? 0 : field.hashCode());
 			result = prime * result + n;
 			result = prime * result + ((query == null) ? 0 : query.hashCode());
@@ -145,8 +159,6 @@ public class ArticleServer {
 			if (getClass() != obj.getClass())
 				return false;
 			Query other = (Query) obj;
-			if (!getOuterType().equals(other.getOuterType()))
-				return false;
 			if (field == null) {
 				if (other.field != null)
 					return false;
@@ -186,8 +198,10 @@ public class ArticleServer {
 			this.n = n;
 		}
 
-		private ArticleServer getOuterType() {
-			return ArticleServer.this;
+		@Override
+		public String toString() {
+			return "Query [query=" + query + ", field=" + field + ", n=" + n
+					+ "]";
 		}
 
 	}

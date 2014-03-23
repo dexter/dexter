@@ -45,7 +45,7 @@ public class ArticleDescription {
 	private String image;
 	private int id;
 	private Map<String, String> infobox;
-	private static final int MAX_LENGTH = 200;
+	// private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
 
 	private static LRUCache<String, ArticleDescription> cache = new LRUCache<String, ArticleDescription>(

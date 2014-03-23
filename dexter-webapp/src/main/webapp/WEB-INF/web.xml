@@ -22,8 +22,9 @@
 	
 	<servlet-mapping>
 		<servlet-name>Jersey Web Application</servlet-name>
-		<url-pattern>*</url-pattern>
+		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
+	
 	
     <servlet>
       <servlet-name>JerseyJaxrsConfig</servlet-name>
@@ -34,7 +35,7 @@
       </init-param>
       <init-param>
         <param-name>swagger.api.basepath</param-name>
-        <param-value>http://syrah.isti.cnr.it:8080/dexter-webapp/rest</param-value>
+        <param-value>http://localhost:8080/dexter-webapp/api</param-value>
       </init-param>
       <load-on-startup>2</load-on-startup>
     </servlet>
