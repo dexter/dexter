@@ -23,6 +23,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -45,6 +46,11 @@ public class ArticleDescription {
 	private String image;
 	private int id;
 	private Map<String, String> infobox;
+	private List<ArticleDescription> incomingEntities;
+	private List<ArticleDescription> outcomingEntities;
+	private List<ArticleDescription> parentCategories;
+	private List<ArticleDescription> childCategories;
+
 	// private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
 
@@ -242,6 +248,38 @@ public class ArticleDescription {
 	 */
 	public void setInfobox(Map<String, String> infobox) {
 		this.infobox = infobox;
+	}
+
+	public List<ArticleDescription> getIncomingEntities() {
+		return incomingEntities;
+	}
+
+	public void setIncomingEntities(List<ArticleDescription> incomingEntities) {
+		this.incomingEntities = incomingEntities;
+	}
+
+	public List<ArticleDescription> getOutcomingEntities() {
+		return outcomingEntities;
+	}
+
+	public void setOutcomingEntities(List<ArticleDescription> outcomingEntities) {
+		this.outcomingEntities = outcomingEntities;
+	}
+
+	public List<ArticleDescription> getParentCategories() {
+		return parentCategories;
+	}
+
+	public void setParentCategories(List<ArticleDescription> parentCategories) {
+		this.parentCategories = parentCategories;
+	}
+
+	public List<ArticleDescription> getChildCategories() {
+		return childCategories;
+	}
+
+	public void setChildCategories(List<ArticleDescription> childCategories) {
+		this.childCategories = childCategories;
 	}
 
 	@Override

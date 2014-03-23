@@ -485,123 +485,150 @@ public class RestService {
 
 	// graph
 
+	private List<ArticleDescription> getNodes(int id, ArticleDescription e,
+			List<ArticleDescription> list, int[] array, boolean addWikinames) {
+		List<ArticleDescription> nodes = new ArrayList<ArticleDescription>(
+				array.length);
+		e.setId(id);
+		e.setDescription(null);
+		e.setImage(null);
+		e.setInfobox(null);
+
+		for (int entity : array) {
+			ArticleDescription desc = new ArticleDescription();
+			desc.setId(entity);
+			desc.setImage(null);
+			desc.setDescription(null);
+			desc.setInfobox(null);
+			if (addWikinames) {
+				desc.setTitle(helper.getLabel(entity));
+				e.setTitle(helper.getLabel(id));
+			} else {
+				desc.setTitle(null);
+				e.setTitle(null);
+			}
+			nodes.add(desc);
+		}
+		return nodes;
+	}
+
 	@GET
 	@Path("/get-target-entities")
+	@ApiOperation(value = "Given an entity, returns the entities linked by given entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getTargetEntities(@QueryParam("id") String wikiId,
+	public String getTargetEntities(
+			@QueryParam("id") @DefaultValue("11983070") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
+
+		ArticleDescription e = new ArticleDescription();
+
 		int id = Integer.parseInt(wikiId);
+
+		if (addWikinames) {
+
+		}
 		OutcomingNodes entityOutcomingNodes = NodeFactory
 				.getOutcomingNodes(NodeFactory.STD_TYPE);
 		int[] out = entityOutcomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(out);
-		}
-		List<String> names = new ArrayList<String>(out.length);
-		for (int entity : out) {
-			names.add(helper.getLabel(entity));
-		}
-		return gson.toJson(names);
+		e.setOutcomingEntities(getNodes(id, e,
+				new ArrayList<ArticleDescription>(out.length), out,
+				addWikinames));
+		return gson.toJson(e);
 	}
 
 	@GET
 	@Path("/get-source-entities")
+	@ApiOperation(value = "Given an entity, returns the entities that link to the given entity", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getSourceEntities(@QueryParam("id") String wikiId,
+	public String getSourceEntities(
+			@QueryParam("id") @DefaultValue("11983070") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
+		ArticleDescription e = new ArticleDescription();
 		int id = Integer.parseInt(wikiId);
+
 		IncomingNodes entityIncomingNodes = NodeFactory
 				.getIncomingNodes(NodeFactory.STD_TYPE);
 		int[] in = entityIncomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(in);
-		}
-		List<String> names = new ArrayList<String>(in.length);
-		for (int entity : in) {
-			names.add(helper.getLabel(entity));
-		}
-		return gson.toJson(names);
+		e.setIncomingEntities(getNodes(id, e,
+				new ArrayList<ArticleDescription>(in.length), in, addWikinames));
+		return gson.toJson(e);
 	}
 
 	@GET
 	@Path("/get-entity-categories")
+	@ApiOperation(value = "Given an entity, returns its categories", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getEntityCategories(@QueryParam("id") String wikiId,
+	public String getEntityCategories(
+			@QueryParam("id") @DefaultValue("11983070") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
+
 		int id = Integer.parseInt(wikiId);
 		OutcomingNodes entityOutcomingNodes = EntityCategoryNodeFactory
 				.getOutcomingNodes(EntityCategoryNodeFactory.STD_TYPE);
 		int[] out = entityOutcomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(out);
-		}
-		List<String> names = new ArrayList<String>(out.length);
-		for (int entity : out) {
-			names.add(helper.getLabel(entity));
-		}
-		return gson.toJson(names);
+		ArticleDescription e = new ArticleDescription();
+		e.setParentCategories(getNodes(id, e,
+				new ArrayList<ArticleDescription>(out.length), out,
+				addWikinames));
+		return gson.toJson(e);
+
 	}
 
 	@GET
 	@Path("/get-belonging-entities")
+	@ApiOperation(value = "Given a category, returns the entities that belong to the category", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getBelongingEntities(@QueryParam("id") String wikiId,
+	public String getBelongingEntities(
+			@QueryParam("id") @DefaultValue("30061715") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		IncomingNodes entityIncomingNodes = EntityCategoryNodeFactory
 				.getIncomingNodes(EntityCategoryNodeFactory.STD_TYPE);
 		int[] in = entityIncomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(in);
-		}
-		List<String> names = new ArrayList<String>(in.length);
-		for (int entity : in) {
-			names.add(helper.getLabel(entity));
-		}
-		return gson.toJson(names);
+		ArticleDescription e = new ArticleDescription();
+		e.setOutcomingEntities(getNodes(id, e,
+				new ArrayList<ArticleDescription>(in.length), in, addWikinames));
+		return gson.toJson(e);
+
 	}
 
 	@GET
 	@Path("/get-parent-categories")
+	@ApiOperation(value = "Given a category, returns its parent categories", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getParentCategories(@QueryParam("id") String wikiId,
+	public String getParentCategories(
+			@QueryParam("id") @DefaultValue("30061715") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		IncomingNodes categoryIncomingNodes = CategoryNodeFactory
 				.getIncomingNodes(CategoryNodeFactory.STD_TYPE);
 		int[] in = categoryIncomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(in);
-		}
-		List<String> names = new ArrayList<String>(in.length);
-		for (int category : in) {
-			names.add(helper.getLabel(category));
-		}
-		return gson.toJson(names);
+		ArticleDescription e = new ArticleDescription();
+		e.setParentCategories(getNodes(id, e,
+				new ArrayList<ArticleDescription>(in.length), in, addWikinames));
+		return gson.toJson(e);
 	}
 
 	@GET
 	@Path("/get-child-categories")
+	@ApiOperation(value = "Given a category, returns its child categories", response = ArticleDescription.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String getChildCategories(@QueryParam("id") String wikiId,
+	public String getChildCategories(
+			@QueryParam("id") @DefaultValue("8251471") String wikiId,
 			@QueryParam("wn") @DefaultValue("false") String asWikiNames) {
-		boolean convert = new Boolean(asWikiNames);
+		boolean addWikinames = new Boolean(asWikiNames);
 		int id = Integer.parseInt(wikiId);
 		OutcomingNodes categoryOutcomingNodes = CategoryNodeFactory
 				.getOutcomingNodes(CategoryNodeFactory.STD_TYPE);
 		int[] out = categoryOutcomingNodes.getNeighbours(id);
-		if (!convert) {
-			return gson.toJson(out);
-		}
-		List<String> names = new ArrayList<String>(out.length);
-		for (int category : out) {
-			names.add(helper.getLabel(category));
-		}
-		return gson.toJson(names);
+		ArticleDescription e = new ArticleDescription();
+		e.setChildCategories(getNodes(id, e, new ArrayList<ArticleDescription>(
+				out.length), out, addWikinames));
+		return gson.toJson(e);
 	}
 }
