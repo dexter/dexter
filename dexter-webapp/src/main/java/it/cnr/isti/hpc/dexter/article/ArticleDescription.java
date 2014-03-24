@@ -44,7 +44,7 @@ public class ArticleDescription {
 	private String description;
 	private String image;
 
-	private String uri;
+	private String url;
 	private int id;
 	private Map<String, String> infobox;
 	private List<ArticleDescription> incomingEntities;
@@ -67,7 +67,7 @@ public class ArticleDescription {
 		title = "NOTITLE";
 		description = "NODESC";
 		infobox = null;
-		uri = "";
+		url = "";
 		image = "";
 		id = -1;
 
@@ -77,7 +77,7 @@ public class ArticleDescription {
 		title = a.getTitle();
 		id = a.getWid();
 		image = "http://wikiname2image.herokuapp.com/" + a.getWikiTitle();
-		uri = "http://en.wikipedia.org/wiki/" + a.getWikiTitle();
+		url = "http://en.wikipedia.org/wiki/" + a.getWikiTitle();
 		infobox = null;
 		description = a.getSummary();
 		// FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
@@ -286,11 +286,11 @@ public class ArticleDescription {
 	}
 
 	public String getUri() {
-		return uri;
+		return url;
 	}
 
 	public void setUri(String uri) {
-		this.uri = uri;
+		this.url = uri;
 	}
 
 	@Override
