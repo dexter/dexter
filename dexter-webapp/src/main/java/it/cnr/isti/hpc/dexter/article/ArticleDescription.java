@@ -158,7 +158,7 @@ public class ArticleDescription {
 	}
 
 	public String toJson() {
-		if (infobox.isEmpty())
+		if (infobox != null && infobox.isEmpty())
 			infobox = null;
 		return gson.toJson(this);
 	}
