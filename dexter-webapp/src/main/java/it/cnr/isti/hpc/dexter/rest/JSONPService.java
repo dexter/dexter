@@ -177,7 +177,7 @@ public class JSONPService {
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg) {
 		return addCallback(callback,
-				spotPost(form, callback, text, spt, wikiNames, dbg));
+				r.spotPost(form, text, spt, wikiNames, dbg));
 	}
 
 	@GET
@@ -189,8 +189,7 @@ public class JSONPService {
 			@QueryParam("field") @DefaultValue("content") String field,
 			@QueryParam("n") @DefaultValue("10") String results,
 			@QueryParam("query") String query) {
-		return addCallback(callback,
-				queryLucene(ui, callback, field, results, query));
+		return addCallback(callback, r.queryLucene(ui, field, results, query));
 	}
 
 }
