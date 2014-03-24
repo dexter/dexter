@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +43,8 @@ public class ArticleDescription {
 	private String title;
 	private String description;
 	private String image;
+
+	private String uri;
 	private int id;
 	private Map<String, String> infobox;
 	private List<ArticleDescription> incomingEntities;
@@ -65,7 +66,7 @@ public class ArticleDescription {
 	public ArticleDescription() {
 		title = "NOTITLE";
 		description = "NODESC";
-		infobox = new HashMap<String, String>();
+		infobox = null;
 		image = "";
 		id = -1;
 
@@ -75,7 +76,8 @@ public class ArticleDescription {
 		title = a.getTitle();
 		id = a.getWid();
 		image = "http://wikiname2image.herokuapp.com/" + a.getWikiTitle();
-		infobox = new HashMap<String, String>();
+		uri = "http://en.wikipedia.org/wiki/" + a.getWikiTitle();
+		infobox = null;
 		description = a.getSummary();
 		// FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
 		// if (fe.hasId()) {
@@ -280,6 +282,14 @@ public class ArticleDescription {
 
 	public void setChildCategories(List<ArticleDescription> childCategories) {
 		this.childCategories = childCategories;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	@Override
