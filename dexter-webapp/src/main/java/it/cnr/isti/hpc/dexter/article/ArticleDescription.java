@@ -67,6 +67,7 @@ public class ArticleDescription {
 		title = "NOTITLE";
 		description = "NODESC";
 		infobox = null;
+		uri = "";
 		image = "";
 		id = -1;
 
