@@ -153,7 +153,7 @@ public class DexterRestClient {
 			// url += "&n=" + n;
 			// }
 			// System.out.println(sb.toString());
-			json = postQuery("/api/annotate", sb.toString());
+			json = postQuery("/annotate", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -175,7 +175,7 @@ public class DexterRestClient {
 	public SpottedDocument spot(String doc) {
 		String text = URLEncoder.encode(doc);
 		String json = "";
-		String url = "/api/spot?text=" + text;
+		String url = "/spot?text=" + text;
 		if (linkProbability > 0)
 			url += "&lp=" + linkProbability;
 		if (wikinames) {
@@ -205,7 +205,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/api/get-desc?id=" + id).toString();
+					server.toString() + "/get-desc?id=" + id).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -227,8 +227,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/api/get-id?title=" + title)
-					.toString();
+					server.toString() + "/get-id?title=" + title).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return -1;
@@ -304,7 +303,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/graph/get-child-categories?wid="
+					server.toString() + "/get-child-categories?wid="
 							+ categoryWikiId).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
@@ -324,7 +323,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/graph/get-parent-categories?wid="
+					server.toString() + "/get-parent-categories?wid="
 							+ categoryWikiId).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
@@ -344,7 +343,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/graph/get-belonging-entities?wid="
+					server.toString() + "/get-belonging-entities?wid="
 							+ entityId).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
@@ -363,7 +362,7 @@ public class DexterRestClient {
 		String json = "";
 		try {
 			json = browser.fetchAsString(
-					server.toString() + "/graph/get-entity-categories?wid="
+					server.toString() + "/get-entity-categories?wid="
 							+ entityId).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
