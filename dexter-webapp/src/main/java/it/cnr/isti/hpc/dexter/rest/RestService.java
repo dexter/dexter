@@ -32,10 +32,13 @@ import it.cnr.isti.hpc.dexter.graph.NodeFactory;
 import it.cnr.isti.hpc.dexter.graph.OutcomingNodes;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
+import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
+import it.cnr.isti.hpc.dexter.relatedness.RelatednessFactory;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedSpot;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateEntity;
 import it.cnr.isti.hpc.dexter.rest.domain.CandidateSpot;
+import it.cnr.isti.hpc.dexter.rest.domain.EntityRelatedness;
 import it.cnr.isti.hpc.dexter.rest.domain.EntitySpots;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
@@ -129,6 +132,31 @@ public class RestService {
 		DexterLocalParams requestParams = getLocalParams(ui);
 		return annotate(requestParams, text, n, spotter, disambiguator,
 				wikiNames, dbg);
+
+	}
+
+	@GET
+	@Path("/relatedness")
+	@ApiOperation(value = "Return the semantic relatedness between two entities", response = Relatedness.class)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String relatedness(@Context UriInfo ui, @QueryParam("e1") String e1,
+			@QueryParam("e2") String e2,
+			@QueryParam("rel") @DefaultValue("milnewitten") String rel,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+
+		int x = Integer.parseInt(e1);
+		int y = Integer.parseInt(e2);
+		EntityRelatedness relatedness = new EntityRelatedness(x, y, rel);
+		RelatednessFactory rf = new RelatednessFactory(rel);
+		double r = rf.getRelatedness(x, y).getScore();
+		relatedness.setRelatedness(r);
+		boolean addWikinames = new Boolean(wikiNames);
+		if (addWikinames) {
+			relatedness.setEntity1Wikiname(helper.getLabel(x));
+			relatedness.setEntity2Wikiname(helper.getLabel(y));
+		}
+		return gson.toJson(relatedness);
 
 	}
 
