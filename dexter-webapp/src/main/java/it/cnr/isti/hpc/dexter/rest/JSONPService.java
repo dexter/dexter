@@ -16,6 +16,7 @@
 package it.cnr.isti.hpc.dexter.rest;
 
 import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.EntitySpots;
 
@@ -190,6 +191,22 @@ public class JSONPService {
 			@QueryParam("n") @DefaultValue("10") String results,
 			@QueryParam("query") String query) {
 		return addCallback(callback, r.queryLucene(ui, field, results, query));
+	}
+
+	@GET
+	@Path("/relatedness")
+	@ApiOperation(value = "Return the semantic relatedness between two entities", response = Relatedness.class)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String relatedness(@Context UriInfo ui,
+			@QueryParam("callback") @DefaultValue("callback") String callback,
+			@QueryParam("e1") String e1, @QueryParam("e2") String e2,
+			@QueryParam("rel") @DefaultValue("milnewitten") String rel,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+
+		return addCallback(callback,
+				r.relatedness(ui, e1, e2, rel, wikiNames, dbg));
+
 	}
 
 }
