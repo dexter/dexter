@@ -189,7 +189,7 @@ public class RestService {
 		int maxi = -1;
 		int maxj = -1;
 		RelatednessFactory rf = new RelatednessFactory(rel);
-		for (int i = 0; i < e1list.size() - 1; i++) {
+		for (int i = 0; i < e1list.size(); i++) {
 			for (int j = 0; j < e2list.size(); j++) {
 				double r = rf.getRelatedness(e1list.get(i), e2list.get(j))
 						.getScore();
