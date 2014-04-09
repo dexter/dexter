@@ -209,4 +209,21 @@ public class JSONPService {
 
 	}
 
+	@GET
+	@Path("/spot-relatedness")
+	@ApiOperation(value = "Return the semantic relatedness between two entities", response = Relatedness.class)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String spotRelatedness(@Context UriInfo ui,
+			@QueryParam("callback") @DefaultValue("callback") String callback,
+			@QueryParam("s1") String s1id, @QueryParam("s2") String s2id,
+			@QueryParam("e1") String s1candidates,
+			@QueryParam("e2") String s2candidates,
+			@QueryParam("rel") @DefaultValue("milnewitten") String rel,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+		return addCallback(callback, r.spotRelatedness(ui, s1id, s2id,
+				s1candidates, s2candidates, rel, wikiNames, dbg));
+
+	}
+
 }

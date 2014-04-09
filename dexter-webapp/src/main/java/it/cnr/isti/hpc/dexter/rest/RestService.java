@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
@@ -155,6 +156,61 @@ public class RestService {
 		if (addWikinames) {
 			relatedness.setEntity1Wikiname(helper.getLabel(x));
 			relatedness.setEntity2Wikiname(helper.getLabel(y));
+		}
+		return gson.toJson(relatedness);
+
+	}
+
+	private List<Integer> parseEntities(String e) {
+		List<Integer> list = new ArrayList<Integer>();
+		Scanner scanner = new Scanner(e).useDelimiter(",");
+		while (scanner.hasNextInt()) {
+			list.add(scanner.nextInt());
+		}
+		return list;
+	}
+
+	@GET
+	@Path("/spot-relatedness")
+	@ApiOperation(value = "Return the semantic relatedness between two entities", response = Relatedness.class)
+	@Produces({ MediaType.APPLICATION_JSON })
+	public String spotRelatedness(@Context UriInfo ui,
+			@QueryParam("s1") String s1id, @QueryParam("s2") String s2id,
+			@QueryParam("e1") String s1candidates,
+			@QueryParam("e2") String s2candidates,
+			@QueryParam("rel") @DefaultValue("milnewitten") String rel,
+			@QueryParam("wn") @DefaultValue("false") String wikiNames,
+			@QueryParam("debug") @DefaultValue("false") String dbg) {
+
+		List<Integer> e1list = parseEntities(s1candidates);
+		List<Integer> e2list = parseEntities(s2candidates);
+
+		double max = 0;
+		int maxi = -1;
+		int maxj = -1;
+		RelatednessFactory rf = new RelatednessFactory(rel);
+		for (int i = 0; i < e1list.size() - 1; i++) {
+			for (int j = i + 1; j < e2list.size(); j++) {
+				double r = rf.getRelatedness(e1list.get(i), e2list.get(j))
+						.getScore();
+				if (r > max) {
+					maxi = i;
+					maxj = j;
+					max = r;
+				}
+			}
+		}
+
+		EntityRelatedness relatedness = new EntityRelatedness(
+				Integer.parseInt(s1id), Integer.parseInt(s2id), rel);
+		relatedness.setRelatedness(max);
+
+		boolean addWikinames = new Boolean(wikiNames);
+		if (addWikinames) {
+			if (maxi > 0)
+				relatedness.setEntity1Wikiname(helper.getLabel(maxi));
+			if (maxj > 0)
+				relatedness.setEntity2Wikiname(helper.getLabel(maxj));
 		}
 		return gson.toJson(relatedness);
 
