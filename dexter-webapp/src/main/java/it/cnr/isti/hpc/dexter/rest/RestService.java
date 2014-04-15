@@ -67,6 +67,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -559,12 +560,23 @@ public class RestService {
 	@Path("/get-candidates")
 	@ApiOperation(value = "Given a query, returns a list of candidates entities represented by the query", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String queryLucene(@Context UriInfo ui,
+	public Response queryLucene(@Context UriInfo ui,
 			@QueryParam("field") @DefaultValue("title") String field,
 			@QueryParam("n") @DefaultValue("10") String results,
 			@QueryParam("query") @DefaultValue("johnny cash") String query) {
 		Integer n = Integer.parseInt(results);
-		return gson.toJson(server.getEntities(query, field, n));
+		int status = 500;
+		List<ArticleDescription> rankedArticles = Collections.emptyList();
+		if (n > 0) {
+			rankedArticles = server.getEntities(query, field, n);
+
+		}
+		if (rankedArticles.size() > 0) {
+			status = 200;
+		}
+		String json = gson.toJson(rankedArticles);
+		Response r = Response.status(status).entity(json).build();
+		return r;
 	}
 
 	// graph

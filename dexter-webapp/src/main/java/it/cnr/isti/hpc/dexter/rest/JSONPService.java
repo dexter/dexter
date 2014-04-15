@@ -29,6 +29,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import org.slf4j.Logger;
@@ -57,6 +58,12 @@ public class JSONPService {
 		StringBuilder sb = new StringBuilder(callback);
 		sb.append("(").append(json).append(")");
 		return sb.toString();
+	}
+
+	private Response addCallback(String callback, Response res) {
+		StringBuilder sb = new StringBuilder(callback);
+		sb.append("(").append(res.getEntity()).append(")");
+		return Response.status(res.getStatus()).entity(sb.toString()).build();
 	}
 
 	/**
@@ -185,7 +192,7 @@ public class JSONPService {
 	@Path("/get-candidates")
 	@ApiOperation(value = "Given a query, returns a list of candidates entities represented by the query", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String queryLucene(@Context UriInfo ui,
+	public Response queryLucene(@Context UriInfo ui,
 			@QueryParam("callback") @DefaultValue("callback") String callback,
 			@QueryParam("field") @DefaultValue("content") String field,
 			@QueryParam("n") @DefaultValue("10") String results,
