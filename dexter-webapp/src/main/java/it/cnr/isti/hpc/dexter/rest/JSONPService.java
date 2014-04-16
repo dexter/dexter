@@ -63,7 +63,9 @@ public class JSONPService {
 	private Response addCallback(String callback, Response res) {
 		StringBuilder sb = new StringBuilder(callback);
 		sb.append("(").append(res.getEntity()).append(")");
-		return Response.status(res.getStatus()).entity(sb.toString()).build();
+		String json = sb.toString();
+		Response r = Response.status(res.getStatus()).entity(json).build();
+		return r;
 	}
 
 	/**
@@ -197,7 +199,10 @@ public class JSONPService {
 			@QueryParam("field") @DefaultValue("content") String field,
 			@QueryParam("n") @DefaultValue("10") String results,
 			@QueryParam("query") String query) {
-		return addCallback(callback, r.queryLucene(ui, field, results, query));
+		Response res = addCallback(callback,
+				r.queryLucene(ui, field, results, query));
+		return res;
+
 	}
 
 	@GET
