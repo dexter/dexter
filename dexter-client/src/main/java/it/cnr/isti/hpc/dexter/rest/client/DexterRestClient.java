@@ -204,7 +204,7 @@ public class DexterRestClient {
 
 		String json = "";
 		try {
-			json = browser.fetchAsString(
+			json = browser.fetchAsUTF8String(
 					server.toString() + "/get-desc?id=" + id).toString();
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
