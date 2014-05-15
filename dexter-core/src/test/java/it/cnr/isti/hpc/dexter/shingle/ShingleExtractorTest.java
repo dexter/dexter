@@ -15,7 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.shingle;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,5 +40,21 @@ public class ShingleExtractorTest {
 		assertTrue(shingles.contains("works or not"));
 		assertTrue(shingles.contains("this is a"));
 		assertFalse(shingles.contains("test. let's"));
+	}
+
+	@Test
+	public void testCleaning() {
+		String text = "NHL ICE HOCKEY-CANUCKS RW BURE SUSPENDED,FOR ONE GAME";
+		ShingleExtractor shingler = new ShingleExtractor(text);
+		shingler.setMaxShingleSize(3);
+		Set<String> shingles = new HashSet<String>();
+		for (Shingle shingle : shingler) {
+			shingles.add(shingle.getText());
+		}
+		assertTrue(shingles.contains("canucks"));
+		assertTrue(shingles.contains("bure suspended"));
+		assertTrue(shingles.contains("for one"));
+		assertTrue(shingles.contains("game"));
+		assertTrue(shingles.contains("hockey canucks"));
 	}
 }

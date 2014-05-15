@@ -25,8 +25,8 @@ import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.LowerCaseCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.ParenthesesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.StripCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.SymbolCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.TypeCleaner;
-import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnderscoreCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.AsciiFilter;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ImageFilter;
@@ -116,7 +116,8 @@ public class SpotManager {
 			// pre clean
 			standardSpotManager.add(new HtmlCleaner());
 			standardSpotManager.add(new UnicodeCleaner());
-			standardSpotManager.add(new UnderscoreCleaner());
+			standardSpotManager.add(new SymbolCleaner('_'));
+			standardSpotManager.add(new SymbolCleaner('-'));
 			standardSpotManager.add(new LowerCaseCleaner());
 			standardSpotManager.add(new JuniorAndInitialsCleaner());
 			// standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
@@ -158,7 +159,8 @@ public class SpotManager {
 
 			// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
 			standardSpotCleaner.add(new UnicodeCleaner());
-			standardSpotCleaner.add(new UnderscoreCleaner());
+			standardSpotCleaner.add(new SymbolCleaner('_'));
+			standardSpotCleaner.add(new SymbolCleaner('-'));
 			standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>:/"));
 			// post clean
 			standardSpotCleaner.add(new LowerCaseCleaner());

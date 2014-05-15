@@ -19,22 +19,27 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * UnderscoreCleaner removes all the underscores in a post, replacing them with
- * spaces.
+ * SymbolCleaner removes all the occurrences of a symbol in a spot, replacing
+ * them with spaces.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
-@Deprecated
-public class UnderscoreCleaner extends Cleaner<String> {
+public class SymbolCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
-			.getLogger(UnderscoreCleaner.class);
+			.getLogger(SymbolCleaner.class);
+
+	private char symbol = ' ';
+
+	public SymbolCleaner(char symbol) {
+		this.symbol = symbol;
+	}
 
 	@Override
 	public String clean(String spot) {
-		String clean = spot.replaceAll("_", " ");
+		String clean = spot.replace(symbol, ' ');
 		if (!clean.equals(spot))
 			logger.debug("{} -> {}", spot, clean);
 		return clean;

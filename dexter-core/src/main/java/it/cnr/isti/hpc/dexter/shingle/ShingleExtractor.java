@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * ShingleExtractor extracts all the ngrams (of fixed length) from the text of
- * an article. Please observe that the ShingleExtractor perform a cleaning 
- * step over each shingle using the  {@link SpotManager standard spot cleaner}.
- * Each shingle produced could be different but the 'original' fragment, but 
- * it contains the original start/end position in the original test.
+ * an article. Please observe that the ShingleExtractor perform a cleaning step
+ * over each shingle using the {@link SpotManager standard spot cleaner}. Each
+ * shingle produced could be different but the 'original' fragment, but it
+ * contains the original start/end position in the original test.
  * 
  * 
  * @see Shingle
@@ -47,14 +47,13 @@ import org.slf4j.LoggerFactory;
  */
 public class ShingleExtractor implements Iterable<Shingle> {
 
-	
 	private static final Logger logger = LoggerFactory
 			.getLogger(ShingleExtractor.class);
 	private int maxShingleSize;
 
 	private static final int DEFAULT_MAX_SHINGLE_SIZE = 6;
 
-	private List<List<Token>> cleanedSentences;
+	private final List<List<Token>> cleanedSentences;
 	private static SpotManager sm;
 	private static TokenSegmenter ts;
 	private static SentenceSegmenter ss;
@@ -109,8 +108,10 @@ public class ShingleExtractor implements Iterable<Shingle> {
 
 			// System.out.println("SENTENCE [" + currSentence + "]");
 			// //List<Token> textShingles = new LinkedList<Token>();
+			currSentence = sm.clean(currSentence);
 			List<Token> tokens = ts.tokenizePos(currSentence);
 			List<Token> cleanTokens = new LinkedList<Token>();
+			// experimental
 			for (Token t : tokens) {
 				t.setStart(t.getStart() + startSentence);
 				t.setEnd(t.getEnd() + startSentence);
@@ -136,6 +137,7 @@ public class ShingleExtractor implements Iterable<Shingle> {
 		return maxShingleSize;
 	}
 
+	@Override
 	public Iterator<Shingle> iterator() {
 		return new ShingleIterator();
 	}
@@ -143,11 +145,11 @@ public class ShingleExtractor implements Iterable<Shingle> {
 	public void setMaxShingleSize(int maxShingleSize) {
 		this.maxShingleSize = maxShingleSize;
 	}
-	
+
 	private class ShingleIterator implements Iterator<Shingle> {
 		private int currentPos;
 		private int currentSen;
-		private Deque<Shingle> tempContainer;
+		private final Deque<Shingle> tempContainer;
 
 		public ShingleIterator() {
 			currentPos = 0;
@@ -174,12 +176,14 @@ public class ShingleExtractor implements Iterable<Shingle> {
 			}
 		}
 
+		@Override
 		public boolean hasNext() {
 			if (tempContainer.size() == 0)
 				generateNextShingles();
 			return tempContainer.size() > 0;
 		}
 
+		@Override
 		public Shingle next() {
 			if (hasNext())
 				return tempContainer.pop();
@@ -187,6 +191,7 @@ public class ShingleExtractor implements Iterable<Shingle> {
 				throw new NoSuchElementException();
 		}
 
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
