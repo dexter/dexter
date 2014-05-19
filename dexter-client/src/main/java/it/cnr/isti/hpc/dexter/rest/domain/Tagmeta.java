@@ -42,6 +42,7 @@ public class Tagmeta {
 
 	String spotter;
 	String disambiguator;
+	boolean isMultifield;
 
 	Map<String, String> requestParams;
 
@@ -59,6 +60,10 @@ public class Tagmeta {
 
 	public void setDisambiguator(String disambiguator) {
 		this.disambiguator = disambiguator;
+	}
+
+	public void setMultifield(boolean isMultifield) {
+		this.isMultifield = isMultifield;
 	}
 
 	// public DexterLocalParams getRequestParams() {

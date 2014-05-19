@@ -38,56 +38,6 @@ public class AnnotatedDocument {
 
 	}
 
-	// public void annotate(EntityMatchList eml, boolean addWikiNames) {
-	// annotate(eml, eml.size(), addWikiNames);
-	// }
-	//
-	// public void annotate(EntityMatchList eml, int nEntities,
-	// boolean addWikiNames) {
-	// eml.sort();
-	// EntityMatchList emlSub = new EntityMatchList();
-	// int size = Math.min(nEntities, eml.size());
-	// spots.clear();
-	// for (int i = 0; i < size; i++) {
-	// emlSub.add(eml.get(i));
-	// EntityMatch em = eml.get(i);
-	// AnnotatedSpot spot = new AnnotatedSpot(em.getMention(),
-	// em.getSpotLinkProbability(), em.getStart(), em.getEnd(), em
-	// .getSpot().getLinkFrequency(), em.getSpot()
-	// .getFrequency(), em.getId(), em.getFrequency(),
-	// em.getCommonness(), em.getScore());
-	// if (addWikiNames) {
-	// spot.setWikiname(helper.getLabel(em.getId()));
-	// }
-	//
-	// spots.add(spot);
-	// }
-	// annotatedText = getAnnotatedText(emlSub);
-	// }
-	//
-	// private String getAnnotatedText(EntityMatchList eml) {
-	// Collections.sort(eml, new EntityMatch.SortByPosition());
-	// StringBuffer sb = new StringBuffer();
-	// int pos = 0;
-	// for (EntityMatch em : eml) {
-	// assert em.getStart() >= 0;
-	// assert em.getEnd() >= 0;
-	//
-	// sb.append(text.substring(pos, em.getStart()));
-	// // the spot has been normalized, i want to retrieve the real one
-	// String realSpot = text.substring(em.getStart(), em.getEnd());
-	// sb.append(
-	// "<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
-	// .append(realSpot).append("</a>");
-	// pos = em.getEnd();
-	// }
-	// if (pos < text.length()) {
-	// sb.append(text.substring(pos));
-	// }
-	//
-	// return sb.toString();
-	// }
-
 	public String getText() {
 		return text;
 	}

@@ -91,9 +91,10 @@ public class JSONPService {
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
+			@QueryParam("debug") @DefaultValue("false") String dbg,
+			@FormParam("multifield") @DefaultValue("false") String mf) {
 		return addCallback(callback, r.annotateGet(ui, text, n, spotter,
-				disambiguator, wikiNames, dbg));
+				disambiguator, wikiNames, dbg, mf));
 
 	}
 
@@ -108,10 +109,11 @@ public class JSONPService {
 			@FormParam("spt") String spotter,
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
-			@FormParam("debug") @DefaultValue("false") String dbg) {
+			@FormParam("debug") @DefaultValue("false") String dbg,
+			@FormParam("multifield") @DefaultValue("false") String mf) {
 
 		return addCallback(callback, r.annotatePost(form, text, n, spotter,
-				disambiguator, wikiNames, dbg));
+				disambiguator, wikiNames, dbg, mf));
 
 	}
 

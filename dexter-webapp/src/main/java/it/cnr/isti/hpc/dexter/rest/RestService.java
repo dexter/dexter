@@ -130,10 +130,11 @@ public class RestService {
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
+			@QueryParam("debug") @DefaultValue("false") String dbg,
+			@QueryParam("multifield") @DefaultValue("false") String multifield) {
 		DexterLocalParams requestParams = getLocalParams(ui);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg);
+				wikiNames, dbg, multifield);
 
 	}
 
@@ -226,11 +227,12 @@ public class RestService {
 			@FormParam("spt") String spotter,
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
-			@FormParam("debug") @DefaultValue("false") String dbg) {
+			@FormParam("debug") @DefaultValue("false") String dbg,
+			@FormParam("multifield") @DefaultValue("false") String mf) {
 
 		DexterLocalParams requestParams = getLocalParams(form);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg);
+				wikiNames, dbg, mf);
 
 	}
 
@@ -245,10 +247,11 @@ public class RestService {
 
 	public String annotate(DexterLocalParams requestParams, String text,
 			String n, String spotter, String disambiguator, String wikiNames,
-			String dbg) {
+			String dbg, String multifield) {
 		if (text == null) {
 			return "{\"error\":\"text param is null\"}";
 		}
+		boolean isMultifield = new Boolean(multifield);
 		Spotter s = params.getSpotter(spotter);
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
@@ -265,6 +268,7 @@ public class RestService {
 			Tagmeta meta = new Tagmeta();
 			meta.setDisambiguator(d.getClass().toString());
 			meta.setSpotter(s.getClass().toString());
+			meta.setMultifield(isMultifield);
 			meta.setRequestParams(requestParams.getParams());
 
 			adoc.setMeta(meta);
