@@ -17,10 +17,12 @@ package it.cnr.isti.hpc.dexter.rest;
 
 import it.cnr.isti.hpc.dexter.StandardTagger;
 import it.cnr.isti.hpc.dexter.Tagger;
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
 import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.Field;
 import it.cnr.isti.hpc.dexter.common.FlatDocument;
+import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
@@ -53,6 +55,7 @@ import it.cnr.isti.hpc.wikipedia.article.Article;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -262,7 +265,7 @@ public class RestService {
 		Document doc = new FlatDocument(text);
 		EntityMatchList eml = tagger.tag(requestParams, doc);
 
-		AnnotatedDocument adoc = new AnnotatedDocument(text);
+		AnnotatedDocument adoc = new AnnotatedDocument(doc);
 
 		if (debug) {
 			Tagmeta meta = new Tagmeta();
@@ -306,53 +309,69 @@ public class RestService {
 
 			spots.add(spot);
 		}
-		String annotatedText = getAnnotatedText(adoc, emlSub);
-		adoc.setAnnotatedText(annotatedText);
+		Document annotatedDocument = getAnnotatedDocument(adoc, emlSub);
+		adoc.setAnnotatedDocument(annotatedDocument);
 	}
 
-	private String getAnnotatedText(AnnotatedDocument adoc, EntityMatchList eml) {
+	private Document getAnnotatedDocument(AnnotatedDocument adoc,
+			EntityMatchList eml) {
 		Collections.sort(eml, new EntityMatch.SortByPosition());
-		StringBuffer sb = new StringBuffer();
-		int pos = 0;
-		String text = adoc.getText();
-		for (EntityMatch em : eml) {
-			assert em.getStart() >= 0;
-			assert em.getEnd() >= 0;
-			try {
-				sb.append(text.substring(pos, em.getStart()));
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - {} ",
-						pos, em.getStart());
-				logger.warn("text: \n\n {}\n\n", text);
+
+		Iterator<Field> iterator = adoc.getDocument().getFields();
+		Document annotated = new MultifieldDocument();
+		while (iterator.hasNext()) {
+			int pos = 0;
+			StringBuffer sb = new StringBuffer();
+			Field field = iterator.next();
+			String currentField = field.getName();
+			String currentText = field.getValue();
+
+			for (EntityMatch em : eml) {
+				if (!em.getSpot().getField().getName().equals(currentField)) {
+					continue;
+				}
+				assert em.getStart() >= 0;
+				assert em.getEnd() >= 0;
+				try {
+					sb.append(currentText.substring(pos, em.getStart()));
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - {} ",
+							pos, em.getStart());
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+				// the spot has been normalized, i want to retrieve the real one
+				String realSpot = "none";
+				try {
+					realSpot = currentText
+							.substring(em.getStart(), em.getEnd());
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - {} ",
+							pos, em.getStart());
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+				sb.append(
+						"<a href=\"#\" onmouseover='manage(" + em.getId()
+								+ ")' >").append(realSpot).append("</a>");
+				pos = em.getEnd();
 			}
-			// the spot has been normalized, i want to retrieve the real one
-			String realSpot = "none";
-			try {
-				realSpot = text.substring(em.getStart(), em.getEnd());
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - {} ",
-						pos, em.getStart());
-				logger.warn("text: \n\n {}\n\n", text);
+			if (pos < currentText.length()) {
+				try {
+					sb.append(currentText.substring(pos));
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - end ",
+							pos);
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+
 			}
-			sb.append(
-					"<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
-					.append(realSpot).append("</a>");
-			pos = em.getEnd();
-		}
-		if (pos < text.length()) {
-			try {
-				sb.append(text.substring(pos));
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - end ",
-						pos);
-				logger.warn("text: \n\n {}\n\n", text);
-			}
+			annotated.addField(new Field(field.getName(), sb.toString()));
+
 		}
 
-		return sb.toString();
+		return annotated;
 	}
 
 	/**

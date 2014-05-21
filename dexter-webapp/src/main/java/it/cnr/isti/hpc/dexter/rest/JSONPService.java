@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.rest;
 
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.EntitySpots;

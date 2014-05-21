@@ -31,7 +31,7 @@
  */
 package it.cnr.isti.hpc.dexter.rest.client;
 
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.net.FakeBrowser;

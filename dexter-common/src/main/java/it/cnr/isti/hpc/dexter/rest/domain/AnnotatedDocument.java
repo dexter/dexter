@@ -15,6 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.rest.domain;
 
+import it.cnr.isti.hpc.dexter.common.Document;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,31 +29,30 @@ import java.util.List;
  */
 public class AnnotatedDocument {
 
-	private Document text;
-	private String annotatedText;
+	private Document document;
+	private Document annotatedDocument;
 	private List<AnnotatedSpot> spots;
 	private Tagmeta meta;
 
 	public AnnotatedDocument(Document text) {
-		this.text = text;
+		this.document = text;
 		spots = new ArrayList<AnnotatedSpot>();
-
 	}
 
-	public String getText() {
-		return text;
+	public Document getDocument() {
+		return document;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 
-	public String getAnnotatedText() {
-		return annotatedText;
+	public Document getAnnotatedDocument() {
+		return annotatedDocument;
 	}
 
-	public void setAnnotatedText(String annotatedText) {
-		this.annotatedText = annotatedText;
+	public void setAnnotatedDocument(Document annotatedDocument) {
+		this.annotatedDocument = annotatedDocument;
 	}
 
 	public List<AnnotatedSpot> getSpots() {
@@ -60,12 +61,6 @@ public class AnnotatedDocument {
 
 	public void setSpots(List<AnnotatedSpot> spots) {
 		this.spots = spots;
-	}
-
-	@Override
-	public String toString() {
-		return "AnnotatedDocument [text=" + text + ", annotatedText="
-				+ annotatedText + ", spots=" + spots + "]";
 	}
 
 	public Tagmeta getMeta() {

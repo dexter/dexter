@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.article;
+package it.cnr.isti.hpc.dexter.common;
 
 import it.cnr.isti.hpc.structure.LRUCache;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -42,9 +42,16 @@ public class ArticleDescription {
 	private String title;
 	private String description;
 	private String image;
+
+	private String url;
 	private int id;
 	private Map<String, String> infobox;
-	private static final int MAX_LENGTH = 200;
+	private List<ArticleDescription> incomingEntities;
+	private List<ArticleDescription> outcomingEntities;
+	private List<ArticleDescription> parentCategories;
+	private List<ArticleDescription> childCategories;
+
+	// private static final int MAX_LENGTH = 200;
 	private static Gson gson = new Gson();
 
 	private static LRUCache<String, ArticleDescription> cache = new LRUCache<String, ArticleDescription>(
@@ -58,17 +65,25 @@ public class ArticleDescription {
 	public ArticleDescription() {
 		title = "NOTITLE";
 		description = "NODESC";
-		infobox = new HashMap<String, String>();
+		infobox = null;
+		url = "";
 		image = "";
+		id = -1;
 
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public ArticleDescription(String title, String wikiTitle, int wikiId,
+			String summary) {
+		this.title = title;
+		id = id;
+		image = "http://wikiname2image.herokuapp.com/" + wikiTitle;
+		url = "http://en.wikipedia.org/wiki/" + wikiTitle;
+		infobox = null;
+		description = summary;
+		// FreebaseEntity fe = new FreebaseEntity(a.getTitleInWikistyle());
+		// if (fe.hasId()) {
+		// image = fe.getHtmlCode();
+		// }
 	}
 
 	public static ArticleDescription fromWikipediaAPI(String name) {
@@ -119,6 +134,14 @@ public class ArticleDescription {
 		return true;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	static String getImageUrl(String imageName) {
 		String wiki = getTitleInWikistyle(imageName);
 		String hash = md5(wiki);
@@ -134,13 +157,17 @@ public class ArticleDescription {
 
 	}
 
-	public String getUrl() {
-		String suffix = getTitleInWikistyle(title);
-		return "http://en.wikipedia.org/wiki/" + suffix;
+	private static String getTitleInWikistyle(String title) {
+		if (title.isEmpty())
+			return title;
+		title = title.replace(' ', '_'); // .toLowerCase();
+		// first letter is capitalized
+		title = Character.toUpperCase(title.charAt(0)) + title.substring(1);
+		return title;
 	}
 
 	public String toJson() {
-		if (infobox.isEmpty())
+		if (infobox != null && infobox.isEmpty())
 			infobox = null;
 		return gson.toJson(this);
 	}
@@ -174,15 +201,6 @@ public class ArticleDescription {
 	// return "";
 	//
 	// }
-
-	public static String getTitleInWikistyle(String title) {
-		if (title.isEmpty())
-			return title;
-		title = title.replace(' ', '_'); // .toLowerCase();
-		// first letter is capitalized
-		title = Character.toUpperCase(title.charAt(0)) + title.substring(1);
-		return title;
-	}
 
 	/**
 	 * @return the title
@@ -242,6 +260,46 @@ public class ArticleDescription {
 	 */
 	public void setInfobox(Map<String, String> infobox) {
 		this.infobox = infobox;
+	}
+
+	public List<ArticleDescription> getIncomingEntities() {
+		return incomingEntities;
+	}
+
+	public void setIncomingEntities(List<ArticleDescription> incomingEntities) {
+		this.incomingEntities = incomingEntities;
+	}
+
+	public List<ArticleDescription> getOutcomingEntities() {
+		return outcomingEntities;
+	}
+
+	public void setOutcomingEntities(List<ArticleDescription> outcomingEntities) {
+		this.outcomingEntities = outcomingEntities;
+	}
+
+	public List<ArticleDescription> getParentCategories() {
+		return parentCategories;
+	}
+
+	public void setParentCategories(List<ArticleDescription> parentCategories) {
+		this.parentCategories = parentCategories;
+	}
+
+	public List<ArticleDescription> getChildCategories() {
+		return childCategories;
+	}
+
+	public void setChildCategories(List<ArticleDescription> childCategories) {
+		this.childCategories = childCategories;
+	}
+
+	public String getUri() {
+		return url;
+	}
+
+	public void setUri(String uri) {
+		this.url = uri;
 	}
 
 	@Override

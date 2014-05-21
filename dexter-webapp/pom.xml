@@ -41,7 +41,7 @@
 		
 		<dependency>
 			<groupId>it.cnr.isti.hpc</groupId>
-			<artifactId>dexter-client</artifactId>
+			<artifactId>dexter-common</artifactId>
 		</dependency>
 
 		<dependency>

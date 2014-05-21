@@ -75,7 +75,6 @@ public class CandidateEntity implements Comparable<CandidateEntity> {
 		this.commonness = commonness;
 	}
 
-	@Override
 	public int compareTo(CandidateEntity o) {
 		if (o.getCommonness() > getCommonness())
 			return 1;
