@@ -1,4 +1,4 @@
-package it.cnr.isti.hpc.dexter.document;
+package it.cnr.isti.hpc.dexter.common;
 
 import it.cnr.isti.hpc.io.IOUtils;
 

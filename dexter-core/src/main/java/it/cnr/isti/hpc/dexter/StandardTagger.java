@@ -16,9 +16,9 @@
 package it.cnr.isti.hpc.dexter;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
+import it.cnr.isti.hpc.dexter.common.Document;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.disambiguation.TopScoreEntityDisambiguator;
-import it.cnr.isti.hpc.dexter.document.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.relatedness.MilneRelatedness;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;

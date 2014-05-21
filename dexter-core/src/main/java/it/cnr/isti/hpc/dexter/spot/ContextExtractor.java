@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
-import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.common.Field;
 import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 
 import java.util.ArrayList;

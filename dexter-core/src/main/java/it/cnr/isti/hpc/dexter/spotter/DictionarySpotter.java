@@ -15,8 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.spotter;
 
-import it.cnr.isti.hpc.dexter.document.Document;
-import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.Field;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;

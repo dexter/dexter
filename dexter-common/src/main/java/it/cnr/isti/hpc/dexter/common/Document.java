@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package it.cnr.isti.hpc.dexter.document;
+package it.cnr.isti.hpc.dexter.common;
 
 import java.io.Serializable;
 import java.util.Iterator;

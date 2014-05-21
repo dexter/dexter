@@ -27,12 +27,12 @@ import java.util.List;
  */
 public class AnnotatedDocument {
 
-	private String text;
+	private Document text;
 	private String annotatedText;
 	private List<AnnotatedSpot> spots;
 	private Tagmeta meta;
 
-	public AnnotatedDocument(String text) {
+	public AnnotatedDocument(Document text) {
 		this.text = text;
 		spots = new ArrayList<AnnotatedSpot>();
 

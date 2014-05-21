@@ -41,6 +41,15 @@
 				<groupId>it.cnr.isti.hpc</groupId>
 				<version>1.0.0</version>
 			</dependency>
+			
+			<!-- dexter common data -->
+
+			<dependency>
+				<groupId>it.cnr.isti.hpc</groupId>
+				<artifactId>dexter-common</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
 			<!-- dexter dependecies -->
 
 			<dependency>

@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.spotter;
 
-import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.common.Document;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
