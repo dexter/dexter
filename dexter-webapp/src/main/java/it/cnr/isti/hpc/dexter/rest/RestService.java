@@ -544,6 +544,7 @@ public class RestService {
 		Spotter spotter = params.getSpotter(spt);
 		boolean debug = new Boolean(dbg);
 		MultifieldDocument doc = null;
+
 		try {
 			doc = parseDocument(text, format);
 		} catch (IllegalArgumentException e) {
@@ -583,6 +584,7 @@ public class RestService {
 				System.currentTimeMillis() - start);
 
 		if (debug) {
+
 			Tagmeta meta = new Tagmeta();
 			meta.setSpotter(spotter.getClass().toString());
 			meta.setRequestParams(requestParams.getParams());

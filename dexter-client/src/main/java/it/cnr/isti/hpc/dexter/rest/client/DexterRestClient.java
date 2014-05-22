@@ -274,7 +274,7 @@ public class DexterRestClient {
 
 	private String postQuery(String restcall, String params) throws IOException {
 		HttpURLConnection con = (HttpURLConnection) new URL(server.toString()
-				+ "/annotate").openConnection();
+				+ "/" + restcall).openConnection();
 
 		// add reuqest header
 		con.setRequestMethod("POST");
@@ -404,7 +404,6 @@ public class DexterRestClient {
 			logger.error("cannot call the rest api {}", e.toString());
 			return Collections.emptyList();
 		}
-		System.out.println(json);
 		List<Integer> categories = gson.fromJson(json, List.class);
 		return categories;
 	}
@@ -414,12 +413,12 @@ public class DexterRestClient {
 				"http://localhost:8080/dexter-webapp/api/rest");
 		client.setLinkProbability(1);
 
-		AnnotatedDocument ad = client
-				.annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(gson.toJson(ad));
-		SpottedDocument sd = client
-				.spot("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(gson.toJson(sd));
+		// AnnotatedDocument ad = client
+		// .annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
+		// System.out.println(gson.toJson(ad));
+		// SpottedDocument sd = client
+		// .spot("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
+		// System.out.println(gson.toJson(sd));
 
 		MultifieldDocument document = new MultifieldDocument();
 		document.addField(new Field("q1", "diego armando maradona"));
@@ -430,7 +429,8 @@ public class DexterRestClient {
 		document.addField(new Field("q4", "van gogh"));
 		client.setLinkProbability(0.4);
 		client.setWikinames(true);
-		sd = client.spot(document);
+
+		SpottedDocument sd = client.spot(document);
 		System.out.println(new GsonBuilder().setPrettyPrinting().create()
 				.toJson(sd));
 
