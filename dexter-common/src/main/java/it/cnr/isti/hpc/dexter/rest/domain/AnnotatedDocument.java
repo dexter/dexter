@@ -16,6 +16,7 @@
 package it.cnr.isti.hpc.dexter.rest.domain;
 
 import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +30,15 @@ import java.util.List;
  */
 public class AnnotatedDocument {
 
-	private Document document;
-	private Document annotatedDocument;
+	private MultifieldDocument document;
+	private MultifieldDocument annotatedDocument;
 	private List<AnnotatedSpot> spots;
 	private Tagmeta meta;
 
-	public AnnotatedDocument(Document text) {
+	public AnnotatedDocument() {
+	}
+
+	public AnnotatedDocument(MultifieldDocument text) {
 		this.document = text;
 		spots = new ArrayList<AnnotatedSpot>();
 	}
@@ -43,7 +47,7 @@ public class AnnotatedDocument {
 		return document;
 	}
 
-	public void setDocument(Document document) {
+	public void setDocument(MultifieldDocument document) {
 		this.document = document;
 	}
 
@@ -51,7 +55,7 @@ public class AnnotatedDocument {
 		return annotatedDocument;
 	}
 
-	public void setAnnotatedDocument(Document annotatedDocument) {
+	public void setAnnotatedDocument(MultifieldDocument annotatedDocument) {
 		this.annotatedDocument = annotatedDocument;
 	}
 

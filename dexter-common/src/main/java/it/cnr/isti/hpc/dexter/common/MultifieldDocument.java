@@ -1,9 +1,7 @@
 package it.cnr.isti.hpc.dexter.common;
 
-
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,25 +17,26 @@ public class MultifieldDocument extends Document {
 			.getLogger(MultifieldDocument.class);
 
 	// protected List<Field> fields = new ArrayList<Field>();
-	protected Map<String, Field> fields;
+	protected LinkedHashMap<String, Field> fields;
 
 	/**
 	 * Constructs a new document with no fields.
 	 */
 	public MultifieldDocument() {
-		fields = new HashMap<String, Field>();
+		fields = new LinkedHashMap<String, Field>();
 	}
 
 	/**
 	 * Returns the field with the given name if exists in this document, or
 	 * null.
 	 * 
-	 * @param name
+	 * @param field
 	 *            The name of the field to retrieve
 	 * @return The field relative to the given name, if exist, null otherwise.
 	 */
-	public Field getField(String name) {
-		return fields.get(name);
+	@Override
+	public Field getField(String field) {
+		return fields.get(field);
 	}
 
 	/**
@@ -45,6 +44,7 @@ public class MultifieldDocument extends Document {
 	 * 
 	 * @return Iterator over the fields of the document
 	 */
+	@Override
 	public Iterator<Field> getFields() {
 		return fields.values().iterator();
 	}
@@ -57,6 +57,7 @@ public class MultifieldDocument extends Document {
 	 * @param field
 	 *            The field to add to the document
 	 */
+	@Override
 	public void addField(Field field) {
 		fields.put(field.getName(), field);
 	}
@@ -68,6 +69,7 @@ public class MultifieldDocument extends Document {
 	 * @param name
 	 *            The name of the field to remove from the document's fields
 	 */
+	@Override
 	public void removeField(String name) {
 		fields.remove(name);
 	}
@@ -78,6 +80,7 @@ public class MultifieldDocument extends Document {
 	 * 
 	 * @return The content of the document
 	 */
+	@Override
 	public String getContent() {
 		StringBuffer content = new StringBuffer();
 		for (Field field : fields.values()) {
@@ -86,4 +89,3 @@ public class MultifieldDocument extends Document {
 		return content.toString();
 	}
 }
-
