@@ -81,6 +81,8 @@ public class DexterRestClient {
 
 	Map<String, String> params = new HashMap<String, String>();
 
+	private String disambiguator = null;
+
 	public double linkProbability = -1;
 
 	private static Gson gson = new Gson();
@@ -153,7 +155,7 @@ public class DexterRestClient {
 		}
 
 		StringBuilder sb = new StringBuilder(paramsToRequest());
-		sb.append("text=").append(text);
+		sb.append("text=").append(URLEncoder.encode(text));
 
 		// String url = "/annotate?" + paramsToRequest() + "&text=" + text;
 		if (linkProbability > 0)
@@ -161,6 +163,10 @@ public class DexterRestClient {
 
 		if (n > 0) {
 			sb.append("&n=").append(n);
+		}
+
+		if (disambiguator != null) {
+			sb.append("&dsb=").append(disambiguator);
 		}
 
 		if (wikinames) {
@@ -176,7 +182,7 @@ public class DexterRestClient {
 			// url += "&n=" + n;
 			// }
 			// System.out.println(sb.toString());
-			json = postQuery("/annotate", sb.toString());
+			json = postQuery("annotate", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -187,6 +193,14 @@ public class DexterRestClient {
 
 	public SpottedDocument spot(String text) {
 		return spot(new FlatDocument(text));
+	}
+
+	public String getDisambiguator() {
+		return disambiguator;
+	}
+
+	public void setDisambiguator(String disambiguator) {
+		this.disambiguator = disambiguator;
 	}
 
 	/**
@@ -421,16 +435,19 @@ public class DexterRestClient {
 		// System.out.println(gson.toJson(sd));
 
 		MultifieldDocument document = new MultifieldDocument();
-		document.addField(new Field("q1", "diego armando maradona"));
+		document.addField(new Field(
+				"q1",
+				"On this day 24 years ago Maradona scored his infamous Hand of God goal against England in the quarter-final of the 1986"));
 		document.addField(new Field("q2", "diego armando maradona"));
 
 		document.addField(new Field("q3", "pablo neruda"));
 
 		document.addField(new Field("q4", "van gogh"));
-		client.setLinkProbability(0.4);
+		client.setDisambiguator("tagme");
+		client.setLinkProbability(0.03);
 		client.setWikinames(true);
 
-		SpottedDocument sd = client.spot(document);
+		AnnotatedDocument sd = client.annotate(document);
 		System.out.println(new GsonBuilder().setPrettyPrinting().create()
 				.toJson(sd));
 
