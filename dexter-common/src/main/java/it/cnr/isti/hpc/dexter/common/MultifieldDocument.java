@@ -62,6 +62,10 @@ public class MultifieldDocument extends Document {
 		fields.put(field.getName(), field);
 	}
 
+	public void addField(String name, String value) {
+		fields.put(name, new Field(name, value));
+	}
+
 	/**
 	 * Removes field with the specified name from the document. If there is no
 	 * field with the specified name, the document remains unchanged.
