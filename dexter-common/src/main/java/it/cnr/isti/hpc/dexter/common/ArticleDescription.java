@@ -157,7 +157,7 @@ public class ArticleDescription {
 
 	}
 
-	private static String getTitleInWikistyle(String title) {
+	public static String getTitleInWikistyle(String title) {
 		if (title.isEmpty())
 			return title;
 		title = title.replace(' ', '_'); // .toLowerCase();
