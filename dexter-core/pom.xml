@@ -157,9 +157,8 @@
 
 	<repositories>
 		<repository>
-			<id>local jars</id>
-			<name>local jars</name>
-			<url>file://${basedir}/../lib</url>
+			<id>dropbox</id>
+			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
 		</repository>
 		<repository>
 			<id>sonatype-snapshots</id>
