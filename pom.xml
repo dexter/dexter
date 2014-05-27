@@ -16,7 +16,7 @@
 		<module>dexter-eval</module-->
 		<module>dexter-client</module>
 		<module>dexter-webapp</module>
-		<module>dexter-standalone</module>
+		<!--module>dexter-standalone</module-->
 	</modules>
 	<build>
 		<pluginManagement>
