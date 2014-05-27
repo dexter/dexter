@@ -92,7 +92,7 @@ public class JSONPService {
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg,
-			@FormParam("multifield") @DefaultValue("false") String mf) {
+			@QueryParam("multifield") @DefaultValue("false") String mf) {
 		return addCallback(callback, r.annotateGet(ui, text, n, spotter,
 				disambiguator, wikiNames, dbg, mf));
 
