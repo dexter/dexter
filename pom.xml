@@ -12,7 +12,9 @@
 		<module>json-wikipedia</module>
 		<module>dexter-core</module>
 		<!--module>dexter-relatedness</module>
+		
 		<module>dexter-eval</module-->
+		<module>dexter-client</module>
 		<module>dexter-webapp</module>
 		<module>dexter-standalone</module>
 	</modules>
