@@ -76,8 +76,8 @@ public class SpotOverlapFilter implements SpotMatchFilter {
 			if (!clash) {
 				filtered.add(spot);
 			} else {
-				logger.info("spot [{}] in {} overlaps, ignoring", spot
-						.getSpot().getMention(), spot.getStart());
+				// logger.info("spot [{}] in {} overlaps, ignoring", spot
+				// .getSpot().getMention(), spot.getStart());
 			}
 		}
 		return filtered;
