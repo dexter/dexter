@@ -57,4 +57,20 @@ public class ShingleExtractorTest {
 		assertTrue(shingles.contains("game"));
 		assertTrue(shingles.contains("hockey canucks"));
 	}
+
+	@Test
+	public void testCleaning2() {
+		String text = "NHL ICE HOCKEY- CANUCKS RW BURE SUSPENDED,FOR ONE GAME";
+		ShingleExtractor shingler = new ShingleExtractor(text);
+		shingler.setMaxShingleSize(3);
+		Set<String> shingles = new HashSet<String>();
+		for (Shingle shingle : shingler) {
+			shingles.add(shingle.getText());
+		}
+		assertTrue(shingles.contains("canucks"));
+		assertTrue(shingles.contains("bure suspended"));
+		assertTrue(shingles.contains("for one"));
+		assertTrue(shingles.contains("game"));
+		assertTrue(shingles.contains("hockey canucks"));
+	}
 }

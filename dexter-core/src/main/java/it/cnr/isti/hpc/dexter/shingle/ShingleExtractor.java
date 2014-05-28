@@ -108,7 +108,8 @@ public class ShingleExtractor implements Iterable<Shingle> {
 
 			// System.out.println("SENTENCE [" + currSentence + "]");
 			// //List<Token> textShingles = new LinkedList<Token>();
-			currSentence = sm.clean(currSentence);
+			// FIXME CLEAN SHOULD NO CHANGE THE OFFSETS OF THE TOKENS
+			// currSentence = sm.clean(currSentence);
 			List<Token> tokens = ts.tokenizePos(currSentence);
 			List<Token> cleanTokens = new LinkedList<Token>();
 			// experimental
