@@ -251,10 +251,14 @@ public class RestService {
 		if (text == null) {
 			return "{\"error\":\"text param is null\"}";
 		}
+		logger.info("text: \n\n{}\n\n", text);
+
 		boolean isMultifield = new Boolean(multifield);
 		Spotter s = params.getSpotter(spotter);
+
 		Disambiguator d = params.getDisambiguator(disambiguator);
 		Tagger tagger = new StandardTagger("std", s, d);
+
 		Boolean debug = new Boolean(dbg);
 		boolean addWikinames = new Boolean(wikiNames);
 
