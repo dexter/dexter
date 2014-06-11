@@ -66,7 +66,7 @@
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>
 				<artifactId>hpc-utils</artifactId>
-				<version>0.0.6</version>
+				<version>0.0.7</version>
 			</dependency>
 			
 			<!-- dexter dependecies -->
@@ -224,4 +224,12 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>dropbox</id>
+			<url>https://dl.dropboxusercontent.com/u/4663256/mvn-repository/</url>
+		</repository>
+	</repositories>
+	
 </project>
