@@ -15,18 +15,14 @@
 	</appender>
 
 
-	<root level="${log:-INFO}">
+	<root level="${log:-ERROR}">
 		<appender-ref ref="A1" />
 	</root>
-
-
-
-	<logger name="it.cnr.isti.hpc.property.ProjectProperties" level="ERROR" />
-	<logger name="it.cnr.isti.hpc.dexter.spotter.DictionarySpotter" level="DEBUG" />
-	
-
-
-
+		<logger name="it.cnr.isti.hpc.dexter.spot.Spot" level="ERROR" />
+		<logger name="it.cnr.isti.hpc.dexter.spotter.filter.SpotProbabilityFilter" level="ERROR" />
+		<logger name="it.cnr.isti.hpc.dexter.spot.ram.RamSpotFile" level="ERROR" />
+		<logger name="it.cnr.isti.hpc.dexter.spotter.DictionarySpotter" level="ERROR" />
+		
 
 
 </configuration>

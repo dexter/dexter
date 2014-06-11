@@ -4,7 +4,7 @@
 		<default>en</default>
 		<model>
 			<name>en</name>
-			<path>PATH_TO_DATA_FOLDER</path>
+			<path>../dexter-core/data</path>
 		</model>
 		<model>
 			<name>it</name>
