@@ -56,13 +56,13 @@ public class JSONPService {
 
 	private String addCallback(String callback, String json) {
 		StringBuilder sb = new StringBuilder(callback);
-		sb.append("(").append(json).append(")");
+		sb.append("(").append(json).append(");");
 		return sb.toString();
 	}
 
 	private Response addCallback(String callback, Response res) {
 		StringBuilder sb = new StringBuilder(callback);
-		sb.append("(").append(res.getEntity()).append(")");
+		sb.append("(").append(res.getEntity()).append(");");
 		String json = sb.toString();
 		Response r = Response.status(res.getStatus()).entity(json).build();
 		return r;
