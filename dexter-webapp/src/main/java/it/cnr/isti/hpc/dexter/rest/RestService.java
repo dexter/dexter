@@ -51,6 +51,8 @@ import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -411,6 +413,12 @@ public class RestService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public String getDescription(
 			@QueryParam("title") @DefaultValue("Johnny_Cash") String title) {
+		try {
+			title = URLDecoder.decode(title, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String label = Article.getTitleInWikistyle(title);
 		int id = helper.getId(label);
 

@@ -8,7 +8,6 @@
 		<relativePath>../dexter-parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>dexter-client</artifactId>
-	<version>2.0.0</version>
 	<name>Dexter Rest-API Client</name>
 	<dependencies>
 		<dependency>
