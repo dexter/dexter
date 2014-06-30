@@ -40,9 +40,13 @@ import java.util.Map;
  */
 public class Tagmeta {
 
+	public enum DocumentFormat {
+		TEXT, JSON
+	}
+
 	String spotter;
 	String disambiguator;
-	boolean isMultifield;
+	DocumentFormat format;
 
 	Map<String, String> requestParams;
 
@@ -62,8 +66,22 @@ public class Tagmeta {
 		this.disambiguator = disambiguator;
 	}
 
-	public void setMultifield(boolean isMultifield) {
-		this.isMultifield = isMultifield;
+	public static DocumentFormat getDocumentFormat(String documentFormat) {
+		if (documentFormat == null) {
+			throw new IllegalArgumentException("no document format provided");
+		}
+		String normalizedFormat = documentFormat.toLowerCase().trim();
+		if (normalizedFormat.equals("text"))
+			return DocumentFormat.TEXT;
+		if (normalizedFormat.equals("json"))
+			return DocumentFormat.JSON;
+		throw new IllegalArgumentException("document format " + documentFormat
+				+ " is not supported");
+
+	}
+
+	public void setFormat(String format) {
+		this.format = getDocumentFormat(format);
 	}
 
 	// public DexterLocalParams getRequestParams() {

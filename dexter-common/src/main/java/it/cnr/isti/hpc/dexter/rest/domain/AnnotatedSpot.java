@@ -31,6 +31,7 @@ public class AnnotatedSpot {
 	int linkFrequency;
 	int documentFrequency;
 	int entity;
+	String field;
 	String wikiname;
 	int entityFrequency;
 	double commonness;
@@ -142,6 +143,14 @@ public class AnnotatedSpot {
 
 	public void setWikiname(String wikiname) {
 		this.wikiname = wikiname;
+	}
+
+	public String getField() {
+		return field;
+	}
+
+	public void setField(String field) {
+		this.field = field;
 	}
 
 	@Override

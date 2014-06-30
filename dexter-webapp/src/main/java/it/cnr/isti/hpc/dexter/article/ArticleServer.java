@@ -16,6 +16,7 @@
 package it.cnr.isti.hpc.dexter.article;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
 import it.cnr.isti.hpc.dexter.label.IdHelperFactory;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
@@ -72,7 +73,8 @@ public class ArticleServer {
 			logger.info("retrieve {} ", id);
 			logger.info(timer.stat("retrieve"));
 
-			desc = new ArticleDescription(a);
+			desc = new ArticleDescription(a.getTitle(),
+					a.getTitleInWikistyle(), a.getWid(), a.getSummary());
 		} else {
 			String name = idHelper.getLabel(id);
 			desc = ArticleDescription.fromWikipediaAPI(name);

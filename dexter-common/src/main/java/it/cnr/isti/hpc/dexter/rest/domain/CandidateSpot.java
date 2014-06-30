@@ -23,80 +23,85 @@ import java.util.List;
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
- * Created on Oct 18, 2013
+ *         Created on Oct 18, 2013
  */
 public class CandidateSpot {
 	String mention;
 	double linkProbability;
+	String field;
 	int start;
 	int end;
 	int linkFrequency;
 	int documentFrequency;
 	List<CandidateEntity> candidates;
-	
-	public CandidateSpot(){
-		
+
+	public CandidateSpot() {
+
 	}
-	
-	
-	
+
 	public int getLinkFrequency() {
 		return linkFrequency;
 	}
-
-
 
 	public void setLinkFrequency(int linkFrequency) {
 		this.linkFrequency = linkFrequency;
 	}
 
-
-
 	public int getDocumentFrequency() {
 		return documentFrequency;
 	}
-
-
 
 	public void setDocumentFrequency(int documentFrequency) {
 		this.documentFrequency = documentFrequency;
 	}
 
-
-
 	public String getMention() {
 		return mention;
 	}
+
 	public void setMention(String mention) {
 		this.mention = mention;
 	}
+
 	public double getLinkProbability() {
 		return linkProbability;
 	}
+
 	public void setLinkProbability(double linkProbability) {
 		this.linkProbability = linkProbability;
 	}
+
 	public int getStart() {
 		return start;
 	}
+
 	public void setStart(int start) {
 		this.start = start;
 	}
+
 	public int getEnd() {
 		return end;
 	}
+
 	public void setEnd(int end) {
 		this.end = end;
 	}
-	
+
 	public List<CandidateEntity> getCandidates() {
 		return candidates;
 	}
+
 	public void setCandidates(List<CandidateEntity> candidates) {
 		this.candidates = candidates;
 	}
 
+	public String getField() {
+		return field;
+	}
 
+	public void setField(String field) {
+		this.field = field;
+	}
 
 	@Override
 	public String toString() {
@@ -105,13 +110,5 @@ public class CandidateSpot {
 				+ ", linkFrequency=" + linkFrequency + ", documentFrequency="
 				+ documentFrequency + ", candidates=" + candidates + "]";
 	}
-
-
-
-	
-	
-	
-	
-
 
 }

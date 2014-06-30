@@ -31,9 +31,14 @@
  */
 package it.cnr.isti.hpc.dexter.rest.client;
 
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.Field;
+import it.cnr.isti.hpc.dexter.common.FlatDocument;
+import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
+import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
 import it.cnr.isti.hpc.net.FakeBrowser;
 
 import java.io.BufferedReader;
@@ -54,6 +59,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.sun.jersey.api.client.Client;
 
 /**
  * Allows to perform annotation calling the Dexter Rest Service
@@ -62,14 +69,19 @@ import com.google.gson.Gson;
  * 
  *         Created on Oct 29, 2013
  */
+// TODO rewrite using the jersey-client
 public class DexterRestClient {
 
 	private final URI server;
 	private final FakeBrowser browser;
 
+	private final Client client = Client.create();
+
 	private Boolean wikinames = false;
 
 	Map<String, String> params = new HashMap<String, String>();
+
+	private String disambiguator = null;
 
 	public double linkProbability = -1;
 
@@ -102,6 +114,10 @@ public class DexterRestClient {
 		browser = new FakeBrowser();
 	}
 
+	public AnnotatedDocument annotate(String text) {
+		return annotate(new FlatDocument(text));
+	}
+
 	/**
 	 * Performs the entity linking on a given text, annotating maximum 5
 	 * entities.
@@ -111,7 +127,7 @@ public class DexterRestClient {
 	 * @returns an annotated document, containing the annotated text, and a list
 	 *          entities detected.
 	 */
-	public AnnotatedDocument annotate(String doc) {
+	public AnnotatedDocument annotate(Document doc) {
 		return annotate(doc, -1);
 
 	}
@@ -127,11 +143,19 @@ public class DexterRestClient {
 	 * @returns an annotated document, containing the annotated text, and a list
 	 *          entities detected.
 	 */
-	public AnnotatedDocument annotate(String doc, int n) {
-		String text = URLEncoder.encode(doc);
+	public AnnotatedDocument annotate(Document doc, int n) {
+		String text = "";
 		String json = "";
+		Tagmeta.DocumentFormat format = Tagmeta.DocumentFormat.TEXT;
+		if (doc instanceof FlatDocument) {
+			text = URLEncoder.encode(doc.getContent());
+		} else if (doc instanceof MultifieldDocument) {
+			text = gson.toJson(doc);
+			format = Tagmeta.DocumentFormat.JSON;
+		}
+
 		StringBuilder sb = new StringBuilder(paramsToRequest());
-		sb.append("text=").append(text);
+		sb.append("text=").append(URLEncoder.encode(text));
 
 		// String url = "/annotate?" + paramsToRequest() + "&text=" + text;
 		if (linkProbability > 0)
@@ -141,9 +165,14 @@ public class DexterRestClient {
 			sb.append("&n=").append(n);
 		}
 
+		if (disambiguator != null) {
+			sb.append("&dsb=").append(disambiguator);
+		}
+
 		if (wikinames) {
 			sb.append("&wn=true");
 		}
+		sb.append("&format=").append(format);
 
 		// if (wikinames) {
 		// url += "&wn=true";
@@ -153,13 +182,25 @@ public class DexterRestClient {
 			// url += "&n=" + n;
 			// }
 			// System.out.println(sb.toString());
-			json = postQuery("/annotate", sb.toString());
+			json = postQuery("annotate", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
 		}
 		AnnotatedDocument adoc = gson.fromJson(json, AnnotatedDocument.class);
 		return adoc;
+	}
+
+	public SpottedDocument spot(String text) {
+		return spot(new FlatDocument(text));
+	}
+
+	public String getDisambiguator() {
+		return disambiguator;
+	}
+
+	public void setDisambiguator(String disambiguator) {
+		this.disambiguator = disambiguator;
 	}
 
 	/**
@@ -172,18 +213,27 @@ public class DexterRestClient {
 	 *         probability. For each spot it also returns the list of candidate
 	 *         entities associated with it, together with their commonness.
 	 */
-	public SpottedDocument spot(String doc) {
-		String text = URLEncoder.encode(doc);
-		String json = "";
-		String url = "/spot?text=" + text;
-		if (linkProbability > 0)
-			url += "&lp=" + linkProbability;
-		if (wikinames) {
-			url += "&wn=true";
+	public SpottedDocument spot(Document doc) {
+		String text = null;
+		Tagmeta.DocumentFormat format = Tagmeta.DocumentFormat.TEXT;
+		if (doc instanceof FlatDocument) {
+			text = URLEncoder.encode(doc.getContent());
+		} else if (doc instanceof MultifieldDocument) {
+			text = URLEncoder.encode(gson.toJson(doc));
+			format = Tagmeta.DocumentFormat.JSON;
 		}
 
+		String json = "";
+		StringBuilder sb = new StringBuilder("text=").append(text);
+		if (linkProbability > 0)
+			sb.append("&lp=").append(linkProbability);
+		if (wikinames) {
+			sb.append("&wn=true");
+		}
+		sb.append("&format=" + format);
+		System.out.println(sb.toString());
 		try {
-			json = browser.fetchAsString(server.toString() + url).toString();
+			json = postQuery("spot", sb.toString());
 		} catch (IOException e) {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
@@ -242,7 +292,7 @@ public class DexterRestClient {
 
 	private String postQuery(String restcall, String params) throws IOException {
 		HttpURLConnection con = (HttpURLConnection) new URL(server.toString()
-				+ "/annotate").openConnection();
+				+ "/" + restcall).openConnection();
 
 		// add reuqest header
 		con.setRequestMethod("POST");
@@ -257,7 +307,7 @@ public class DexterRestClient {
 		int responseCode = con.getResponseCode();
 
 		BufferedReader in = new BufferedReader(new InputStreamReader(
-				con.getInputStream()));
+				con.getInputStream(), "UTF-8"));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
@@ -378,19 +428,42 @@ public class DexterRestClient {
 
 	public static void main(String[] args) throws URISyntaxException {
 		DexterRestClient client = new DexterRestClient(
-				"http://node5.novello.isti.cnr.it:8080/dexter-webapp/rest");
+				"http://localhost:8080/dexter-webapp/api/rest");
 		client.setLinkProbability(1);
 
-		AnnotatedDocument ad = client
-				.annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(gson.toJson(ad));
-		SpottedDocument sd = client
-				.spot("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
-		System.out.println(gson.toJson(sd));
-		System.out.println("maradona wid = " + client.getId("maradona"));
-		ArticleDescription desc = client.getDesc(5981816);
+		// AnnotatedDocument ad = client
+		// .annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
+		// System.out.println(gson.toJson(ad));
+		// SpottedDocument sd = client
+		// .spot("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department (based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
+		// System.out.println(gson.toJson(sd));
 
-		System.out.println(desc);
-		System.out.println("categories " + client.getBelongingEntities(74253));
+		MultifieldDocument document = new MultifieldDocument();
+		document.addField(new Field(
+				"q1",
+				"On this day 24 years ago Maradona scored his infamous Hand of God goal against England in the quarter-final of the 1986"));
+		document.addField(new Field("q2", "diego armando maradona"));
+
+		document.addField(new Field("q3", "pablo neruda"));
+
+		document.addField(new Field("q4", "van gogh"));
+		client.setDisambiguator("tagme");
+		client.setLinkProbability(0.03);
+		client.setWikinames(true);
+
+		AnnotatedDocument sd = client.annotate(document);
+		System.out.println(new GsonBuilder().setPrettyPrinting().create()
+				.toJson(sd));
+
+		// // FIXME belonging entities does not work, probably I changed
+		// something
+		// // in the rest api.
+		// System.out.println("maradona wid = " + client.getId("maradona"));
+		// ArticleDescription desc = client.getDesc(5981816);
+		//
+		// System.out.println(desc);
+		// System.out.println("categories " +
+		// client.getBelongingEntities(74253));
+
 	}
 }

@@ -20,12 +20,43 @@
 
 package org.wikipedia;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.logging.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Serializable;
+import java.net.HttpRetryException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
-import javax.security.auth.login.*;
+
+import javax.security.auth.login.AccountLockedException;
+import javax.security.auth.login.CredentialException;
+import javax.security.auth.login.CredentialExpiredException;
+import javax.security.auth.login.CredentialNotFoundException;
+import javax.security.auth.login.FailedLoginException;
+import javax.security.auth.login.LoginException;
 
 /**
  * This is a somewhat sketchy bot framework for editing MediaWiki wikis.
@@ -2789,10 +2820,10 @@ public class Wiki implements Serializable {
 	 * 
 	 * <pre>
 	 * wiki.undo(wiki.getRevision(314L), null, reason, false); // undo revision 314
-	 * 														// only
+	 * // only
 	 * wiki.undo(wiki.getRevision(236L), wiki.getRevision(325L), reason, false); // undo
-	 * 																			// revisions
-	 * 																			// 236-325
+	 * // revisions
+	 * // 236-325
 	 * </pre>
 	 * 
 	 * This will only work if revision 541 or any subsequent edits do not clash
@@ -5541,7 +5572,7 @@ public class Wiki implements Serializable {
 	 * @since 0.05
 	 */
 	public class User implements Cloneable {
-		private String username;
+		private final String username;
 		private String[] rights = null; // cache
 		private String[] groups = null; // cache
 
@@ -5798,11 +5829,11 @@ public class Wiki implements Serializable {
 		// internal data storage
 		private String type;
 		private String action;
-		private String reason;
+		private final String reason;
 		private User user;
 		private String target;
-		private Calendar timestamp;
-		private Object details;
+		private final Calendar timestamp;
+		private final Object details;
 
 		/**
 		 * Creates a new log entry. WARNING: does not perform the action
@@ -5985,7 +6016,6 @@ public class Wiki implements Serializable {
 		 * @return whether this object is equal to
 		 * @since 0.18
 		 */
-		@Override
 		public int compareTo(Wiki.LogEntry other) {
 			if (timestamp.equals(other.timestamp))
 				return 0; // might not happen, but
@@ -5999,13 +6029,14 @@ public class Wiki implements Serializable {
 	 * @since 0.17
 	 */
 	public class Revision implements Comparable<Revision> {
-		private boolean minor, bot, rvnew;
-		private String summary;
-		private long revid, rcid = -1;
+		private final boolean minor, bot, rvnew;
+		private final String summary;
+		private final long revid;
+		private long rcid = -1;
 		private long previous = 0, next = 0;
-		private Calendar timestamp;
-		private String user;
-		private String title;
+		private final Calendar timestamp;
+		private final String user;
+		private final String title;
 		private String rollbacktoken = null;
 		private int size = 0;
 		private int sizediff = 0;
@@ -6376,7 +6407,6 @@ public class Wiki implements Serializable {
 		 * @return whether this object is equal to
 		 * @since 0.18
 		 */
-		@Override
 		public int compareTo(Wiki.Revision other) {
 			if (timestamp.equals(other.timestamp))
 				return 0; // might not happen, but

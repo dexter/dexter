@@ -31,6 +31,9 @@
  */
 package it.cnr.isti.hpc.dexter.rest.domain;
 
+import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
+
 import java.util.List;
 
 /**
@@ -41,27 +44,27 @@ import java.util.List;
  *         Created on Oct 18, 2013
  */
 public class SpottedDocument {
-	private String text;
+	private MultifieldDocument document;
 	private List<CandidateSpot> spots;
 	private int nSpots;
 	private float querytime;
 	private Tagmeta meta;
 
-	public SpottedDocument(String text, List<CandidateSpot> spots, int nSpots,
-			float querytime) {
+	public SpottedDocument(MultifieldDocument document,
+			List<CandidateSpot> spots, int nSpots, float querytime) {
 		super();
-		this.text = text;
+		this.document = document;
 		this.spots = spots;
 		this.nSpots = nSpots;
 		this.querytime = querytime;
 	}
 
-	public String getText() {
-		return text;
+	public Document getDocument() {
+		return document;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setDocument(MultifieldDocument document) {
+		this.document = document;
 	}
 
 	public List<CandidateSpot> getSpots() {
@@ -98,7 +101,7 @@ public class SpottedDocument {
 
 	@Override
 	public String toString() {
-		return "SpottedDocument [text=" + text + ", spots=" + spots
+		return "SpottedDocument [document=" + document + ", spots=" + spots
 				+ ", nSpots=" + nSpots + ", querytime=" + querytime + ", meta="
 				+ meta + "]";
 	}

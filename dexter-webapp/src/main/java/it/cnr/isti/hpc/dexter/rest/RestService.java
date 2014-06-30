@@ -17,11 +17,12 @@ package it.cnr.isti.hpc.dexter.rest;
 
 import it.cnr.isti.hpc.dexter.StandardTagger;
 import it.cnr.isti.hpc.dexter.Tagger;
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
 import it.cnr.isti.hpc.dexter.article.ArticleServer;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.Field;
+import it.cnr.isti.hpc.dexter.common.FlatDocument;
+import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
-import it.cnr.isti.hpc.dexter.document.Document;
-import it.cnr.isti.hpc.dexter.document.FlatDocument;
 import it.cnr.isti.hpc.dexter.entity.Entity;
 import it.cnr.isti.hpc.dexter.entity.EntityMatch;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
@@ -55,6 +56,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -95,6 +97,8 @@ public class RestService {
 			.serializeSpecialFloatingPointValues().create();
 	private final ArticleServer server = new ArticleServer();
 
+	private final static int STATUS_ERROR = 500;
+
 	public static final DexterParams params = DexterParams.getInstance();
 	public static final IdHelper helper = IdHelperFactory.getStdIdHelper();
 
@@ -108,6 +112,17 @@ public class RestService {
 			params.addParam(key, queryParams.getFirst(key));
 		}
 		return params;
+	}
+
+	private Response error(String msg) {
+		Response r = Response.status(STATUS_ERROR)
+				.entity("{\"error\":\"" + msg + "\"}").build();
+		return r;
+	}
+
+	private Response ok(Object o) {
+		Response r = Response.ok(gson.toJson(o)).build();
+		return r;
 	}
 
 	/**
@@ -126,17 +141,17 @@ public class RestService {
 	@Path("/annotate")
 	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotateGet(@Context UriInfo ui,
+	public Response annotateGet(@Context UriInfo ui,
 			@QueryParam("text") String text,
 			@QueryParam("n") @DefaultValue("5") String n,
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg,
-			@QueryParam("multifield") @DefaultValue("false") String multifield) {
+			@QueryParam("format") @DefaultValue("text") String format) {
 		DexterLocalParams requestParams = getLocalParams(ui);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg, multifield);
+				wikiNames, dbg, format);
 
 	}
 
@@ -224,17 +239,17 @@ public class RestService {
 	@Path("/annotate")
 	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotatePost(Form form, @FormParam("text") String text,
+	public Response annotatePost(Form form, @FormParam("text") String text,
 			@FormParam("n") @DefaultValue("5") String n,
 			@FormParam("spt") String spotter,
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg,
-			@FormParam("multifield") @DefaultValue("false") String mf) {
+			@FormParam("format") @DefaultValue("text") String format) {
 
 		DexterLocalParams requestParams = getLocalParams(form);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg, mf);
+				wikiNames, dbg, format);
 
 	}
 
@@ -247,15 +262,27 @@ public class RestService {
 		return params;
 	}
 
-	public String annotate(DexterLocalParams requestParams, String text,
-			String n, String spotter, String disambiguator, String wikiNames,
-			String dbg, String multifield) {
-		if (text == null) {
-			return "{\"error\":\"text param is null\"}";
+	private MultifieldDocument parseDocument(String text, String format) {
+		Tagmeta.DocumentFormat df = Tagmeta.getDocumentFormat(format);
+		MultifieldDocument doc = null;
+		if (df == Tagmeta.DocumentFormat.TEXT) {
+			doc = new FlatDocument(text);
 		}
-		logger.info("text: \n\n{}\n\n", text);
+		if (df == Tagmeta.DocumentFormat.JSON) {
+			doc = gson.fromJson(text, MultifieldDocument.class);
 
-		boolean isMultifield = new Boolean(multifield);
+		}
+		return doc;
+
+	}
+
+	public Response annotate(DexterLocalParams requestParams, String text,
+			String n, String spotter, String disambiguator, String wikiNames,
+			String dbg, String format) {
+		if (text == null) {
+			return error("text parameter is null");
+		}
+
 		Spotter s = params.getSpotter(spotter);
 
 		Disambiguator d = params.getDisambiguator(disambiguator);
@@ -265,29 +292,37 @@ public class RestService {
 		boolean addWikinames = new Boolean(wikiNames);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
-		Document doc = new FlatDocument(text);
+		MultifieldDocument doc = null;
+		try {
+			doc = parseDocument(text, format);
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage());
+			return error(e.getMessage());
+		}
+
 		EntityMatchList eml = tagger.tag(requestParams, doc);
 
-		AnnotatedDocument adoc = new AnnotatedDocument(text);
+		AnnotatedDocument adoc = new AnnotatedDocument(doc);
 
 		if (debug) {
 			Tagmeta meta = new Tagmeta();
 			meta.setDisambiguator(d.getClass().toString());
 			meta.setSpotter(s.getClass().toString());
-			meta.setMultifield(isMultifield);
+			meta.setFormat(format);
 			meta.setRequestParams(requestParams.getParams());
 
 			adoc.setMeta(meta);
 
 		}
 		annotate(adoc, eml, entitiesToAnnotate, addWikinames);
-		String annotated = gson.toJson(adoc);
-		logger.info("annotate: {}", annotated);
-		return annotated;
+
+		// logger.info("annotate: {}", annotated);
+		return ok(adoc);
 	}
 
 	public void annotate(AnnotatedDocument adoc, EntityMatchList eml,
 			boolean addWikiNames) {
+
 		annotate(adoc, eml, eml.size(), addWikiNames);
 	}
 
@@ -306,59 +341,77 @@ public class RestService {
 							.getSpot().getLinkFrequency(), em.getSpot()
 							.getFrequency(), em.getId(), em.getFrequency(),
 					em.getCommonness(), em.getScore());
+			spot.setField(em.getSpot().getField().getName());
 			if (addWikiNames) {
 				spot.setWikiname(helper.getLabel(em.getId()));
 			}
 
 			spots.add(spot);
 		}
-		String annotatedText = getAnnotatedText(adoc, emlSub);
-		adoc.setAnnotatedText(annotatedText);
+		MultifieldDocument annotatedDocument = getAnnotatedDocument(adoc,
+				emlSub);
+		adoc.setAnnotatedDocument(annotatedDocument);
 	}
 
-	private String getAnnotatedText(AnnotatedDocument adoc, EntityMatchList eml) {
+	private MultifieldDocument getAnnotatedDocument(AnnotatedDocument adoc,
+			EntityMatchList eml) {
 		Collections.sort(eml, new EntityMatch.SortByPosition());
-		StringBuffer sb = new StringBuffer();
-		int pos = 0;
-		String text = adoc.getText();
-		for (EntityMatch em : eml) {
-			assert em.getStart() >= 0;
-			assert em.getEnd() >= 0;
-			try {
-				sb.append(text.substring(pos, em.getStart()));
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - {} ",
-						pos, em.getStart());
-				logger.warn("text: \n\n {}\n\n", text);
+
+		Iterator<Field> iterator = adoc.getDocument().getFields();
+		MultifieldDocument annotated = new MultifieldDocument();
+		while (iterator.hasNext()) {
+			int pos = 0;
+			StringBuffer sb = new StringBuffer();
+			Field field = iterator.next();
+			String currentField = field.getName();
+			String currentText = field.getValue();
+
+			for (EntityMatch em : eml) {
+				if (!em.getSpot().getField().getName().equals(currentField)) {
+					continue;
+				}
+				assert em.getStart() >= 0;
+				assert em.getEnd() >= 0;
+				try {
+					sb.append(currentText.substring(pos, em.getStart()));
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - {} ",
+							pos, em.getStart());
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+				// the spot has been normalized, i want to retrieve the real one
+				String realSpot = "none";
+				try {
+					realSpot = currentText
+							.substring(em.getStart(), em.getEnd());
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - {} ",
+							pos, em.getStart());
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+				sb.append(
+						"<a href=\"#\" onmouseover='manage(" + em.getId()
+								+ ")' >").append(realSpot).append("</a>");
+				pos = em.getEnd();
 			}
-			// the spot has been normalized, i want to retrieve the real one
-			String realSpot = "none";
-			try {
-				realSpot = text.substring(em.getStart(), em.getEnd());
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - {} ",
-						pos, em.getStart());
-				logger.warn("text: \n\n {}\n\n", text);
+			if (pos < currentText.length()) {
+				try {
+					sb.append(currentText.substring(pos));
+				} catch (java.lang.StringIndexOutOfBoundsException e) {
+					logger.warn(
+							"error annotating text output of bound for range {} - end ",
+							pos);
+					logger.warn("text: \n\n {}\n\n", currentText);
+				}
+
 			}
-			sb.append(
-					"<a href=\"#\" onmouseover='manage(" + em.getId() + ")' >")
-					.append(realSpot).append("</a>");
-			pos = em.getEnd();
-		}
-		if (pos < text.length()) {
-			try {
-				sb.append(text.substring(pos));
-			} catch (java.lang.StringIndexOutOfBoundsException e) {
-				logger.warn(
-						"error annotating text output of bound for range {} - end ",
-						pos);
-				logger.warn("text: \n\n {}\n\n", text);
-			}
+			annotated.addField(new Field(field.getName(), sb.toString()));
+
 		}
 
-		return sb.toString();
+		return annotated;
 	}
 
 	/**
@@ -495,14 +548,22 @@ public class RestService {
 	 *         probability. For each spot it also returns the list of candidate
 	 *         entities associated with it, together with their commonness.
 	 */
-	private String spot(DexterLocalParams requestParams, String text,
-			String spt, String wikiNames, String dbg) {
+	private Response spot(DexterLocalParams requestParams, String text,
+			String spt, String wikiNames, String dbg, String format) {
 		long start = System.currentTimeMillis();
 		Spotter spotter = params.getSpotter(spt);
 		boolean debug = new Boolean(dbg);
-		Document d = new FlatDocument(text);
+		MultifieldDocument doc = null;
+
+		try {
+			doc = parseDocument(text, format);
+		} catch (IllegalArgumentException e) {
+			logger.error(e.getMessage());
+			return error(e.getMessage());
+		}
+
 		boolean addWikinames = new Boolean(wikiNames);
-		SpotMatchList sml = spotter.match(requestParams, d);
+		SpotMatchList sml = spotter.match(requestParams, doc);
 		List<CandidateSpot> spots = new ArrayList<CandidateSpot>();
 		List<CandidateEntity> candidates;
 
@@ -510,6 +571,7 @@ public class RestService {
 			CandidateSpot s = new CandidateSpot();
 			s.setMention(spot.getMention());
 			s.setStart(spot.getStart());
+			s.setField(spot.getField().getName());
 			s.setEnd(spot.getEnd());
 			s.setLinkProbability(spot.getLinkProbability());
 			s.setLinkFrequency(spot.getLinkFrequency());
@@ -522,54 +584,58 @@ public class RestService {
 					c.setWikiname(helper.getLabel(entity.getId()));
 				}
 				candidates.add(c);
+
 			}
 			Collections.sort(candidates);
 			s.setCandidates(candidates);
 			spots.add(s);
 		}
-		SpottedDocument sd = new SpottedDocument(text, spots, spots.size(),
+		SpottedDocument sd = new SpottedDocument(doc, spots, spots.size(),
 				System.currentTimeMillis() - start);
 
 		if (debug) {
+
 			Tagmeta meta = new Tagmeta();
 			meta.setSpotter(spotter.getClass().toString());
 			meta.setRequestParams(requestParams.getParams());
-
+			meta.setFormat(format);
 			sd.setMeta(meta);
 
 		}
 
-		String spotted = gson.toJson(sd);
-		logger.info("spot: {}", spotted);
-		return spotted;
+		// String spotted = gson.toJson(sd);
+		// logger.info("spot: {}", spotted);
+		return ok(sd);
 	}
 
 	@GET
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotGet(
+	public Response spotGet(
 			@Context UriInfo ui,
 			@QueryParam("text") @DefaultValue("Bob Dylan and Johnny Cash had formed a mutual admiration society even before they met in the early 1960s") String text,
 			@QueryParam("spt") String spt,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
+			@QueryParam("debug") @DefaultValue("false") String dbg,
+			@QueryParam("format") @DefaultValue("text") String format) {
 		DexterLocalParams requestParams = getLocalParams(ui);
-		return spot(requestParams, text, spt, wikiNames, dbg);
+		return spot(requestParams, text, spt, wikiNames, dbg, format);
 	}
 
 	@POST
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotPost(
+	public Response spotPost(
 			Form form,
 			@FormParam("text") @DefaultValue("Bob Dylan and Johnny Cash had formed a mutual admiration society even before they met in the early 1960s") String text,
 			@FormParam("spt") @DefaultValue("wiki-dictionary") String spt,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
-			@FormParam("debug") @DefaultValue("false") String dbg) {
+			@FormParam("debug") @DefaultValue("false") String dbg,
+			@FormParam("format") @DefaultValue("text") String format) {
 		DexterLocalParams requestParams = getLocalParams(form);
-		return spot(requestParams, text, spt, wikiNames, dbg);
+		return spot(requestParams, text, spt, wikiNames, dbg, format);
 	}
 
 	@GET

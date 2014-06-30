@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.cnr.isti.hpc</groupId>
 	<artifactId>dexter-parent</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<packaging>pom</packaging>
 	<name>Dexter Parent</name>
 	<description>Contains configuration for packages</description>
@@ -35,23 +35,34 @@
 				<groupId>it.cnr.isti.hpc</groupId>
 				<version>1.0.0</version>
 			</dependency>
+			
+			<!-- dexter common data -->
+
+			<dependency>
+				<groupId>it.cnr.isti.hpc</groupId>
+				<artifactId>dexter-common</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+			
 			<!-- dexter dependecies -->
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>
 				<artifactId>dexter-core</artifactId>
-				<version>2.0.0</version>
+				<version>2.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>
 				<artifactId>dexter-client</artifactId>
-				<version>2.0.0</version>
-				<type>jar</type>
+				<version>2.1.0</version>
+				 <type>jar</type>
+
 			</dependency>
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>
 				<artifactId>dexter-webapp</artifactId>
-				<version>1.0.0</version>
-				<type>war</type>
+
+				<version>2.1.0</version>
+				 <type>war</type>
 			</dependency>
 			<dependency>
 				<groupId>it.cnr.isti.hpc</groupId>

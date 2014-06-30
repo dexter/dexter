@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.rest;
 
-import it.cnr.isti.hpc.dexter.article.ArticleDescription;
+import it.cnr.isti.hpc.dexter.common.ArticleDescription;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.EntitySpots;
@@ -84,7 +84,7 @@ public class JSONPService {
 	@Path("/annotate")
 	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotateGet(@Context UriInfo ui,
+	public Response annotateGet(@Context UriInfo ui,
 			@QueryParam("callback") @DefaultValue("callback") String callback,
 			@QueryParam("text") String text,
 			@QueryParam("n") @DefaultValue("5") String n,
@@ -92,9 +92,10 @@ public class JSONPService {
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg,
-			@QueryParam("multifield") @DefaultValue("false") String mf) {
+
+			@QueryParam("format") @DefaultValue("text") String format) {
 		return addCallback(callback, r.annotateGet(ui, text, n, spotter,
-				disambiguator, wikiNames, dbg, mf));
+				disambiguator, wikiNames, dbg, format));
 
 	}
 
@@ -102,7 +103,7 @@ public class JSONPService {
 	@Path("/annotate")
 	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String annotatePost(Form form,
+	public Response annotatePost(Form form,
 			@FormParam("callback") @DefaultValue("callback") String callback,
 			@FormParam("text") String text,
 			@FormParam("n") @DefaultValue("5") String n,
@@ -110,10 +111,10 @@ public class JSONPService {
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg,
-			@FormParam("multifield") @DefaultValue("false") String mf) {
+			@FormParam("format") @DefaultValue("text") String format) {
 
 		return addCallback(callback, r.annotatePost(form, text, n, spotter,
-				disambiguator, wikiNames, dbg, mf));
+				disambiguator, wikiNames, dbg, format));
 
 	}
 
@@ -171,25 +172,28 @@ public class JSONPService {
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotGet(@Context UriInfo ui,
+	public Response spotGet(@Context UriInfo ui,
 			@QueryParam("callback") @DefaultValue("callback") String callback,
 			@QueryParam("text") String text, @QueryParam("spt") String spt,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
-			@QueryParam("debug") @DefaultValue("false") String dbg) {
-		return addCallback(callback, r.spotGet(ui, text, spt, wikiNames, dbg));
+			@QueryParam("debug") @DefaultValue("false") String dbg,
+			@QueryParam("format") @DefaultValue("text") String format) {
+		return addCallback(callback,
+				r.spotGet(ui, text, spt, wikiNames, dbg, format));
 	}
 
 	@POST
 	@Path("/spot")
 	@ApiOperation(value = "Detects all the mentions that could refer to an entity in the text", response = EntitySpots.class)
 	@Produces({ MediaType.APPLICATION_JSON })
-	public String spotPost(Form form,
+	public Response spotPost(Form form,
 			@FormParam("callback") @DefaultValue("callback") String callback,
 			@FormParam("text") String text, @FormParam("spt") String spt,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
-			@FormParam("debug") @DefaultValue("false") String dbg) {
+			@FormParam("debug") @DefaultValue("false") String dbg,
+			@FormParam("format") @DefaultValue("text") String format) {
 		return addCallback(callback,
-				r.spotPost(form, text, spt, wikiNames, dbg));
+				r.spotPost(form, text, spt, wikiNames, dbg, format));
 	}
 
 	@GET
