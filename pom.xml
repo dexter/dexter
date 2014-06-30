@@ -8,6 +8,7 @@
 	<name>Dexter Reactor</name>
 	<modules>
 		<module>dexter-parent</module>
+		<module>dexter-common</module>
 		<!--module>dexter-helper</module> -->
 		<module>json-wikipedia</module>
 		<module>dexter-core</module>
