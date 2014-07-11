@@ -153,23 +153,23 @@ public class SpotManager {
 	 * Returns a StandardSpotCleaner used by Dexter to clean the anchors.
 	 */
 	public static SpotManager getStandardSpotCleaner() {
-		if (standardSpotCleaner == null) {
-			standardSpotCleaner = new SpotManager();
-			standardSpotCleaner.add(new HtmlCleaner());
+		// FIXME removed singleton (could be a problem for concurrency
+		// if (standardSpotCleaner == null) {
+		SpotManager standardSpotCleaner = new SpotManager();
+		standardSpotCleaner.add(new HtmlCleaner());
 
-			// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
-			standardSpotCleaner.add(new UnicodeCleaner());
-			standardSpotCleaner.add(new SymbolCleaner('_'));
-			standardSpotCleaner.add(new SymbolCleaner('-'));
-			standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>:/"));
-			// post clean
-			standardSpotCleaner.add(new LowerCaseCleaner());
-			standardSpotCleaner.add(new ParenthesesCleaner());
-			standardSpotCleaner.add(new QuotesCleaner());
-			standardSpotCleaner
-					.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
+		// pre clean pipe = new Pipe<String>(pipe,new UnicodeCleaner());
+		standardSpotCleaner.add(new UnicodeCleaner());
+		standardSpotCleaner.add(new SymbolCleaner('_'));
+		standardSpotCleaner.add(new SymbolCleaner('-'));
+		standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>:/"));
+		// post clean
+		standardSpotCleaner.add(new LowerCaseCleaner());
+		standardSpotCleaner.add(new ParenthesesCleaner());
+		standardSpotCleaner.add(new QuotesCleaner());
+		standardSpotCleaner.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
 
-		}
+		// }
 		return standardSpotCleaner;
 	}
 

@@ -30,9 +30,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * ShingleExtractor extracts all the ngrams (of fixed length) from the text of
  * an article. Please observe that the ShingleExtractor perform a cleaning step
@@ -44,38 +41,23 @@ import org.slf4j.LoggerFactory;
  * @see Shingle
  * @see SpotManager
  * @author Salvatore Trani, salvatore.trani@isti.cnr.it created on 02/aug/2012
+ * @author Diego Ceccarelli modified to make it thread safe on 11/july/2014
  */
 public class ShingleExtractor implements Iterable<Shingle> {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(ShingleExtractor.class);
 	private int maxShingleSize;
 
 	private static final int DEFAULT_MAX_SHINGLE_SIZE = 6;
 
 	private final List<List<Token>> cleanedSentences;
-	private static SpotManager sm;
-	private static TokenSegmenter ts;
-	private static SentenceSegmenter ss;
-
-	static {
-		// sm = new SpotManager();
-		sm = SpotManager.getStandardSpotCleaner();
-		ts = TokenSegmenter.getInstance();
-		ss = SentenceSegmenter.getInstance();
-
-		// sm.add(new LowerCaseCleaner());
-		// sm.add(new UnicodeCleaner());
-		// // sm.add(new ParenthesesCleaner());
-		// sm.add(new QuotesCleaner());
-		// sm.add(new UnderscoreCleaner());
-		// // sm.add(new JuniorAndInitialsCleaner());
-		// sm.add(new StripCleaner());
-		// // sm.add(new TypeCleaner());
-		// }
-	}
+	private final SpotManager sm;
+	private final TokenSegmenter ts;
+	private final SentenceSegmenter ss;
 
 	private ShingleExtractor() {
+		sm = SpotManager.getStandardSpotCleaner();
+		ts = new TokenSegmenter();
+		ss = new SentenceSegmenter();
 		cleanedSentences = new ArrayList<List<Token>>();
 		maxShingleSize = DEFAULT_MAX_SHINGLE_SIZE;
 	}
@@ -93,6 +75,11 @@ public class ShingleExtractor implements Iterable<Shingle> {
 
 	public ShingleExtractor(String text) {
 		this();
+		addText(text);
+	}
+
+	// FIXME
+	public void process(String text) {
 		addText(text);
 	}
 

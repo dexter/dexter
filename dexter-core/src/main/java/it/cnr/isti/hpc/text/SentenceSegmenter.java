@@ -15,9 +15,6 @@
  */
 package it.cnr.isti.hpc.text;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +26,9 @@ import opennlp.tools.sentdetect.SentenceDetector;
 import opennlp.tools.sentdetect.SentenceDetectorME;
 import opennlp.tools.sentdetect.SentenceModel;
 import opennlp.tools.util.Span;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * SentenceSegmenter allows to segment text in sentences.
@@ -46,7 +46,7 @@ public class SentenceSegmenter {
 
 	private static SentenceSegmenter instance = null;
 
-	private SentenceSegmenter() { 
+	public SentenceSegmenter() {
 		InputStream modelIn = null;
 		try {
 			// Loading sentence detection model
@@ -67,14 +67,12 @@ public class SentenceSegmenter {
 			}
 		}
 	}
-	
-	
 
-	public static SentenceSegmenter getInstance() {
-		if (instance == null)
-			instance = new SentenceSegmenter();
-		return instance;
-	}
+	// public static SentenceSegmenter getInstance() {
+	// if (instance == null)
+	// instance = new SentenceSegmenter();
+	// return instance;
+	// }
 
 	public String[] split(String text) {
 		return sentenceDetector.sentDetect(text);
@@ -94,12 +92,12 @@ public class SentenceSegmenter {
 		}
 		return sentenceDetector.sentDetect(sb.toString());
 	}
-	
-	public List<Sentence> splitPos(String text){
+
+	public List<Sentence> splitPos(String text) {
 		List<Sentence> sentences = new LinkedList<Sentence>();
-		for (Span s : sentenceDetector.sentPosDetect(text)){
+		for (Span s : sentenceDetector.sentPosDetect(text)) {
 			sentences.add(new Sentence(s.getStart(), s.getEnd()));
-			
+
 		}
 		return sentences;
 	}
