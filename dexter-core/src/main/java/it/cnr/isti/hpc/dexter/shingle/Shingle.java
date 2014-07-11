@@ -36,10 +36,8 @@ public class Shingle {
 	/** end position in the original text */
 	public int end;
 
-	private static StringBuilder sb = new StringBuilder();
-
 	public Shingle(List<Token> tokens) {
-		sb.setLength(0);
+		StringBuilder sb = new StringBuilder();
 		start = tokens.get(0).getStart();
 		end = tokens.get(tokens.size() - 1).getEnd();
 		for (Token t : tokens)
@@ -108,6 +106,7 @@ public class Shingle {
 		this.end = end;
 	}
 
+	@Override
 	public String toString() {
 		return "<" + text + "> [" + start + "," + end + "]";
 	}
