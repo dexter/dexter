@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>dexter-parent</artifactId>
+		<groupId>it.cnr.isti.hpc</groupId>
+		<version>2.1.0</version>
+		<relativePath>../dexter-parent/pom.xml</relativePath>
+	</parent>
 	<groupId>it.cnr.isti.hpc</groupId>
 	<artifactId>dexter-common</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
