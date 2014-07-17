@@ -55,15 +55,15 @@ public class SpotManager {
 	private Pipe<String> pipe;
 	private Pipe<String> cleanPipe;
 
-	private static SpotManager standardSpotManager = null;
-	private static SpotManager standardSpotCleaner = null;
+	// private final SpotManager standardSpotManager = null;
+	// private final SpotManager standardSpotCleaner = null;
 
 	/**
 	 * Uses the standard cleaner to clean a given text
 	 */
 	public static String cleanText(String text) {
-		getStandardSpotCleaner();
-		return standardSpotCleaner.clean(text);
+		SpotManager sm = getStandardSpotCleaner();
+		return sm.clean(text);
 	}
 
 	/**
@@ -103,49 +103,46 @@ public class SpotManager {
 	 * Returns a StandardSpotManager used by Dexter to process the anchors.
 	 */
 	public static SpotManager getStandardSpotManager() {
-		if (standardSpotManager == null) {
+		SpotManager standardSpotManager;
 
-			standardSpotManager = new SpotManager();
-			// pre filter
-			standardSpotManager.add(new SymbolFilter());
-			standardSpotManager.add(new TemplateFilter());
-			standardSpotManager.add(new LengthFilter(2));
-			standardSpotManager.add(new AsciiFilter());
-			standardSpotManager.add(new ImageFilter());
+		standardSpotManager = new SpotManager();
+		// pre filter
+		standardSpotManager.add(new SymbolFilter());
+		standardSpotManager.add(new TemplateFilter());
+		standardSpotManager.add(new LengthFilter(2));
+		standardSpotManager.add(new AsciiFilter());
+		standardSpotManager.add(new ImageFilter());
 
-			// pre clean
-			standardSpotManager.add(new HtmlCleaner());
-			standardSpotManager.add(new UnicodeCleaner());
-			standardSpotManager.add(new SymbolCleaner('_'));
-			standardSpotManager.add(new SymbolCleaner('-'));
-			standardSpotManager.add(new LowerCaseCleaner());
-			standardSpotManager.add(new JuniorAndInitialsCleaner());
-			// standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
-			standardSpotManager.add(new TypeCleaner());
+		// pre clean
+		standardSpotManager.add(new HtmlCleaner());
+		standardSpotManager.add(new UnicodeCleaner());
+		standardSpotManager.add(new SymbolCleaner('_'));
+		standardSpotManager.add(new SymbolCleaner('-'));
+		standardSpotManager.add(new LowerCaseCleaner());
+		standardSpotManager.add(new JuniorAndInitialsCleaner());
+		// standardSpotCleaner.add(new StripCleaner("#*-!`{}~[]='<>"));
+		standardSpotManager.add(new TypeCleaner());
 
-			// map
+		// map
 
-			standardSpotManager.add(new CityMapper());
-			standardSpotManager.add(new QuotesMapper());
+		standardSpotManager.add(new CityMapper());
+		standardSpotManager.add(new QuotesMapper());
 
-			// post clean
+		// post clean
 
-			standardSpotManager.add(new ParenthesesCleaner());
-			standardSpotManager.add(new QuotesCleaner());
-			standardSpotManager
-					.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
-			standardSpotManager.add(new TypeCleaner());
+		standardSpotManager.add(new ParenthesesCleaner());
+		standardSpotManager.add(new QuotesCleaner());
+		standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+"));
+		standardSpotManager.add(new TypeCleaner());
 
-			// post filter
-			standardSpotManager.add(new SymbolFilter());
-			standardSpotManager.add(new TemplateFilter());
-			standardSpotManager.add(new LengthFilter(2));
-			standardSpotManager.add(new ImageFilter());
-			standardSpotManager.add(new LongSpotFilter());
-			standardSpotManager.add(new StripCleaner(
-					",#*-!`{}~[]='<>:/;.&%|=+ "));
+		// post filter
+		standardSpotManager.add(new SymbolFilter());
+		standardSpotManager.add(new TemplateFilter());
+		standardSpotManager.add(new LengthFilter(2));
+		standardSpotManager.add(new ImageFilter());
+		standardSpotManager.add(new LongSpotFilter());
+		standardSpotManager.add(new StripCleaner(",#*-!`{}~[]='<>:/;.&%|=+ "));
 
-		}
 		return standardSpotManager;
 	}
 
