@@ -271,7 +271,7 @@ public class DexterRestClient {
 	 *            the Wiki-id of the entity
 	 * @returns the entities that link to the given entity
 	 */
-	public List<ArticleDescription> getSourceEntities(int entityId) {
+	public ArticleDescription getSourceEntities(int entityId) {
 
 		String json = "";
 		try {
@@ -283,8 +283,8 @@ public class DexterRestClient {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
 		}
-		List<ArticleDescription> adl = gson.fromJson(json, List.class);
-		return adl;
+		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
+		return ad;
 	}
 	
 	/**
@@ -294,7 +294,7 @@ public class DexterRestClient {
 	 *            the Wiki-id of the entity
 	 * @returns the entities linked by the given entity
 	 */
-	public List<ArticleDescription> getTargetEntities(int entityId) {
+	public ArticleDescription getTargetEntities(int entityId) {
 
 		String json = "";
 		try {
@@ -306,8 +306,8 @@ public class DexterRestClient {
 			logger.error("cannot call the rest api {}", e.toString());
 			return null;
 		}
-		List<ArticleDescription> adl = gson.fromJson(json, List.class);
-		return adl;
+		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
+		return ad;
 	}
 
 	/**
