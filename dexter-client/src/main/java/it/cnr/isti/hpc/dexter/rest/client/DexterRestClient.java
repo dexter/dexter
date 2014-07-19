@@ -263,6 +263,52 @@ public class DexterRestClient {
 		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
 		return ad;
 	}
+	
+	/**
+	 * Given an entity, returns the entities that link to the given entity
+	 * 
+	 * @param id
+	 *            the Wiki-id of the entity
+	 * @returns the entities that link to the given entity
+	 */
+	public List<ArticleDescription> getSourceEntities(int entityId) {
+
+		String json = "";
+		try {
+			StringBuffer sb = new StringBuffer(server.toString() + "/get-source-entities");
+			sb.append("?id=" + entityId);
+			sb.append("&wn=" + String.valueOf(wikinames));
+			json = browser.fetchAsUTF8String(sb.toString()).toString();
+		} catch (IOException e) {
+			logger.error("cannot call the rest api {}", e.toString());
+			return null;
+		}
+		List<ArticleDescription> adl = gson.fromJson(json, List.class);
+		return adl;
+	}
+	
+	/**
+	 * Given an entity, returns the entities linked by given entity
+	 * 
+	 * @param id
+	 *            the Wiki-id of the entity
+	 * @returns the entities linked by the given entity
+	 */
+	public List<ArticleDescription> getTargetEntities(int entityId) {
+
+		String json = "";
+		try {
+			StringBuffer sb = new StringBuffer(server.toString() + "/get-target-entities");
+			sb.append("?id=" + entityId);
+			sb.append("&wn=" + String.valueOf(wikinames));
+			json = browser.fetchAsUTF8String(sb.toString()).toString();
+		} catch (IOException e) {
+			logger.error("cannot call the rest api {}", e.toString());
+			return null;
+		}
+		List<ArticleDescription> adl = gson.fromJson(json, List.class);
+		return adl;
+	}
 
 	/**
 	 * Given the Wiki-id entity label (the title, or a redirect), the wiki-id of
