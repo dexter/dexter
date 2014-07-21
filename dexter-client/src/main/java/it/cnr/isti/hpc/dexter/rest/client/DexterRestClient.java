@@ -39,6 +39,7 @@ import it.cnr.isti.hpc.dexter.common.MultifieldDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.AnnotatedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
+import it.cnr.isti.hpc.dexter.rest.domain.EntityRelatedness;
 import it.cnr.isti.hpc.net.FakeBrowser;
 
 import java.io.BufferedReader;
@@ -308,6 +309,31 @@ public class DexterRestClient {
 		}
 		ArticleDescription ad = gson.fromJson(json, ArticleDescription.class);
 		return ad;
+	}
+	
+	/**
+	 * Given an entity, returns the entities linked by given entity
+	 * 
+	 * @param id
+	 *            the Wiki-id of the entity
+	 * @returns the entities linked by the given entity
+	 */
+	public EntityRelatedness relatedness(int entityId1, int entityId2, String rel) {
+
+		String json = "";
+		try {
+			StringBuffer sb = new StringBuffer(server.toString() + "/relatedness");
+			sb.append("?e1=" + entityId1);
+			sb.append("&e2=" + entityId2);
+			sb.append("&rel=" + rel);
+			sb.append("&wn=" + String.valueOf(wikinames));
+			json = browser.fetchAsUTF8String(sb.toString()).toString();
+		} catch (IOException e) {
+			logger.error("cannot call the rest api {}", e.toString());
+			return null;
+		}
+		EntityRelatedness relatedness = gson.fromJson(json, EntityRelatedness.class);
+		return relatedness;
 	}
 
 	/**
