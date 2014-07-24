@@ -96,10 +96,16 @@ public class SentenceSegmenter {
 	public List<Sentence> splitPos(String text) {
 		List<Sentence> sentences = new LinkedList<Sentence>();
 		for (Span s : sentenceDetector.sentPosDetect(text)) {
+
 			sentences.add(new Sentence(s.getStart(), s.getEnd()));
 
 		}
 		return sentences;
+	}
+
+	public static void main(String[] args) {
+		String test = "France deployed two fighter jets today to search for a missing airliner with 116 people aboard that has reportedly crashed after flying into a violent sandstorm in the Sahara desert. Air Algerie flight 5017 took off in the early hours from Ouagadougou";
+
 	}
 
 }
