@@ -84,13 +84,13 @@ public class ShingleExtractor implements Iterable<Shingle> {
 	}
 
 	private void addText(String text) {
-
+		if (text == null || text.isEmpty())
+			return;
 		List<Sentence> sentences = ss.splitPos(text);
 
 		// int start = 0;
 		for (Sentence sentence : sentences) {
-			String currSentence = text.substring(sentence.getStart(),
-					sentence.getEnd());
+			String currSentence = sentence.getText();
 			int startSentence = sentence.getStart();
 
 			// System.out.println("SENTENCE [" + currSentence + "]");

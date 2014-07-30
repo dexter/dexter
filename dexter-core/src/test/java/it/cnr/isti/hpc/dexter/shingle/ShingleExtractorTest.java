@@ -19,6 +19,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Test;
@@ -72,5 +73,17 @@ public class ShingleExtractorTest {
 		assertTrue(shingles.contains("for one"));
 		assertTrue(shingles.contains("game"));
 		assertTrue(shingles.contains("hockey canucks"));
+	}
+
+	@Test
+	public void testAddText() throws Exception {
+		String text = null;
+		ShingleExtractor shingler = new ShingleExtractor(text);
+		Iterator<Shingle> it = shingler.iterator();
+		assertFalse(it.hasNext());
+		shingler = new ShingleExtractor("");
+		it = shingler.iterator();
+		assertFalse(it.hasNext());
+
 	}
 }

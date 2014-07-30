@@ -97,7 +97,9 @@ public class SentenceSegmenter {
 		List<Sentence> sentences = new LinkedList<Sentence>();
 		for (Span s : sentenceDetector.sentPosDetect(text)) {
 
-			sentences.add(new Sentence(s.getStart(), s.getEnd()));
+			sentences.add(new Sentence(
+					text.substring(s.getStart(), s.getEnd()), s.getStart(), s
+							.getEnd()));
 
 		}
 		return sentences;
