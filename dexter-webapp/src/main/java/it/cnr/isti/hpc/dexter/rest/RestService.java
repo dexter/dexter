@@ -516,7 +516,11 @@ public class RestService {
 			s.setLinkFrequency(spot.getLink());
 			s.setDocumentFrequency(spot.getFrequency());
 			List<CandidateEntity> candidates = new ArrayList<CandidateEntity>();
+			boolean found = false;
 			for (Entity entity : spot.getEntities()) {
+				if (entity.getId() == wid)
+					found = true;
+
 				CandidateEntity c = new CandidateEntity(entity.getId(),
 						entity.getFrequency(), spot.getEntityCommonness(entity));
 				if (addWikinames) {
@@ -524,6 +528,8 @@ public class RestService {
 				}
 				candidates.add(c);
 			}
+			if (!found)
+				continue;
 			Collections.sort(candidates);
 			s.setCandidates(candidates);
 			cspots.add(s);
