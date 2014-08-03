@@ -101,17 +101,18 @@ public class ShingleExtractor implements Iterable<Shingle> {
 			List<Token> cleanTokens = new LinkedList<Token>();
 			// experimental
 			for (Token t : tokens) {
-				t.setStart(t.getStart() + startSentence);
-				t.setEnd(t.getEnd() + startSentence);
 				String token = text.substring(t.getStart(), t.getEnd());
 				String cleanToken = sm.clean(token);
+				if (cleanToken.isEmpty())
+					continue;
+				t.setStart(t.getStart() + startSentence);
+				t.setEnd(t.getEnd() + startSentence);
+
 				// System.out.println(token + "-> " + cleanToken);
 				// System.out.println("token in text: " + token);
 
 				// Skip empty token (or tokens made only of chars cleaned
 				// above)
-				if (cleanToken.isEmpty())
-					continue;
 
 				t.setText(cleanToken);
 				cleanTokens.add(t);
