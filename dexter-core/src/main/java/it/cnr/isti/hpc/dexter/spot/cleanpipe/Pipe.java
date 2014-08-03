@@ -34,7 +34,6 @@ package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -107,7 +106,7 @@ public class Pipe<T> {
 	 */
 	public List<T> process(T elem) {
 		Pipe<T> p = head;
-		List<T> elems = new LinkedList<T>();
+		List<T> elems = new ArrayList<T>();
 		p.fun.eval(elem, p.collector);
 		while (p.getNext() != null) {
 			// logger.info("pipe {}",p.fun.getClass());
