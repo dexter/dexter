@@ -31,6 +31,7 @@
  */
 package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -53,7 +54,7 @@ public class Pipe<T> {
 
 	private Pipe<T> next;
 
-	public LinkedList<T> output;
+	public ArrayList<T> output;
 
 	private Function<T> fun;
 
@@ -65,7 +66,7 @@ public class Pipe<T> {
 
 	public Pipe(Function<T> fun) {
 		this.fun = fun;
-		output = new LinkedList<T>();
+		output = new ArrayList<T>();
 		collector = new OutputCollector();
 		head = this;
 	}
@@ -96,7 +97,7 @@ public class Pipe<T> {
 		if (output.isEmpty())
 			return Collections.emptyList();
 		List<T> list = output;
-		output = new LinkedList<T>();
+		output = new ArrayList<T>();
 		return list;
 	}
 
