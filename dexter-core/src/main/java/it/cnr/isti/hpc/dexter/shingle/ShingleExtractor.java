@@ -64,6 +64,7 @@ public class ShingleExtractor implements Iterable<Shingle> {
 
 	public ShingleExtractor(Article a) {
 		this();
+		addText(a.getTitle());
 		for (String p : a.getParagraphs()) {
 			addText(p);
 		}
