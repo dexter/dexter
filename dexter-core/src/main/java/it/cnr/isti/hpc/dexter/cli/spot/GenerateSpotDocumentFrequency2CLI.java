@@ -72,7 +72,8 @@ public class GenerateSpotDocumentFrequency2CLI extends
 		DocumentFrequencyGenerator generator = new DocumentFrequencyGenerator(
 				reader.iterator());
 		RecordReader<Article> wikipedia = new RecordReader<Article>(
-				cli.getInput(), Article.class).filter(TypeFilter.STD_FILTER);
+				cli.getParam("dump"), Article.class)
+				.filter(TypeFilter.STD_FILTER);
 
 		for (Article article : wikipedia) {
 			progress.up();
