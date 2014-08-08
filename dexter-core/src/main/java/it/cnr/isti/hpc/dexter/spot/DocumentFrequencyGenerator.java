@@ -35,7 +35,7 @@ import com.google.common.collect.Multiset;
  */
 public class DocumentFrequencyGenerator {
 
-	BloomFilter bf = BloomFilter.create(12000000L);
+	BloomFilter<Void> bf = BloomFilter.create(12000000L);
 	SpotManager spotManager = SpotManager.getStandardSpotManager();
 
 	public DocumentFrequencyGenerator(
