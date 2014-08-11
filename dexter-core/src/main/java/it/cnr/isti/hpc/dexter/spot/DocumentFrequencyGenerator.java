@@ -17,13 +17,15 @@ package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
-import it.cnr.isti.hpc.dexter.spot.SpotReader.SpotSrcTarget;
 import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
 import it.cnr.isti.hpc.log.ProgressLogger;
+import it.cnr.isti.hpc.structure.LRUCache;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.unimi.dsi.util.BloomFilter;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -35,24 +37,24 @@ import com.google.common.collect.Multiset;
  */
 public class DocumentFrequencyGenerator {
 
-	BloomFilter<Void> bf = BloomFilter.create(12000000L);
+	BloomFilter<Void> bf = BloomFilter.create(10000000L);
 	SpotManager spotManager = SpotManager.getStandardSpotManager();
+	LRUCache<String, Set<String>> cache = new LRUCache<String, Set<String>>(
+			100000);
 
-	public DocumentFrequencyGenerator(
-			Iterator<SpotSrcTarget> spotSrcTargetIterator) {
+	public DocumentFrequencyGenerator(Iterator<String> spotSrcTargetIterator) {
 
 		initBloomFilter(spotSrcTargetIterator);
 	}
 
-	private void initBloomFilter(Iterator<SpotSrcTarget> spotSrcTargetIterator) {
-		SpotSrcTarget first = spotSrcTargetIterator.next();
-		String spot = first.getSpot();
+	private void initBloomFilter(Iterator<String> spotIterator) {
+		String spot = spotIterator.next();
 		bf.add(spot);
 		ProgressLogger pl = new ProgressLogger(
-				"added {} spots to the bloom filter", 100000);
+				"added {} spots to the bloom filter", 10000);
 		pl.up();
-		while (spotSrcTargetIterator.hasNext()) {
-			String next = spotSrcTargetIterator.next().getSpot();
+		while (spotIterator.hasNext()) {
+			String next = spotIterator.next();
 			if (next.equals(spot))
 				continue;
 			pl.up();
@@ -67,11 +69,24 @@ public class DocumentFrequencyGenerator {
 		ShingleExtractor se = new ShingleExtractor(a);
 
 		for (Shingle shingle : se) {
-			for (String s : spotManager.process(shingle.getText())) {
-				if (bf.contains(s)) {
-					freqs.add(s);
+			String key = shingle.getText();
+			Set<String> set = cache.get(key);
+			if (set == null) {
+				set = new HashSet<String>();
+				for (String s : spotManager.process(shingle.getText())) {
+
+					if (bf.contains(s)) {
+						set.add(s);
+					}
+
 				}
+				cache.put(key, set);
+
 			}
+			for (String spot : set) {
+				freqs.add(spot);
+			}
+
 		}
 		return freqs;
 

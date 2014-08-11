@@ -125,6 +125,7 @@ public class SpotReader implements Iterator<Spot> {
 		return s;
 	}
 
+	@Override
 	public boolean hasNext() {
 		if (!init)
 			init();
@@ -162,6 +163,7 @@ public class SpotReader implements Iterator<Spot> {
 		return false;
 	}
 
+	@Override
 	public Spot next() {
 		if (!init)
 			init();
@@ -182,6 +184,7 @@ public class SpotReader implements Iterator<Spot> {
 		return t;
 	}
 
+	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 
@@ -310,6 +313,7 @@ public class SpotReader implements Iterator<Spot> {
 	public static class SpotSrcTargetParser implements
 			RecordParser<SpotSrcTarget> {
 
+		@Override
 		public SpotSrcTarget decode(String record) {
 			SpotSrcTarget rec = new SpotSrcTarget();
 			Scanner scanner = new Scanner(record).useDelimiter("\t");
@@ -319,8 +323,31 @@ public class SpotReader implements Iterator<Spot> {
 			return rec;
 		}
 
+		@Override
 		public String encode(SpotSrcTarget r) {
 			return r.spot + "\t" + r.src + "\t" + r.target;
+		}
+
+	}
+
+	/**
+	 * read a spot-src-target file parsing only the spots.
+	 * 
+	 * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
+	 * 
+	 *         Created on Aug 11, 2014
+	 */
+	public static class SpotParser implements RecordParser<String> {
+
+		@Override
+		public String decode(String record) {
+			Scanner scanner = new Scanner(record).useDelimiter("\t");
+			return scanner.next();
+		}
+
+		@Override
+		public String encode(String r) {
+			return r;
 		}
 
 	}
@@ -386,6 +413,7 @@ public class SpotReader implements Iterator<Spot> {
 	public static class SpotFrequencyParser implements
 			RecordParser<SpotFrequency> {
 
+		@Override
 		public SpotFrequency decode(String record) {
 			SpotFrequency rec = new SpotFrequency();
 			Scanner scanner = new Scanner(record).useDelimiter("\t");
@@ -394,6 +422,7 @@ public class SpotReader implements Iterator<Spot> {
 			return rec;
 		}
 
+		@Override
 		public String encode(SpotFrequency r) {
 			return r.spot + "\t" + r.freq;
 		}

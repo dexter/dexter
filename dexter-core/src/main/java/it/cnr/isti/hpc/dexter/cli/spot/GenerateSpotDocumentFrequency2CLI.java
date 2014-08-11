@@ -18,8 +18,7 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.DocumentFrequencyGenerator;
-import it.cnr.isti.hpc.dexter.spot.SpotReader.SpotSrcTarget;
-import it.cnr.isti.hpc.dexter.spot.SpotReader.SpotSrcTargetParser;
+import it.cnr.isti.hpc.dexter.spot.SpotReader.SpotParser;
 import it.cnr.isti.hpc.io.reader.RecordReader;
 import it.cnr.isti.hpc.log.ProgressLogger;
 import it.cnr.isti.hpc.wikipedia.article.Article;
@@ -67,8 +66,8 @@ public class GenerateSpotDocumentFrequency2CLI extends
 				"processed {} distinct articles", 100000);
 		cli.openOutput();
 		String line;
-		RecordReader<SpotSrcTarget> reader = new RecordReader<SpotSrcTarget>(
-				cli.getInput(), new SpotSrcTargetParser());
+		RecordReader<String> reader = new RecordReader<String>(cli.getInput(),
+				new SpotParser());
 		DocumentFrequencyGenerator generator = new DocumentFrequencyGenerator(
 				reader.iterator());
 		RecordReader<Article> wikipedia = new RecordReader<Article>(
