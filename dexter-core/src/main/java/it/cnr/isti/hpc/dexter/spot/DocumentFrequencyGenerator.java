@@ -46,7 +46,7 @@ public class DocumentFrequencyGenerator {
 	BloomFilter<Void> bf = BloomFilter.create(10000000L);
 	SpotManager spotManager = SpotManager.getStandardSpotManager();
 	LRUCache<String, Set<String>> cache = new LRUCache<String, Set<String>>(
-			100000);
+			500000);
 
 	/**
 	 * Logger for this class
