@@ -15,6 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.spot;
 
+import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
 import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
@@ -84,32 +85,48 @@ public class DocumentFrequencyGenerator {
 
 	}
 
+	Stopwatch watch = new Stopwatch();
+
 	public Multiset<String> getSpotsAndFrequencies(Article a) {
 		Multiset<String> freqs = HashMultiset.create();
+		watch.start("shingle");
 		ShingleExtractor se = new ShingleExtractor(a);
-
+		watch.stop("shingle");
 		for (Shingle shingle : se) {
 			String key = shingle.getText();
 			Set<String> set = cache.get(key);
 			if (set == null) {
 				set = new HashSet<String>();
-				for (String s : spotManager.process(shingle.getText())) {
+				watch.start("process");
+				Set<String> spots = spotManager.process(key);
+				watch.stop("process");
+				watch.start("filtering");
+				for (String s : spots) {
 
 					if (bf.contains(s)) {
 						set.add(s);
 					}
 
 				}
+				watch.stop("filtering");
+				watch.start("cache");
 				cache.put(key, set);
+				watch.stop("cache");
 
 			}
+			watch.start("freq");
 			for (String spot : set) {
 				freqs.add(spot);
 			}
+			watch.stop("freq");
 
 		}
 		return freqs;
 
 	}
 
+	public void printStatus() {
+		System.out.println(watch.stat());
+		System.out.println("hit rate " + cache.hitRate());
+	}
 }
