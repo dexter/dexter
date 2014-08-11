@@ -29,6 +29,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
@@ -44,14 +47,22 @@ public class DocumentFrequencyGenerator {
 	LRUCache<String, Set<String>> cache = new LRUCache<String, Set<String>>(
 			100000);
 
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = LoggerFactory
+			.getLogger(DocumentFrequencyGenerator.class);
+
 	public DocumentFrequencyGenerator(Iterator<String> spotSrcTargetIterator) {
 		File bloom = new File("/tmp/bf.bin");
 		if (!bloom.exists()) {
 			initBloomFilter(spotSrcTargetIterator);
 			Serializer serializer = new Serializer();
+			logger.info("dump bloom filter in {}", bloom.getAbsolutePath());
 			serializer.dump(bf, bloom.getAbsolutePath());
 		} else {
 			Serializer serializer = new Serializer();
+			logger.info("load bloom filter in {}", bloom.getAbsolutePath());
 			bf = (BloomFilter<Void>) serializer.load(bloom.getAbsolutePath());
 		}
 	}
