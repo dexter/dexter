@@ -18,11 +18,13 @@ package it.cnr.isti.hpc.dexter.spot;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
 import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
 import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
+import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.log.ProgressLogger;
 import it.cnr.isti.hpc.structure.LRUCache;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.unimi.dsi.util.BloomFilter;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -43,8 +45,15 @@ public class DocumentFrequencyGenerator {
 			100000);
 
 	public DocumentFrequencyGenerator(Iterator<String> spotSrcTargetIterator) {
-
-		initBloomFilter(spotSrcTargetIterator);
+		File bloom = new File("/tmp/bf.bin");
+		if (!bloom.exists()) {
+			initBloomFilter(spotSrcTargetIterator);
+			Serializer serializer = new Serializer();
+			serializer.dump(bf, bloom.getAbsolutePath());
+		} else {
+			Serializer serializer = new Serializer();
+			bf = (BloomFilter<Void>) serializer.load(bloom.getAbsolutePath());
+		}
 	}
 
 	private void initBloomFilter(Iterator<String> spotIterator) {

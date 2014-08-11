@@ -15,6 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.cli.spot;
 
+import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.DocumentFrequencyGenerator;
@@ -73,14 +74,21 @@ public class GenerateSpotDocumentFrequency2CLI extends
 		RecordReader<Article> wikipedia = new RecordReader<Article>(
 				cli.getParam("dump"), Article.class)
 				.filter(TypeFilter.STD_FILTER);
-
+		Stopwatch watch = new Stopwatch();
 		for (Article article : wikipedia) {
 			progress.up();
+			watch.start("generate");
 			Multiset<String> spots = generator.getSpotsAndFrequencies(article);
+			watch.stop("generate");
+			watch.start("write");
 			for (Entry<String> spot : spots.entrySet()) {
 				cli.writeInOutput(spot.getElement());
 				cli.writeInOutput("\t");
 				cli.writeLineInOutput(String.valueOf(spot.getCount()));
+			}
+			watch.stop("write");
+			if (progress.getStatus() % 10 == 0) {
+				System.out.println(watch.stat());
 			}
 
 		}
