@@ -94,8 +94,9 @@ public class DocumentFrequencyGenerator {
 		watch.stop("shingle");
 		for (Shingle shingle : se) {
 			String key = shingle.getText();
-			Set<String> set = cache.get(key);
-			if (set == null) {
+
+			Set<String> set;
+			if (!(cache.containsKey(key))) {
 				set = new HashSet<String>();
 				watch.start("process");
 				Set<String> spots = spotManager.process(key);
@@ -113,6 +114,8 @@ public class DocumentFrequencyGenerator {
 				cache.put(key, set);
 				watch.stop("cache");
 
+			} else {
+				set = cache.get(key);
 			}
 			watch.start("freq");
 			for (String spot : set) {
