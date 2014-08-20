@@ -87,9 +87,9 @@ public class GenerateSpotDocumentFrequency2CLI extends
 				cli.writeLineInOutput(String.valueOf(spot.getCount()));
 			}
 			watch.stop("write");
-			if (progress.getStatus() % 10 == 0) {
+			if (progress.getStatus() % 100000 == 0) {
 				System.out.println(watch.stat());
-				generator.printStatus();
+
 			}
 
 		}

@@ -16,19 +16,16 @@
 package it.cnr.isti.hpc.dexter.spot;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
-import it.cnr.isti.hpc.dexter.shingle.Shingle;
-import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
-import it.cnr.isti.hpc.dexter.spot.clean.SpotManager;
+import it.cnr.isti.hpc.dexter.analysis.DexterAnalyzer;
+import it.cnr.isti.hpc.dexter.analysis.DexterAnalyzer.ArticleIterator;
 import it.cnr.isti.hpc.io.Serializer;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.structure.LRUCache;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.unimi.dsi.util.BloomFilter;
 
 import java.io.File;
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +41,6 @@ import com.google.common.collect.Multiset;
 public class DocumentFrequencyGenerator {
 
 	BloomFilter<Void> bf = BloomFilter.create(10000000L);
-	SpotManager spotManager = SpotManager.getStandardSpotManager();
-	LRUCache<String, Set<String>> cache = new LRUCache<String, Set<String>>(
-			500000);
 
 	/**
 	 * Logger for this class
@@ -86,50 +80,26 @@ public class DocumentFrequencyGenerator {
 	}
 
 	Stopwatch watch = new Stopwatch();
+	ArticleIterator iterator = new DexterAnalyzer.ArticleIterator();
+	Multiset<String> freqs = HashMultiset.create();
 
 	public Multiset<String> getSpotsAndFrequencies(Article a) {
-		Multiset<String> freqs = HashMultiset.create();
-		watch.start("shingle");
-		ShingleExtractor se = new ShingleExtractor(a);
-		watch.stop("shingle");
-		for (Shingle shingle : se) {
-			String key = shingle.getText();
-
-			Set<String> set;
-			if (!(cache.containsKey(key))) {
-				set = new HashSet<String>();
-				watch.start("process");
-				Set<String> spots = spotManager.process(key);
-				watch.stop("process");
-				watch.start("filtering");
-				for (String s : spots) {
-
-					if (bf.contains(s)) {
-						set.add(s);
-					}
-
-				}
-				watch.stop("filtering");
-				watch.start("cache");
-				cache.put(key, set);
-				watch.stop("cache");
-
-			} else {
-				set = cache.get(key);
+		freqs.clear();
+		try {
+			iterator.setArticle(a);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		while (iterator.hasNext()) {
+			String key = iterator.next();
+			if (bf.contains(key)) {
+				freqs.add(key);
 			}
-			watch.start("freq");
-			for (String spot : set) {
-				freqs.add(spot);
-			}
-			watch.stop("freq");
 
 		}
 		return freqs;
 
 	}
 
-	public void printStatus() {
-		System.out.println(watch.stat());
-		System.out.println("hit rate " + cache.hitRate());
-	}
 }
