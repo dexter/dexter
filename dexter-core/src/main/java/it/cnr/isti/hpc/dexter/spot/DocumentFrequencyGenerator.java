@@ -66,7 +66,7 @@ public class DocumentFrequencyGenerator {
 		String spot = spotIterator.next();
 		bf.add(spot);
 		ProgressLogger pl = new ProgressLogger(
-				"added {} spots to the bloom filter", 5);
+				"added {} spots to the bloom filter", 100000);
 		pl.up();
 		while (spotIterator.hasNext()) {
 			String next = spotIterator.next();
