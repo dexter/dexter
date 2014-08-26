@@ -64,7 +64,7 @@ public class GenerateSpotDocumentFrequency2CLI extends
 		GenerateSpotDocumentFrequency2CLI cli = new GenerateSpotDocumentFrequency2CLI(
 				args);
 		ProgressLogger progress = new ProgressLogger(
-				"processed {} distinct articles", 100000);
+				"processed {} distinct articles", 1000);
 		cli.openOutput();
 		String line;
 		RecordReader<String> reader = new RecordReader<String>(cli.getInput(),
