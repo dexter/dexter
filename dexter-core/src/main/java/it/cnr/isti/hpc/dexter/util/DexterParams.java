@@ -243,7 +243,11 @@ public class DexterParams {
 
 	public static DexterParams getInstance() {
 		if (dexterParams == null) {
-			dexterParams = new DexterParams("dexter-conf.xml");
+			String confFile = System.getProperty("conf");
+			if (confFile == null)
+				confFile = "dexter-conf.xml";
+			logger.info("loading configuration from {} ", confFile);
+			dexterParams = new DexterParams(confFile);
 			dexterParams.loadDisambiguators();
 			dexterParams.loadRelatednessFunctions();
 			dexterParams.loadSpotFilters();
