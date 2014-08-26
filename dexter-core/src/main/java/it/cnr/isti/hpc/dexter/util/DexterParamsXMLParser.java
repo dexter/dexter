@@ -892,7 +892,7 @@ public class DexterParamsXMLParser {
 
 		xstream.alias("spotRepository", SpotRepository.class);
 
-		String xml = IOUtils.getFileAsString("dexter-conf.xml");
+		String xml = IOUtils.getFileAsString(xmlConfig);
 		DexterParamsXMLParser config = (DexterParamsXMLParser) xstream
 				.fromXML(xml);
 		return config;
