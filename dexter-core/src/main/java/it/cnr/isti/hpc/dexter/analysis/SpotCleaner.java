@@ -47,7 +47,6 @@ public class SpotCleaner {
 	List<Mapper<String>> mappers;
 	List<Filter<String>> filters;
 
-	Set<String> hashSet;
 	int maxSpotLength = 6;
 
 	public SpotCleaner() {
@@ -55,7 +54,6 @@ public class SpotCleaner {
 		mappers = new ArrayList<Mapper<String>>();
 		mappers.add(new CityMapper());
 		mappers.add(new QuotesMapper());
-		hashSet = new HashSet<String>();
 
 		filters = new ArrayList<Filter<String>>();
 		filters.add(new NumberFilter());
@@ -104,7 +102,7 @@ public class SpotCleaner {
 	}
 
 	public Set<String> enrich(String spot) throws IOException {
-		hashSet.clear();
+		Set<String> hashSet = new HashSet<String>();
 		hashSet.add(spot);
 		for (Mapper<String> mapper : mappers) {
 			for (String s : mapper.map(spot)) {
