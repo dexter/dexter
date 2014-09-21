@@ -76,6 +76,7 @@ public class SpotAnalyzerTest {
 		assertTrue(sm.clean("$!\"£$%&/()").isEmpty());
 		assertTrue(sm.clean("°°°°°").isEmpty());
 		assertFalse(sm.clean("diego").isEmpty());
+
 		assertFalse(sm.clean("a£$%&/(").isEmpty());
 		assertTrue(sm.clean("1.345.123").isEmpty());
 
@@ -86,6 +87,8 @@ public class SpotAnalyzerTest {
 		SpotCleaner sm = new SpotCleaner();
 		assertTrue(sm.clean("shot (filmmaking)").equals("shot"));
 		assertFalse(sm.clean("12 (filmmaking)").equals("12"));
+		assertTrue(sm.clean("Shot_(filmmaking)").equals("shot"));
+
 		assertTrue(sm.clean("shot#filmmaking").equals("shot"));
 		assertTrue(sm.clean("\"atomic\" (song)").equals("atomic"));
 		assertTrue(sm.clean("\"atomic\" (song)").equals("atomic"));
