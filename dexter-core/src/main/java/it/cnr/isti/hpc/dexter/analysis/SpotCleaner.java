@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -103,7 +104,10 @@ public class SpotCleaner {
 
 	public Set<String> enrich(String spot) throws IOException {
 		Set<String> hashSet = new HashSet<String>();
-		hashSet.add(spot);
+		String cleanSpot = clean(spot);
+		if (cleanSpot.isEmpty())
+			return Collections.emptySet();
+		hashSet.add(cleanSpot);
 		for (Mapper<String> mapper : mappers) {
 			for (String s : mapper.map(spot)) {
 				String t = clean(s);
