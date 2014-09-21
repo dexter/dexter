@@ -131,4 +131,10 @@ public class SpotCleaner {
 		}
 		return spots;
 	}
+
+	public Set<String> enrich(String string) throws IOException {
+		Set<String> spots = new HashSet<String>();
+		enrich(string, spots);
+		return spots;
+	}
 }

@@ -28,6 +28,8 @@ import it.cnr.isti.hpc.wikipedia.article.Link;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +73,8 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 		ProgressLogger progress = new ProgressLogger(
 				"extract spots for entity {}");
 
+		Set<String> spots = new HashSet<String>();
+
 		for (Article a : reader) {
 			progress.up();
 			int target = 0;
@@ -93,14 +97,17 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 			} else {
 
 				if (!a.isDisambiguation()) {
-					for (String spot : spotManager.enrich(a.getTitle())) {
+					spotManager.enrich(a.getTitle(), spots);
+					for (String spot : spots) {
 						cli.writeLineInOutput(spot + "\t" + source + "\t"
 								+ source);
 					}
+					spots.clear();
 				}
 
 				for (Link l : a.getLinks()) {
-					for (String spot : spotManager.enrich(l.getDescription())) {
+					spotManager.enrich(l.getDescription(), spots);
+					for (String spot : spots) {
 						target = hp.getId(l.getCleanId());
 						if (target == 0) {
 							logger.debug("cannot find id for label {}",
@@ -119,8 +126,9 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 							// if a is a disambiguation, the label of a is good
 							// for all
 							// the pointed articles
-							for (String label : spotManager
-									.enrich(a.getTitle())) {
+							Set<String> spots2 = new HashSet<String>();
+							spotManager.enrich(l.getDescription(), spots2);
+							for (String label : spots2) {
 								cli.writeLineInOutput(label + "\t" + source
 										+ "\t" + target);
 
