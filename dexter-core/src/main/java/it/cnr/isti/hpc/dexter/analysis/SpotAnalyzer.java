@@ -17,7 +17,6 @@ package it.cnr.isti.hpc.dexter.analysis;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharFilter;
@@ -25,7 +24,6 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.charfilter.HTMLStripCharFilter;
 import org.apache.lucene.analysis.core.LowerCaseFilter;
 import org.apache.lucene.analysis.miscellaneous.ASCIIFoldingFilter;
-import org.apache.lucene.analysis.pattern.PatternReplaceCharFilter;
 import org.apache.lucene.analysis.standard.StandardFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.util.Version;
@@ -46,31 +44,31 @@ public class SpotAnalyzer extends Analyzer {
 
 	@Override
 	protected Reader initReader(String fieldName, Reader reader) {
-		CharFilter cf = new PatternReplaceCharFilter(
-				Pattern.compile("^[ ]*the +(.*)"), "$1", reader);
+		// CharFilter cf = new PatternReplaceCharFilter(
+		// Pattern.compile("^[ ]*the +(.*)"), "$1", reader);
+		//
+		// cf = new PatternReplaceCharFilter(
+		// Pattern.compile("[*!`{}~='<>:/%|=+_]"), " ", cf);
+		//
+		// cf = new PatternReplaceCharFilter(Pattern.compile("^[ ]*a +(.*)"),
+		// "$1", cf);
+		// cf = new PatternReplaceCharFilter(Pattern.compile("^(.*) \\(.*\\)$"),
+		// "$1", cf);
+		//
+		// cf = new PatternReplaceCharFilter(Pattern.compile("^(.*)#.*$"), "$1",
+		// cf);
+		//
+		// cf = new PatternReplaceCharFilter(
+		// Pattern.compile("[, ]*[sjSJ][rR][.]?"), "", cf);
+		//
+		// cf = new PatternReplaceCharFilter(Pattern.compile(" ([A-Z][.] ?)+"),
+		// " ", cf);
+		// cf = new PatternReplaceCharFilter(Pattern.compile("^([A-Z][.] ?)+ "),
+		// " ", cf);
+		// cf = new PatternReplaceCharFilter(Pattern.compile(" [A-Z][.]$"), " ",
+		// cf);
 
-		cf = new PatternReplaceCharFilter(
-				Pattern.compile("[*!`{}~='<>:/%|=+_]"), " ", cf);
-
-		cf = new PatternReplaceCharFilter(Pattern.compile("^[ ]*a +(.*)"),
-				"$1", cf);
-		cf = new PatternReplaceCharFilter(Pattern.compile("^(.*) \\(.*\\)$"),
-				"$1", cf);
-
-		cf = new PatternReplaceCharFilter(Pattern.compile("^(.*)#.*$"), "$1",
-				cf);
-
-		cf = new PatternReplaceCharFilter(
-				Pattern.compile("[, ]*[sjSJ][rR][.]?"), "", cf);
-
-		cf = new PatternReplaceCharFilter(Pattern.compile(" ([A-Z][.] ?)+"),
-				" ", cf);
-		cf = new PatternReplaceCharFilter(Pattern.compile("^([A-Z][.] ?)+ "),
-				" ", cf);
-		cf = new PatternReplaceCharFilter(Pattern.compile(" [A-Z][.]$"), " ",
-				cf);
-
-		cf = new HTMLStripCharFilter(cf);
+		CharFilter cf = new HTMLStripCharFilter(reader);
 		return cf;
 
 	}
