@@ -50,6 +50,9 @@ public class SpotAnalyzer extends Analyzer {
 		CharFilter cf = new PatternReplaceCharFilter(
 				Pattern.compile("^[ ]*the +(.*)"), "$1", reader);
 
+		cf = new PatternReplaceCharFilter(
+				Pattern.compile("[*!`{}~='<>:/;&%|=+_]"), " ", cf);
+
 		cf = new PatternReplaceCharFilter(Pattern.compile("^[ ]*a +(.*)"),
 				"$1", cf);
 		cf = new PatternReplaceCharFilter(Pattern.compile("^(.*) \\(.*\\)$"),
