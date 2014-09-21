@@ -15,6 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.cli.spot;
 
+import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.analysis.SpotCleaner;
 import it.cnr.isti.hpc.dexter.label.IdHelper;
@@ -69,6 +70,8 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 		RecordReader<Article> reader = new RecordReader<Article>(
 				cli.getInput(), new JsonRecordParser<Article>(Article.class))
 				.filter(TypeFilter.STD_FILTER);
+		Stopwatch time = new Stopwatch();
+		time.start("total");
 
 		ProgressLogger progress = new ProgressLogger(
 				"extract spots for entity {}");
@@ -78,11 +81,18 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 		for (Article a : reader) {
 			spots.clear();
 			progress.up();
+			if (progress.getStatus() % 1000 == 0) {
+				System.out.println(time.stat());
+			}
 			int target = 0;
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
+				time.start("id");
 				target = hp.getId(a.getRedirectNoAnchor());
+				time.stop("id");
+				time.start("spots");
 				spotManager.getAllSpots(a, spots);
+				time.stop("spots");
 				for (String spot : spots) {
 					if (target == 0) {
 						logger.debug("cannot find id for redirect label {}",
@@ -100,18 +110,26 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 			} else {
 
 				if (!a.isDisambiguation()) {
+					time.start("enrich");
 					spotManager.enrich(a.getTitle(), spots);
+					time.stop("enrich");
+					time.start("write");
 					for (String spot : spots) {
 						cli.writeLineInOutput(spot + "\t" + source + "\t"
 								+ source);
 					}
+					time.stop("write");
 					spots.clear();
 				}
 
 				for (Link l : a.getLinks()) {
+					time.start("enrich");
 					spotManager.enrich(l.getDescription(), spots);
+					time.stop("enrich");
 					for (String spot : spots) {
+						time.start("id");
 						target = hp.getId(l.getCleanId());
+						time.stop("id");
 						if (target == 0) {
 							logger.debug("cannot find id for label {}",
 									l.getCleanId());
@@ -130,16 +148,23 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 							// for all
 							// the pointed articles
 							Set<String> spots2 = new HashSet<String>();
+							time.start("enrich");
 							spotManager.enrich(l.getDescription(), spots2);
+							time.stop("enrich");
+							time.start("write");
 							for (String label : spots2) {
 								cli.writeLineInOutput(label + "\t" + source
 										+ "\t" + target);
 
 							}
+							time.stop("write");
 						}
+						time.start("write");
 
 						cli.writeLineInOutput(spot + "\t" + source + "\t"
 								+ target);
+						time.stop("write");
+
 					}
 				}
 			}
