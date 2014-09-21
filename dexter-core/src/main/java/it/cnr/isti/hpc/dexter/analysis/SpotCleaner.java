@@ -101,36 +101,34 @@ public class SpotCleaner {
 		return finalSpot;
 	}
 
-	public Set<String> enrich(String spot) throws IOException {
-		Set<String> hashSet = new HashSet<String>();
+	public void enrich(String spot, Set<String> enriched) throws IOException {
 		String cleanSpot = clean(spot);
 		if (!cleanSpot.isEmpty()) {
-			hashSet.add(cleanSpot);
+			enriched.add(cleanSpot);
 		}
-		for (Mapper<String> mapper : mappers) {
-			for (String s : mapper.map(spot)) {
-				String t = clean(s);
-				if (!t.isEmpty()) {
-					hashSet.add(clean(t));
-				}
-			}
-
-		}
-		return hashSet;
+		// for (Mapper<String> mapper : mappers) {
+		// for (String s : mapper.map(spot)) {
+		// String t = clean(s);
+		// if (!t.isEmpty()) {
+		// hashSet.add(clean(t));
+		// }
+		// }
+		//
+		// }
+		return;
 	}
 
 	public Set<String> getAllSpots(Article a) throws IOException {
 		Set<String> spots = new HashSet<String>();
-		spots.addAll(enrich(a.getTitle()));
+		enrich(a.getTitle(), spots);
 		if (a.isRedirect()) {
-			spots.addAll(enrich(a.getRedirectNoAnchor()));
+			enrich(a.getRedirectNoAnchor(), spots);
 		} else {
 
 			for (Link l : a.getLinks()) {
-				spots.addAll(enrich(l.getDescription()));
+				enrich(l.getDescription(), spots);
 			}
 		}
 		return spots;
 	}
-
 }
