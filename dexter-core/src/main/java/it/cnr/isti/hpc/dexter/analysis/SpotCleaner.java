@@ -137,4 +137,16 @@ public class SpotCleaner {
 		enrich(string, spots);
 		return spots;
 	}
+
+	public void getAllSpots(Article a, Set<String> spots) throws IOException {
+		enrich(a.getTitle(), spots);
+		if (a.isRedirect()) {
+			enrich(a.getRedirectNoAnchor(), spots);
+		} else {
+
+			for (Link l : a.getLinks()) {
+				enrich(l.getDescription(), spots);
+			}
+		}
+	}
 }

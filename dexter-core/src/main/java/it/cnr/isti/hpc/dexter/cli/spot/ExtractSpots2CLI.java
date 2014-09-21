@@ -82,7 +82,8 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
 				target = hp.getId(a.getRedirectNoAnchor());
-				for (String spot : spotManager.getAllSpots(a)) {
+				spotManager.getAllSpots(a, spots);
+				for (String spot : spots) {
 					if (target == 0) {
 						logger.debug("cannot find id for redirect label {}",
 								a.getRedirectNoAnchor());
@@ -95,6 +96,7 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 								+ target);
 					}
 				}
+				spots.clear();
 			} else {
 
 				if (!a.isDisambiguation()) {

@@ -74,6 +74,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
 				target = hp.getId(a.getRedirectNoAnchor());
+
 				for (String spot : spotManager.getAllSpots(a)) {
 					if (target == 0) {
 						logger.warn("cannot find id for redirect label {}",
