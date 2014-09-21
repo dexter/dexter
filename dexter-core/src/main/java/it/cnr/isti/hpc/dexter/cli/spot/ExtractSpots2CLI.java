@@ -76,6 +76,7 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 		Set<String> spots = new HashSet<String>();
 
 		for (Article a : reader) {
+			spots.clear();
 			progress.up();
 			int target = 0;
 			int source = a.getWikiId();
