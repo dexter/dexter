@@ -111,7 +111,7 @@ public class SpotAnalyzerTest {
 	@Test
 	public void testJavascriptCleaner() throws IOException {
 		SpotCleaner sm = new SpotCleaner();
-		assertEquals("l'isola dei famosi",
+		assertEquals("l isola dei famosi",
 				sm.clean("%27%27l'isola dei famosi%27%27"));
 		assertEquals("", sm.clean("&lt;7&gt;"));
 		assertEquals("diego", sm.clean("diego"));

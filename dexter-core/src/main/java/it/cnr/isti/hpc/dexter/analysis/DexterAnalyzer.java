@@ -51,7 +51,7 @@ public class DexterAnalyzer extends Analyzer {
 			Reader reader) {
 
 		CharFilter cf = new PatternReplaceCharFilter(
-				Pattern.compile("[,*-!`{}~[]='<>:/;.&%|=+_]"), "", reader);
+				Pattern.compile("[*-!`{}~[]='<>:/;.&%|=+_]"), "", reader);
 
 		cf = new HTMLStripCharFilter(cf);
 

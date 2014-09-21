@@ -45,13 +45,12 @@ public class SpotAnalyzer extends Analyzer {
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String fieldName,
-			Reader reader) {
+	protected Reader initReader(String fieldName, Reader reader) {
 		CharFilter cf = new PatternReplaceCharFilter(
 				Pattern.compile("^[ ]*the +(.*)"), "$1", reader);
 
 		cf = new PatternReplaceCharFilter(
-				Pattern.compile("[*!`{}~='<>:/;&%|=+_]"), " ", cf);
+				Pattern.compile("[*!`{}~='<>:/%|=+_]"), " ", cf);
 
 		cf = new PatternReplaceCharFilter(Pattern.compile("^[ ]*a +(.*)"),
 				"$1", cf);
@@ -72,8 +71,16 @@ public class SpotAnalyzer extends Analyzer {
 				cf);
 
 		cf = new HTMLStripCharFilter(cf);
+		return cf;
+
+	}
+
+	@Override
+	protected TokenStreamComponents createComponents(String fieldName,
+			Reader reader) {
+
 		final StandardTokenizer analyzer = new StandardTokenizer(
-				Version.LUCENE_41, cf);
+				Version.LUCENE_41, reader);
 		TokenStream tok = new StandardFilter(Version.LUCENE_41, analyzer);
 		if (lowercase)
 			tok = new LowerCaseFilter(Version.LUCENE_41, tok);

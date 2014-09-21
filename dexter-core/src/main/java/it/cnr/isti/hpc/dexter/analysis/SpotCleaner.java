@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +46,7 @@ public class SpotCleaner {
 	StringBuilder sb;
 	List<Mapper<String>> mappers;
 	List<Filter<String>> filters;
+	SpotAnalyzer analyzer = new SpotAnalyzer();
 
 	int maxSpotLength = 6;
 
@@ -70,7 +70,6 @@ public class SpotCleaner {
 
 		}
 
-		SpotAnalyzer analyzer = new SpotAnalyzer();
 		analyzer.lowercase(spot.length() > 4);
 
 		TokenStream ts = analyzer
@@ -85,14 +84,14 @@ public class SpotCleaner {
 			sb.append(termAtt.toString());
 			sb.append(' ');
 			if (tokens > maxSpotLength) {
-				analyzer.close();
 				return "";
 			}
 		}
+		ts.end();
+		ts.reset();
 		if (sb.length() > 0)
 			sb.setLength(sb.length() - 1);
-		analyzer.close();
-		// System.out.println(spot + " -> " + "[" + sb.toString() + "]");
+		System.out.println(spot + " -> " + "[" + sb.toString() + "]");
 		String finalSpot = sb.toString();
 		for (Filter<String> filter : filters) {
 			if (filter.isFilter(finalSpot)) {
@@ -105,9 +104,9 @@ public class SpotCleaner {
 	public Set<String> enrich(String spot) throws IOException {
 		Set<String> hashSet = new HashSet<String>();
 		String cleanSpot = clean(spot);
-		if (cleanSpot.isEmpty())
-			return Collections.emptySet();
-		hashSet.add(cleanSpot);
+		if (!cleanSpot.isEmpty()) {
+			hashSet.add(cleanSpot);
+		}
 		for (Mapper<String> mapper : mappers) {
 			for (String s : mapper.map(spot)) {
 				String t = clean(s);
