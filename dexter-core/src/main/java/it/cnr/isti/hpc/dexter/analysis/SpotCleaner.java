@@ -93,7 +93,7 @@ public class SpotCleaner {
 		if (sb.length() > 0)
 			sb.setLength(sb.length() - 1);
 		analyzer.close();
-		System.out.println(spot + " -> " + "[" + sb.toString() + "]");
+		// System.out.println(spot + " -> " + "[" + sb.toString() + "]");
 		String finalSpot = sb.toString();
 		for (Filter<String> filter : filters) {
 			if (filter.isFilter(finalSpot)) {
