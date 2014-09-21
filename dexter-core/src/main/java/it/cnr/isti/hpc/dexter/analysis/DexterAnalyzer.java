@@ -50,8 +50,9 @@ public class DexterAnalyzer extends Analyzer {
 	protected TokenStreamComponents createComponents(String fieldName,
 			Reader reader) {
 
-		CharFilter cf = new PatternReplaceCharFilter(Pattern.compile("'"), "",
-				reader);
+		CharFilter cf = new PatternReplaceCharFilter(
+				Pattern.compile("[,#*-!`{}~[]='<>:/;.&%|=+_]"), "", reader);
+
 		cf = new HTMLStripCharFilter(cf);
 
 		final StandardTokenizer analyzer = new StandardTokenizer(
