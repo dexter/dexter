@@ -71,7 +71,6 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 				cli.getInput(), new JsonRecordParser<Article>(Article.class))
 				.filter(TypeFilter.STD_FILTER);
 		Stopwatch time = new Stopwatch();
-		time.start("total");
 
 		ProgressLogger progress = new ProgressLogger(
 				"extract spots for entity {}");
