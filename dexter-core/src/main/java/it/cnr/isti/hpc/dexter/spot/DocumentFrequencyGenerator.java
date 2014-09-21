@@ -25,8 +25,11 @@ import it.unimi.dsi.util.BloomFilter;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Iterator;
 
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +44,7 @@ import com.google.common.collect.Multiset;
 public class DocumentFrequencyGenerator {
 
 	BloomFilter<Void> bf = BloomFilter.create(10000000L);
+	DexterAnalyzer analyzer = new DexterAnalyzer();
 
 	/**
 	 * Logger for this class
@@ -64,7 +68,8 @@ public class DocumentFrequencyGenerator {
 
 	private void initBloomFilter(Iterator<String> spotIterator) {
 		String spot = spotIterator.next();
-		bf.add(spot);
+		analyzer.setShingles(false);
+
 		ProgressLogger pl = new ProgressLogger(
 				"added {} spots to the bloom filter", 100000);
 		pl.up();
@@ -74,7 +79,28 @@ public class DocumentFrequencyGenerator {
 				continue;
 			pl.up();
 			spot = next;
-			bf.add(spot);
+			TokenStream ts = null;
+			try {
+				ts = analyzer.tokenStream("content", new StringReader(spot));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			CharTermAttribute termAtt = ts
+					.addAttribute(CharTermAttribute.class);
+			try {
+				ts.reset();
+
+				if (ts.incrementToken()) {
+					spot = termAtt.toString();
+					bf.add(spot);
+
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

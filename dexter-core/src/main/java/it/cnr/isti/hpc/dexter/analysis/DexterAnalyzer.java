@@ -44,6 +44,8 @@ import org.apache.lucene.util.Version;
  */
 public class DexterAnalyzer extends Analyzer {
 
+	private boolean shingles = true;
+
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName,
 			Reader reader) {
@@ -57,15 +59,19 @@ public class DexterAnalyzer extends Analyzer {
 		TokenStream tok = new StandardFilter(Version.LUCENE_41, analyzer);
 		tok = new LowerCaseFilter(Version.LUCENE_41, tok);
 		tok = new ASCIIFoldingFilter(tok);
-
-		tok = new ShingleFilter(tok, 5);
-
+		if (shingles) {
+			tok = new ShingleFilter(tok, 5);
+		}
 		return new TokenStreamComponents(analyzer, tok) {
 			@Override
 			protected void setReader(final Reader reader) throws IOException {
 				super.setReader(reader);
 			}
 		};
+	}
+
+	public void setShingles(boolean shingles) {
+		this.shingles = shingles;
 	}
 
 	public static class ArticleIterator implements Iterator<String> {
