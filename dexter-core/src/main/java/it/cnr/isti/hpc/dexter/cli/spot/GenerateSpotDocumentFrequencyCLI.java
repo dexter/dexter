@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
+@Deprecated
 public class GenerateSpotDocumentFrequencyCLI extends
 		AbstractCommandLineInterface {
 	/**
