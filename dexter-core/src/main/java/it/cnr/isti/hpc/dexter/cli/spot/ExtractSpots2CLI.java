@@ -72,7 +72,7 @@ public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 				.filter(TypeFilter.STD_FILTER);
 
 		ProgressLogger progress = new ProgressLogger(
-				"extract spots for entity {}", 1);
+				"extract spots for entity {}");
 
 		Set<String> spots = new HashSet<String>();
 
