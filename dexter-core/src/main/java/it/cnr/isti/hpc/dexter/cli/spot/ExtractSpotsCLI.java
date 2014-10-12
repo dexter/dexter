@@ -68,7 +68,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 				.filter(TypeFilter.STD_FILTER);
 
 		ProgressLogger progress = new ProgressLogger(
-				"extract spots for entity {}", 1);
+				"extracted spots for {} articles", 1000);
 
 		for (Article a : reader) {
 			progress.up();
