@@ -453,6 +453,7 @@ public class RestService {
 		}
 		// desc.setImage("");
 		// desc.setInfobox(new HashMap<String, String>());
+		desc.setId(i);
 		String description = desc.toJson();
 
 		logger.info("getDescription: {}", description);
