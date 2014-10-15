@@ -75,7 +75,7 @@ public class ArticleDescription {
 	public ArticleDescription(String title, String wikiTitle, int wikiId,
 			String summary) {
 		this.title = title;
-		id = id;
+		id = wikiId;
 		image = "http://wikiname2image.herokuapp.com/" + wikiTitle;
 		url = "http://en.wikipedia.org/wiki/" + wikiTitle;
 		infobox = null;
