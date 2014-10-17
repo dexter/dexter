@@ -148,10 +148,11 @@ public class RestService {
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
 			@QueryParam("debug") @DefaultValue("false") String dbg,
-			@QueryParam("format") @DefaultValue("text") String format) {
+			@QueryParam("format") @DefaultValue("text") String format,
+			@QueryParam("min-conf") @DefaultValue("0.5") String minConfidence) {
 		DexterLocalParams requestParams = getLocalParams(ui);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg, format);
+				wikiNames, dbg, format, minConfidence);
 
 	}
 
@@ -245,11 +246,12 @@ public class RestService {
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
 			@FormParam("debug") @DefaultValue("false") String dbg,
-			@FormParam("format") @DefaultValue("text") String format) {
+			@FormParam("format") @DefaultValue("text") String format,
+			@QueryParam("min-conf") @DefaultValue("0.5") String minConfidence) {
 
 		DexterLocalParams requestParams = getLocalParams(form);
 		return annotate(requestParams, text, n, spotter, disambiguator,
-				wikiNames, dbg, format);
+				wikiNames, dbg, format, minConfidence);
 
 	}
 
@@ -278,7 +280,7 @@ public class RestService {
 
 	public Response annotate(DexterLocalParams requestParams, String text,
 			String n, String spotter, String disambiguator, String wikiNames,
-			String dbg, String format) {
+			String dbg, String format, String minConfidenceStr) {
 		if (text == null) {
 			return error("text parameter is null");
 		}
@@ -292,6 +294,7 @@ public class RestService {
 		boolean addWikinames = new Boolean(wikiNames);
 
 		Integer entitiesToAnnotate = Integer.parseInt(n);
+		double minConfidence = Double.parseDouble(minConfidenceStr);
 		MultifieldDocument doc = null;
 		try {
 			doc = parseDocument(text, format);
@@ -314,28 +317,33 @@ public class RestService {
 			adoc.setMeta(meta);
 
 		}
-		annotate(adoc, eml, entitiesToAnnotate, addWikinames);
+		annotate(adoc, eml, entitiesToAnnotate, addWikinames, minConfidence);
 
 		// logger.info("annotate: {}", annotated);
 		return ok(adoc);
 	}
 
 	public void annotate(AnnotatedDocument adoc, EntityMatchList eml,
-			boolean addWikiNames) {
+			boolean addWikiNames, double minConfidence) {
 
-		annotate(adoc, eml, eml.size(), addWikiNames);
+		annotate(adoc, eml, eml.size(), addWikiNames, minConfidence);
 	}
 
 	public void annotate(AnnotatedDocument adoc, EntityMatchList eml,
-			int nEntities, boolean addWikiNames) {
+			int nEntities, boolean addWikiNames, double minConfidence) {
 		eml.sort();
 		EntityMatchList emlSub = new EntityMatchList();
 		int size = Math.min(nEntities, eml.size());
 		List<AnnotatedSpot> spots = adoc.getSpots();
 		spots.clear();
 		for (int i = 0; i < size; i++) {
-			emlSub.add(eml.get(i));
 			EntityMatch em = eml.get(i);
+			if (em.getScore() < minConfidence) {
+				logger.debug("remove entity {}, confidence {} to low",
+						em.getId(), em.getScore());
+				continue;
+			}
+			emlSub.add(em);
 			AnnotatedSpot spot = new AnnotatedSpot(em.getMention(),
 					em.getSpotLinkProbability(), em.getStart(), em.getEnd(), em
 							.getSpot().getLinkFrequency(), em.getSpot()
