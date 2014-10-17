@@ -83,7 +83,7 @@
 		<offsets>ram/offsets.gz</offsets>
 		<eliasFanoOffsets>ram/offsets.eliasfano.bin</eliasFanoOffsets>
 		<spotsData>ram/spots.bin</spotsData>
-		<entityToSpots>ram/spots.bin</entityToSpots>
+		<entityToSpots>ram/entity-to-spots.bin</entityToSpots>
 	</spotRepository>
 	<disambiguators>
 		<default>okkam</default>
