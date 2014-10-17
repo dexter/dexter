@@ -143,7 +143,7 @@ public class RestService {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response annotateGet(@Context UriInfo ui,
 			@QueryParam("text") String text,
-			@QueryParam("n") @DefaultValue("5") String n,
+			@QueryParam("n") @DefaultValue("50") String n,
 			@QueryParam("spt") String spotter,
 			@QueryParam("dsb") String disambiguator,
 			@QueryParam("wn") @DefaultValue("false") String wikiNames,
@@ -241,7 +241,7 @@ public class RestService {
 	@ApiOperation(value = "Annotate a document with Wikipedia entities", response = AnnotatedDocument.class)
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response annotatePost(Form form, @FormParam("text") String text,
-			@FormParam("n") @DefaultValue("5") String n,
+			@FormParam("n") @DefaultValue("50") String n,
 			@FormParam("spt") String spotter,
 			@FormParam("dsb") String disambiguator,
 			@FormParam("wn") @DefaultValue("false") String wikiNames,
