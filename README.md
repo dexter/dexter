@@ -1,3 +1,4 @@
+
 ![Dexter](http://dexter.isti.cnr.it/static/images/dexter.png "Dexter")
 
 The entity linking (aka Wikification) task aims 
@@ -22,7 +23,7 @@ For more information about the team and the framework
 please refer to the [website](http://dexter.isti.cnr.it).
 
 A simple demo of the system is running at this 
-[address](http://dexterdemo.isti.cnr.it:8080/). The tagger used in the demo 
+[address](http://vinello.isti.cnr.it:8080/). The tagger used in the demo 
 is our implemented version of [TAGME](http://tagme.di.unipi.it), please 
 note that some annotations could be different since the two frameworks use
  different Wikipedia dumps and different methods for extracting the spots.
@@ -39,7 +40,7 @@ containing all the resources for running Dexter.
 
 You can use Dexter in two different ways: 
 
-  * Using the Rest API, after [[download|downloading]] the jar and its resources;
+  * Using the Rest API, after downloading the jar and its resources;
   * Using the Java API;
   * Jsonp API + JQuery plugin;
   * Python Client.
@@ -48,7 +49,7 @@ You can use Dexter in two different ways:
 
 ### Download the Resources
 
-Click on this [[http://dexter.isti.cnr.it/dexter2.1.tar.gz|link]] for downloading Dexter. 
+Click on this [http://dexter.isti.cnr.it/dexter2.1.tar.gz](link) for downloading Dexter. 
 
 The archive requires around 2 Gigabytes, and contains the 
 Dexter binary code (''dexter2.1.0.jar'') and the 
@@ -104,17 +105,13 @@ In the dexter folder, just run:
 	
 ## Configure Dexter
 
-The new version of dexter is configured through an XML file. 
-Don't worry, is not to hard to understand ;) There are two configuration files:
-
-  * `dexter-webapp/dexter-conf.xml`: for the REST server;
-  * `dexter-core/dexter-conf.xml`: used during the generation of the model and if you use the script in the folder `dexter-core/scripts`.
+Dexter 2.0 is configured through an XML file `dexter-conf.xml`. 
+Don't worry, is not to hard to understand ;), by default Dexter 
+searches for the configuration file in the root directory. 
    
-The file should be the same, the only difference could be in some relative paths.
+### Set the Dexter model
 
-### Run the REST Server
-
-Go into the `dexter-webapp`directory, and edit the `dexter-conf.xml`: in the beginning of the file
+In the beginning of the file:
 
 	<models>
 		<default>en</default>
@@ -131,11 +128,6 @@ Go into the `dexter-webapp`directory, and edit the `dexter-conf.xml`: in the beg
 replace the path in `FIXME` with the absolute or relative path to the folder that contains the dexter model. If you download 
 the model from the website, the folder is called data. Once you setup the folder just start the server running the command: 
 
-  	./script/run-server.sh
-	
-If things go smoothly, you should be able to access (and test) the REST api description at this address: 
-
-    http://localhost:8080/dexter-webapp/dev/
     
 ### Use the client
 
@@ -144,8 +136,8 @@ project the dependency:
 
  	 <dependency>
  	 	<groupId>it.cnr.isti.hpc</groupId>
-  		<artifactId>dexter-webapp</artifactId>
-  		<version>2.0.0</version>
+  		<artifactId>dexter-client</artifactId>
+  		<version>2.1.0</version>
   	</dependency>
 
 Then will be able to call the REST api from your have project 
@@ -180,7 +172,7 @@ More in detail, it allows to register:
 
 #### Spotters
 
-the component that detects mentions in the text, and maps each mention to a list of candidate entities, you can register a spotter writing inside the `<spotters>`tag:
+The component that detects mentions in the text, and maps each mention to a list of candidate entities, you can register a spotter writing inside the `<spotters>`tag:
   
  ```
  	<spotters>
@@ -316,15 +308,4 @@ Init will be called just once when the disambiguator object is created, if there
 (as for tagme) this params will be passed in the dexterModuleParams variable. At run time, when you annotate a document, the parameter that you put in the post/get query will be pushed in the localParams object, so you can play with the parameters 
 of you disambiguator. This works also for spotter and spot filters. 
 
-
-
-
-
-
-
-
-
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diegoceccarelli/dexter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
