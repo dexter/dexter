@@ -15,8 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.spotter;
 
-import it.cnr.isti.hpc.dexter.document.Document;
-import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.Field;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.entity.EntityRanker;
 import it.cnr.isti.hpc.dexter.shingle.Shingle;
@@ -24,7 +24,6 @@ import it.cnr.isti.hpc.dexter.shingle.ShingleExtractor;
 import it.cnr.isti.hpc.dexter.spot.Spot;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
-import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.ProbabilityFilter;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepository;
 import it.cnr.isti.hpc.dexter.spot.repo.SpotRepositoryFactory;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 01/ago/2012
  */
-public class DictionarySpotter implements Spotter {
+public class DictionarySpotter extends AbstractSpotter implements Spotter {
 	/**
 	 * Logger for this class
 	 */
@@ -64,7 +63,7 @@ public class DictionarySpotter implements Spotter {
 
 	@Override
 	public SpotMatchList match(DexterLocalParams localParams, Document document) {
-		ProbabilityFilter filter = new ProbabilityFilter();
+
 		SpotMatchList matches = new SpotMatchList();
 
 		Iterator<Field> fields = document.getFields();
@@ -97,12 +96,6 @@ public class DictionarySpotter implements Spotter {
 				// s.setStart(shingle.getStart());
 				// s.setEnd(shingle.getEnd());
 
-				if (filter.isFilter(s)) {
-					logger.info("ignoring spot {}, probability too low {}",
-							s.getMention(), s.getLinkProbability());
-					continue;
-				}
-
 				// int pos = matches.index(s);
 				// if (pos >= 0) {
 				// // the spot is yet in the list, increment its occurrences
@@ -120,7 +113,7 @@ public class DictionarySpotter implements Spotter {
 
 			}
 		}
-
+		matches = filter(localParams, matches);
 		return matches;
 	}
 

@@ -19,10 +19,9 @@ import it.cnr.isti.hpc.dexter.Tagger;
 import it.cnr.isti.hpc.dexter.disambiguation.Disambiguator;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
 
 import jodd.util.ClassLoaderUtil;
 
@@ -172,23 +171,28 @@ public class PluginLoader {
 		return tagger;
 	}
 
-	private class PClassLoader extends URLClassLoader {
-
-		/**
-		 * @param urls
-		 *            , to carryforward the existing classpath.
-		 */
-		public PClassLoader(URL[] urls) {
-			super(urls);
+	public SpotMatchFilter getSpotFilter(String clazz) {
+		SpotMatchFilter filter = null;
+		Class c = null;
+		try {
+			c = Class.forName(clazz);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
-		@Override
-		/** 
-		 * add ckasspath to the loader. 
-		 */
-		public void addURL(URL url) {
-			super.addURL(url);
+		// spotter = luceneLoader.newInstance(spotClass, Spotter.class);
+		try {
+			filter = (SpotMatchFilter) c.newInstance();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		// }
+
+		return filter;
 	}
 
 }

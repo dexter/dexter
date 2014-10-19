@@ -1,5 +1,4 @@
-
- /**
+/**
  *  Copyright 2012 Diego Ceccarelli
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,27 +35,29 @@ import com.google.gson.Gson;
 
 /**
  * FreebaseEntity.java
- *
- * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
- * created on 10/mag/2012
+ * 
+ * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 10/mag/2012
  */
 public class FreebaseEntity {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(FreebaseEntity.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(FreebaseEntity.class);
 	private static IdHelper helper = IdHelperFactory.getStdIdHelper();
-	
-	private final static String DBPEDIA_RESOURCE="http://dbpedia.org/resource/";
+
+	private final static String DBPEDIA_RESOURCE = "http://dbpedia.org/resource/";
 	private static final Gson gson = new Gson();
-	private static SameAsService sameAsService = DefaultSameAsServiceFactory.getSingletonInstance();
+	private static SameAsService sameAsService = DefaultSameAsServiceFactory
+			.getSingletonInstance();
 	String wikiId;
 	String freebaseId;
 	static FakeBrowser browser = new FakeBrowser();
-	
-	private FreebaseEntity(){}
-	
-	public FreebaseEntity(String wikiId){
+
+	private FreebaseEntity() {
+	}
+
+	public FreebaseEntity(String wikiId) {
 		if (wikiId == null) {
 			logger.warn("no wiki id");
 			return;
@@ -64,29 +65,33 @@ public class FreebaseEntity {
 		this.wikiId = wikiId;
 		Equivalence equivalence = null;
 		try {
-			equivalence = sameAsService.getDuplicates( new URI(DBPEDIA_RESOURCE+wikiId) );
-			for ( URI uri : equivalence )
-			{
+			equivalence = sameAsService.getDuplicates(new URI(DBPEDIA_RESOURCE
+					+ wikiId));
+			for (URI uri : equivalence) {
 				String path = uri.getPath().toString();
-				if (path.startsWith("/ns/m")){
-					freebaseId = "m/"+path.substring(6,path.length());
-					logger.info("uri {} \t freebaseId {} ",uri,freebaseId);
+				if (path.startsWith("/ns/m")) {
+					freebaseId = "m/" + path.substring(6, path.length());
+					logger.info("uri {} \t freebaseId {} ", uri, freebaseId);
 					break;
 				}
 			}
-			
-		} catch (SameAsServiceException e) {
-			logger.error("cannot match freebase entity for {} ",wikiId);
-		} catch (URISyntaxException e) {
-			logger.error("cannot match freebase entity for {} ",wikiId);
-		}	
-		if (freebaseId != null && !freebaseId.isEmpty()){
-			try {
-				//StringBuilder images = browser.fetchAsString("https://www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22"+freebaseId+"%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]");
-				StringBuilder sb = browser.fetchAsString("https://www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22/"+freebaseId+"%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]");
 
-															  https://www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22/m/01zt7w%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]
-				if ( sb == null || sb.toString().contains("[]")){
+		} catch (SameAsServiceException e) {
+			logger.error("cannot match freebase entity for {} ", wikiId);
+		} catch (URISyntaxException e) {
+			logger.error("cannot match freebase entity for {} ", wikiId);
+		}
+		if (freebaseId != null && !freebaseId.isEmpty()) {
+			try {
+				// StringBuilder images =
+				// browser.fetchAsString("https://www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22"+freebaseId+"%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]");
+				String url = browser
+						.fetchAsString("https://www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22/"
+								+ freebaseId
+								+ "%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]");
+
+				https: // www.googleapis.com/freebase/v1/mqlread/?lang=%2Flang%2Fen&query=[{%20%22id%22:%20%22/m/01zt7w%22,%20%22/common/topic/image%22:%20[{%22id%22:%20null}]%20}]
+				if (url == null || url.contains("[]")) {
 					freebaseId = "";
 				}
 			} catch (IOException e) {
@@ -94,40 +99,33 @@ public class FreebaseEntity {
 				e.printStackTrace();
 				freebaseId = "";
 			}
-		} else{
+		} else {
 			freebaseId = "";
 		}
-		
-		
+
 	}
-	
-	
-	
-	
-	public String getHtmlCode(){
-		return "<img class='fb' alt='"+wikiId+"' src='https://usercontent.googleapis.com/freebase/v1/image/"+freebaseId+"?maxwidth=150&maxheight=150'>";
+
+	public String getHtmlCode() {
+		return "<img class='fb' alt='"
+				+ wikiId
+				+ "' src='https://usercontent.googleapis.com/freebase/v1/image/"
+				+ freebaseId + "?maxwidth=150&maxheight=150'>";
 	}
-	
-	
-	
-	public FreebaseEntity(Entity e){
-		this(helper.getLabel(e.getId()));		
+
+	public FreebaseEntity(Entity e) {
+		this(helper.getLabel(e.getId()));
 	}
-	
-	public boolean hasId(){
+
+	public boolean hasId() {
 		return freebaseId != "";
 	}
-	
-	public String getId(){
+
+	public String getId() {
 		return freebaseId;
 	}
-	
-	public String toJson(){
+
+	public String toJson() {
 		return gson.toJson(this);
 	}
 
-	
-	
-	
 }
-

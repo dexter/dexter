@@ -17,8 +17,8 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 
 import it.cnr.isti.hpc.benchmark.Stopwatch;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
-import it.cnr.isti.hpc.dexter.document.Document;
-import it.cnr.isti.hpc.dexter.document.FlatDocument;
+import it.cnr.isti.hpc.dexter.common.Document;
+import it.cnr.isti.hpc.dexter.common.FlatDocument;
 import it.cnr.isti.hpc.dexter.spot.SpotMatchList;
 import it.cnr.isti.hpc.dexter.spotter.DictionarySpotter;
 import it.cnr.isti.hpc.dexter.util.DexterParams;

@@ -46,8 +46,10 @@ public abstract class Relatedness implements Comparable<Relatedness> {
 	private OutcomingNodes out; // =
 								// NodeFactory.getOutcomingNodes(NodeFactory.STD_TYPE);
 
+	private static final int CACHE_SIZE = params.getCacheSize("relatedness");
+	private final static boolean CACHE_ENABLED = CACHE_SIZE > 0;
 	private static LRUCache<Couple, Double> cache = new LRUCache<Couple, Double>(
-			params.getCacheSize("relatedness"));
+			CACHE_SIZE);
 
 	public Relatedness() {
 		super();
@@ -63,12 +65,13 @@ public abstract class Relatedness implements Comparable<Relatedness> {
 		this.x = x;
 		this.y = y;
 		Couple k = new Couple(x, y);
-		if (cache.containsKey(k)) {
+		if (CACHE_ENABLED && cache.containsKey(k)) {
 			score = cache.get(k);
 			return;
 		}
 		score = score();
-		cache.put(k, score);
+		if (CACHE_ENABLED)
+			cache.put(k, score);
 	}
 
 	public void setScore(double score) {

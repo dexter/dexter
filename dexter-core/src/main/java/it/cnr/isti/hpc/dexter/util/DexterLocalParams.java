@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public class DexterLocalParams {
 
-	public Map<String, String> params;
+	private final Map<String, String> params;
 
 	public DexterLocalParams() {
 		params = new HashMap<String, String>();
@@ -57,6 +57,10 @@ public class DexterLocalParams {
 
 	public String getParam(String key) {
 		return params.get(key);
+	}
+
+	public Map<String, String> getParams() {
+		return params;
 	}
 
 	public boolean containsKey(String key) {

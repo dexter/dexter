@@ -15,7 +15,7 @@
  */
 package it.cnr.isti.hpc.dexter.entity;
 
-import it.cnr.isti.hpc.dexter.document.Field;
+import it.cnr.isti.hpc.dexter.common.Field;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.dexter.spot.ContextExtractor;
 import it.cnr.isti.hpc.dexter.spot.SpotMatch;

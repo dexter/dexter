@@ -373,9 +373,12 @@ public class Spot implements Serializable {
 	 *         of the spot encoded in data, otherwise null
 	 */
 	public static Spot fromByteArray(String text, byte[] data) {
-		int len = (int) data[0];
-		if (text.length() != len)
+		int len = data[0];
+
+		if (text.length() != len) {
+			logger.warn("len {} !=  {} len", len, text);
 			return null;
+		}
 
 		String s = null;
 		try {
@@ -384,8 +387,10 @@ public class Spot implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (!s.equals(text))
+		if (!s.equals(text)) {
+			logger.warn(" {} !=  {} ", s, text);
 			return null;
+		}
 
 		IntBuffer intBuf = ByteBuffer.wrap(
 				Arrays.copyOfRange(data, 1 + len, data.length)).asIntBuffer();
@@ -480,6 +485,7 @@ public class Spot implements Serializable {
 	/**
 	 * Returns a copy of this object
 	 */
+	@Override
 	public Spot clone() {
 		Spot copy = new Spot(mention);
 		copy.setLinkProbability(linkProbability);

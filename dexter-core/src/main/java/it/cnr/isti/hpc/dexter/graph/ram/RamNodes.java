@@ -47,6 +47,7 @@ public abstract class RamNodes implements NodesWriter, NodeStar {
 	protected RamNodes(File serializedFile) {
 		this.serializedFile = serializedFile;
 		if (serializedFile.exists()) {
+			logger.info("loading {} ", serializedFile);
 			load();
 		} else {
 			logger.warn("cannot find {}, using empty ram nodes",

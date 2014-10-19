@@ -40,7 +40,7 @@ public class RamOutcomingCategoryNodes extends RamNodes implements
 	private static DexterParams params = DexterParams.getInstance();
 
 	private RamOutcomingCategoryNodes() {
-		super(params.getGraph("category-category", NodeStar.Direction.IN));
+		super(params.getGraph("category-category", NodeStar.Direction.OUT));
 	}
 
 	public static RamOutcomingCategoryNodes getInstance() {

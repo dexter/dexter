@@ -29,6 +29,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +47,37 @@ public class RamSpotFile {
 	private static final Logger logger = LoggerFactory
 			.getLogger(RamSpotFile.class);
 
-	private static DexterParams params = DexterParams.getInstance();
+	// MAX CHUNK SIZE (byte)
+	private static int CHUNK_SIZE = 100000000;
 
-	private final byte[] spotsData;
+	private static DexterParams params = DexterParams.getInstance();
+	private final List<byte[]> chunks;
 	private static RamSpotFile instance;
 
 	private RamSpotFile() {
+		chunks = new LinkedList<byte[]>();
 		File binarySpotFile = params.getSpotsData();
-		spotsData = load(binarySpotFile);
+		int i = 0;
+		if (binarySpotFile.exists()) {
+			// just to support the old format
+			byte[] spotsData = load(binarySpotFile);
+			chunks.add(i, spotsData);
+			CHUNK_SIZE = Integer.MAX_VALUE;
+			logger.info("loaded unique chunk {} : {}", i,
+					binarySpotFile.getAbsolutePath());
+		} else {
+			File chunk = new File(binarySpotFile.getAbsolutePath() + "." + i);
+			logger.info("loading chunk {} ", chunk.getAbsolutePath());
+			while (chunk.exists()) {
+
+				byte[] spotsData = load(chunk);
+				chunks.add(i, spotsData);
+				logger.info("loaded spot chunk {} : {}", i,
+						chunk.getAbsolutePath());
+				i++;
+				chunk = new File(binarySpotFile.getAbsolutePath() + "." + i);
+			}
+		}
 
 	}
 
@@ -63,7 +88,20 @@ public class RamSpotFile {
 	}
 
 	public byte[] getOffset(long from, long to) {
-		return Arrays.copyOfRange(spotsData, (int) from, (int) to);
+		int fromchunkid = (int) from / CHUNK_SIZE;
+		int tochunkid = (int) to / CHUNK_SIZE;
+		int fromOffset = (int) from % CHUNK_SIZE;
+		int toOffset = (int) to % CHUNK_SIZE;
+		logger.info("chunks: [{},{}]", fromchunkid, tochunkid);
+		logger.info("offset: [{},{}]", from, to);
+		if (fromchunkid != tochunkid) {
+			fromchunkid = tochunkid;
+			fromOffset = 0;
+		}
+		logger.info("chunk: [{}]", fromchunkid);
+		logger.info("offset: [{},{}]", from, to);
+		byte[] spotsData = chunks.get(fromchunkid);
+		return Arrays.copyOfRange(spotsData, fromOffset, toOffset);
 	}
 
 	public static void dumpSpotFile(String sortedSpotFile) {
@@ -72,7 +110,7 @@ public class RamSpotFile {
 		dumpSpotFile(sortedSpotFile, binarySpotFile, offsetSpotFile);
 	}
 
-	private static void dumpSpotFile(String spotFile, File binarySpotFile,
+	public static void dumpSpotFile(String spotFile, File binarySpotFile,
 			File offsetSpotFile) {
 		RecordReader<Spot> reader = new RecordReader<Spot>(spotFile,
 				new Spot.Parser());
@@ -82,10 +120,12 @@ public class RamSpotFile {
 	private static void dumpSpotFile(Iterable<Spot> spots, File output,
 			File offsets) {
 		long offset = 0;
+		int currentChunk = 0;
 		FileOutputStream outputWriter = null;
 		ProgressLogger pl = new ProgressLogger("dumped {} spots", 10000);
 		try {
-			outputWriter = new FileOutputStream(output.getAbsolutePath());
+			outputWriter = new FileOutputStream(output.getAbsolutePath() + "."
+					+ currentChunk);
 		} catch (FileNotFoundException e) {
 			logger.error("opening spot repository file ({})", e.toString());
 			System.exit(-1);
@@ -93,13 +133,40 @@ public class RamSpotFile {
 		BufferedWriter offsetsWriter = IOUtils
 				.getPlainOrCompressedWriter(offsets.getAbsolutePath());
 		byte[] content;
+		try {
+			offsetsWriter.write(String.valueOf(offset));
+			offsetsWriter.newLine();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for (Spot s : spots) {
+			int relativeOffset = (int) offset % CHUNK_SIZE;
+
 			pl.up();
 			try {
-				offsetsWriter.write(String.valueOf(offset));
-				offsetsWriter.newLine();
+
 				content = s.toByteArray();
-				offset += content.length;
+				// if there's not enought space for storing this content in the
+				// current chunk,
+				// put the final offset in the offset file and write a addvance
+				// offset in the next
+				// chunk
+				if (relativeOffset + content.length > CHUNK_SIZE) {
+					currentChunk++;
+
+					outputWriter.close();
+					outputWriter = new FileOutputStream(
+							output.getAbsolutePath() + "." + currentChunk);
+					offset += content.length + (CHUNK_SIZE - relativeOffset);
+					offsetsWriter.write(String.valueOf(offset));
+					offsetsWriter.newLine();
+				} else {
+
+					offset += content.length;
+					offsetsWriter.write(String.valueOf(offset));
+					offsetsWriter.newLine();
+				}
 				outputWriter.write(content);
 
 			} catch (IOException e) {

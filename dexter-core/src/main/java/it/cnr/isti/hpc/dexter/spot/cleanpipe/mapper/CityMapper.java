@@ -29,17 +29,18 @@ import org.slf4j.LoggerFactory;
  */
 
 public class CityMapper extends Mapper<String> {
-	//TODO change the name in NameMapper? 
+	// TODO change the name in NameMapper?
 	/**
 	 * Logger for this class
 	 */
 	private static final Logger logger = LoggerFactory
 			.getLogger(CityMapper.class);
 
+	@Override
 	public Set<String> map(String spot) {
 		Set<String> mappings = new HashSet<String>();
 		mappings.add(spot);
-		if (spot.matches("^[^,]+,[a-z ]+$"))
+		if (spot.matches("^[^,]+,[^,]+$"))
 			removeRegex(mappings, spot, " *,.+$");
 		return mappings;
 

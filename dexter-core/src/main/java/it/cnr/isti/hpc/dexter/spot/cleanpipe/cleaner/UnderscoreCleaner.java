@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 20/lug/2012
  */
+@Deprecated
 public class UnderscoreCleaner extends Cleaner<String> {
 	/**
 	 * Logger for this class
@@ -31,6 +32,7 @@ public class UnderscoreCleaner extends Cleaner<String> {
 	private static final Logger logger = LoggerFactory
 			.getLogger(UnderscoreCleaner.class);
 
+	@Override
 	public String clean(String spot) {
 		String clean = spot.replaceAll("_", " ");
 		if (!clean.equals(spot))

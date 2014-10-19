@@ -38,10 +38,13 @@ import it.cnr.isti.hpc.dexter.graph.NodeStar.Direction;
 import it.cnr.isti.hpc.dexter.plugin.PluginLoader;
 import it.cnr.isti.hpc.dexter.relatedness.Relatedness;
 import it.cnr.isti.hpc.dexter.spotter.Spotter;
+import it.cnr.isti.hpc.dexter.spotter.filter.SpotMatchFilter;
 import it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.Param;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -59,6 +62,7 @@ public class DexterParams {
 	private static DexterParams dexterParams;
 	Map<String, DexterParamsXMLParser.Tagger> taggers;
 	Map<String, DexterParamsXMLParser.Spotter> spotters;
+	Map<String, DexterParamsXMLParser.SpotFilter> spotFilters;
 	Map<String, DexterParamsXMLParser.Disambiguator> disambiguators;
 	Map<String, String> relatednessFunctions;
 
@@ -77,6 +81,7 @@ public class DexterParams {
 	File spotsOffsetData;
 	File spotsPerfectHash;
 	File plainSpots;
+	File entityToSpots;
 
 	private static final String DEFAULT = "___default";
 
@@ -91,6 +96,8 @@ public class DexterParams {
 	private DexterParams() {
 		taggers = new HashMap<String, DexterParamsXMLParser.Tagger>();
 		spotters = new HashMap<String, DexterParamsXMLParser.Spotter>();
+		spotFilters = new HashMap<String, DexterParamsXMLParser.SpotFilter>();
+
 		disambiguators = new HashMap<String, DexterParamsXMLParser.Disambiguator>();
 		relatednessFunctions = new HashMap<String, String>();
 
@@ -154,6 +161,9 @@ public class DexterParams {
 		plainSpots = new File(spotsDir, params.getSpotRepository()
 				.getPlainSpots());
 
+		entityToSpots = new File(spotsDir, params.getSpotRepository()
+				.getEntityToSpots());
+
 	}
 
 	private void loadDisambiguators() {
@@ -199,6 +209,16 @@ public class DexterParams {
 
 	}
 
+	private void loadSpotFilters() {
+		for (DexterParamsXMLParser.SpotFilter function : params
+				.getSpotFilters().getSpotFilters()) {
+			logger.info("registering spot filter {} -> {} ",
+					function.getName(), function.getClazz());
+			spotFilters.put(function.getName(), function);
+
+		}
+	}
+
 	private void loadRelatednessFunctions() {
 		for (it.cnr.isti.hpc.dexter.util.DexterParamsXMLParser.RelatednessFunction function : params
 				.getRelatednessFunctions().getRelatednessFunctions()) {
@@ -223,10 +243,16 @@ public class DexterParams {
 
 	public static DexterParams getInstance() {
 		if (dexterParams == null) {
-			dexterParams = new DexterParams("dexter-conf.xml");
+			String confFile = System.getProperty("conf");
+			if (confFile == null)
+				confFile = "dexter-conf.xml";
+			logger.info("loading configuration from {} ", confFile);
+			dexterParams = new DexterParams(confFile);
 			dexterParams.loadDisambiguators();
 			dexterParams.loadRelatednessFunctions();
+			dexterParams.loadSpotFilters();
 			dexterParams.loadSpotters();
+
 			dexterParams.loadTaggers();
 		}
 		return dexterParams;
@@ -246,18 +272,47 @@ public class DexterParams {
 		return spotters.containsKey(name);
 	}
 
+	public SpotMatchFilter getSpotMatchFilter(String name) {
+		if ((name == null) || (name.isEmpty())) {
+			logger.warn("empty name for spot match filter");
+			return null;
+		}
+		DexterParamsXMLParser.SpotFilter spotter = spotFilters.get(name);
+		if (spotter == null) {
+			logger.warn("cannot find spot filter named {}, skipping", name);
+			return null;
+		}
+		SpotMatchFilter s = loader.getSpotFilter(spotter.getClazz());
+
+		DexterLocalParams initParams = new DexterLocalParams();
+
+		for (Param p : spotter.getParams().getParams()) {
+			logger.info("adding param {} -> {}", p.getName(), p.getValue());
+			initParams.addParam(p.getName(), p.getValue());
+		}
+		s.init(dexterParams, initParams);
+		return s;
+	}
+
 	public Spotter getSpotter(String name) {
 		if ((name == null) || (name.isEmpty())) {
 			name = DEFAULT;
 		}
 		DexterParamsXMLParser.Spotter spotter = spotters.get(name);
 		Spotter s = loader.getSpotter(spotter.getClazz());
+		List<SpotMatchFilter> filters = new ArrayList<SpotMatchFilter>();
+		for (DexterParamsXMLParser.Filter f : spotter.getFilters()) {
+			SpotMatchFilter smf = getSpotMatchFilter(f.getName());
+			filters.add(smf);
+		}
+
 		DexterLocalParams initParams = new DexterLocalParams();
 		for (Param p : spotter.getParams().getParams()) {
 			logger.info("adding param {} -> {}", p.getName(), p.getValue());
 			initParams.addParam(p.getName(), p.getValue());
 		}
 		s.init(dexterParams, initParams);
+		s.setFilters(filters);
 		return s;
 	}
 
@@ -339,6 +394,10 @@ public class DexterParams {
 
 	public File getSpotsOffsetData() {
 		return spotsOffsetData;
+	}
+
+	public File getEntityToSpots() {
+		return entityToSpots;
 	}
 
 	public File getSpotsEliasFano() {

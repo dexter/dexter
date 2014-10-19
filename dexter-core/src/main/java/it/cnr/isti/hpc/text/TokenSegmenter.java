@@ -30,10 +30,10 @@ import opennlp.tools.util.Span;
  */
 public class TokenSegmenter {
 
-	private static Tokenizer tokenizer = null;
-	private static TokenSegmenter instance = null;
+	private Tokenizer tokenizer = null;
+	private final TokenSegmenter instance = null;
 
-	private TokenSegmenter() {
+	public TokenSegmenter() {
 		InputStream modelIn = null;
 		try {
 			// Loading tokenizer model
@@ -53,12 +53,6 @@ public class TokenSegmenter {
 				} // oh well!
 			}
 		}
-	}
-
-	public static TokenSegmenter getInstance() {
-		if (instance == null)
-			instance = new TokenSegmenter();
-		return instance;
 	}
 
 	public String[] tokenize(String sentence) {

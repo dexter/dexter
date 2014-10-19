@@ -31,7 +31,7 @@
  */
 package it.cnr.isti.hpc.dexter;
 
-import it.cnr.isti.hpc.dexter.document.Document;
+import it.cnr.isti.hpc.dexter.common.Document;
 import it.cnr.isti.hpc.dexter.entity.EntityMatchList;
 import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 import it.cnr.isti.hpc.dexter.util.DexterParams;

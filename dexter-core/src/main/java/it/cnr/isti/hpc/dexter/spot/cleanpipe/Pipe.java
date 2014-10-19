@@ -31,17 +31,17 @@
  */
 package it.cnr.isti.hpc.dexter.spot.cleanpipe;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Class pipe allows to create a chain of functions manipulating T objects. 
- *  
+ * Class pipe allows to create a chain of functions manipulating T objects.
+ * 
  * 
  * Pipes are chained together through their constructors.
  * 
@@ -53,20 +53,19 @@ public class Pipe<T> {
 
 	private Pipe<T> next;
 
-	public LinkedList<T> output;
+	public ArrayList<T> output;
 
 	private Function<T> fun;
 
-	private Pipe<T> head;
-	
-	
+	private Pipe<T> head = null;
+
 	private static final Logger logger = LoggerFactory.getLogger(Pipe.class);
 
 	private OutputCollector collector;
 
 	public Pipe(Function<T> fun) {
 		this.fun = fun;
-		output = new LinkedList<T>();
+		output = new ArrayList<T>();
 		collector = new OutputCollector();
 		head = this;
 	}
@@ -97,37 +96,47 @@ public class Pipe<T> {
 		if (output.isEmpty())
 			return Collections.emptyList();
 		List<T> list = output;
-		output = new LinkedList<T>();
+		output = new ArrayList<T>();
 		return list;
 	}
 
 	/**
-	 * Performs all the pipeline over the object elem, and returns one 
-	 * or multiple manipulations of the object elem.
+	 * Performs all the pipeline over the object elem, and returns one or
+	 * multiple manipulations of the object elem.
 	 */
 	public List<T> process(T elem) {
 		Pipe<T> p = head;
-		List<T> elems = new LinkedList<T>();
+		List<T> elems = new ArrayList<T>();
 		p.fun.eval(elem, p.collector);
 		while (p.getNext() != null) {
-//			logger.info("pipe {}",p.fun.getClass());
+			// logger.info("pipe {}",p.fun.getClass());
 			Iterator<T> iter = p.getOutput();
+			if (iter == null) {
+				logger.warn("iter is null");
+			}
 			elems.clear();
 			while (iter.hasNext()) {
-				elems.add(iter.next());
+				T obj = iter.next();
+				if (obj == null) {
+					// FIXME understand why sometimes this is null, concurrency?
+					logger.warn("iter returned null object");
+				}
+				if (obj != null) {
+					elems.add(obj);
+				}
 			}
-//			logger.info("output -> {}",elems);
+			// logger.info("output -> {}",elems);
 			p.clearOutput();
 
 			p = p.getNext();
 			for (T t : elems) {
 				p.fun.eval(t, p.collector);
-				
+
 			}
 		}
-//		logger.info("pipe {}",p.fun.getClass());
-//		logger.info("f output -> {}",output);
- 
+		// logger.info("pipe {}",p.fun.getClass());
+		// logger.info("f output -> {}",output);
+
 		return getResults();
 	}
 
@@ -147,12 +156,9 @@ public class Pipe<T> {
 
 		@Override
 		public String toString() {
-			return "OutputCollector "+output.toString();
+			return "OutputCollector " + output.toString();
 		}
-		
-		
-		
-		
+
 	}
 
 }

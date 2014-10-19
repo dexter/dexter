@@ -64,6 +64,7 @@ public class DexterParamsXMLParser {
 	private Spotters spotters;
 	private Taggers taggers;
 	private Caches caches;
+	private SpotFilters spotFilters;
 
 	private SpotRepository spotRepository;
 
@@ -99,6 +100,14 @@ public class DexterParamsXMLParser {
 
 	public void setModels(Models models) {
 		this.models = models;
+	}
+
+	public SpotFilters getSpotFilters() {
+		return spotFilters;
+	}
+
+	public void setSpotFilters(SpotFilters spotFilters) {
+		this.spotFilters = spotFilters;
 	}
 
 	public Labels getLabels() {
@@ -183,6 +192,7 @@ public class DexterParamsXMLParser {
 		public String offsets;
 		public String eliasFanoOffsets;
 		public String spotsData;
+		public String entityToSpots;
 
 		public String getDir() {
 			return dir;
@@ -230,6 +240,14 @@ public class DexterParamsXMLParser {
 
 		public void setSpotsData(String spotsData) {
 			this.spotsData = spotsData;
+		}
+
+		public String getEntityToSpots() {
+			return entityToSpots;
+		}
+
+		public void setEntityToSpots(String entityToSpots) {
+			this.entityToSpots = entityToSpots;
 		}
 
 	}
@@ -292,6 +310,7 @@ public class DexterParamsXMLParser {
 	}
 
 	public static class Params {
+		public final static Params NO_PARAM = new Params();
 		public List<Param> params = new ArrayList<Param>();
 
 		public List<Param> getParams() {
@@ -598,7 +617,9 @@ public class DexterParamsXMLParser {
 	public static class Spotter {
 		String name;
 		String clazz;
-		Params params;
+		List<Filter> filters = new ArrayList<Filter>();
+
+		Params params = Params.NO_PARAM;
 
 		public String getName() {
 			return name;
@@ -617,8 +638,72 @@ public class DexterParamsXMLParser {
 		}
 
 		public Params getParams() {
-			if (params == null)
-				params = new Params();
+			return params;
+		}
+
+		public void setParams(Params params) {
+			this.params = params;
+		}
+
+		public List<Filter> getFilters() {
+			return filters;
+		}
+
+		public void setFilters(List<Filter> filters) {
+			this.filters = filters;
+		}
+
+	}
+
+	public static class Filter {
+		String name;
+
+		public String getName() {
+			return name.trim();
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+	}
+
+	public static class SpotFilters {
+
+		List<SpotFilter> spotFilters = new ArrayList<SpotFilter>();
+
+		public List<SpotFilter> getSpotFilters() {
+			return spotFilters;
+		}
+
+		public void setSpotFilters(List<SpotFilter> filters) {
+			this.spotFilters = filters;
+		}
+
+	}
+
+	public static class SpotFilter {
+		String name;
+		String clazz;
+		Params params = Params.NO_PARAM;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getClazz() {
+			return clazz;
+		}
+
+		public void setClazz(String clazz) {
+			this.clazz = clazz;
+		}
+
+		public Params getParams() {
 			return params;
 		}
 
@@ -742,6 +827,12 @@ public class DexterParamsXMLParser {
 
 		xstream.addImplicitCollection(Thresholds.class, "thresholds");
 		xstream.alias("threshold", Threshold.class);
+		xstream.alias("spotFilter", SpotFilter.class);
+		xstream.alias("spotFilters", SpotFilters.class);
+
+		xstream.addImplicitCollection(SpotFilters.class, "spotFilters");
+		xstream.aliasField("class", SpotFilter.class, "clazz");
+
 		xstream.alias("graph", Graph.class);
 		xstream.alias("graphs", Graphs.class);
 		xstream.addImplicitCollection(Graphs.class, "graphs");
@@ -788,6 +879,9 @@ public class DexterParamsXMLParser {
 		xstream.addImplicitCollection(Spotters.class, "spotters");
 		xstream.alias("spotter", Spotter.class);
 
+		xstream.alias("filter", Filter.class);
+		xstream.addImplicitCollection(Filter.class, "filters");
+
 		xstream.aliasField("class", RelatednessFunction.class, "clazz");
 		xstream.aliasField("class", Disambiguator.class, "clazz");
 		xstream.aliasField("class", Spotter.class, "clazz");
@@ -798,7 +892,7 @@ public class DexterParamsXMLParser {
 
 		xstream.alias("spotRepository", SpotRepository.class);
 
-		String xml = IOUtils.getFileAsString("dexter-conf.xml");
+		String xml = IOUtils.getFileAsString(xmlConfig);
 		DexterParamsXMLParser config = (DexterParamsXMLParser) xstream
 				.fromXML(xml);
 		return config;

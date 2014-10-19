@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
  * standard spot manager}, which cleans, enriches and filters the text.
  * 
  */
+@Deprecated
 public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 	/**
 	 * Logger for this class
@@ -55,9 +56,10 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 			+ ExtractSpotsCLI.class
 			+ " -input wikipedia-json-dump -output spot-file";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		ExtractSpotsCLI cli = new ExtractSpotsCLI(args);
 		cli.openOutput();
+		// Thread.sleep(20000);
 
 		SpotManager spotManager = SpotManager.getStandardSpotManager();
 		IdHelper hp = IdHelperFactory.getStdIdHelper();
@@ -66,7 +68,7 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 				.filter(TypeFilter.STD_FILTER);
 
 		ProgressLogger progress = new ProgressLogger(
-				"extract spots for entity {}");
+				"extracted spots for {} articles", 1000);
 
 		for (Article a : reader) {
 			progress.up();
@@ -74,10 +76,12 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 			int source = a.getWikiId();
 			if (a.isRedirect()) {
 				target = hp.getId(a.getRedirectNoAnchor());
+
 				for (String spot : spotManager.getAllSpots(a)) {
 					if (target == 0) {
-						//logger.warn("cannot find id for redirect label {}",
-						//		a.getRedirectNoAnchor());
+
+						logger.debug("cannot find id for redirect label {}",
+								a.getRedirectNoAnchor());
 						continue;
 					}
 					if (target > 0) {
@@ -100,8 +104,9 @@ public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 					for (String spot : spotManager.process(l.getDescription())) {
 						target = hp.getId(l.getCleanId());
 						if (target == 0) {
-							//logger.warn("cannot find id for label {}",
-							//		l.getCleanId());
+
+							logger.info("cannot find id for label {}",
+									l.getCleanId());
 							continue;
 						}
 

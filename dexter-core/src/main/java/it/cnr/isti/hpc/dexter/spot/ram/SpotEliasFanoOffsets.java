@@ -66,7 +66,7 @@ public class SpotEliasFanoOffsets {
 		return ef.getLong(index);
 	}
 
-	private static void dumpEliasFanoFile(String offsetsFile, String outputFile) {
+	public static void dumpEliasFanoFile(String offsetsFile, String outputFile) {
 		EliasFanoMonotoneLongBigList ef = new EliasFanoMonotoneLongBigList(
 				new OffsetsFile(offsetsFile));
 

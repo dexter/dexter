@@ -18,7 +18,6 @@ package it.cnr.isti.hpc.dexter.cli.spot;
 import it.cnr.isti.hpc.cli.AbstractCommandLineInterface;
 import it.cnr.isti.hpc.dexter.lucene.LuceneHelper;
 import it.cnr.isti.hpc.log.ProgressLogger;
-import it.cnr.isti.hpc.property.ProjectProperties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,8 @@ import org.slf4j.LoggerFactory;
  * Takes a file containing a list of spots (ordered lexicographically) and
  * generates a new file containing for each spots it document frequency (the
  * number of articles in Wikipedia containing the spot as raw text or anchor).
- * The output file format is:
- * <br><br>
+ * The output file format is: <br>
+ * <br>
  * {@code
  * spot <tab> spot-document-frequency
  * }
@@ -38,6 +37,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 21/nov/2011
  */
+@Deprecated
 public class GenerateSpotDocumentFrequencyCLI extends
 		AbstractCommandLineInterface {
 	/**
@@ -77,7 +77,7 @@ public class GenerateSpotDocumentFrequencyCLI extends
 			if (!elems[0].equals(currentSpot)) {
 				progress.up();
 				currentSpot = elems[0];
-				df = lucene.getFreq(currentSpot);
+				df = lucene.getFreqFromSummary(currentSpot);
 				cli.writeInOutput(currentSpot);
 				cli.writeInOutput("\t");
 				cli.writeLineInOutput(String.valueOf(df));

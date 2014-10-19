@@ -5,14 +5,14 @@ source scripts/config.sh
 rm $TMP 
 
 echo "downloading the dbpedia entity-categories (lang = $LANG)"
-wget -O $TMP.bz2 http://downloads.dbpedia.org/3.9/en/article_categories_$LANG.nt.bz2
+wget -O $TMP.bz2 http://downloads.dbpedia.org/3.9/$LANG/article_categories_$LANG.nt.bz2
 
 echo "uncompressing"
 bunzip2 $TMP.bz2
 
 echo "extracting entity categories relationships"
 
-grep subject $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
+grep subject $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$LANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
 
 echo "generate edges"
 $JAVA $CLI.categories.ExtractDbpediaCategoriesCLI --input $TTMP --output $TTTMP

@@ -40,7 +40,6 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 	private static final Logger logger = LoggerFactory
 			.getLogger(SpotMatchList.class);
 
-
 	@Override
 	public boolean add(SpotMatch m) {
 		logger.debug("adding spot {} ", m.spot.getMention());
@@ -69,8 +68,6 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 
 	}
 
-	
-
 	public EntityMatchList getEntities() {
 		EntityMatchList eml = new EntityMatchList();
 		for (SpotMatch match : this) {
@@ -79,6 +76,7 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 		return eml;
 	}
 
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		for (SpotMatch m : this) {
@@ -97,19 +95,13 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 		Collections.sort(this, new ProbabilityComparator());
 	}
 
-//	/**
-//	 * Sort the entity of th
-//	 */
-//	public EntityMatchList getSortedEntities() {
-//		this.normalizeSpotProbabilities();
-//		EntityMatchList eml = this.getEntities();
-//		eml.normalizeScores();
-//		Collections.sort(eml, new EntityProbabilityComparator());
-//		return eml;
-//	}
+	public void sortByStartPosition() {
+		Collections.sort(this, new StartPositionComparator());
+	}
 
 	private class ProbabilityComparator implements Comparator<SpotMatch> {
 
+		@Override
 		public int compare(SpotMatch s1, SpotMatch s2) {
 			if (s1.getProbability() > s2.getProbability())
 				return -1;
@@ -119,8 +111,19 @@ public class SpotMatchList extends ArrayList<SpotMatch> {
 
 	}
 
-	private class EntityProbabilityComparator implements Comparator<EntityMatch> {
+	private class StartPositionComparator implements Comparator<SpotMatch> {
 
+		@Override
+		public int compare(SpotMatch s1, SpotMatch s2) {
+			return s1.getStart() - s2.getStart();
+		}
+
+	}
+
+	private class EntityProbabilityComparator implements
+			Comparator<EntityMatch> {
+
+		@Override
 		public int compare(EntityMatch e1, EntityMatch e2) {
 
 			double e1score = e1.getScore() * e1.getSpotLinkProbability();

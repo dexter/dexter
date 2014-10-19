@@ -15,9 +15,6 @@
  */
 package it.cnr.isti.hpc.text;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,10 +22,12 @@ import java.util.List;
 
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
-import opennlp.tools.tokenize.Tokenizer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * PosTagger allows to annotate text with pos tag. 
+ * PosTagger allows to annotate text with pos tag.
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 08/giu/2012
  */
@@ -38,7 +37,8 @@ public class PosTagger {
 	/**
 	 * Logger for this class
 	 */
-	private static final Logger logger = LoggerFactory.getLogger(PosTagger.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(PosTagger.class);
 
 	private POSTaggerME posTagger = null;
 
@@ -49,8 +49,8 @@ public class PosTagger {
 
 	private PosTagger() {
 
-		ss = SentenceSegmenter.getInstance();
-		ts = TokenSegmenter.getInstance();
+		ss = new SentenceSegmenter();
+		ts = new TokenSegmenter();
 		InputStream modelIn = null;
 		try {
 			// Loading tokenizer model
@@ -80,13 +80,13 @@ public class PosTagger {
 
 	public List<PosToken> tag(String text) {
 		List<PosToken> tokens = new ArrayList<PosToken>();
-		
-		if (text == null){
+
+		if (text == null) {
 			logger.warn("text is null");
 			return tokens;
 		}
-		
-		if (text.isEmpty()){
+
+		if (text.isEmpty()) {
 			logger.warn("text is empty");
 			return tokens;
 		}
@@ -102,14 +102,14 @@ public class PosTagger {
 	}
 
 	public List<PosToken> getVerbs(String text) {
-		
+
 		List<PosToken> tokens = new ArrayList<PosToken>();
-		if (text == null){
+		if (text == null) {
 			logger.warn("text is null");
 			return tokens;
 		}
-		
-		if (text.isEmpty()){
+
+		if (text.isEmpty()) {
 			logger.warn("text is empty");
 			return tokens;
 		}
@@ -127,7 +127,5 @@ public class PosTagger {
 		}
 		return tokens;
 	}
-	
-	
 
 }

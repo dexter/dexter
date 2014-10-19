@@ -1,2 +1,4 @@
 target
 config.sh
+/target
+/bin
