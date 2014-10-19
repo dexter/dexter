@@ -40,36 +40,44 @@ containing all the resources for running Dexter.
 You can use Dexter in two different ways: 
 
   * Using the Rest API, after [[download|downloading]] the jar and its resources;
-  * Using the Java API.
+  * Using the Java API;
+  * Jsonp API + JQuery plugin;
+  * Python Client.
  
 ## Start a REST Server 
 
-Click on this [[http://dexter.isti.cnr.it/dexter.tar|link]] for downloading Dexter. 
+### Download the Resources
+
+Click on this [[http://dexter.isti.cnr.it/dexter2.1.tar.gz|link]] for downloading Dexter. 
 
 The archive requires around 2 Gigabytes, and contains the 
-Dexter binary code (''dexter.jar'') and the 
-model used by Dexter for annotating
+Dexter binary code (''dexter2.1.0.jar'') and the 
+model used by Dexter for annotating.
 
-The current model is generated from the 04/03/2013 English 
-Wikipedia dump, available [http://dumps.wikimedia.org/enwiki/20130403/enwiki-20130403-pages-articles.xml.bz2](here). 
-(we plan to release update models for English and other languages). 
+The current model is generated from the 07/07/2014 English 
+Wikipedia dump, available [http://dumps.wikimedia.org/enwiki/20130403/enwiki-20140707-pages-articles.xml.bz2](here). 
+(we plan to release updated models for English and other languages). 
 
 Once the download is finished, untar the package, and from the directory ''dexter'', just run
 
-  	java -Xmx3000m -jar dexter.jar
+  	java -Xmx3000m -jar dexter2.1.0.jar
 
 (you will need at least 3G of ram and Java 7).
 The framework should be available in few seconds at the address:
 
   	http://localhost:8080/
+	
+The REST-api is available at: 
+	
+	http://localhost:8080/dexter-webapp/dev
 
 First query will take a bit because Dexter will have to load all the model in main
 memory. 
 
 ## Use the latest version from the 'develop' branch
 
-I've added a lot of nice features in the latest version of Dexter. Here you'll find 
-how to enable them
+The new features will be added to the develop branch. Here you'll find 
+how to enable them:
 
 ### Download the branch 
 
@@ -94,7 +102,7 @@ In the dexter folder, just run:
 	mvn compile
 	mvn install -DskipTests 
 	
-### Configure
+## Configure Dexter
 
 The new version of dexter is configured through an XML file. 
 Don't worry, is not to hard to understand ;) There are two configuration files:
