@@ -163,7 +163,7 @@
 			<class>it.cnr.isti.hpc.dexter.spotter.DictionarySpotter</class>
 			<filters>
 				<filter>
-					<name>probability</name>
+					<name>probability-filter</name>
 				</filter>
 				
 			</filters>

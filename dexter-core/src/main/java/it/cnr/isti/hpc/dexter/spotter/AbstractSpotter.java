@@ -37,12 +37,18 @@ import it.cnr.isti.hpc.dexter.util.DexterLocalParams;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
  *         Created on Feb 12, 2014
  */
 public abstract class AbstractSpotter implements Spotter {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(AbstractSpotter.class);
 	private List<SpotMatchFilter> filters;
 
 	/**
@@ -64,6 +70,10 @@ public abstract class AbstractSpotter implements Spotter {
 	 **/
 	@Override
 	public SpotMatchList filter(DexterLocalParams params, SpotMatchList sml) {
+		if (filters == null) {
+			logger.debug("no filters");
+			return sml;
+		}
 		for (SpotMatchFilter filter : filters) {
 			if (filter == null)
 				continue;
