@@ -324,3 +324,7 @@ of you disambiguator. This works also for spotter and spot filters.
 
 
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/diegoceccarelli/dexter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
