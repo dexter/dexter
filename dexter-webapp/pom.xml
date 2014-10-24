@@ -138,11 +138,7 @@
 			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jsoup</groupId>
-			<artifactId>jsoup</artifactId>
-			<version>1.8.1</version>
-		</dependency>
+		
 		<!-- <dependency> -->
 		<!-- <groupId>com.sun.jersey.contribs</groupId> -->
 		<!-- <artifactId>jersey-spring</artifactId> -->
