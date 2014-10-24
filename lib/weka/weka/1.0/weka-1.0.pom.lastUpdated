@@ -1,9 +1,0 @@
-#NOTE: This is an internal implementation file, its format can be changed without prior notice.
-#Mon Jul 22 14:34:43 CEST 2013
-http\://bruciato.isti.cnr.it\:8081/artifactory/libs-release/.lastUpdated=1374496483944
-http\://repo.maven.apache.org/maven2/.lastUpdated=1374491063661
-default-http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/.lastUpdated=1374496435127
-http\://repo.maven.apache.org/maven2/.error=
-http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/.error=Could not transfer artifact weka\:weka\:pom\:1.0 from/to snapshots (http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot)\: Failed to transfer file\: http\://bruciato.isti.cnr.it\:8081/artifactory/libs-snapshot/weka/weka/1.0/weka-1.0.pom. Return code is\: 503, ReasonPhrase\:Service Unavailable.
-https\://oss.sonatype.org/content/repositories/snapshots/.lastUpdated=1374491063454
-https\://oss.sonatype.org/content/repositories/snapshots/.error=
