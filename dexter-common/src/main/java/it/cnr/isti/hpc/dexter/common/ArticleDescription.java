@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
+import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wikipedia.Wiki;
@@ -98,7 +99,14 @@ public class ArticleDescription {
 		try {
 			String rendered = wiki.getRenderedText(name);
 			// logger.info("render {} ",rendered);
+			org.jsoup.nodes.Document doc = Jsoup.parse(rendered);
+			rendered = doc.text();
+			if (rendered.length() > 500) {
+				rendered = rendered.substring(0, 500) + "...";
+			}
+
 			desc.setDescription(rendered);
+
 		} catch (IOException e) {
 			logger.error("cannot retrieve description for {} using the wikipedia api");
 

@@ -84,6 +84,7 @@ public class ArticleServer {
 						name);
 				desc = ArticleDescription.EMPTY;
 			}
+
 		}
 		synchronized (cache) {
 			cache.put(id, desc);
