@@ -22,13 +22,13 @@
 			<artifactId>hpc-utils</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
 		</dependency>
-		
+
 		<dependency>
 			<artifactId>dexter-common</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<artifactId>json-wikipedia</artifactId>
 			<groupId>it.cnr.isti.hpc</groupId>
@@ -60,14 +60,31 @@
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
 			<artifactId>fastutil</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
 			<artifactId>sux4j</artifactId>
 			<version>3.0.8</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-io</artifactId>
+					<groupId>commons-io</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
+		<dependency>
+			<artifactId>commons-io</artifactId>
+			<groupId>commons-io</groupId>
+
+		</dependency>
 
 		<dependency>
 			<groupId>org.mapdb</groupId>
@@ -112,7 +129,7 @@
 			<version>1.2.2</version>
 		</dependency>
 
-		<!--  loader -->
+		<!-- loader -->
 		<dependency>
 			<groupId>org.jodd</groupId>
 			<artifactId>jodd</artifactId>
@@ -146,18 +163,18 @@
 					</configuration>
 				</plugin>
 				<plugin>
-				        <groupId>org.codehaus.mojo</groupId>
-				        <artifactId>license-maven-plugin</artifactId>
-				        <version>1.6</version>
-				        <executions>
-				          <execution>
-				            <id>download-licenses</id>
-				            <goals>
-				              <goal>download-licenses</goal>
-				            </goals>
-				          </execution>
-				        </executions>
-				      </plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>1.6</version>
+					<executions>
+						<execution>
+							<id>download-licenses</id>
+							<goals>
+								<goal>download-licenses</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
