@@ -95,7 +95,9 @@ public class ArticleDescription {
 		Wiki wiki = new Wiki();
 
 		ArticleDescription desc = new ArticleDescription();
-		desc.setTitle(name);
+		desc.setTitle(name.replace('_', ' '));
+		desc.setImage("http://wikiname2image.herokuapp.com/" + name);
+		desc.setUri("http://en.wikipedia.org/wiki/" + name);
 		try {
 			String rendered = wiki.getRenderedText(name);
 			// logger.info("render {} ",rendered);
@@ -223,6 +225,7 @@ public class ArticleDescription {
 	 */
 	public void setTitle(String title) {
 		this.title = title;
+
 	}
 
 	/**
