@@ -6,7 +6,7 @@ WIKILANG=en
 rm $TMP 
 
 echo "downloading the dbpedia entity-categories (lang = $WIKILANG)"
-wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/$WIKILANG/article_categories_$WIKILANG.nt.bz2
+wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/$WIKILANG/article_categories_$WIKILANG.nt.bz2
 
 echo "uncompressing"
 bunzip2 $TMP.bz2
