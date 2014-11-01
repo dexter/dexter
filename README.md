@@ -46,7 +46,7 @@ It will show the available REST-API.  Enjoy!
 
 # Developing
 
-You can use Dexter in two different ways: 
+You can use Dexter in several different ways: 
 
   * Using the Rest API, after downloading the jar and its resources;
   * Using the Java API;
