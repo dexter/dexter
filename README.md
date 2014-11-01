@@ -19,22 +19,30 @@ some popular algorithms and provides all the tools needed to develop
 any entity linking technique. We believe that a shared framework is 
 fundamental to perform fair comparisons and improve the state of the art.
 
-For more information about the team and the framework 
+For more information about the team and the framework.
 please refer to the [website](http://dexter.isti.cnr.it).
 
-A simple demo of the system is running at this 
-[address](http://vinello.isti.cnr.it:8080/). The tagger used in the demo 
+A simple demo is also available on the website. The tagger used in the demo 
 is our implemented version of [TAGME](http://tagme.di.unipi.it), please 
 note that some annotations could be different since the two frameworks use
- different Wikipedia dumps and different methods for extracting the spots.
+different Wikipedia dumps and different methods for extracting the spots.
 
-We are currently working on improving the quality of the code, that we 
-plan to publicly release (under [Apache License V2](http://www.apache.org/licenses/LICENSE-2.0.html)) 
-in the mid of September (but if you can't wait send us an [email](http://dexter.isti.cnr.it/contact) 
-and we will give you access to our internal repo).
+# Ok, but I don't have time to understand how things _really_ work, I just want to use it
 
-In the meanwhile, you can [download the binary jar](http://dexter.isti.cnr.it/download) 
-containing all the resources for running Dexter.
+Hiha! just download the model with the binaries (model was generated from the English Wikipedia dump 07/07/2014):
+
+    wget http://hpc.isti.cnr.it/~ceccarelli/dexter2.tar.gz
+	tar -xvzf dexter2.tar.gz
+	cd dexter2
+	java -Xmx4000m -jar dexter-2.1.0.jar
+
+
+And then visit on your browser the address [http://localhost:8080/dexter-webapp/dev].
+It will show the available REST-API.  Enjoy! 
+
+# Cool, I want to know more!
+
+
 
 # Developing
 
@@ -49,14 +57,14 @@ You can use Dexter in two different ways:
 
 ### Download the Resources
 
-Click on this [http://dexter.isti.cnr.it/dexter2.1.tar.gz](link) for downloading Dexter. 
+Click on this [http://hpc.isti.cnr.it/~ceccarelli/dexter2.tar.gz](link) for downloading Dexter. 
 
 The archive requires around 2 Gigabytes, and contains the 
 Dexter binary code (''dexter2.1.0.jar'') and the 
 model used by Dexter for annotating.
 
 The current model is generated from the 07/07/2014 English 
-Wikipedia dump, available [http://dumps.wikimedia.org/enwiki/20130403/enwiki-20140707-pages-articles.xml.bz2](here). 
+Wikipedia dump, available [http://dumps.wikimedia.org/enwiki/20140707/enwiki-20140707-pages-articles.xml.bz2](here). 
 (we plan to release updated models for English and other languages). 
 
 Once the download is finished, untar the package, and from the directory ''dexter'', just run
@@ -75,37 +83,10 @@ The REST-api is available at:
 First query will take a bit because Dexter will have to load all the model in main
 memory. 
 
-## Use the latest version from the 'develop' branch
-
-The new features will be added to the develop branch. Here you'll find 
-how to enable them:
-
-### Download the branch 
-
-Download the current snapshot:
 	
-	git clone TODO  
-	cd dexter
-	# fetch all the branches
-	git fetch
-	# checkout wikipedia module
-	git submodule init
-	git submodule update
+## Configuring Dexter
 
-Then move to the `develop` branch
-
-    git checkout develop
-
-###Compile & Install
-
-In the dexter folder, just run: 
-
-	mvn compile
-	mvn install -DskipTests 
-	
-## Configure Dexter
-
-Dexter 2.0 is configured through an XML file `dexter-conf.xml`. 
+Dexter 2 is configured through an XML file `dexter-conf.xml`. 
 Don't worry, is not to hard to understand ;), by default Dexter 
 searches for the configuration file in the root directory. 
    
@@ -143,7 +124,7 @@ project the dependency:
 Then will be able to call the REST api from your have project 
 using the DexterRestClient as in the following example: 
 
-  	DexterRestClient client = new DexterRestClient("...");
+  	DexterRestClient client = new DexterRestClient("http://localhost:8080/dexter-webapp/api/rest");
  	AnnotatedDocument ad = client
   		.annotate("Dexter is an American television drama series which debuted on Showtime on October 1, 2006. The series 	centers on Dexter Morgan (Michael C. Hall), a blood spatter pattern analyst for the fictional Miami Metro Police Department 	(based on the real life Miami-Dade Police Department) who also leads a secret life as a serial killer. Set in Miami, the show's first season was largely based on the novel Darkly Dreaming Dexter, the first of the Dexter series novels by Jeff Lindsay. It was adapted for television by screenwriter James Manos, Jr., who wrote the first episode. ");
  	 
