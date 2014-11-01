@@ -29,7 +29,7 @@ different Wikipedia dumps and different methods for extracting the spots.
 
 # Ok, but I don't have time to understand how things _really_ work, I just want to use it
 
-Hiha! just download the model with the binaries (model was generated from the English Wikipedia dump 07/07/2014):
+Hiha! just download the model with the binaries (model was generated from the [English Wikipedia dump 07/07/2014](http://dumps.wikimedia.org/enwiki/20140707/enwiki-20140707-pages-articles.xml.bz2])):
 
     wget http://hpc.isti.cnr.it/~ceccarelli/dexter2.tar.gz
 	tar -xvzf dexter2.tar.gz
@@ -37,7 +37,7 @@ Hiha! just download the model with the binaries (model was generated from the En
 	java -Xmx4000m -jar dexter-2.1.0.jar
 
 
-And then visit on your browser the address [http://localhost:8080/dexter-webapp/dev].
+And then visit on your browser the address [http://localhost:8080/dexter-webapp/dev]().
 It will show the available REST-API.  Enjoy! 
 
 # Cool, I want to know more!
