@@ -2,17 +2,18 @@
 
 source scripts/config.sh
 
+WIKILANG=en
 rm $TMP 
 
-echo "downloading the dbpedia entity-categories (lang = $LANG)"
-wget -O $TMP.bz2 http://downloads.dbpedia.org/3.9/$LANG/article_categories_$LANG.nt.bz2
+echo "downloading the dbpedia entity-categories (lang = $WIKILANG)"
+wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/$WIKILANG/article_categories_$WIKILANG.nt.bz2
 
 echo "uncompressing"
 bunzip2 $TMP.bz2
 
 echo "extracting entity categories relationships"
 
-grep subject $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$LANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
+grep subject $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$WIKILANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
 
 echo "generate edges"
 $JAVA $CLI.categories.ExtractDbpediaCategoriesCLI --input $TTMP --output $TTTMP
