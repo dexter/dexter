@@ -29,7 +29,7 @@ different Wikipedia dumps and different methods for extracting the spots.
 
 # Ok, but I don't have time to understand how things _really_ work, I just want to use it
 
-Hiha! just download the model with the binaries (model was generated from the [English Wikipedia dump 07/07/2014](http://dumps.wikimedia.org/enwiki/20140707/enwiki-20140707-pages-articles.xml.bz2])):
+Hiha! just download the model with the binaries (model was generated from the [English Wikipedia dump 07/07/2014](http://dumps.wikimedia.org/enwiki/20140707/enwiki-20140707-pages-articles.xml.bz2)):
 
     wget http://hpc.isti.cnr.it/~ceccarelli/dexter2.tar.gz
 	tar -xvzf dexter2.tar.gz
