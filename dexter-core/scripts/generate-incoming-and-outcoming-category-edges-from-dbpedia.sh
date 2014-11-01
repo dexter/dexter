@@ -6,7 +6,7 @@ rm -f $TMP $TTMP
 
 echo "downloading the dbpedia categories (lang = $LANG)"
 
-wget -O $TMP.bz2 http://downloads.dbpedia.org/3.9/$LANG/skos_categories_$LANG.nt.bz2
+wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/$LANG/skos_categories_$LANG.nt.bz2
 
 echo "uncompressing"
 bunzip2 $TMP.bz2
