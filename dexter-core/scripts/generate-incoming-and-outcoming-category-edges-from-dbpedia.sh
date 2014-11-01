@@ -4,16 +4,18 @@ source scripts/config.sh
 
 rm -f $TMP $TTMP
 
-echo "downloading the dbpedia categories (lang = $LANG)"
+WIKILANG=en
 
-wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/$LANG/skos_categories_$LANG.nt.bz2
+echo "downloading the dbpedia categories (lang = $WIKILANG)"
+
+wget -O $TMP.bz2 http://data.dws.informatik.uni-mannheim.de/dbpedia/2014/$WIKILANG/skos_categories_$WIKILANG.nt.bz2
 
 echo "uncompressing"
 bunzip2 $TMP.bz2
 
 echo "extracting categories relationships"
 
-grep broader $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$LANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
+grep broader $TMP | cut -d' ' -f1,3 | tr -d '<>'  | sed "s/http:\/\/$WIKILANG.dbpedia.org\/resource\///g" | sed 's/http:\/\/dbpedia.org\/resource\///g' | tr ' ' '\t' > $TTMP
 
 echo "generate edges"
 $JAVA $CLI.categories.ExtractDbpediaCategoriesCLI --input $TTMP --output $TTTMP
