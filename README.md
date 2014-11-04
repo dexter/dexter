@@ -42,7 +42,7 @@ It will show the available REST-API.  Enjoy!
 
 # Cool, I want to know more!
 
-
+The following sections describe a bit more in detail how the framework works. 
 
 # Developing
 
@@ -52,6 +52,13 @@ You can use Dexter in several different ways:
   * Using the Java API;
   * Jsonp API + JQuery plugin;
   * Python Client.
+  
+  
+## Compiling and Installing
+
+In order to install and compile Dexter just run the following commands: 
+
+    
  
 ## Start a REST Server 
 
@@ -107,7 +114,11 @@ In the beginning of the file:
 	</models>
 
 replace the path in `FIXME` with the absolute or relative path to the folder that contains the dexter model. If you download 
-the model from the website, the folder is called data. Once you setup the folder just start the server running the command: 
+the model from the website, the folder is called `en-model-20140707`. Once you setup the folder just start the server running the command:
+
+      	java -Xmx3000m -jar dexter2.1.0.jar
+
+ 
 
     
 ### Use the client
