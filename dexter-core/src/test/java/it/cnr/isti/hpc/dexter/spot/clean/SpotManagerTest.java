@@ -18,8 +18,11 @@ package it.cnr.isti.hpc.dexter.spot.clean;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.HtmlCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.JuniorAndInitialsCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.QuotesCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.StripCleaner;
+import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.TypeCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.cleaner.UnicodeCleaner;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.LongSpotFilter;
 import it.cnr.isti.hpc.dexter.spot.cleanpipe.filter.NumberFilter;
@@ -93,22 +96,21 @@ public class SpotManagerTest {
 
 	}
 
-	// FIXME compiled to perform maven tests, fix later
-	// @Test
-	// public void testTypeMapper() {
-	// SpotManager sm = new SpotManager();
-	// sm.add(new TypeCleaner());
-	// sm.add(new QuotesCleaner());
-	// sm.add(new StripCleaner());
-	// sm.add(new SymbolFilter());
-	// assertTrue(sm.process("shot (filmmaking)").contains("shot"));
-	// assertFalse(sm.process("12 (filmmaking)").contains("12"));
-	// assertTrue(sm.process("shot#filmmaking").contains("shot"));
-	// assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
-	// assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
-	// assertFalse(sm.process("\"1968\"").contains("1968"));
-	// // assertEquals("kose",);
-	// }
+	@Test
+	public void testTypeMapper() {
+		SpotManager sm = new SpotManager();
+		sm.add(new TypeCleaner());
+		sm.add(new QuotesCleaner());
+		sm.add(new StripCleaner());
+		sm.add(new SymbolFilter());
+		assertTrue(sm.process("shot (filmmaking)").contains("shot"));
+		assertFalse(sm.process("12 (filmmaking)").contains("12"));
+		assertTrue(sm.process("shot#filmmaking").contains("shot"));
+		assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
+		assertTrue(sm.process("\"atomic\" (song)").contains("atomic"));
+		assertFalse(sm.process("\"1968\"").contains("1968"));
+		// assertEquals("kose",);
+	}
 
 	@Test
 	public void testUnicodeCleaner() {
@@ -132,19 +134,18 @@ public class SpotManagerTest {
 
 	}
 
-	// FIXME compiled to perform maven tests, fix later
-	// @Test
-	// public void testJavascriptCleaner() {
-	// SpotManager sm = SpotManager.getStandardSpotManager();
-	// HtmlCleaner cleaner = new HtmlCleaner();
-	// assertEquals("''l'isola dei famosi''",
-	// cleaner.clean("%27%27l'isola dei famosi%27%27"));
-	// assertEquals("7", sm.clean("&lt;7&gt;"));
-	// assertEquals("diego", sm.clean("diego"));
-	//
-	// // FIXME think about dashes
-	// // assertEquals("o 3 fatty acid",sm.clean("&omega;-3 fatty acid"));
-	// }
+	@Test
+	public void testJavascriptCleaner() {
+		SpotManager sm = SpotManager.getStandardSpotManager();
+		HtmlCleaner cleaner = new HtmlCleaner();
+		assertEquals("''l'isola dei famosi''",
+				cleaner.clean("%27%27l'isola dei famosi%27%27"));
+		assertEquals("7", sm.clean("&lt;7&gt;"));
+		assertEquals("diego", sm.clean("diego"));
+
+		// FIXME think about dashes
+		// assertEquals("o 3 fatty acid",sm.clean("&omega;-3 fatty acid"));
+	}
 
 	@Test
 	public void testLongSpotCleaner() {
