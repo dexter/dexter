@@ -41,6 +41,7 @@ import it.cnr.isti.hpc.dexter.rest.domain.EntityRelatedness;
 import it.cnr.isti.hpc.dexter.rest.domain.SpottedDocument;
 import it.cnr.isti.hpc.dexter.rest.domain.Tagmeta;
 import it.cnr.isti.hpc.net.FakeBrowser;
+import it.cnr.isti.hpc.structure.LRUCache;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -77,6 +78,9 @@ public class DexterRestClient {
 	private final FakeBrowser browser;
 
 	private final Client client = Client.create();
+
+	private static LRUCache<EntityRelatedness, EntityRelatedness> relatednessCache = new LRUCache<EntityRelatedness, EntityRelatedness>(
+			1000);
 
 	private Boolean wikinames = false;
 
