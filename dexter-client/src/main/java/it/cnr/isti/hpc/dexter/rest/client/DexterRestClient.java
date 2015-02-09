@@ -90,6 +90,8 @@ public class DexterRestClient {
 
 	public double linkProbability = -1;
 
+	public double minConfidence = 0.5;
+
 	private static Gson gson = new Gson();
 
 	private static final Logger logger = LoggerFactory
@@ -177,6 +179,8 @@ public class DexterRestClient {
 		if (wikinames) {
 			sb.append("&wn=true");
 		}
+		sb.append("&min-conf=").append(minConfidence);
+
 		sb.append("&format=").append(format);
 
 		// if (wikinames) {
@@ -546,5 +550,13 @@ public class DexterRestClient {
 		// System.out.println("categories " +
 		// client.getBelongingEntities(74253));
 
+	}
+
+	public double getMinConfidence() {
+		return minConfidence;
+	}
+
+	public void setMinConfidence(double minConfidence) {
+		this.minConfidence = minConfidence;
 	}
 }
