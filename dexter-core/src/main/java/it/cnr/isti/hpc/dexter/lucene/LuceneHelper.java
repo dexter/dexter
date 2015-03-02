@@ -92,20 +92,20 @@ import org.slf4j.LoggerFactory;
  */
 public class LuceneHelper {
 
-	private static final String LUCENE_ARTICLE_DEFAULT_FIELD = "content";
+	protected static final String LUCENE_ARTICLE_DEFAULT_FIELD = "content";
 
-	private static final String LUCENE_ARTICLE_ID = "wiki-id";
-	private static final String LUCENE_ARTICLE_WIKI_TITLE = "wiki-title";
-	private static final String LUCENE_ARTICLE_TITLE = "title";
-	private static final String LUCENE_ARTICLE_TYPE = "type";
-	private static final String LUCENE_ARTICLE_LIST = "list";
-	private static final String LUCENE_ARTICLE_INFOBOX = "infobox";
-	private static final String LUCENE_ARTICLE_EMPH = "emph";
-	private static final String LUCENE_ARTICLE_SECTIONS = "sections";
-	private static final String LUCENE_ARTICLE_DESCRIPTIONS = "desc";
-	private static final String LUCENE_ARTICLE_LINKS = "link";
-	private static final String LUCENE_ARTICLE_CONTENT = "content";
-	private static final String LUCENE_ARTICLE_SUMMARY = "summary";
+	protected static final String LUCENE_ARTICLE_ID = "wiki-id";
+	protected static final String LUCENE_ARTICLE_WIKI_TITLE = "wiki-title";
+	protected static final String LUCENE_ARTICLE_TITLE = "title";
+	protected static final String LUCENE_ARTICLE_TYPE = "type";
+	protected static final String LUCENE_ARTICLE_LIST = "list";
+	protected static final String LUCENE_ARTICLE_INFOBOX = "infobox";
+	protected static final String LUCENE_ARTICLE_EMPH = "emph";
+	protected static final String LUCENE_ARTICLE_SECTIONS = "sections";
+	protected static final String LUCENE_ARTICLE_DESCRIPTIONS = "desc";
+	protected static final String LUCENE_ARTICLE_LINKS = "link";
+	protected static final String LUCENE_ARTICLE_CONTENT = "content";
+	protected static final String LUCENE_ARTICLE_SUMMARY = "summary";
 
 	/**
 	 * Logger for this class
@@ -116,29 +116,29 @@ public class LuceneHelper {
 	/**
 	 * The Lucene analyzer
 	 */
-	private final StandardAnalyzer ANALYZER = new StandardAnalyzer(
+	protected final StandardAnalyzer ANALYZER = new StandardAnalyzer(
 			Version.LUCENE_41, CharArraySet.EMPTY_SET);
 
 	/**
 	 * Singleton
 	 */
-	private static LuceneHelper dexterHelper;
+	protected static LuceneHelper dexterHelper;
 
-	private Directory index;
-	private IndexWriter writer;
-	private IndexSearcher searcher;
-	private final IndexWriterConfig config;
-	private final ArticleSummarizer summarizer;
+	protected Directory index;
+	protected IndexWriter writer;
+	protected IndexSearcher searcher;
+	protected final IndexWriterConfig config;
+	protected final ArticleSummarizer summarizer;
 
 	private static DexterParams params = DexterParams.getInstance();
 
 	/**
 	 * number of documents indexed
 	 */
-	private final int collectionSize;
+	protected final int collectionSize;
 
-	public static final FieldType STORE_TERM_VECTORS = new FieldType();
-	public static final FieldType STORE_TERM_VECTORS_NOT_STORED = new FieldType();
+	protected static final FieldType STORE_TERM_VECTORS = new FieldType();
+	protected static final FieldType STORE_TERM_VECTORS_NOT_STORED = new FieldType();
 
 	static {
 		STORE_TERM_VECTORS.setIndexed(true);
@@ -156,8 +156,8 @@ public class LuceneHelper {
 
 	private static SpotManager cleaner = new SpotManager();
 
-	private final File wikiIdtToLuceneIdSerialization;
-	private static Map<Integer, Integer> wikiIdToLuceneId;
+	protected final File wikiIdtToLuceneIdSerialization;
+	protected static Map<Integer, Integer> wikiIdToLuceneId;
 
 	static {
 		cleaner.add(new UnicodeCleaner());
@@ -199,7 +199,7 @@ public class LuceneHelper {
 	/**
 	 * @return an index reader
 	 */
-	private IndexReader getReader() {
+	protected IndexReader getReader() {
 		IndexReader reader = null;
 		try {
 			reader = DirectoryReader.open(index);
@@ -210,7 +210,7 @@ public class LuceneHelper {
 		return reader;
 	}
 
-	private IndexSearcher getSearcher() {
+	protected IndexSearcher getSearcher() {
 		if (searcher != null)
 			return searcher;
 		IndexReader reader = getReader();

@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dexter-client</artifactId>
 	<name>Dexter Rest-API Client</name>
+	<version>2.1.1</version>
 	<dependencies>
 		<dependency>
 			<groupId>it.cnr.isti.hpc</groupId>
