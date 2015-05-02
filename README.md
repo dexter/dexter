@@ -40,6 +40,11 @@ Hiha! just download the model with the binaries (model was generated from the [E
 And then visit on your browser the address [http://localhost:8080/dexter-webapp/dev]().
 It will show the available REST-API.  Enjoy! 
 
+# Actually I do have some time and I like compiling things.
+
+Dexter's pom includes the [json-wikipedia](https://github.com/diegoceccarelli/json-wikipedia) project as a project dependency. The first thing you need to do is make sure that this is also pulled to the project's root. To do this, just use a command like `git pull --recurse-submodules` to be sure that all dependencies are downloaded.
+After that, a simple `mvn package` compiles the project. Note that the `maven` command line tool that comes bundled with some versions of linux (e.g. Ubuntu) has a problem fetching dependencies for `org.apache.commons.lang`. To avoid this error, just make sure that you have an updated version of maven (>= `3.0.5` would do).
+
 # Cool, I want to know more!
 
 The following sections describe a bit more in detail how the framework works. 
