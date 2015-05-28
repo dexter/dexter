@@ -314,7 +314,7 @@ If you use the Dexter framework, you must cite:
 
 > Ceccarelli, D., Lucchese, C., Orlando, S., Perego, R., & Trani, S. 
 > Dexter: an open source framework for entity linking.
-> * In Proceedings of the sixth international workshop on Exploiting semantic annotations in information retrieval (pp. 17-20). ACM.* DOI: http://dx.doi.org/10.1145/2513204.2513212
+> *In Proceedings of the sixth international workshop on Exploiting semantic annotations in information retrieval (pp. 17-20). ACM.* DOI: http://dx.doi.org/10.1145/2513204.2513212
 
 
 Bibtex format:
