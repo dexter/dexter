@@ -4,12 +4,18 @@
 The entity linking (aka Wikification) task aims 
 at identifying all the small text fragments in a document referring 
 to an entity contained in a given knowledge base, e.g., Wikipedia. 
-The annotation is usually organized in three tasks. Given an input 
+The annotation is usually organized in three tasks:
+
+1. Given an input 
 document the first task consists in discovering the fragments that could 
-refer to an entity. Since a mention could refer to multiple entities, 
+refer to an entity.
+2. Since a mention could refer to multiple entities, 
 it is necessary to perform a disambiguation step, where the correct entity 
-is selected among the candidates. Finally, discovered entities are ranked 
-by some measure of relevance. Many entity linking algorithms have been proposed, 
+is selected tamong the candidates.
+3. Finally, discovered entities are ranked 
+by some measure of relevance.
+
+Many entity linking algorithms have been proposed, 
 but unfortunately only a few authors have released the source code or some APIs. 
 As a result, evaluating today the performance of a method on a single subtask, 
 or comparing different techniques is difficult.
@@ -38,7 +44,12 @@ Hiha! just download the model with the binaries (model was generated from the [E
 
 
 And then visit on your browser the address [http://localhost:8080/dexter-webapp/dev]().
-It will show the available REST-API.  Enjoy! 
+It will show the available REST-API. Enjoy! 
+
+# Actually I do have some time and I like compiling things.
+
+Dexter's pom includes the [json-wikipedia](https://github.com/diegoceccarelli/json-wikipedia) project as a project dependency. The first thing you need to do is make sure that this is also pulled to the project's root. To do this, just use a command like `git pull --recurse-submodules` to be sure that all dependencies are downloaded.
+After that, a simple `mvn package` compiles the project. Note that the `maven` command line tool that comes bundled with some versions of linux (e.g. Ubuntu) has a problem fetching dependencies for `org.apache.commons.lang`. To avoid this error, just make sure that you have an updated version of maven (>= `3.0.5` would do).
 
 # Cool, I want to know more!
 
@@ -58,7 +69,6 @@ You can use Dexter in several different ways:
 
 In order to install and compile Dexter just run the following commands: 
 
-    
  
 ## Start a REST Server 
 
@@ -66,7 +76,7 @@ In order to install and compile Dexter just run the following commands:
 
 Click on this [http://hpc.isti.cnr.it/~ceccarelli/dexter2.tar.gz](link) for downloading Dexter. 
 
-The archive requires around 2 Gigabytes, and contains the 
+The archive requires around 2.5 Gigabytes, and contains the 
 Dexter binary code (''dexter2.1.0.jar'') and the 
 model used by Dexter for annotating.
 
@@ -74,11 +84,12 @@ The current model is generated from the 07/07/2014 English
 Wikipedia dump, available [http://dumps.wikimedia.org/enwiki/20140707/enwiki-20140707-pages-articles.xml.bz2](here). 
 (we plan to release updated models for English and other languages). 
 
-Once the download is finished, untar the package, and from the directory ''dexter'', just run
+Once the download is finished, untar the package, and from the directory ''dexter2'', just run
 
-  	java -Xmx3000m -jar dexter2.1.0.jar
+  	java -Xmx3000m -jar dexter-2.1.0.jar
 
 (you will need at least 3G of ram and Java 7).
+
 The framework should be available in few seconds at the address:
 
   	http://localhost:8080/
@@ -116,9 +127,7 @@ In the beginning of the file:
 replace the path in `FIXME` with the absolute or relative path to the folder that contains the dexter model. If you download 
 the model from the website, the folder is called `en-model-20140707`. Once you setup the folder just start the server running the command:
 
-      	java -Xmx3000m -jar dexter2.1.0.jar
-
- 
+      	java -Xmx3000m -jar dexter-2.1.0.jar
 
     
 ### Use the client
@@ -158,7 +167,7 @@ If you have installed the code with `mvn install`, and run the server on your ma
    
 ### More details about the configuration file
 
-The configuration file mainly contains details on the paths of the model files, and it allows to register plugin and to configure the tagger. 
+The configuration file mainly contains details on the paths of the model files, and it allows to register plugin and to configure the tagger.
 
 More in detail, it allows to register: 
 
@@ -192,13 +201,12 @@ In this example, the standard dictionary spotter is registered with the name `wi
 	</spotters>
  ```
 
-Here we registered a new spotter with the name `my-dictionary`. You can create a new spotter extending the abstract class `
-AbstractSpotter` and then adding it to the classpath of the dexter webapp (you can put the jar in the lib folder, or more easy, install the jar with maven and add the dependency in the `dexter-webapp/pom.xml`). 
+Here we registered a new spotter with the name `my-dictionary`. You can create a new spotter extending the abstract class `AbstractSpotter` and then adding it to the classpath of the dexter webapp (you can put the jar in the lib folder, or more easily, install the jar with maven and add the dependency in the `dexter-webapp/pom.xml`). 
 
-At runtime, the rest functions allow to specify the spotter that you want to use with the parameter `spt`. If you don't specify the name of the spotter, the `default` is used. 
+At runtime, the rest functions allow you to specify the spotter that you want to use with the parameter `spt`. If you don't specify the name of the spotter, `default` is used. 
 
 #### SpotFilters 
-A spot filter allows to filter the mentions produced by the Spotter before they are sent to the Disambiguator. For example, if you would like to filter short spots, or spots with low probability etc etc, still you can write your filters or use the filters provided by Dexter. As for the spotter, filters must be registered and than you can use them in a spotter. 
+A spot filter allows you to filter the mentions produced by the Spotter before they are sent to the Disambiguator. For example, if you would like to filter short spots, or spots with low probability etc etc, still you can write your filters or use the filters provided by Dexter. As for the spotter, filters must be registered and then you can use them in a spotter. 
 For example: 
 
 ```
@@ -216,7 +224,7 @@ For example:
     </spotFilters>
 ```
 
-Registers a filter that removes mentions with low probability to be links to entities (note the parameter lp). 
+Registers a filter that removes mentions with low probability to be links to entities (note the parameter `lp`). 
 You could register two different filters: 
 
 ```
@@ -243,9 +251,9 @@ You could register two different filters:
 		</spotFilter> 
     </spotFilters>
 ```
-Here the first filter `f0.02` removes all the spots with link probability lower than 0.02, whil the second `f0.5` removes all the spots with link probability lower than 0.5. 
+Here the first filter `f0.02` removes all the spots with link probability lower than 0.02, while the second `f0.5` removes all the spots with link probability lower than 0.5. 
 
-Than you can set several spot filters with a spotter: 
+Then you can set several spot filters with a spotter: 
 
 ```
 	<spotter>
@@ -283,7 +291,7 @@ As for the spotters, you can register a disambiguation function and call it from
 			</params>
 		</disambiguator>
 		
-Tagme and Wikiminer are provided as a dependency, in dexter-code you can find a disambiguator that always select the most probable entity for a mention. 
+Tagme and Wikiminer are provided as a dependency, in dexter-code you can find a disambiguator that always selects the most probable entity for a mention. 
 
 If you want to add a disambiguator, just implement the interface `Disambiguator` (in `dexter-core`).
 
@@ -297,7 +305,5 @@ The interface has two methods:
 		
 
 Init will be called just once when the disambiguator object is created, if there are params in the disambiguator snippet
-(as for tagme) this params will be passed in the dexterModuleParams variable. At run time, when you annotate a document, the parameter that you put in the post/get query will be pushed in the localParams object, so you can play with the parameters 
+(as for tagme) these params will be passed in the `dexterModuleParams` variable. At run time, when you annotate a document, the parameter that you put in the post/get query will be pushed in the `localParams` object, so you can play with the parameters 
 of you disambiguator. This works also for spotter and spot filters. 
-
-
