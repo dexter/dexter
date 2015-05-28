@@ -307,3 +307,34 @@ The interface has two methods:
 Init will be called just once when the disambiguator object is created, if there are params in the disambiguator snippet
 (as for tagme) these params will be passed in the `dexterModuleParams` variable. At run time, when you annotate a document, the parameter that you put in the post/get query will be pushed in the `localParams` object, so you can play with the parameters 
 of you disambiguator. This works also for spotter and spot filters. 
+
+## Citation
+
+If you use the Dexter framework, you must cite:
+
+> Ceccarelli, D., Lucchese, C., Orlando, S., Perego, R., & Trani, S. 
+> Dexter: an open source framework for entity linking.
+> * In Proceedings of the sixth international workshop on Exploiting semantic annotations in information retrieval (pp. 17-20). ACM.* DOI: http://dx.doi.org/10.1145/2513204.2513212
+
+
+Bibtex format:
+
+	@inproceedings{DBLP:conf/cikm/CeccarelliLOPT13a,
+	  author    = {Diego Ceccarelli and
+	               Claudio Lucchese and
+	               Salvatore Orlando and
+	               Raffaele Perego and
+	               Salvatore Trani},
+	  title     = {Dexter: an open source framework for entity linking},
+	  booktitle = {ESAIR'13, Proceedings of the Sixth International Workshop on Exploiting
+	               Semantic Annotations in Information Retrieval, co-located with {CIKM}
+	               2013, San Francisco, CA, USA, October 28, 2013},
+	  pages     = {17--20},
+	  year      = {2013},
+	  crossref  = {DBLP:conf/cikm/2013esair},
+	  url       = {http://doi.acm.org/10.1145/2513204.2513212},
+	  doi       = {10.1145/2513204.2513212},
+	  timestamp = {Thu, 15 May 2014 15:51:38 +0200},
+	  biburl    = {http://dblp.uni-trier.de/rec/bib/conf/cikm/CeccarelliLOPT13a},
+	  bibsource = {dblp computer science bibliography, http://dblp.org}
+	}
