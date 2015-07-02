@@ -18,8 +18,7 @@ package it.cnr.isti.hpc.dexter.label;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +50,19 @@ public class IdHelper implements IdToLabel, LabelToId {
 		return labelToId.getId(label);
 	}
 
+
 	public String getLabel(Integer key) {
 		return idToLabel.getLabel(key);
+	}
+
+	@Override
+	public Set<Integer> getIds() {
+		return idToLabel.getIds();
+	}
+
+	@Override
+	public Set<String> getLabels() {
+		return labelToId.getLabels();
 	}
 
 	public List<String> getLabels(List<Integer> keys) {

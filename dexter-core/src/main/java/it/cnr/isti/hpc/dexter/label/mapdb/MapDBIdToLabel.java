@@ -19,7 +19,9 @@ import it.cnr.isti.hpc.dexter.label.IdToLabel;
 import it.cnr.isti.hpc.dexter.label.IdToLabelWriter;
 import it.cnr.isti.hpc.mapdb.MapDB;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +81,11 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 		return label;
 	}
 
+	@Override
+	public Set<Integer> getIds() {
+		return map.keySet();
+	}
+
 	public void commit() {
 		db.commit();
 
@@ -89,4 +96,5 @@ public class MapDBIdToLabel implements IdToLabel, IdToLabelWriter {
 		db.commit();
 		db.close();
 	}
+
 }

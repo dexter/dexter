@@ -15,6 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.label;
 
+import java.util.Set;
+
 /**
  * LabelToId stores the map <code>label -> id </code>
  *
@@ -23,17 +25,18 @@ package it.cnr.isti.hpc.dexter.label;
  */
 public interface LabelToId {
 
-	
-	
 	/**
-	 * 
+	 *
 	 * @param label
 	 * @return return the key integer associated with a label, 0 if there's no label
 	 */
 	public Integer getId(String label);
-	
-	
-	
+
+
+	/**
+	 * @return Returns a Set view of the keys (labels) contained in this map.
+	 */
+	public Set<String> getLabels();
 }
 	
 	

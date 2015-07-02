@@ -15,6 +15,8 @@
  */
 package it.cnr.isti.hpc.dexter.label;
 
+import java.util.Set;
+
 /**
  * IdToArticle stores the map <code> wiki-id  -> label </code>
  *
@@ -22,13 +24,15 @@ package it.cnr.isti.hpc.dexter.label;
  * created on 05/lug/2012
  */
 public interface IdToLabel {
-	
-	
-	
+
 	/**
 	 * @param key 
 	 * @return the label associated with key, empty string if there's no label
 	 */
 	public String getLabel(Integer key);
-	
+
+	/**
+	 * @return Returns a Set view of the keys (wiki-id) contained in this map.
+	 */
+	public Set<Integer> getIds();
 }
