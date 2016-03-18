@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
  * standard spot manager}, which cleans, enriches and filters the text.
  * 
  */
-@Deprecated
 public class ExtractSpotsCLI extends AbstractCommandLineInterface {
 	/**
 	 * Logger for this class

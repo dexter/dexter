@@ -26,13 +26,12 @@ import it.cnr.isti.hpc.log.ProgressLogger;
 import it.cnr.isti.hpc.wikipedia.article.Article;
 import it.cnr.isti.hpc.wikipedia.article.Link;
 import it.cnr.isti.hpc.wikipedia.reader.filter.TypeFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Retrieves all the titles and anchors from the Wikipedia articles, considers
@@ -47,6 +46,7 @@ import org.slf4j.LoggerFactory;
  * standard spot manager}, which cleans, enriches and filters the text.
  * 
  */
+@Deprecated
 public class ExtractSpots2CLI extends AbstractCommandLineInterface {
 	/**
 	 * Logger for this class
