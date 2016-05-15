@@ -214,8 +214,8 @@ public class RestService {
 				double r = rf.getRelatedness(e1list.get(i), e2list.get(j))
 						.getScore();
 				if (r > max) {
-					maxi = i;
-					maxj = j;
+					maxi = e1list.get(i);
+					maxj = e2list.get(j);
 					max = r;
 				}
 			}
