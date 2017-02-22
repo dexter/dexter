@@ -24,9 +24,16 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- <dependency> <groupId>it.cnr.isti.hpc</groupId> <artifactId>dexter-tagme</artifactId> 
-			<version>2.1.0</version> </dependency> <dependency> <groupId>it.cnr.isti.hpc</groupId> 
-			<artifactId>dexter-wikiminer</artifactId> <version>2.0.0</version> </dependency> -->
+		<dependency> 
+			<groupId>it.cnr.isti.hpc</groupId> 
+			<artifactId>dexter-tagme</artifactId> 
+			<version>2.1.0</version> 
+		</dependency> 
+		<dependency> 
+			<groupId>it.cnr.isti.hpc</groupId> 
+			<artifactId>dexter-wikiminer</artifactId> 
+			<version>2.0.0</version> 
+		</dependency> 
 		<dependency>
 			<groupId>it.cnr.isti.hpc</groupId>
 			<artifactId>json-wikipedia</artifactId>
