@@ -107,7 +107,7 @@ public class DexterParams {
 		thresholds = new HashMap<String, Float>();
 	}
 
-	private DexterParams(String xmlConfig, String resourceRoot) {
+	private DexterParams(String resourceRoot, String xmlConfig) {
 		this();
 		params = DexterParamsXMLParser.load(xmlConfig);
 
