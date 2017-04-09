@@ -107,11 +107,11 @@ public class DexterParams {
 		thresholds = new HashMap<String, Float>();
 	}
 
-	private DexterParams(String xmlConfig) {
+	private DexterParams(String resourceRoot, String xmlConfig) {
 		this();
 		params = DexterParamsXMLParser.load(xmlConfig);
 
-		loader = new PluginLoader(new File(params.getLibs().getLib()));
+		loader = new PluginLoader(new File(resourceRoot, params.getLibs().getLib()));
 
 		for (DexterParamsXMLParser.Graph graph : params.getGraphs().getGraphs()) {
 			Map<Direction, String> names = new HashMap<Direction, String>();
@@ -137,7 +137,7 @@ public class DexterParams {
 			thresholds.put(threshold.getName(), threshold.getValue());
 		}
 
-		defaultModel = new File(
+		defaultModel = new File(resourceRoot,
 				models.get(params.getModels().getDefaultModel()));
 
 		graphDir = new File(defaultModel, params.getGraphs().getDir());
@@ -246,8 +246,9 @@ public class DexterParams {
 			String confFile = System.getProperty("conf");
 			if (confFile == null)
 				confFile = "dexter-conf.xml";
+			String resourceRoot = System.getProperty("dexter.resourceRoot", System.getProperty("user.dir"));
 			logger.info("loading configuration from {} ", confFile);
-			dexterParams = new DexterParams(confFile);
+			dexterParams = new DexterParams(resourceRoot, confFile);
 			dexterParams.loadDisambiguators();
 			dexterParams.loadRelatednessFunctions();
 			dexterParams.loadSpotFilters();
