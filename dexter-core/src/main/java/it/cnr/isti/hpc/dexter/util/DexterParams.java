@@ -248,7 +248,7 @@ public class DexterParams {
 				confFile = "dexter-conf.xml";
 			String resourceRoot = System.getProperty("dexter.resourceRoot", System.getProperty("user.dir"));
 			logger.info("loading configuration from {} ", confFile);
-			dexterParams = new DexterParams(confFile, resourceRoot);
+			dexterParams = new DexterParams(resourceRoot, confFile);
 			dexterParams.loadDisambiguators();
 			dexterParams.loadRelatednessFunctions();
 			dexterParams.loadSpotFilters();
